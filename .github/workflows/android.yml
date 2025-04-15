@@ -66,8 +66,8 @@ jobs:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
-          echo "${SIGNING_KEY_STORE_BASE64}" | base64 --decode > app/my-release-key.jks
-          echo "RELEASE_KEYSTORE_FILE=my-release-key.jks" >> local.properties
+          echo "${SIGNING_KEY_STORE_BASE64}" | base64 --decode > app/keystore.jks
+          echo "RELEASE_KEYSTORE_FILE=keystore.jks" >> local.properties
           echo "RELEASE_KEYSTORE_PASSWORD=${SIGNING_STORE_PASSWORD}" >> local.properties
           echo "RELEASE_KEY_ALIAS=${SIGNING_KEY_ALIAS}" >> local.properties
           echo "RELEASE_KEY_PASSWORD=${SIGNING_KEY_PASSWORD}" >> local.properties
