@@ -23,14 +23,14 @@ jobs:
           actions-cache-folder: ".xmake-cache"
           actions-cache-key: "ubuntulinux-ci"
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
       - name: NDK setup
         uses: nttld/setup-ndk@v1
         with:
           ndk-version: r27
           link-to-sdk: true
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
       - name: Build with Gradle
         run: ./gradlew build
