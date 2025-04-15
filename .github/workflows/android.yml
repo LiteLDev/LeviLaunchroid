@@ -3,51 +3,33 @@ name: Android CI
 on:
   push:
   pull_request:
-
 jobs:
   build:
-    runs-on: windows-latest
-
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: "17"
+          java-version: "21"
           distribution: "temurin"
           cache: gradle
 
-      - name: Setup Android SDK & NDK
-        uses: android-actions/setup-android@v3
-        with:
-          ndk-version: "27.0.11718014"
-          sdk-platform: "android-35"
-          build-tools: "35.0.0"
-
-      - name: Set NDK environment variables
-        shell: pwsh
-        run: |
-          $ndkPath = Join-Path $env:ANDROID_HOME "ndk"
-          $ndkVersion = (Get-ChildItem $ndkPath | Sort-Object Name -Descending | Select-Object -First 1).Name
-          $fullNdkPath = Join-Path $ndkPath $ndkVersion
-          echo "NDK_HOME=$fullNdkPath" >> $env:GITHUB_ENV
-          echo "ANDROID_NDK_HOME=$fullNdkPath" >> $env:GITHUB_ENV
-
-      - name: Setup xmake
+      - name: setup xmake
         uses: xmake-io/github-action-setup-xmake@v1
         with:
-          xmake-version: latest
+          xmake-version: "2.9.8"
           actions-cache-folder: ".xmake-cache"
-          actions-cache-key: "windows-ci"
+          actions-cache-key: "ubuntulinux-ci"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: .\gradlew build
-        env:
-          ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_HOME }}
+        run: ./gradlew build
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: LeviLauncher
-          path: .\app\build\outputs\apk
+          path: ./app/build/outputs/apk
