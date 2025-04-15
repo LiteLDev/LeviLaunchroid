@@ -21,9 +21,18 @@ jobs:
       - name: Setup Android SDK & NDK
         uses: android-actions/setup-android@v3
         with:
-          ndk-version: "27.0.12077973"
+          ndk-version: "27.0.11718014"
           sdk-platform: "android-35"
           build-tools: "35.0.0"
+
+      - name: Set NDK environment variables
+        shell: pwsh
+        run: |
+          $ndkPath = Join-Path $env:ANDROID_HOME "ndk"
+          $ndkVersion = (Get-ChildItem $ndkPath | Sort-Object Name -Descending | Select-Object -First 1).Name
+          $fullNdkPath = Join-Path $ndkPath $ndkVersion
+          echo "NDK_HOME=$fullNdkPath" >> $env:GITHUB_ENV
+          echo "ANDROID_NDK_HOME=$fullNdkPath" >> $env:GITHUB_ENV
 
       - name: Setup xmake
         uses: xmake-io/github-action-setup-xmake@v1
@@ -33,7 +42,9 @@ jobs:
           actions-cache-key: "windows-ci"
 
       - name: Build with Gradle
-        run: .\gradlew build
+        run: .\gradlew build -Dorg.gradle.daemon=false --stacktrace
+        env:
+          ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_HOME }}
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
