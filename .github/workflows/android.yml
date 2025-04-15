@@ -77,6 +77,15 @@ jobs:
         run: |
           ./gradlew assembleRelease
 
+      - name: Rename APK with tag version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          TAG=${GITHUB_REF_NAME}
+          APK_SRC=$(find app/build/outputs/apk/release -name "*.apk" -not -name "*-unsigned.apk" | head -1)
+          APK_DST="LeviLauncher-${TAG}-release.apk"
+          cp "${APK_SRC}" "${APK_DST}"
+          echo "Renamed APK from ${APK_SRC} to ${APK_DST}"
+
       - name: Upload Signed Release APK (only when tagged release)
         if: startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v4.6.2
@@ -84,10 +93,17 @@ jobs:
           name: LeviLauncher-release-signed-apk
           path: app/build/outputs/apk/release/*.apk
 
+      - name: Upload Renamed Signed APK as Artifact
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: LeviLauncher-${{ github.ref_name }}-release.apk
+          path: LeviLauncher-${{ github.ref_name }}-release.apk
+
       - name: Release Signed APK to GitHub Releases (only when tagged release)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: app/build/outputs/apk/release/*.apk
+          files: LeviLauncher-${{ github.ref_name }}-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
