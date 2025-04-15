@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -30,16 +30,16 @@ jobs:
         with:
           xmake-version: latest
           actions-cache-folder: ".xmake-cache"
-          actions-cache-key: "ubuntulinux-ci"
+          actions-cache-key: "windows-ci"
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: icacls gradlew /grant Everyone:(R,W,X)
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: .\gradlew build
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: LeviLauncher
-          path: ./app/build/outputs/apk
+          path: .\app\build\outputs\apk
