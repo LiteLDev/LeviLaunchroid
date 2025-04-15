@@ -24,10 +24,19 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file(propertyOrDefault('RELEASE_KEYSTORE_FILE', 'keystore.jks'))
-            storePassword propertyOrDefault('RELEASE_KEYSTORE_PASSWORD', '')
-            keyAlias propertyOrDefault('RELEASE_KEY_ALIAS', '')
-            keyPassword propertyOrDefault('RELEASE_KEY_PASSWORD', '')
+            def keystoreFilePath = project.properties["RELEASE_KEYSTORE_FILE"]
+            def keystorePassword = project.properties["RELEASE_KEYSTORE_PASSWORD"]
+            def keyAlias = project.properties["RELEASE_KEY_ALIAS"]
+            def keyPassword = project.properties["RELEASE_KEY_PASSWORD"]
+
+            if (keystoreFilePath && keystorePassword && keyAlias && keyPassword && file(keystoreFilePath).exists()) {
+                storeFile file(keystoreFilePath)
+                storePassword keystorePassword
+                keyAlias keyAlias
+                keyPassword keyPassword
+            } else {
+                println "⚠️"
+            }
         }
     }
     buildFeatures {
@@ -36,7 +45,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release.storeFile != null ? signingConfigs.release : null
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug{
@@ -68,8 +77,4 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
-}
-
-def propertyOrDefault(String name, String defaultValue) {
-    return project.hasProperty(name) ? project.property(name) : defaultValue
 }

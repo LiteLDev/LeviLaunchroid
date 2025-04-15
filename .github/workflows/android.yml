@@ -44,7 +44,7 @@ jobs:
 
       - name: Build Debug and Release Unsigned APKs
         run: |
-          ./gradlew build
+          ./gradlew assembleDebug assembleRelease
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4.6.2
