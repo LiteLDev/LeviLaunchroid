@@ -3,11 +3,14 @@ name: Android CI
 on:
   push:
   pull_request:
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -15,17 +18,26 @@ jobs:
           distribution: "temurin"
           cache: gradle
 
-      - name: setup xmake
+      - name: Setup Android SDK & NDK
+        uses: android-actions/setup-android@v3
+        with:
+          ndk-version: "27.0.12077973"
+          sdk-platform: "android-35"
+          build-tools: "35.0.0"
+
+      - name: Setup xmake
         uses: xmake-io/github-action-setup-xmake@v1
         with:
           xmake-version: latest
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.6.2
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
         with:
           name: LeviLauncher
           path: ./app/build/outputs/apk
