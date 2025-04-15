@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - ci/release
     tags:
       - v*
   pull_request:
@@ -29,7 +28,7 @@ jobs:
       - name: Setup Xmake
         uses: xmake-io/github-action-setup-xmake@v1
         with:
-          xmake-version: "2.9.8"
+          xmake-version: "2.9.9"
           actions-cache-folder: ".xmake-cache"
           actions-cache-key: "ubuntulinux-ci"
 
@@ -77,7 +76,7 @@ jobs:
         run: |
           ./gradlew assembleRelease
 
-      - name: Rename APK with tag version
+      - name: Rename APK with tag version (only when tagged release)
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           TAG=${GITHUB_REF_NAME}
@@ -93,7 +92,7 @@ jobs:
           name: LeviLauncher-release-signed-apk
           path: app/build/outputs/apk/release/*.apk
 
-      - name: Upload Renamed Signed APK as Artifact
+      - name: Upload Renamed Signed APK as Artifact (only when tagged release)
         if: startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v4.6.2
         with:
