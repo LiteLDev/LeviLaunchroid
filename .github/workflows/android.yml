@@ -30,6 +30,7 @@ jobs:
         uses: nttld/setup-ndk@v1
         with:
           ndk-version: r27
+          link-to-sdk: true
 
       - name: Grant Execute Permission to gradlew
         run: chmod +x ./gradlew
