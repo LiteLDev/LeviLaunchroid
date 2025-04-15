@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -25,11 +26,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - uses: nttld/setup-ndk@v1
-        id: setup-ndk
+      - name: NDK setup
+        uses: nttld/setup-ndk@v1
         with:
-        ndk-version: r27
-        link-to-sdk: true
+          ndk-version: r27
+          link-to-sdk: true
 
       - name: Build with Gradle
         run: ./gradlew build
