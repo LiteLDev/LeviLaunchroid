@@ -42,7 +42,7 @@ jobs:
           actions-cache-key: "windows-ci"
 
       - name: Build with Gradle
-        run: .\gradlew build -Dorg.gradle.daemon=false --stacktrace
+        run: .\gradlew build
         env:
           ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_HOME }}
 
