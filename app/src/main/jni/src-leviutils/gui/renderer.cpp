@@ -141,7 +141,7 @@ void LogWindow::draw() {
   if (!impl_->open)
     return;
 
-  ImGui::SetNextWindowSize(ImVec2(800, 800), ImGuiCond_FirstUseEver);
+  ImGui::SetNextWindowSize(ImVec2(1200, 600), ImGuiCond_FirstUseEver);
 
   if (!ImGui::Begin(impl_->title.c_str(), &impl_->open)) {
     ImGui::End();

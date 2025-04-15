@@ -2,41 +2,83 @@ name: Android CI
 
 on:
   push:
+    branches:
+      - main
+    tags:
+      - v*
   pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
           java-version: "21"
-          distribution: "temurin"
-          cache: gradle
+          distribution: temurin
 
-      - name: setup xmake
-        uses: xmake-io/github-action-setup-xmake@v1
-        with:
-          xmake-version: "2.9.8"
-          actions-cache-folder: ".xmake-cache"
-          actions-cache-key: "ubuntulinux-ci"
-
-      - name: NDK setup
+      - name: Setup Android NDK
         uses: nttld/setup-ndk@v1
         with:
-          ndk-version: r27
-          link-to-sdk: true
+          ndk-version: r26d
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Grant Execute Permission to gradlew
+        run: chmod +x ./gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Build Debug and Release Unsigned APKs
+        run: |
+          ./gradlew assembleDebug assembleRelease
 
-      - name: Upload a Build Artifact
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: LeviLauncher
-          path: ./app/build/outputs/apk
+          name: LeviLauncher-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+
+      - name: Upload Release Unsigned APK
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: LeviLauncher-release-unsigned-apk
+          path: app/build/outputs/apk/release/*-unsigned.apk
+
+      - name: Setup Signing (only when tagged release)
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          SIGNING_KEY_STORE_BASE64: ${{ secrets.SIGNING_KEY_STORE }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        run: |
+          echo "${SIGNING_KEY_STORE_BASE64}" | base64 --decode > app/my-release-key.jks
+          echo "RELEASE_KEYSTORE_FILE=my-release-key.jks" >> local.properties
+          echo "RELEASE_KEYSTORE_PASSWORD=${SIGNING_STORE_PASSWORD}" >> local.properties
+          echo "RELEASE_KEY_ALIAS=${SIGNING_KEY_ALIAS}" >> local.properties
+          echo "RELEASE_KEY_PASSWORD=${SIGNING_KEY_PASSWORD}" >> local.properties
+
+      - name: Build Signed Release APK (only when tagged release)
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          ./gradlew assembleRelease
+
+      - name: Upload Signed Release APK (only when tagged release)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: LeviLauncher-release-signed-apk
+          path: app/build/outputs/apk/release/*.apk
+
+      - name: Release Signed APK to GitHub Releases (only when tagged release)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: app/build/outputs/apk/release/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -22,12 +22,21 @@ android {
             abiFilters "arm64-v8a"
         }
     }
+    signingConfigs {
+        release {
+            storeFile file(propertyOrDefault('RELEASE_KEYSTORE_FILE', 'keystore.jks'))
+            storePassword propertyOrDefault('RELEASE_KEYSTORE_PASSWORD', '')
+            keyAlias propertyOrDefault('RELEASE_KEY_ALIAS', '')
+            keyPassword propertyOrDefault('RELEASE_KEY_PASSWORD', '')
+        }
+    }
     buildFeatures {
         viewBinding true
     }
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug{
@@ -59,4 +68,8 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+}
+
+def propertyOrDefault(String name, String defaultValue) {
+    return project.hasProperty(name) ? project.property(name) : defaultValue
 }
