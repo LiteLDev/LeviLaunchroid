@@ -26,6 +26,13 @@ jobs:
           java-version: "21"
           distribution: temurin
 
+      - name: Setup Xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: "2.9.8"
+          actions-cache-folder: ".xmake-cache"
+          actions-cache-key: "ubuntulinux-ci"
+
       - name: Setup Android NDK
         uses: nttld/setup-ndk@v1
         with:
