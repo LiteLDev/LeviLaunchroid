@@ -98,13 +98,13 @@ public class MinecraftLauncher {
             ApplicationInfo mcInfo = version.isInstalled ?
                     getApplicationInfo(version.packageName) :
                     createFakeApplicationInfo(version.versionDir, MC_PACKAGE_NAME);
-                File dexCacheDir = createCacheDexDir();
-                cleanCacheDirectory(dexCacheDir);
-                Object pathList = getPathList(classLoader);
-                processDexFiles(mcInfo, dexCacheDir, pathList);
-                injectNativeLibraries(mcInfo, pathList);
-                nativeSetModPath(version.modsDir.getAbsolutePath(),version.modsDir.getAbsolutePath() + "/mods_config.json");
-                launchMinecraftActivity(mcInfo, sourceIntent);
+            File dexCacheDir = createCacheDexDir();
+            cleanCacheDirectory(dexCacheDir);
+            Object pathList = getPathList(classLoader);
+            processDexFiles(mcInfo, dexCacheDir, pathList);
+            injectNativeLibraries(mcInfo, pathList);
+            nativeSetModPath(version.modsDir.getAbsolutePath(),version.modsDir.getAbsolutePath() + "/mods_config.json");
+            launchMinecraftActivity(mcInfo, sourceIntent);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -245,25 +245,29 @@ public class MinecraftLauncher {
 
     private void launchMinecraftActivity(ApplicationInfo mcInfo, Intent sourceIntent) {
         new Thread(() -> {
-            Class<?> launcherClass = null;
             try {
-                launcherClass = classLoader.loadClass("com.mojang.minecraftpe.Launcher");
+                // Add compatibility flag for older Android versions
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) { // S is Android 12
+                    sourceIntent.putExtra("DISABLE_SPLASH_SCREEN", true);
+                }
+
+                Class<?> launcherClass = classLoader.loadClass("com.mojang.minecraftpe.Launcher");
+                Intent mcActivity = sourceIntent.setClass(context, launcherClass);
+                mcActivity.putExtra("MC_SRC", mcInfo.sourceDir);
+                if (mcInfo.splitSourceDirs != null) {
+                    mcActivity.putExtra("MC_SPLIT_SRC", new ArrayList<>(Arrays.asList(mcInfo.splitSourceDirs)));
+                }
+
+                if (context instanceof Activity) {
+                    context.startActivity(mcActivity);
+                    ((Activity) context).finish();
+                } else {
+                    mcActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(mcActivity);
+                }
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            Intent mcActivity = sourceIntent.setClass(context, launcherClass);
-        mcActivity.putExtra("MC_SRC", mcInfo.sourceDir);
-        if (mcInfo.splitSourceDirs != null) {
-            mcActivity.putExtra("MC_SPLIT_SRC", new ArrayList<>(Arrays.asList(mcInfo.splitSourceDirs)));
-        }
-
-        if (context instanceof Activity) {
-            context.startActivity(mcActivity);
-            ((Activity) context).finish();
-        } else {
-            mcActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(mcActivity);
-        }
         }).start();
     }
 

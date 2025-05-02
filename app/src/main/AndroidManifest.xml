@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingClass" >
 
+    <uses-sdk
+        android:minSdkVersion="24"
+        android:targetSdkVersion="35"
+        tools:overrideLibrary="androidx.core.splashscreen"/>
+
     <uses-feature
         android:glEsVersion="0x20000"
         android:required="true" />
@@ -106,11 +111,11 @@
             </intent-filter>
             <intent-filter>
                 <action
-                        android:name="xbox_live_game_invite" />
+                    android:name="xbox_live_game_invite" />
                 <action
-                        android:name="xbox_live_achievement_unlock" />
+                    android:name="xbox_live_achievement_unlock" />
                 <category
-                        android:name="android.intent.category.DEFAULT" />
+                    android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -128,43 +133,43 @@
                 android:value="preloader" />
         </activity>
         <activity
-                android:name="com.microsoft.xal.browser.IntentHandler"
-                android:exported="true"
-                android:launchMode="singleTask"
-                android:configChanges="keyboardHidden|orientation|screenSize|uiMode"
-                android:alwaysRetainTaskState="true">
+            android:name="com.microsoft.xal.browser.IntentHandler"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:configChanges="keyboardHidden|orientation|screenSize|uiMode"
+            android:alwaysRetainTaskState="true">
             <intent-filter>
                 <action
-                        android:name="android.intent.action.VIEW" />
+                    android:name="android.intent.action.VIEW" />
                 <data
-                        android:scheme="ms-xal-0000000048183522"
-                        android:host="auth" />
+                    android:scheme="ms-xal-0000000048183522"
+                    android:host="auth" />
                 <category
-                        android:name="android.intent.category.DEFAULT" />
+                    android:name="android.intent.category.DEFAULT" />
                 <category
-                        android:name="android.intent.category.BROWSABLE" />
+                    android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
         <activity
-                android:name="com.microsoft.xal.browser.BrowserLaunchActivity"
-                android:exported="false"
-                android:launchMode="singleTask"
-                android:configChanges="keyboardHidden|orientation|screenSize|uiMode"
-                android:alwaysRetainTaskState="true" />
+            android:name="com.microsoft.xal.browser.BrowserLaunchActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:configChanges="keyboardHidden|orientation|screenSize|uiMode"
+            android:alwaysRetainTaskState="true" />
         <activity
-                android:name="com.microsoft.xal.browser.WebKitWebViewController"
-                android:exported="false"
-                android:launchMode="singleTask"
-                android:configChanges="keyboardHidden|orientation|screenSize|uiMode"
-                android:alwaysRetainTaskState="true" />
+            android:name="com.microsoft.xal.browser.WebKitWebViewController"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:configChanges="keyboardHidden|orientation|screenSize|uiMode"
+            android:alwaysRetainTaskState="true" />
         <provider
-                android:name="androidx.core.content.FileProvider"
-                android:exported="false"
-                android:authorities="org.levimc.launcher.fileprovider"
-                android:grantUriPermissions="true">
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:authorities="org.levimc.launcher.fileprovider"
+            android:grantUriPermissions="true">
             <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/file_provider_paths"/>
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths"/>
         </provider>
     </application>
 
