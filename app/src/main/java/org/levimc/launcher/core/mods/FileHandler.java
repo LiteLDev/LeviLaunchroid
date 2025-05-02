@@ -38,8 +38,16 @@ public class FileHandler {
     public FileHandler(Context context, MainViewModel modManager, VersionManager version) {
         this.context = context;
         this.modManager = modManager;
-        this.targetPath = version.getSelectedVersion().modsDir.getAbsolutePath();
-        Logger.get().info( "ModsDir: " + targetPath);
+
+        // Handle case when no version is selected
+        GameVersion currentVersion = version.getSelectedVersion();
+        if (currentVersion != null && currentVersion.modsDir != null) {
+            this.targetPath = currentVersion.modsDir.getAbsolutePath();
+        } else {
+            // Default mods directory if no version selected
+            File defaultModsDir = new File(Environment.getExternalStorageDirectory(), "games/org.levimc/mods");
+            this.targetPath = defaultModsDir.getAbsolutePath();
+        }
     }
 
     public FileHandler setCustomTargetPath(String path) {

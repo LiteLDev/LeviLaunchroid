@@ -70,6 +70,7 @@ public class MainActivity extends BaseActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         languageManager = new LanguageManager(this);
         languageManager.applySavedLanguage();
@@ -78,12 +79,14 @@ public class MainActivity extends BaseActivity  {
         //themeManager.applyTheme();
 
         versionManager = VersionManager.get(this);
-        currentVersion = versionManager.getSelectedVersion();
+        versionManager.loadAllVersions(); // Ensure versions are loaded
+        currentVersion = versionManager.getSelectedVersion(); // May be null
 
-        super.onCreate(savedInstanceState);
+        // Initialize UI and other components that don't depend on currentVersion
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Set up view model
         viewModel = new ViewModelProvider(
                 this,
                 new MainViewModelFactory(getApplication())
@@ -98,7 +101,7 @@ public class MainActivity extends BaseActivity  {
         AnimationHelper.prepareInitialStates(binding);
         AnimationHelper.runInitializationSequence(binding);
 
-       // binding.themeSwitch.setChecked(themeManager.isDarkMode());
+        // binding.themeSwitch.setChecked(themeManager.isDarkMode());
 
         permissionsHandler = PermissionsHandler.getInstance();
         permissionsHandler.setActivity(this);
@@ -119,9 +122,15 @@ public class MainActivity extends BaseActivity  {
             }
         });
 
-        fileHandler = new FileHandler(this, viewModel, versionManager);
+        fileHandler = new FileHandler(this, viewModel, versionManager); // handles null version
 
+        // Update UI with version info
         setTextMinecraftVersion();
+
+        // Only set current version in view model if we have one
+        if (currentVersion != null) {
+            viewModel.setCurrentVersion(currentVersion);
+        }
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         ResourcepackHandler resourcepackHandler = new ResourcepackHandler(
@@ -133,7 +142,6 @@ public class MainActivity extends BaseActivity  {
         );
         resourcepackHandler.checkIntentForResourcepack();
         handleIncomingFiles();
-        viewModel.setCurrentVersion(currentVersion);
         initSettings();
     }
 
@@ -142,7 +150,7 @@ public class MainActivity extends BaseActivity  {
             LogOverlay.getInstance(this).show();
         }
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -182,7 +190,7 @@ public class MainActivity extends BaseActivity  {
         });
 
         binding.languageButton.setOnClickListener(v -> languageManager.showLanguageMenu(v));
-        
+
         binding.selectVersionButton.setOnClickListener(v -> {
             versionManager.loadAllVersions();
 
@@ -227,14 +235,11 @@ public class MainActivity extends BaseActivity  {
     }
 
     private void setTextMinecraftVersion() {
-        GameVersion ver = currentVersion;
-        if (ver == null) {
-            binding.textMinecraftVersion.setText(
-                    getString(R.string.not_found_version)
-            );
-            return;
+        if (currentVersion != null) {
+            binding.textMinecraftVersion.setText(currentVersion.displayName);
+        } else {
+            binding.textMinecraftVersion.setText(getString(R.string.not_found_version));
         }
-        binding.textMinecraftVersion.setText(ver.displayName);
     }
 
     private void handleIncomingFiles() {

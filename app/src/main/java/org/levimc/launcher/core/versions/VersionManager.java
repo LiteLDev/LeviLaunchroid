@@ -118,10 +118,19 @@ public class VersionManager {
     public List<GameVersion> getCustomVersions() { return customVersions; }
 
     public GameVersion getSelectedVersion() {
-        if(selectedVersion != null) return selectedVersion;
-        if(!installedVersions.isEmpty()) return installedVersions.get(0);
-        if(!customVersions.isEmpty()) return customVersions.get(0);
-        return null;
+        if (selectedVersion != null) return selectedVersion;
+
+        // Try to find a valid version
+        if (!installedVersions.isEmpty()) {
+            selectVersion(installedVersions.get(0));
+            return installedVersions.get(0);
+        }
+        if (!customVersions.isEmpty()) {
+            selectVersion(customVersions.get(0));
+            return customVersions.get(0);
+        }
+
+        return null; // No versions available
     }
 
     public void selectVersion(GameVersion version) {
