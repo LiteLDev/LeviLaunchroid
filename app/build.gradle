@@ -59,6 +59,7 @@ android {
 }
 
 dependencies {
+
     implementation libs.core.splashscreen
     implementation libs.apk.parser
     implementation libs.appcompat

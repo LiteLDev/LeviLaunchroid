@@ -1,3 +1,0 @@
-[submodule "app/src/main/cpp/preloader"]
-	path = app/src/main/cpp/preloader
-	url = https://github.com/LiteLDev/preloader-android

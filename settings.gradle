@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "levilauncher"
 include ':app'
+include ':preloader'
