@@ -49,17 +49,12 @@ android {
             logLevel "verbose"
             buildMode "release"
         }
-        xmake{
-            path "src/main/cpp/preloader/xmake.lua"
-            logLevel "verbose"
-            buildMode "release"
-        }
     }
     ndkVersion "27.0.12077973"
 }
 
 dependencies {
-
+    implementation project(':preloader')
     implementation libs.core.splashscreen
     implementation libs.apk.parser
     implementation libs.appcompat
