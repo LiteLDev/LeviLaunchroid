@@ -56,6 +56,7 @@
     <string name="storage_permission_not_granted">未授予存储权限</string>
 
     <string name="import_apk">导入APK</string>
+    <string name="install">安装</string>
     <string name="install_done">安装完成，版本：%1$s</string>
 
     <string name="illegal_apk_title">非法APK</string>
