@@ -53,6 +53,7 @@
     <string name="storage_permission_not_granted">Разрешение на доступ к хранилищу не выдано</string>
 
     <string name="import_apk">Импортировать APK</string>
+    <string name="save">Сохранить</string>
     <string name="install_done">Установка завершена, версия: %1$s</string>
 
     <string name="illegal_apk_title">Нелегальный APK</string>
