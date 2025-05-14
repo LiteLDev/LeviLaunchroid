@@ -53,6 +53,7 @@
     <string name="storage_permission_not_granted">Storage permission not granted</string>
 
     <string name="import_apk">Import APK</string>
+    <string name="install">Install</string>
     <string name="install_done">Install finished, version: %1$s</string>
 
     <string name="illegal_apk_title">Illegal APK</string>
