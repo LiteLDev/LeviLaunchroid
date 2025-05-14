@@ -31,7 +31,7 @@
         android:id="@+id/text_version_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="不符合命名规则或已存在！"
+        android:text="@string/name_invalid"
         android:textColor="#F44336"
         android:textSize="12sp"
         android:visibility="gone"
