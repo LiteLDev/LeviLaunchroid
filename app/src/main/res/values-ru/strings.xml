@@ -54,6 +54,7 @@
 
     <string name="import_apk">Импортировать APK</string>
     <string name="install">Установить</string>
+    <string name="version_name">Название версии</string>
     <string name="install_done">Установка завершена, версия: %1$s</string>
 
     <string name="illegal_apk_title">Нелегальный APK</string>
