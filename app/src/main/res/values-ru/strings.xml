@@ -38,8 +38,8 @@
     <string name="cancel">Отмена</string>
 
     <!-- Обратная связь -->
-    <string name="files_processed">Successfully processed %d mod files</string>
-    <string name="files_processing_error">File processing failed: %s</string>
+    <string name="files_processed">Успешно добавлены файлы мода %d </string>
+    <string name="files_processing_error">Не удалось добавить файл: %s</string>
     <string name="user_cancelled">Импорт отменён пользователем</string>
 
     <string name="error">Ошибка</string>
