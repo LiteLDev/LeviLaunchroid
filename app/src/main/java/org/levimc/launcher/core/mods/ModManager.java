@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-
 public class ModManager {
     private static ModManager instance;
     private File modsDir;
@@ -140,7 +139,7 @@ public class ModManager {
 
     private synchronized void initFileObserver() {
         if (modsDir == null) return;
-        modDirObserver = new FileObserver(modsDir, FileObserver.CREATE | FileObserver.DELETE | FileObserver.MOVED_FROM | FileObserver.MOVED_TO) {
+        modDirObserver = new FileObserver(modsDir.getAbsolutePath(), FileObserver.CREATE | FileObserver.DELETE | FileObserver.MOVED_FROM | FileObserver.MOVED_TO) {
             @Override
             public void onEvent(int event, String path) {
                 postModChanged();
