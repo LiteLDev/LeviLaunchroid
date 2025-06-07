@@ -52,14 +52,10 @@ public class MinecraftLauncher {
         fakeInfo.sourceDir = apkFile.getAbsolutePath();
         fakeInfo.publicSourceDir = fakeInfo.sourceDir;
         String systemAbi = abiToSystemLibDir(Build.SUPPORTED_ABIS[0]);
-
         File dstLibDir = new File(context.getDataDir(), "minecraft/" + version.directoryName + "/lib/" + systemAbi);
-
         fakeInfo.nativeLibraryDir = dstLibDir.getAbsolutePath();
-
         fakeInfo.packageName = packageName;
         fakeInfo.dataDir = version.versionDir.getAbsolutePath();
-
         File splitsFolder = new File(version.versionDir, "splits");
         if (splitsFolder.exists() && splitsFolder.isDirectory()) {
             File[] splits = splitsFolder.listFiles();
@@ -89,7 +85,6 @@ public class MinecraftLauncher {
                 ((Activity) context).runOnUiThread(() -> VersionManager.attemptRepairLibs(((Activity) context), version));
                 return;
             }
-
             ((Activity) context).runOnUiThread(this::showLoading);
             if (version == null) return;
             ApplicationInfo mcInfo = version.isInstalled ?
@@ -189,7 +184,6 @@ public class MinecraftLauncher {
             }
 
             List<File> libDirs = new ArrayList<>(currentDirs);
-
             Iterator<File> it = libDirs.iterator();
             while (it.hasNext()) {
                 File libDir = it.next();
@@ -233,7 +227,6 @@ public class MinecraftLauncher {
             }
             nativeLibraryPathElementsField.set(pathList, elements);
 
-
         } catch (NoSuchFieldException | NoSuchMethodException e) {
             throw new ReflectiveOperationException("Unable to inject native libraries", e);
         }
@@ -246,18 +239,6 @@ public class MinecraftLauncher {
     private void launchMinecraftActivity(ApplicationInfo mcInfo, Intent sourceIntent) {
         new Thread(() -> {
             try {
-
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-                    sourceIntent.putExtra("DISABLE_SPLASH_SCREEN", true);
-                }
-
-                Class<?> launcherClass = classLoader.loadClass("com.mojang.minecraftpe.Launcher");
-                sourceIntent.setClass(context, launcherClass);
-                sourceIntent.putExtra("MC_SRC", mcInfo.sourceDir);
-                if (mcInfo.splitSourceDirs != null) {
-                    sourceIntent.putExtra("MC_SPLIT_SRC", new ArrayList<>(Arrays.asList(mcInfo.splitSourceDirs)));
-                }
-
                 try {
                     System.loadLibrary("c++_shared");
                     System.loadLibrary("fmod");
@@ -265,6 +246,18 @@ public class MinecraftLauncher {
                 } catch (UnsatisfiedLinkError e) {
                     Logger.get().error("Error loading native libraries: " + e.getMessage());
                     throw e;
+                }
+
+                Class<?> launcherClass = Context.class.getClassLoader().loadClass("com.mojang.minecraftpe.Launcher");
+                sourceIntent.setClassName(context.getPackageName(), "com.mojang.minecraftpe.Launcher");
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                    sourceIntent.putExtra("DISABLE_SPLASH_SCREEN", true);
+                }
+
+                sourceIntent.putExtra("MC_SRC", mcInfo.sourceDir);
+                if (mcInfo.splitSourceDirs != null) {
+                    sourceIntent.putExtra("MC_SPLIT_SRC", new ArrayList<>(Arrays.asList(mcInfo.splitSourceDirs)));
                 }
 
                 try {
@@ -278,7 +271,6 @@ public class MinecraftLauncher {
                 if (context instanceof Activity) {
                     Activity activity = (Activity) context;
                     activity.runOnUiThread(() -> {
-                        // hideLoading();
                         activity.finish();
                         context.startActivity(sourceIntent);
                     });
