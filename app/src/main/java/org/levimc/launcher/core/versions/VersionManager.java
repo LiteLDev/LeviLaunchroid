@@ -102,8 +102,27 @@ public class VersionManager {
         }
     }
 
-    private String inferAbiFromNativeLibDir(String nativeLibDir) {
-        if (nativeLibDir == null) return "null";
+    private String inferAbiFromNativeLibDir(String nativeLibDir, GameVersion version) {
+        if (version != null && version.isExtractFalse) {
+            File libDir = new File(context.getDataDir(), "minecraft/" + version.directoryName + "/lib/");
+            String[] abiDirs = {"arm64", "arm", "x86_64", "x86"};
+            for (String abiDir : abiDirs) {
+                File soFile = new File(libDir, abiDir + "/libminecraftpe.so");
+                if (soFile.exists()) {
+                    switch (abiDir) {
+                        case "arm64":
+                            return "arm64-v8a";
+                        case "arm":
+                            return "armeabi-v7a";
+                        default:
+                            return abiDir;
+                    }
+                }
+            }
+            return "unknown";
+        }
+
+        if (nativeLibDir == null) return "unknown";
         if (nativeLibDir.contains("arm64")) return "arm64-v8a";
         if (nativeLibDir.contains("armeabi")) return "armeabi-v7a";
         if (nativeLibDir.contains("x86_64")) return "x86_64";
@@ -224,9 +243,7 @@ public class VersionManager {
             File versionDir = getVersionDirForPackage(pi.packageName);
             if (!versionDir.exists()) versionDir.mkdirs();
 
-            String abiList = inferAbiFromNativeLibDir(pi.applicationInfo.nativeLibraryDir);
             String displayName = pi.applicationInfo.loadLabel(pm) + " (" + pi.versionName + ")";
-
             boolean hasSoFiles = hasSoFilesInDir(new File(pi.applicationInfo.nativeLibraryDir));
 
             GameVersion gv = new GameVersion(
@@ -236,7 +253,7 @@ public class VersionManager {
                     versionDir,
                     true,
                     pi.packageName,
-                    abiList
+                    "unknown"
             );
 
             gv.needsRepair = false;
@@ -247,6 +264,8 @@ public class VersionManager {
                     gv.needsRepair = true;
                 }
             }
+
+            gv.abiList = inferAbiFromNativeLibDir(pi.applicationInfo.nativeLibraryDir, gv);
             installedVersions.add(gv);
         }
 
@@ -327,31 +346,23 @@ public class VersionManager {
                 displayName = dir.getName() + " (" + versionCode + ")";
             }
         }
-        String abiList = getAbiList(dir);
-        return new GameVersion(
+
+        GameVersion gv = new GameVersion(
                 dir.getName(),
                 displayName,
                 versionCode,
                 dir,
                 false,
                 null,
-                abiList
+                "unknown"
         );
-    }
 
-    @NonNull
-    private String getAbiList(File dir) {
-        File dstLibDir = new File(context.getDataDir(), "minecraft/" + dir.getName() + "/lib/");
-        String[] abiNames = new String[] {"arm64", "armeabi", "x86", "x86_64"};
-        String abiList = "unknown";
-        for (String abi : abiNames) {
-            File soFile = new File(dstLibDir, abi + "/libminecraftpe.so");
-            if (soFile.exists()) {
-                abiList  = inferAbiFromNativeLibDir(abi);
-                break;
-            }
-        }
-        return abiList;
+        gv.isExtractFalse = true;
+        gv.directoryName = dir.getName();
+
+        gv.abiList = inferAbiFromNativeLibDir(null, gv);
+
+        return gv;
     }
 
     private void restoreSelectedVersion() {
