@@ -41,6 +41,7 @@ jobject GetGlobalContext(JNIEnv *env) {
 
 namespace gui {
 JNIEnv *env;
+static JavaVM *g_jvm = nullptr;
 
 static ImGuiWindow *g_imguiWin = nullptr;
 int g_ScreenWidth = 0;
@@ -144,10 +145,19 @@ void LogWindow::draw() {
 
   ImGui::SetNextWindowSize(ImVec2(1200, 600), ImGuiCond_FirstUseEver);
 
+  bool wasOpen = impl_->open;
   if (!ImGui::Begin(impl_->title.c_str(), &impl_->open)) {
     ImGui::End();
+    if (wasOpen && !impl_->open) {
+      notifyWindowClosed();
+    }
     return;
   }
+  
+  if (wasOpen && !impl_->open) {
+    notifyWindowClosed();
+  }
+  
   g_imguiWin = ImGui::GetCurrentWindow();
   impl_->renderContent();
   ImGui::End();
@@ -175,6 +185,8 @@ void SetupRender() {
 }
 
 void Init() { logWindowPtr = std::make_unique<LogWindow>("Log"); }
+
+void setJavaVM(JavaVM *jvm) { g_jvm = jvm; }
 
 void Render() {
   if (!logWindowPtr) {
@@ -207,5 +219,32 @@ LogWindow *GetLogWindow() {
 }
 
 ImGuiWindow *GetImguiWindow() { return g_imguiWin; }
+
+void notifyWindowClosed() {
+  if (g_jvm) {
+    JNIEnv *currentEnv = nullptr;
+    if (g_jvm->GetEnv(reinterpret_cast<void **>(&currentEnv), JNI_VERSION_1_6) == JNI_OK && currentEnv) {
+      jclass logOverlayClass = currentEnv->FindClass("org/levimc/launcher/service/LogOverlay");
+      if (logOverlayClass) {
+        jmethodID getInstanceMethod = currentEnv->GetStaticMethodID(logOverlayClass, "getInstance", "(Landroid/content/Context;)Lorg/levimc/launcher/service/LogOverlay;");
+        if (getInstanceMethod) {
+          jobject context = GetGlobalContext(currentEnv);
+          if (context) {
+            jobject logOverlayInstance = currentEnv->CallStaticObjectMethod(logOverlayClass, getInstanceMethod, context);
+            if (logOverlayInstance) {
+              jmethodID hideMethod = currentEnv->GetMethodID(logOverlayClass, "hide", "()V");
+              if (hideMethod) {
+                currentEnv->CallVoidMethod(logOverlayInstance, hideMethod);
+              }
+            }
+          }
+        }
+      }
+      if (currentEnv->ExceptionCheck()) {
+        currentEnv->ExceptionClear();
+      }
+    }
+  }
+}
 
 } // namespace gui

@@ -10,6 +10,8 @@ extern int g_ScreenHeight;
 extern bool g_Initialized;
 extern JNIEnv *env;
 
+void setJavaVM(JavaVM *jvm);
+
 class LogWindow {
 public:
   explicit LogWindow(std::string_view title);
@@ -30,6 +32,7 @@ void SetupRender();
 void Render();
 void Resize(int width, int height);
 void Init();
+void notifyWindowClosed();
 
 LogWindow *GetLogWindow();
 
