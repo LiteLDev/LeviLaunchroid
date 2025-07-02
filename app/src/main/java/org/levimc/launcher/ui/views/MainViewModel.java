@@ -45,7 +45,6 @@ public class MainViewModel extends ViewModel {
     }
 
     public void setModEnabled(String fileName, boolean enabled) {
-        modManager.setModEnabled(fileName, enabled);
-        refreshMods();
+        new Thread(() -> modManager.setModEnabled(fileName, enabled)).start();
     }
 }

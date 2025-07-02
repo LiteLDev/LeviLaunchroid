@@ -107,7 +107,6 @@ public class ModManager {
         if (!fileName.endsWith(".so")) fileName += ".so";
         configMap.put(fileName, enabled);
         saveConfig();
-        postModChanged();
     }
 
     private void loadConfig() {

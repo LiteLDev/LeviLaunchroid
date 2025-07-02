@@ -52,8 +52,15 @@ public class ModsAdapter extends RecyclerView.Adapter<ModsAdapter.ModViewHolder>
     public void onBindViewHolder(@NonNull ModViewHolder holder, int position) {
         Mod mod = mods.get(position);
         holder.name.setText(mod.getDisplayName());
+        
+        holder.switchBtn.setOnCheckedChangeListener(null);
         holder.switchBtn.setChecked(mod.isEnabled());
+        
         holder.switchBtn.setOnCheckedChangeListener((btn, isChecked) -> {
+            if (isChecked == mod.isEnabled()) return;
+            
+            mod.setEnabled(isChecked);
+            
             if (onModEnableChangeListener != null) {
                 onModEnableChangeListener.onEnableChanged(mod, isChecked);
             }
@@ -76,7 +83,7 @@ public class ModsAdapter extends RecyclerView.Adapter<ModsAdapter.ModViewHolder>
 
     public void updateMods(List<Mod> list) {
         this.mods = list;
-        notifyDataSetChanged();
+        notifyItemRangeChanged(0, getItemCount());
     }
 
     static class ModViewHolder extends RecyclerView.ViewHolder {
