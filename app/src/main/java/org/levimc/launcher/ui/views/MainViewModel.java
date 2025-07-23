@@ -47,4 +47,11 @@ public class MainViewModel extends ViewModel {
     public void setModEnabled(String fileName, boolean enabled) {
         new Thread(() -> modManager.setModEnabled(fileName, enabled)).start();
     }
+
+    public void reorderMods(List<Mod> reorderedMods) {
+        new Thread(() -> {
+            modManager.reorderMods(reorderedMods);
+            refreshMods();
+        }).start();
+    }
 }

@@ -168,10 +168,23 @@ public class MainActivity extends BaseActivity {
         modsAdapter.setOnModEnableChangeListener((mod, enabled) -> {
             if (viewModel != null) viewModel.setModEnabled(mod.getFileName(), enabled);
         });
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+        modsAdapter.setOnModReorderListener(reorderedMods -> {
+            if (viewModel != null) {
+                viewModel.reorderMods(reorderedMods);
+                runOnUiThread(() ->
+                    Toast.makeText(this, R.string.mod_reordered, Toast.LENGTH_SHORT).show()
+                );
+            }
+        });
+
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
+                int fromPosition = viewHolder.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
+                modsAdapter.moveItem(fromPosition, toPosition);
+                return true;
             }
 
             @Override

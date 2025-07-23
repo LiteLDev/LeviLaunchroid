@@ -8,6 +8,9 @@
     <!-- Mods -->
     <string name="mods_title">🧩 Mods (%d)</string>
     <string name="no_mods_found">No Mods Found</string>
+    <string name="mod_load_order">Load order: %d</string>
+    <string name="drag_to_reorder">Drag to reorder</string>
+    <string name="mod_reordered">Mod order updated</string>
 
     <!-- About -->
     <string name="about_title">☕ About</string>

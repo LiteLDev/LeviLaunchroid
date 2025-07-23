@@ -1,18 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/mod_name"
+    <ImageView
+        android:id="@+id/drag_handle"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_drag_handle"
+        android:contentDescription="@string/drag_to_reorder"
+        android:alpha="0.6"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="4dp"/>
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Mod Name"
-        android:textSize="16sp"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mod_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mod Name"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/mod_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Load order: 1"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:visibility="gone"/>
+    </LinearLayout>
 
     <Switch
         android:id="@+id/mod_switch"

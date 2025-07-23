@@ -12,16 +12,22 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 
 public class ModManager {
     private static ModManager instance;
     private File modsDir;
     private File configFile;
-    private Map<String, Boolean> configMap = new HashMap<>();
+    private Map<String, Boolean> enabledMap = new LinkedHashMap<>();
+    private List<String> modOrder = new ArrayList<>();
     private FileObserver modDirObserver;
     private GameVersion currentVersion;
     private final MutableLiveData<Void> modsChangedLiveData = new MutableLiveData<>();
@@ -61,7 +67,8 @@ public class ModManager {
         } else {
             modsDir = null;
             configFile = null;
-            configMap = new HashMap<>();
+            enabledMap = new LinkedHashMap<>();
+            modOrder = new ArrayList<>();
         }
         postModChanged();
     }
@@ -75,55 +82,99 @@ public class ModManager {
         File[] files = modsDir.listFiles((dir, name) -> name.endsWith(".so"));
         List<Mod> mods = new ArrayList<>();
         boolean changed = false;
+
         if (files != null) {
             for (File file : files) {
                 String fileName = file.getName();
-                if (!configMap.containsKey(fileName)) {
-                    configMap.put(fileName, true);
+                if (!enabledMap.containsKey(fileName)) {
+                    enabledMap.put(fileName, true);
+                    modOrder.add(fileName);
                     changed = true;
                 }
-                boolean enabled = Boolean.TRUE.equals(configMap.getOrDefault(fileName, true));
-                mods.add(new Mod(fileName, enabled));
             }
         }
+
         List<String> toRemove = new ArrayList<>();
-        for (String key : configMap.keySet()) {
+        for (String key : enabledMap.keySet()) {
             boolean found = false;
-            if (files != null) for (File file : files) {
-                if (file.getName().equals(key)) {
-                    found = true;
-                    break;
+            if (files != null) {
+                for (File file : files) {
+                    if (file.getName().equals(key)) {
+                        found = true;
+                        break;
+                    }
                 }
             }
             if (!found) toRemove.add(key);
         }
-        for (String rm : toRemove) configMap.remove(rm);
-        if (changed || !toRemove.isEmpty()) saveConfig();
+        for (String rm : toRemove) {
+            enabledMap.remove(rm);
+            modOrder.remove(rm);
+            changed = true;
+        }
+
+        for (int i = 0; i < modOrder.size(); i++) {
+            String fileName = modOrder.get(i);
+            boolean enabled = Boolean.TRUE.equals(enabledMap.get(fileName));
+            mods.add(new Mod(fileName, enabled, i));
+        }
+
+        if (changed) saveConfig();
         return mods;
     }
 
     public synchronized void setModEnabled(String fileName, boolean enabled) {
         if (currentVersion == null || modsDir == null) return;
         if (!fileName.endsWith(".so")) fileName += ".so";
-        configMap.put(fileName, enabled);
-        saveConfig();
+        if (enabledMap.containsKey(fileName)) {
+            enabledMap.put(fileName, enabled);
+            saveConfig();
+        }
     }
 
     private void loadConfig() {
-        configMap = new HashMap<>();
+        enabledMap = new LinkedHashMap<>();
+        modOrder = new ArrayList<>();
         if (!configFile.exists()) {
             File[] files = modsDir.listFiles((dir, name) -> name.endsWith(".so"));
             if (files != null) {
                 for (File file : files) {
-                    configMap.put(file.getName(), true);
+                    String fileName = file.getName();
+                    enabledMap.put(fileName, true);
+                    modOrder.add(fileName);
                 }
             }
             saveConfig();
             return;
         }
+
         try (FileReader reader = new FileReader(configFile)) {
-            Map<String, Boolean> map = gson.fromJson(reader, Map.class);
-            if (map != null) configMap.putAll(map);
+            Type listType = new TypeToken<List<Map<String, Object>>>(){}.getType();
+            List<Map<String, Object>> configList = gson.fromJson(reader, listType);
+            if (configList != null) {
+                for (Map<String, Object> item : configList) {
+                    String name = (String) item.get("name");
+                    Boolean enabled = (Boolean) item.get("enabled");
+                    if (name != null && enabled != null) {
+                        enabledMap.put(name, enabled);
+                        modOrder.add(name);
+                    }
+                }
+                return;
+            }
+        } catch (Exception e) {
+        }
+
+        try (FileReader reader = new FileReader(configFile)) {
+            Type mapType = new TypeToken<Map<String, Boolean>>(){}.getType();
+            Map<String, Boolean> oldMap = gson.fromJson(reader, mapType);
+            if (oldMap != null) {
+                for (Map.Entry<String, Boolean> entry : oldMap.entrySet()) {
+                    enabledMap.put(entry.getKey(), entry.getValue());
+                    modOrder.add(entry.getKey());
+                }
+                saveConfig();
+            }
         } catch (Exception ignored) {
         }
     }
@@ -131,7 +182,16 @@ public class ModManager {
     private void saveConfig() {
         if (configFile == null) return;
         try (FileWriter writer = new FileWriter(configFile)) {
-            gson.toJson(configMap, writer);
+            List<Map<String, Object>> configList = new ArrayList<>();
+            for (int i = 0; i < modOrder.size(); i++) {
+                String fileName = modOrder.get(i);
+                Map<String, Object> item = new HashMap<>();
+                item.put("name", fileName);
+                item.put("enabled", enabledMap.get(fileName));
+                item.put("order", i);
+                configList.add(item);
+            }
+            gson.toJson(configList, writer);
         } catch (Exception ignored) {
         }
     }
@@ -162,7 +222,20 @@ public class ModManager {
         if (!fileName.endsWith(".so")) fileName += ".so";
         File modFile = new File(modsDir, fileName);
         if (modFile.exists()) modFile.delete();
-        configMap.remove(fileName);
+        enabledMap.remove(fileName);
+        modOrder.remove(fileName);
+        saveConfig();
+        postModChanged();
+    }
+
+    public synchronized void reorderMods(List<Mod> reorderedMods) {
+        if (currentVersion == null || modsDir == null) return;
+
+        modOrder.clear();
+        for (Mod mod : reorderedMods) {
+            modOrder.add(mod.getFileName());
+        }
+
         saveConfig();
         postModChanged();
     }
@@ -173,5 +246,9 @@ public class ModManager {
 
     public MutableLiveData<Void> getModsChangedLiveData() {
         return modsChangedLiveData;
+    }
+
+    public synchronized void refreshMods() {
+        postModChanged();
     }
 }
