@@ -8,6 +8,9 @@
     <!-- Моды -->
     <string name="mods_title">🧩 Моды (%d)</string>
     <string name="no_mods_found">Моды не найдены</string>
+    <string name="mod_load_order">Порядок загрузки: %d</string>
+    <string name="drag_to_reorder">Перетащите для изменения порядка</string>
+    <string name="mod_reordered">Порядок модов обновлён</string>
 
     <!-- О приложении -->
     <string name="about_title">☕ О приложении</string>

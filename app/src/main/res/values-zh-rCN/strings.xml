@@ -8,7 +8,10 @@
     <!-- Mods -->
     <string name="mods_title">🧩 模组 (%d)</string>
     <string name="no_mods_found">未找到模组</string>
-
+    <string name="mod_load_order">加载顺序：%d</string>
+    <string name="drag_to_reorder">拖动以重新排序</string>
+    <string name="mod_reordered">模组顺序已更新</string>
+    
     <!-- About -->
     <string name="about_title">☕ 关于</string>
     <string name="copyright">©2024–2025 LeviMC. 保留所有权利</string>
