@@ -138,4 +138,15 @@
     <string name="english">English</string>
     <string name="chinese">简体中文</string>
     <string name="russian">Русский</string>
+
+    <!-- Переименовать версию -->
+    <string name="rename_version">Переименовать версию</string>
+    <string name="rename_version_title">Переименовать версию</string>
+    <string name="rename_version_message">Введите новое имя для этой версии:</string>
+    <string name="new_version_name">Новое имя версии</string>
+    <string name="rename">Переименовать</string>
+    <string name="rename_success">Версия успешно переименована</string>
+    <string name="rename_failed">Не удалось переименовать: %1$s</string>
+    <string name="cannot_rename_installed">Невозможно переименовать установленные версии</string>
+
 </resources>

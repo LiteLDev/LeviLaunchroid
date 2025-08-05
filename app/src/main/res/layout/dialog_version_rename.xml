@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_rounded_card"
+    android:orientation="vertical"
+    android:minWidth="360dp"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rename_version_title"
+        android:textColor="#4CAF50"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/rename_version_message"
+        android:textColor="#666666"
+        android:textSize="14sp"/>
+
+    <EditText
+        android:id="@+id/edit_version_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:padding="10dp"
+        android:textColor="#4CAF50"
+        android:textSize="16sp"
+        android:singleLine="true"
+        android:inputType="text"
+        android:hint="@string/new_version_name" />
+
+    <TextView
+        android:id="@+id/text_version_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/name_invalid"
+        android:textColor="#F44336"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:layout_marginTop="4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textColor="#666666"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_marginEnd="12dp"
+            android:minWidth="80dp"/>
+
+        <Button
+            android:id="@+id/button_rename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rename"
+            android:textColor="#4CAF50"
+            android:background="?android:attr/selectableItemBackground"
+            android:textStyle="bold"
+            android:minWidth="80dp"/>
+
+    </LinearLayout>
+</LinearLayout>

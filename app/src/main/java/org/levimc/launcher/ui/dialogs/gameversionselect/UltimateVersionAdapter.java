@@ -29,8 +29,18 @@ public class UltimateVersionAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         void onVersionSelected(GameVersion version);
     }
 
+    public interface OnVersionLongClickListener {
+        void onVersionLongClicked(GameVersion version);
+    }
+
     public void setOnVersionSelectListener(OnVersionSelectListener l) {
         this.listener = l;
+    }
+
+    private OnVersionLongClickListener longClickListener;
+
+    public void setOnVersionLongClickListener(OnVersionLongClickListener l) {
+        this.longClickListener = l;
     }
 
     public UltimateVersionAdapter(Context context, List<BigGroup> bigGroups) {
@@ -78,7 +88,7 @@ public class UltimateVersionAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((VerGroupVH) holder).title.setText((String) item);
         } else {
             GameVersion gv = (GameVersion) item;
-            ((ItemVH) holder).bind(gv, listener);
+            ((ItemVH) holder).bind(gv, listener, longClickListener);
         }
     }
 
@@ -115,13 +125,9 @@ public class UltimateVersionAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             parentLayout = v.findViewById(R.id.linear_parent);
         }
 
-        public void bind(GameVersion v, OnVersionSelectListener listener) {
+        public void bind(GameVersion v, OnVersionSelectListener listener, OnVersionLongClickListener longClickListener) {
             StringBuilder sb = new StringBuilder();
-            if (v.isInstalled) {
-                sb.append(v.displayName).append(" [").append(v.versionCode).append("]");
-            } else {
-                sb.append(v.directoryName).append(" [").append(v.versionCode).append("]");
-            }
+            sb.append(v.displayName);
             if (v.isInstalled && v.packageName != null) {
                 sb.append(" ").append(v.packageName);
             }
@@ -129,6 +135,15 @@ public class UltimateVersionAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             parentLayout.setOnClickListener(_v -> {
                 if (listener != null) listener.onVersionSelected(v);
             });
+
+            if (!v.isInstalled && longClickListener != null) {
+                parentLayout.setOnLongClickListener(_v -> {
+                    longClickListener.onVersionLongClicked(v);
+                    return true;
+                });
+            } else {
+                parentLayout.setOnLongClickListener(null);
+            }
         }
     }
 }

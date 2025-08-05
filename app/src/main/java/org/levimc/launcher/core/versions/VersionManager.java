@@ -61,6 +61,12 @@ public class VersionManager {
         void onDeleteFailed(Exception e);
     }
 
+    public interface OnRenameVersionCallback {
+        void onRenameCompleted(boolean success);
+
+        void onRenameFailed(Exception e);
+    }
+
     public static VersionManager get(Context ctx) {
         if (instance == null) instance = new VersionManager(ctx.getApplicationContext());
         return instance;
@@ -337,15 +343,26 @@ public class VersionManager {
     @NonNull
     private GameVersion getGameVersion(File dir) {
         String versionCode = dir.getName();
-        String displayName = dir.getName() + " (" + versionCode + ")";
+        String displayName = dir.getName();
+
+        // Read version code from version.txt
         File versionTxt = new File(context.getDataDir(), "minecraft/" + dir.getName() + "/version.txt");
         if (versionTxt.exists()) {
             String txt = readFileToString(versionTxt);
             if (!txt.isEmpty()) {
                 versionCode = txt;
-                displayName = dir.getName() + " (" + versionCode + ")";
             }
         }
+
+        File displayNameTxt = new File(context.getDataDir(), "minecraft/" + dir.getName() + "/display_name.txt");
+        if (displayNameTxt.exists()) {
+            String customName = readFileToString(displayNameTxt);
+            if (!customName.isEmpty()) {
+                displayName = customName;
+            }
+        }
+
+        displayName = displayName + " (" + versionCode + ")";
 
         GameVersion gv = new GameVersion(
                 dir.getName(),
@@ -495,6 +512,44 @@ public class VersionManager {
                 })
                 .setNegativeButton(activity.getString(R.string.cancel), null)
                 .show();
+    }
+
+    public void renameCustomVersion(GameVersion version, String newDisplayName, OnRenameVersionCallback callback) {
+        if (version == null || version.isInstalled) {
+            if (callback != null)
+                callback.onRenameFailed(new IllegalArgumentException(context.getString(R.string.cannot_rename_installed)));
+            return;
+        }
+
+        if (newDisplayName == null || newDisplayName.trim().isEmpty()) {
+            if (callback != null)
+                callback.onRenameFailed(new IllegalArgumentException("Display name cannot be empty"));
+            return;
+        }
+
+        new Thread(() -> {
+            try {
+                File dataDir = new File(context.getDataDir(), "minecraft/" + version.directoryName);
+                if (!dataDir.exists()) {
+                    dataDir.mkdirs();
+                }
+
+                File displayNameFile = new File(dataDir, "display_name.txt");
+                boolean success = writeStringToFile(displayNameFile, newDisplayName.trim());
+
+                if (success) {
+                    reload();
+                    if (callback != null)
+                        callback.onRenameCompleted(true);
+                } else {
+                    if (callback != null)
+                        callback.onRenameFailed(new Exception("Failed to write display name file"));
+                }
+            } catch (Exception e) {
+                if (callback != null)
+                    callback.onRenameFailed(e);
+            }
+        }).start();
     }
 
     public void deleteCustomVersion(GameVersion version, OnDeleteVersionCallback callback) {
