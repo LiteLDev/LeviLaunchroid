@@ -148,4 +148,52 @@
     <string name="rename_failed">重命名失败：%1$s</string>
     <string name="cannot_rename_installed">无法重命名已安装的版本</string>
 
+    <!-- Content Management -->
+    <string name="content_management">内容管理</string>
+    <string name="worlds_title">🌍 世界</string>
+    <string name="resource_packs_title">📦 资源包</string>
+    <string name="behavior_packs_title">⚙️ 行为包</string>
+    <string name="no_worlds_found">未找到世界</string>
+    <string name="no_resource_packs_found">未找到资源包</string>
+    <string name="no_behavior_packs_found">未找到行为包</string>
+
+    <!-- World Management -->
+    <string name="world_name">世界名称</string>
+    <string name="world_size">大小：%s</string>
+    <string name="world_last_played">上次游玩：%s</string>
+    <string name="import_world">导入世界</string>
+    <string name="export_world">导出世界</string>
+    <string name="rename_world">重命名世界</string>
+    <string name="delete_world">删除世界</string>
+    <string name="backup_world">备份世界</string>
+    <string name="world_exported">世界已成功导出</string>
+    <string name="world_import_success">世界已成功导入</string>
+    <string name="world_rename_success">世界已成功重命名</string>
+    <string name="world_delete_success">世界已成功删除</string>
+    <string name="world_backup_success">世界已成功备份</string>
+
+    <!-- Resource Pack Management -->
+    <string name="resource_pack_name">资源包名称</string>
+    <string name="resource_pack_version">版本：%s</string>
+    <string name="resource_pack_description">描述：%s</string>
+    <string name="import_resource_pack">导入资源包</string>
+    <string name="import_behavior_pack">导入行为包</string>
+    <string name="enable_resource_pack">启用</string>
+    <string name="disable_resource_pack">禁用</string>
+    <string name="delete_resource_pack">删除资源包</string>
+    <string name="resource_pack_enabled">资源包已启用</string>
+    <string name="resource_pack_disabled">资源包已禁用</string>
+    <string name="resource_pack_import_success">资源包已成功导入</string>
+    <string name="resource_pack_delete_success">资源包已成功删除</string>
+
+    <!-- Content Operations -->
+    <string name="operation_in_progress">操作正在进行中…</string>
+    <string name="operation_failed">操作失败：%s</string>
+    <string name="confirm_delete_world">您确定要删除这个世界吗？此操作无法撤销。</string>
+    <string name="confirm_delete_resource_pack">您确定要删除这个资源包吗？此操作无法撤销。</string>
+    <string name="backup_created">备份已创建：%s</string>
+    <string name="select_export_location">选择导出位置</string>
+    <string name="invalid_world_file">无效的世界文件</string>
+    <string name="invalid_resource_pack_file">无效的资源包文件</string>
+
 </resources>

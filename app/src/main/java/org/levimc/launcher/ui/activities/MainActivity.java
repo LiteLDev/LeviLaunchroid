@@ -318,6 +318,7 @@ public class MainActivity extends BaseActivity {
             if (languageManager != null) languageManager.showLanguageMenu(v);
         });
         binding.selectVersionButton.setOnClickListener(v -> showVersionSelectDialog());
+        binding.contentManagementButton.setOnClickListener(v -> openContentManagement());
         binding.importApkButton.setOnClickListener(v -> startFilePicker("application/vnd.android.package-archive", apkImportResultLauncher));
         binding.addModButton.setOnClickListener(v -> startFilePicker("*/*", soImportResultLauncher));
         binding.settingsButton.setOnClickListener(v -> showSettingsSafely());
@@ -377,6 +378,17 @@ public class MainActivity extends BaseActivity {
         } catch (PackageManager.NameNotFoundException e) {
             //Toast.makeText(this, R.string.error_load_setting, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void openContentManagement() {
+        GameVersion currentVersion = versionManager != null ? versionManager.getSelectedVersion() : null;
+        if (currentVersion == null) {
+            Toast.makeText(this, getString(R.string.not_found_version), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(this, ContentManagementActivity.class);
+        startActivity(intent);
     }
 
     private void openGithub() {

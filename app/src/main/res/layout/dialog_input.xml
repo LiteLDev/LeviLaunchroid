@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_rounded_card"
+    android:orientation="vertical"
+    android:minWidth="360dp"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/misans"
+        android:text="Title"
+        android:textColor="@color/on_surface"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/misans"
+        android:text="Message"
+        android:textColor="@color/on_surface"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/edit_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_item_rounded"
+        android:fontFamily="@font/misans"
+        android:hint="Enter text"
+        android:inputType="text"
+        android:padding="12dp"
+        android:singleLine="true"
+        android:textColor="@color/on_surface"
+        android:textColorHint="@color/on_surface"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_negative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:backgroundTint="@android:color/transparent"
+            android:fontFamily="@font/misans"
+            android:minWidth="80dp"
+            android:text="@string/cancel"
+            android:textColor="@color/on_surface"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_positive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/misans"
+            android:minWidth="80dp"
+            android:text="@string/confirm"
+            android:textColor="@color/on_primary"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

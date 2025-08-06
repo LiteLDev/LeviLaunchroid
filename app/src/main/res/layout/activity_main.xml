@@ -117,6 +117,20 @@
                     android:background="@drawable/bg_abi_default"/>
 
                 <Button
+                    android:id="@+id/content_management_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:backgroundTint="@color/primary"
+                    android:text="@string/content_management"
+                    android:textColor="@color/on_primary"
+                    android:paddingHorizontal="12dp"
+                    android:layout_marginStart="8dp"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical" />
+
+                <Button
                     android:id="@+id/import_apk_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -126,7 +140,7 @@
                     android:textColor="@color/on_primary"
                     android:paddingHorizontal="12dp"
                     android:layout_marginStart="8dp"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:gravity="center"
                     android:layout_gravity="center_vertical" />
 

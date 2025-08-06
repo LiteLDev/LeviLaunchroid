@@ -149,4 +149,52 @@
     <string name="rename_failed">Не удалось переименовать: %1$s</string>
     <string name="cannot_rename_installed">Невозможно переименовать установленные версии</string>
 
+    <!-- Content Management -->
+    <string name="content_management">Управление контентом</string>
+    <string name="worlds_title">🌍 Миры</string>
+    <string name="resource_packs_title">📦 Наборы ресурсов</string>
+    <string name="behavior_packs_title">⚙️ Наборы поведения</string>
+    <string name="no_worlds_found">Миры не найдены</string>
+    <string name="no_resource_packs_found">Наборы ресурсов не найдены</string>
+    <string name="no_behavior_packs_found">Наборы поведения не найдены</string>
+
+    <!-- World Management -->
+    <string name="world_name">Название мира</string>
+    <string name="world_size">Размер: %s</string>
+    <string name="world_last_played">Последняя игра: %s</string>
+    <string name="import_world">Импортировать мир</string>
+    <string name="export_world">Экспортировать мир</string>
+    <string name="rename_world">Переименовать мир</string>
+    <string name="delete_world">Удалить мир</string>
+    <string name="backup_world">Создать резервную копию мира</string>
+    <string name="world_exported">Мир успешно экспортирован</string>
+    <string name="world_import_success">Мир успешно импортирован</string>
+    <string name="world_rename_success">Мир успешно переименован</string>
+    <string name="world_delete_success">Мир успешно удален</string>
+    <string name="world_backup_success">Резервная копия мира успешно создана</string>
+
+    <!-- Resource Pack Management -->
+    <string name="resource_pack_name">Название набора ресурсов</string>
+    <string name="resource_pack_version">Версия: %s</string>
+    <string name="resource_pack_description">Описание: %s</string>
+    <string name="import_resource_pack">Импортировать набор ресурсов</string>
+    <string name="import_behavior_pack">Импортировать набор поведений</string>
+    <string name="enable_resource_pack">Включить</string>
+    <string name="disable_resource_pack">Отключить</string>
+    <string name="delete_resource_pack">Удалить набор ресурсов</string>
+    <string name="resource_pack_enabled">Набор ресурсов включен</string>
+    <string name="resource_pack_disabled">Набор ресурсов отключен</string>
+    <string name="resource_pack_import_success">Набор ресурсов успешно импортирован</string>
+    <string name="resource_pack_delete_success">Набор ресурсов успешно удален</string>
+
+    <!-- Content Operations -->
+    <string name="operation_in_progress">Выполняется операция…</string>
+    <string name="operation_failed">Ошибка операции: %s</string>
+    <string name="confirm_delete_world">Вы уверены, что хотите удалить этот мир? Это действие необратимо.</string>
+    <string name="confirm_delete_resource_pack">Вы уверены, что хотите удалить этот набор ресурсов? Это действие необратимо.</string>
+    <string name="backup_created">Резервная копия создана: %s</string>
+    <string name="select_export_location">Выберите место для экспорта</string>
+    <string name="invalid_world_file">Неверный файл мира</string>
+    <string name="invalid_resource_pack_file">Неверный файл набора ресурсов</string>
+
 </resources>
