@@ -1,6 +1,7 @@
 [versions]
 agp = "8.6.1"
 apkParser = "2.6.10"
+conscryptAndroid = "2.5.3"
 coreSplashscreen = "1.0.1"
 gson = "2.10.1"
 junit = "4.13.2"
@@ -16,6 +17,7 @@ shadowhook = "1.1.1"
 
 [libraries]
 apk-parser = { module = "net.dongliu:apk-parser", version.ref = "apkParser" }
+conscrypt-android = { module = "org.conscrypt:conscrypt-android", version.ref = "conscryptAndroid" }
 core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

@@ -48,6 +48,44 @@ public class MinecraftLauncher {
         return abi;
     }
 
+    private boolean shouldLoadMaesdk(GameVersion version) {
+        if (version == null || version.versionCode == null) {
+            return false;
+        }
+
+        String versionCode = version.versionCode;
+
+        if (versionCode.contains("beta")) {
+            return isVersionAtLeast(versionCode, "1.21.110.22");
+        } else {
+            return isVersionAtLeast(versionCode, "1.21.110");
+        }
+    }
+
+    private boolean isVersionAtLeast(String currentVersion, String targetVersion) {
+        try {
+            String[] current = currentVersion.replaceAll("[^0-9.]", "").split("\\.");
+            String[] target = targetVersion.split("\\.");
+
+            int maxLength = Math.max(current.length, target.length);
+
+            for (int i = 0; i < maxLength; i++) {
+                int currentPart = i < current.length ? Integer.parseInt(current[i]) : 0;
+                int targetPart = i < target.length ? Integer.parseInt(target[i]) : 0;
+
+                if (currentPart > targetPart) {
+                    return true;
+                } else if (currentPart < targetPart) {
+                    return false;
+                }
+            }
+
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     public ApplicationInfo createFakeApplicationInfo(GameVersion version, String packageName) {
         ApplicationInfo fakeInfo = new ApplicationInfo();
         File apkFile = new File(version.versionDir, "base.apk.levi");
@@ -120,7 +158,7 @@ public class MinecraftLauncher {
 
             fillIntentWithMcPath(sourceIntent, version);
 
-            launchMinecraftActivity(mcInfo, sourceIntent);
+            launchMinecraftActivity(mcInfo, sourceIntent, version);
 
         } catch (Exception e) {
             Logger.get().error("Launch failed: " + e.getMessage(), e);
@@ -307,7 +345,7 @@ public class MinecraftLauncher {
         new LoadingDialog(context).show();
     }
 
-    private void launchMinecraftActivity(ApplicationInfo mcInfo, Intent sourceIntent) {
+    private void launchMinecraftActivity(ApplicationInfo mcInfo, Intent sourceIntent, GameVersion version) {
         new Thread(() -> {
             try {
 
@@ -325,6 +363,9 @@ public class MinecraftLauncher {
                 try {
                     System.loadLibrary("c++_shared");
                     System.loadLibrary("fmod");
+                    if (shouldLoadMaesdk(version)) {
+                        System.loadLibrary("maesdk");
+                    }
                     System.loadLibrary("minecraftpe");
                 } catch (UnsatisfiedLinkError e) {
                     Logger.get().error("Error loading native libraries: " + e.getMessage());
