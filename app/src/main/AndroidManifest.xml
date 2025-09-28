@@ -42,6 +42,7 @@
     </queries>
 
     <application
+        android:name=".core.minecraft.mcpelauncher.Application"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
@@ -142,6 +143,33 @@
             android:configChanges="keyboardHidden|orientation|screenSize|uiMode"
             android:alwaysRetainTaskState="true"
             tools:replace="android:configChanges,android:exported" />
+
+        <activity
+            android:name=".core.minecraft.mcpelauncher.activities.ComposePreloadActivity"
+            android:exported="false"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            tools:ignore="DiscouragedApi">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="preloader" />
+        </activity>
+
+        <activity
+            android:name=".core.minecraft.mcpelauncher.activities.MinecraftActivity"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"
+            android:excludeFromRecents="false"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/AppFullScreenTheme"
+            tools:ignore="DiscouragedApi">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="preloader" />
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

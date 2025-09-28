@@ -10,6 +10,7 @@ import android.os.Build;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
+import org.levimc.launcher.core.minecraft.mcpelauncher.activities.ComposePreloadActivity;
 import org.levimc.launcher.core.mods.ModManager;
 import org.levimc.launcher.core.mods.ModNativeLoader;
 import org.levimc.launcher.core.versions.GameVersion;
@@ -141,29 +142,44 @@ public class MinecraftLauncher {
 
             activity.runOnUiThread(this::showLoading);
 
-            ApplicationInfo mcInfo = getApplicationInfoForVersion(version);
-
-            fixNativeLibraryDirIfNeeded(version, mcInfo);
-
-            File dexCacheDir = createCacheDexDir();
-            cleanCacheDirectory(dexCacheDir);
-
-            Object pathList = getPathList(classLoader);
-
-            processDexFiles(mcInfo, dexCacheDir, pathList);
-
-            assertLauncherClassExists();
-
-            injectNativeLibraries(mcInfo, pathList);
-
-            fillIntentWithMcPath(sourceIntent, version);
-
-            launchMinecraftActivity(mcInfo, sourceIntent, version);
+            if (isVersionAtLeast(version.versionCode, "1.21.120")) {
+                launchModernMinecraft(sourceIntent, version);
+            } else {
+                launchLegacyMinecraft(sourceIntent, version);
+            }
 
         } catch (Exception e) {
             Logger.get().error("Launch failed: " + e.getMessage(), e);
             showLaunchErrorOnUi(e.getMessage());
         }
+    }
+
+    private void launchModernMinecraft(Intent sourceIntent, GameVersion version) {
+        Intent intent = new Intent(context, ComposePreloadActivity.class);
+        intent.putExtra("MC_VERSION", version.directoryName);
+        if (FeatureSettings.getInstance().isVersionIsolationEnabled()) {
+            intent.putExtra("MC_PATH", version.versionDir.getAbsolutePath());
+        }
+        if (sourceIntent != null && sourceIntent.getExtras() != null) {
+            intent.putExtras(sourceIntent);
+        }
+        context.startActivity(intent);
+    }
+
+    private void launchLegacyMinecraft(Intent sourceIntent, GameVersion version) throws Exception {
+        // Original launching code
+        ApplicationInfo mcInfo = getApplicationInfoForVersion(version);
+        fixNativeLibraryDirIfNeeded(version, mcInfo);
+
+        File dexCacheDir = createCacheDexDir();
+        cleanCacheDirectory(dexCacheDir);
+
+        Object pathList = getPathList(classLoader);
+        processDexFiles(mcInfo, dexCacheDir, pathList);
+        assertLauncherClassExists();
+        injectNativeLibraries(mcInfo, pathList);
+        fillIntentWithMcPath(sourceIntent, version);
+        launchMinecraftActivity(mcInfo, sourceIntent, version);
     }
 
     private ApplicationInfo getApplicationInfoForVersion(GameVersion version) throws Exception {

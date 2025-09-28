@@ -18,16 +18,13 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this;
-        mPESdk = new PESdk(this);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        context = getApplicationContext();
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mPESdk = new PESdk(context);
         DynamicColors.applyToActivitiesIfAvailable(this);
     }
 
     public static Context getContext() {
-        if (context == null) {
-            context = new Application();
-        }
         return context;
     }
 

@@ -43,6 +43,9 @@ class ComposePreloadActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Application.context == null) {
+            Application.context = applicationContext
+        }
         PreloadThread().start()
     }
 
@@ -60,7 +63,7 @@ class ComposePreloadActivity : ComponentActivity() {
                             preloadUIHandler.sendMessage(message)
                         }
                     })
-                preloader.preload(this@ComposePreloadActivity)
+                preloader.preload(Application.context)
             } catch (e: PreloadException) {
                 val message = Message()
                 message.what = MSG_ERROR
