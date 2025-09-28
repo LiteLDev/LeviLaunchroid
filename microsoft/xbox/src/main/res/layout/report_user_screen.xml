@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:paddingTop="10dp">
+
+    <com.microsoft.xbox.toolkit.ui.CustomTypefaceTextView
+        android:id="@+id/report_user_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="15dp"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:singleLine="true"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/report_user_reason"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/report_user_title"
+        android:layout_margin="15dp"
+        android:popupBackground="@color/backgroundColor"
+        android:spinnerMode="dropdown" />
+
+    <LinearLayout
+        android:id="@+id/report_user_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="3dp"
+        android:orientation="horizontal"
+        android:weightSum="2.0">
+
+        <com.microsoft.xbox.toolkit.ui.XLEButton
+            android:id="@+id/report_user_cancel"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="@string/MessageDialog_Cancel" />
+
+        <com.microsoft.xbox.toolkit.ui.XLEButton
+            android:id="@+id/report_user_submit"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="@string/ProfileCard_Report_SubmitButton" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/report_user_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/report_user_buttons"
+        android:layout_below="@+id/report_user_reason"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center|left|top"
+        android:hint="@string/ProfileCard_Report_TextReasonHint"
+        android:scrollHorizontally="false"
+        android:singleLine="false"
+        android:textColor="@color/XboxWhite"
+        android:textColorHint="@color/white_60_percent"
+        tools:ignore="RtlHardcoded" />
+</RelativeLayout>

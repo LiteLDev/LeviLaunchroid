@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.microsoft.xbox.xle.ui.XLERootView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/profile_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_default">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.0">
+
+            <com.microsoft.xbox.toolkit.ui.XLERoundedUniversalImageView
+                android:id="@+id/profile_gamerpic"
+                android:layout_width="@dimen/profileMsaPicSize"
+                android:layout_height="@dimen/profileMsaPicSize"
+                android:layout_gravity="center"
+                android:cropToPadding="false"
+                android:maxWidth="@dimen/profileMsaPicSize"
+                android:maxHeight="@dimen/profileMsaPicSize"
+                android:src="@drawable/placeholder_x" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3.0">
+
+            <com.microsoft.xbox.toolkit.ui.FastProgressBar
+                android:id="@+id/profile_screen_loading"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:indeterminateDrawable="@drawable/loading"
+                android:indeterminateOnly="true"
+                android:visibility="visible" />
+
+            <ScrollView
+                android:id="@+id/profile_screen_content_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.microsoft.xbox.toolkit.ui.CustomTypefaceTextView
+                            android:id="@+id/profile_realname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginBottom="4dp"
+                            android:maxLength="30"
+                            android:singleLine="true"
+                            android:textSize="17sp" />
+
+                        <com.microsoft.xbox.toolkit.ui.CustomTypefaceTextView
+                            android:id="@+id/profile_gamerscore_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginEnd="1dp"
+                            android:text="@string/ic_GamerScore"
+                            android:textSize="17sp"
+                            android:visibility="gone" />
+
+                        <com.microsoft.xbox.toolkit.ui.CustomTypefaceTextView
+                            android:id="@+id/profile_gamerscore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:padding="2dp"
+                            android:singleLine="true"
+                            android:textSize="17sp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <com.microsoft.xbox.toolkit.ui.CustomTypefaceTextView
+                        android:id="@+id/profile_gamertag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:singleLine="true"
+                        android:textSize="40sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <com.microsoft.xbox.xle.ui.IconFontToggleButton
+                        android:id="@+id/profile_follow"
+                        android:layout_width="@dimen/profileMsaPicSize"
+                        android:layout_height="@dimen/profileSocialButtonsHeight"
+                        android:layout_marginStart="-5dp"
+                        android:layout_marginTop="@dimen/profileSocialButtonsTopMargin"
+                        android:background="@drawable/common_button_background"
+                        android:visibility="gone"
+                        app:icon_checked="@string/ic_changeFriendShip"
+                        app:icon_size="16sp"
+                        app:icon_unchecked="@string/ic_PlayerAdd"
+                        app:text_checked="@string/Profile_ChangeFriendship"
+                        app:text_unchecked="@string/Profile_Profile_AddFriend" />
+
+                    <com.microsoft.xbox.xle.ui.IconFontToggleButton
+                        android:id="@+id/profile_mute"
+                        android:layout_width="@dimen/profileMsaPicSize"
+                        android:layout_height="@dimen/profileSocialButtonsHeight"
+                        android:layout_marginStart="-5dp"
+                        android:layout_marginTop="@dimen/profileSocialButtonsTopMargin"
+                        android:background="@drawable/common_button_background"
+                        android:visibility="gone"
+                        app:icon_checked="@string/ic_VolumeDisabled2"
+                        app:icon_size="18sp"
+                        app:icon_unchecked="@string/ic_VolumeMute"
+                        app:text_checked="@string/Narrator_Unmute"
+                        app:text_unchecked="@string/Narrator_Mute" />
+
+                    <com.microsoft.xbox.xle.ui.IconFontToggleButton
+                        android:id="@+id/profile_report"
+                        android:layout_width="@dimen/profileMsaPicSize"
+                        android:layout_height="@dimen/profileSocialButtonsHeight"
+                        android:layout_marginStart="-5dp"
+                        android:layout_marginTop="@dimen/profileSocialButtonsTopMargin"
+                        android:background="@drawable/common_button_background"
+                        android:visibility="gone"
+                        app:icon_checked="@string/ic_Complaint"
+                        app:icon_size="16sp"
+                        app:icon_unchecked="@string/ic_Complaint"
+                        app:text_checked="@string/ProfileCard_Report"
+                        app:text_unchecked="@string/ProfileCard_Report" />
+
+                    <com.microsoft.xbox.xle.ui.IconFontToggleButton
+                        android:id="@+id/profile_block"
+                        android:layout_width="@dimen/profileMsaPicSize"
+                        android:layout_height="@dimen/profileSocialButtonsHeight"
+                        android:layout_marginStart="-5dp"
+                        android:layout_marginTop="@dimen/profileSocialButtonsTopMargin"
+                        android:background="@drawable/common_button_background"
+                        android:visibility="gone"
+                        app:icon_checked="@string/ic_BadRecommendation"
+                        app:icon_size="14sp"
+                        app:icon_unchecked="@string/ic_BadRecommendation"
+                        app:text_checked="@string/Profile_Profile_Unblock"
+                        app:text_unchecked="@string/Profile_Profile_Block" />
+
+                    <com.microsoft.xbox.xle.ui.IconFontToggleButton
+                        android:id="@+id/profile_view_in_xbox_app"
+                        android:layout_width="@dimen/profileMsaPicSize"
+                        android:layout_height="@dimen/profileSocialButtonsHeight"
+                        android:layout_marginStart="-5dp"
+                        android:layout_marginTop="@dimen/profileSocialButtonsTopMargin"
+                        android:background="@drawable/common_button_background"
+                        android:visibility="gone"
+                        app:icon_checked="@string/ic_ApplicationLaunch"
+                        app:icon_size="14sp"
+                        app:icon_unchecked="@string/ic_ApplicationLaunch"
+                        app:text_checked="@string/Profile_ViewInXboxApp"
+                        app:text_unchecked="@string/Profile_ViewInXboxApp" />
+
+                    <com.microsoft.xbox.toolkit.ui.CustomTypefaceTextView
+                        android:id="@+id/profile_view_in_xbox_app_subtext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginTop="-10dp"
+                        android:includeFontPadding="false"
+                        android:textSize="13sp"
+                        android:textStyle="italic"
+                        app:typefaceSource="fonts/SegoeWP.ttf" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </ScrollView>
+        </FrameLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</com.microsoft.xbox.xle.ui.XLERootView>

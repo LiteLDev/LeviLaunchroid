@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Minecraft -->
+    <color name="xbid_header_background">#ff121212</color>
+    <color name="xbid_button_background">#ff349136</color>
+    <color name="xbid_button_background_pressed">#ff44a146</color>
+    <color name="xbid_clickable_view_background_pressed">@color/xbid_button_background_pressed
+    </color>
+    <color name="xbid_button_border">#ff54b156</color>
+    <color name="xbid_clickable_view_border">@color/xbid_button_border</color>
+    <color name="textSoftWhite">#fff1f1f1</color>
+    <color name="XboxGreen">#ff2dab11</color>
+    <color name="XboxOneGreen">#ff107c10</color>
+    <color name="generic_page_background">#ff171717</color>
+    <color name="white_10_percent">#19ffffff</color>
+    <color name="white_60_percent">#99ffffff</color>
+    <color name="textGray3">#ff888888</color>
+    <color name="XboxWhite">@android:color/white</color>
+    <color name="backgroundColor">@color/XboxOneGreen</color>
+    <color name="mojang_red">#FF0000</color>
+</resources>

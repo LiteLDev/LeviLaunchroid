@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/xbid_margin_button"
+    android:layout_marginTop="@dimen/xbid_margin_button_top"
+    android:layout_marginRight="@dimen/xbid_margin_button"
+    android:layout_marginBottom="@dimen/xbid_margin_button"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/xbid_error_left_button"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/xbid_margin_button"
+        android:layout_weight="1.0"
+        android:focusable="true"
+        android:text="@string/xbid_try_again" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/xbid_error_right_button"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/xbid_margin_button"
+        android:layout_weight="1.0"
+        android:focusable="true"
+        android:text="@android:string/ok" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

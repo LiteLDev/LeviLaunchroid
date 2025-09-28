@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+
+        <activity
+            android:name="com.microsoft.xal.browser.IntentHandler"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:configChanges="screenSize|uiMode|orientation|keyboardHidden"
+            android:alwaysRetainTaskState="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data
+                    android:scheme="@string/xal_token"
+                    android:host="auth"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.microsoft.xal.browser.BrowserLaunchActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:configChanges="screenSize|uiMode|orientation|keyboardHidden"
+            android:alwaysRetainTaskState="true"
+            android:theme="@style/WebViewTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data
+                    android:scheme="@string/xal_token"
+                    android:host="auth"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.microsoft.xal.browser.WebKitWebViewController"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:configChanges="screenSize|uiMode|orientation|keyboardHidden"
+            android:alwaysRetainTaskState="true"
+            android:hardwareAccelerated="false"
+            android:theme="@style/WebViewTheme"/>
+
+    </application>
+
+</manifest>

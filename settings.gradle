@@ -22,3 +22,8 @@ dependencyResolutionManagement {
 rootProject.name = "levilauncher"
 include ':app'
 include ':preloader'
+include(":minecraft")
+include(":httpclient")
+include(":microsoft:xal")
+include(":microsoft:xbox")
+include(":fmod")

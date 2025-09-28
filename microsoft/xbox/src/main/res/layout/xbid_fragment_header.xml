@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/xbid_header_background"
+    android:minHeight="40dp"
+    android:orientation="horizontal">
+
+    <com.microsoft.xbox.idp.toolkit.CircleImageView
+        android:id="@+id/xbid_user_image"
+        android:layout_width="@dimen/xbid_header_image_diameter"
+        android:layout_height="@dimen/xbid_header_image_diameter"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="5dp" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/xbid_header_image_diameter"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="15dp"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/xbid_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/xbid_user_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1.0" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/xbid_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/xbid_clickable_view_background"
+        android:contentDescription="@string/xbid_voice_over_close_button_text"
+        android:focusable="true"
+        android:padding="@dimen/xbid_clickable_view_padding"
+        android:src="@drawable/xbid_x_icon"
+        android:textColor="@android:color/white" />
+</androidx.appcompat.widget.LinearLayoutCompat>

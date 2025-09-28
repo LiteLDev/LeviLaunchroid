@@ -84,52 +84,17 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="preloader" />
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="*/*" />
-                <data android:host="*" />
-                <data android:scheme="file" />
-                <data android:scheme="content" />
-                <data android:pathPattern=".*\\.so" />
-                <data android:pathPattern=".*\\..*\\.so" />
-                <data android:pathPattern=".*\\..*\\..*\\.so" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\.so" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.so" />
-                <data android:pathPattern=".*\\.mcworld" />
-                <data android:pathPattern=".*\\..*\\.mcworld" />
-                <data android:pathPattern=".*\\..*\\..*\\.mcworld" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\.mcworld" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.mcworld" />
-                <data android:pathPattern=".*\\.mcpack" />
-                <data android:pathPattern=".*\\..*\\.mcpack" />
-                <data android:pathPattern=".*\\..*\\..*\\.mcpack" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\.mcpack" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.mcpack" />
-                <data android:pathPattern=".*\\.mcaddon" />
-                <data android:pathPattern=".*\\..*\\.mcaddon" />
-                <data android:pathPattern=".*\\..*\\..*\\.mcaddon" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\.mcaddon" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.mcaddon" />
-                <data android:pathPattern=".*\\.mctemplate" />
-                <data android:pathPattern=".*\\..*\\.mctemplate" />
-                <data android:pathPattern=".*\\..*\\..*\\.mctemplate" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\.mctemplate" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.mctemplate" />
             </intent-filter>
             <intent-filter>
                 <action android:name="xbox_live_game_invite" />
                 <action android:name="xbox_live_achievement_unlock" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.mojang.minecraftpe.Launcher"
             android:alwaysRetainTaskState="true"
@@ -144,34 +109,39 @@
                 android:name="android.app.lib_name"
                 android:value="preloader" />
         </activity>
+
         <activity
             android:name="com.microsoft.xal.browser.IntentHandler"
             android:exported="true"
             android:launchMode="singleTask"
             android:configChanges="keyboardHidden|orientation|screenSize|uiMode"
-            android:alwaysRetainTaskState="true">
+            android:alwaysRetainTaskState="true"
+            tools:replace="android:configChanges,android:exported">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data
                     android:scheme="ms-xal-0000000048183522"
                     android:host="auth" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.microsoft.xal.browser.BrowserLaunchActivity"
             android:exported="false"
             android:launchMode="singleTask"
             android:configChanges="keyboardHidden|orientation|screenSize|uiMode"
-            android:alwaysRetainTaskState="true" />
+            android:alwaysRetainTaskState="true"
+            tools:replace="android:configChanges,android:exported" />
+
         <activity
             android:name="com.microsoft.xal.browser.WebKitWebViewController"
             android:exported="false"
             android:launchMode="singleTask"
             android:configChanges="keyboardHidden|orientation|screenSize|uiMode"
-            android:alwaysRetainTaskState="true" />
+            android:alwaysRetainTaskState="true"
+            tools:replace="android:configChanges,android:exported" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -182,6 +152,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
         </provider>
+
     </application>
 
 </manifest>

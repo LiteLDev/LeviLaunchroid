@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <com.microsoft.xbox.toolkit.ui.CustomTypefaceTextView
+        android:id="@+id/iconfont_toggle_btn_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:duplicateParentState="true"
+        android:includeFontPadding="false"
+        android:padding="8dp"
+        android:textColor="@color/common_button_textcolor"
+        android:textSize="17sp"
+        android:visibility="invisible" />
+
+    <com.microsoft.xbox.toolkit.ui.CustomTypefaceTextView
+        android:id="@+id/iconfont_toggle_btn_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="8dp"
+        android:duplicateParentState="true"
+        android:includeFontPadding="false"
+        android:textColor="@color/common_button_textcolor"
+        android:textSize="15sp"
+        android:visibility="invisible" />
+</merge>

@@ -30,7 +30,8 @@ static def getVersionCodeByTimestamp() {
 
 android {
     namespace 'org.levimc.launcher'
-    compileSdk 35
+    compileSdk 36
+
     defaultConfig {
         applicationId "org.levimc.launcher"
         minSdk 24
@@ -38,10 +39,12 @@ android {
         versionCode getVersionCodeByTimestamp()
         versionName getGitTag()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
         ndk {
             //noinspection ChromeOsAbiSupport
             abiFilters 'arm64-v8a', 'armeabi-v7a'
         }
+
         xmake {
             abiFilters 'arm64-v8a', 'armeabi-v7a'
         }
@@ -49,10 +52,9 @@ android {
 
     buildFeatures {
         viewBinding true
-    }
-    buildFeatures {
         prefab true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -62,27 +64,48 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
 
-    }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_21
-        targetCompatibility JavaVersion.VERSION_21
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+
     externalNativeBuild {
         xmake {
             path "src/main/cpp/leviutils/xmake.lua"
             logLevel "verbose"
             buildMode "release"
         }
+
+        ndkBuild {
+            path "src/main/cpp/Android.mk"
+        }
+
     }
+
     ndkVersion "25.2.9519653"
+
+    packaging {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE', 'META-INF/NOTICE']
+        }
+    }
 }
 
 dependencies {
     implementation project(':preloader')
+    implementation project(":minecraft")
+    implementation project(":httpclient")
+    implementation project(":microsoft:xal")
+    implementation project(":microsoft:xbox")
+    implementation project(":fmod")
+
     implementation libs.core.splashscreen
     implementation libs.apk.parser
     implementation libs.appcompat
+    implementation libs.androidx.games.activity.v122
+    implementation(libs.androidx.preference.ktx)
     implementation libs.conscrypt.android
     implementation libs.constraintlayout
     implementation libs.material
