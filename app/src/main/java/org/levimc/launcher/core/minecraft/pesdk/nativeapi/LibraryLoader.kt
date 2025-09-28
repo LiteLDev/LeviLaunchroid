@@ -18,6 +18,7 @@ package org.levimc.launcher.core.minecraft.pesdk.nativeapi
 
 import android.annotation.SuppressLint
 import android.util.Log
+import org.levimc.launcher.core.minecraft.mcpelauncher.Application
 import java.io.File
 
 /**
@@ -116,7 +117,7 @@ object LibraryLoader {
     }
 
     private fun getFallbackPaths(libraryName: String): List<String> {
-        val context = org.levimc.launcher.core.minecraft.mcpelauncher.ModdedPEApplication.getContext()
+        val context = Application.getContext()
         val fallbackPaths = mutableListOf<String>()
 
         fallbackPaths.add("${context.filesDir}/native/$libraryName")

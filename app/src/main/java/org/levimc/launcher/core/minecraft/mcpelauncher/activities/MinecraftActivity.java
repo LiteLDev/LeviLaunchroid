@@ -19,7 +19,7 @@ package org.levimc.launcher.core.minecraft.mcpelauncher.activities;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 
-import org.levimc.launcher.core.minecraft.mcpelauncher.ModdedPEApplication;
+import org.levimc.launcher.core.minecraft.mcpelauncher.Application;
 import org.levimc.launcher.core.minecraft.pesdk.PESdk;
 
 /**
@@ -28,7 +28,7 @@ import org.levimc.launcher.core.minecraft.pesdk.PESdk;
 
 public class MinecraftActivity extends com.mojang.minecraftpe.MainActivity {
     protected PESdk getPESdk() {
-        return ModdedPEApplication.mPESdk;
+        return Application.mPESdk;
     }
 
     @Override

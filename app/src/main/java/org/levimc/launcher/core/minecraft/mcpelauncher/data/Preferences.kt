@@ -17,14 +17,14 @@
 package org.levimc.launcher.core.minecraft.mcpelauncher.data
 
 import androidx.preference.PreferenceManager
-import org.levimc.launcher.core.minecraft.mcpelauncher.ModdedPEApplication
+import org.levimc.launcher.core.minecraft.mcpelauncher.Application
 
 /**
  * @author Тимашков Иван
  * @author https://github.com/TimScriptov
  */
 object Preferences {
-    private val preferences = PreferenceManager.getDefaultSharedPreferences(ModdedPEApplication.getContext())
+    private val preferences = PreferenceManager.getDefaultSharedPreferences(Application.getContext())
 
     @JvmStatic
     val minecraftPackageName: String?

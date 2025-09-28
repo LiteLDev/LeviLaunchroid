@@ -6,7 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import androidx.activity.ComponentActivity
-import org.levimc.launcher.core.minecraft.mcpelauncher.ModdedPEApplication
+import org.levimc.launcher.core.minecraft.mcpelauncher.Application
 import org.levimc.launcher.core.minecraft.mcpelauncher.data.Preferences
 import org.levimc.launcher.core.minecraft.pesdk.PreloadException
 import org.levimc.launcher.core.minecraft.pesdk.Preloader
@@ -50,7 +50,7 @@ class ComposePreloadActivity : ComponentActivity() {
         override fun run() {
             try {
                 val preloader = Preloader(
-                    ModdedPEApplication.mPESdk,
+                    Application.mPESdk,
                     null,
                     object : Preloader.PreloadListener() {
                         override fun onFinish(bundle: Bundle) {
