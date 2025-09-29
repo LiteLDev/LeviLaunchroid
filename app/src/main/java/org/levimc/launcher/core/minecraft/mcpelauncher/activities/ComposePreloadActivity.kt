@@ -7,9 +7,10 @@ import android.os.Looper
 import android.os.Message
 import androidx.activity.ComponentActivity
 import org.levimc.launcher.core.minecraft.mcpelauncher.Application
-import org.levimc.launcher.core.minecraft.mcpelauncher.data.Preferences
+import org.levimc.launcher.core.minecraft.pesdk.PESdk
 import org.levimc.launcher.core.minecraft.pesdk.PreloadException
 import org.levimc.launcher.core.minecraft.pesdk.Preloader
+import org.levimc.launcher.util.Logger
 
 
 /**
@@ -26,15 +27,25 @@ class ComposePreloadActivity : ComponentActivity() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 MSG_START_MINECRAFT -> {
-                    val intent = Intent(this@ComposePreloadActivity, MinecraftActivity::class.java)
-                    intent.putExtras(msg.data)
-                    startActivity(intent)
-                    finish()
-                }
+                    try {
+                        if (Application.context == null) {
+                            Application.context = applicationContext
+                        }
 
+                        val intent = Intent(this@ComposePreloadActivity, MinecraftActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.putExtras(getIntent())
+
+                        startActivity(intent)
+                        finish()
+                    } catch (e: Exception) {
+                        Logger.get().error("Failed to start Minecraft activity: ${e.message}", e)
+                        finish()
+                    }
+                }
                 MSG_ERROR -> {
-                    val preloadException = msg.obj as PreloadException
-                    Preferences.openGameFailed = preloadException.toString()
+                    val exception = msg.obj as PreloadException
+                    Logger.get().error("Preload failed: ${exception.message}", exception)
                     finish()
                 }
             }
@@ -43,9 +54,13 @@ class ComposePreloadActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Application.context == null) {
-            Application.context = applicationContext
+
+        Application.context = applicationContext.applicationContext
+
+        if (Application.mPESdk == null) {
+            Application.mPESdk = PESdk(Application.context)
         }
+
         PreloadThread().start()
     }
 

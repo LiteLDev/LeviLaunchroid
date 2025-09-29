@@ -10,7 +10,9 @@ import android.os.Build;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
+import org.levimc.launcher.core.minecraft.mcpelauncher.Application;
 import org.levimc.launcher.core.minecraft.mcpelauncher.activities.ComposePreloadActivity;
+import org.levimc.launcher.core.minecraft.pesdk.PESdk;
 import org.levimc.launcher.core.mods.ModManager;
 import org.levimc.launcher.core.mods.ModNativeLoader;
 import org.levimc.launcher.core.versions.GameVersion;
@@ -155,15 +157,34 @@ public class MinecraftLauncher {
     }
 
     private void launchModernMinecraft(Intent sourceIntent, GameVersion version) {
-        Intent intent = new Intent(context, ComposePreloadActivity.class);
-        intent.putExtra("MC_VERSION", version.directoryName);
-        if (FeatureSettings.getInstance().isVersionIsolationEnabled()) {
-            intent.putExtra("MC_PATH", version.versionDir.getAbsolutePath());
+        try {
+            if (Application.context == null) {
+                Application.context = context.getApplicationContext();
+            }
+
+            if (Application.mPESdk == null) {
+                Application.mPESdk = new PESdk(Application.context);
+            }
+
+            fillIntentWithMcPath(sourceIntent, version);
+
+            Intent preloadIntent = new Intent(context, ComposePreloadActivity.class);
+            preloadIntent.putExtras(sourceIntent);
+            preloadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            if (version != null) {
+                preloadIntent.putExtra("MINECRAFT_VERSION", version.versionCode);
+            }
+
+            if (context instanceof Activity) {
+                ((Activity) context).finish();
+            }
+            context.startActivity(preloadIntent);
+
+        } catch (Exception e) {
+            Logger.get().error("Failed to launch modern Minecraft: " + e.getMessage());
+            showLaunchErrorOnUi(e.getMessage());
         }
-        if (sourceIntent != null && sourceIntent.getExtras() != null) {
-            intent.putExtras(sourceIntent);
-        }
-        context.startActivity(intent);
     }
 
     private void launchLegacyMinecraft(Intent sourceIntent, GameVersion version) throws Exception {
