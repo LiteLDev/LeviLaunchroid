@@ -132,7 +132,7 @@ public class NetworkObserver {
         private static String joinMap(@NotNull Map<String, Boolean> map) {
             StringBuilder result = new StringBuilder();
             for (Map.Entry<String, Boolean> entry : map.entrySet()) {
-                if (!result.isEmpty()) {
+                if (result.length() > 0) {
                     result.append(", ");
                 }
                 result.append(entry.getKey()).append(": ").append(entry.getValue());
