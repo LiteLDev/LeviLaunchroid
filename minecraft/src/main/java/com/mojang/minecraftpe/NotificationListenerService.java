@@ -29,15 +29,29 @@ public class NotificationListenerService extends FirebaseMessagingService {
     }
 
     private static void retrieveDeviceToken() {
-        if (Thread.currentThread().equals(Looper.getMainLooper().getThread())) {
-        }
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-            String result = task.isSuccessful() ? task.getResult() : "";
-            if (result == null || result.isEmpty()) {
-                return;
+        try {
+            if (Thread.currentThread().equals(Looper.getMainLooper().getThread())) {
             }
-            NotificationListenerService.sDeviceRegistrationToken = result;
-        });
+
+            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+                try {
+                    String result = task.isSuccessful() ? task.getResult() : "";
+                    if (result == null || result.isEmpty()) {
+                        return;
+                    }
+                    NotificationListenerService.sDeviceRegistrationToken = result;
+                } catch (Exception e) {
+                    Log.e("NotificationService", "Failed to process token: " + e.getMessage());
+                    NotificationListenerService.sDeviceRegistrationToken = "dummy_token_firebase_error";
+                }
+            }).addOnFailureListener(e -> {
+                Log.e("NotificationService", "Failed to get token: " + e.getMessage());
+                NotificationListenerService.sDeviceRegistrationToken = "dummy_token_firebase_error";
+            });
+        } catch (Exception e) {
+            Log.e("NotificationService", "Error retrieving device token: " + e.getMessage());
+            NotificationListenerService.sDeviceRegistrationToken = "dummy_token_firebase_error";
+        }
     }
 
     native void nativePushNotificationReceived(final int type, String title, String description, String data);

@@ -42,6 +42,7 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.androidgamesdk.GameActivity;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.mojang.android.StringValue;
 import com.mojang.minecraftpe.input.InputDeviceManager;
 import com.mojang.minecraftpe.platforms.Platform;
@@ -1823,13 +1824,27 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
     public long initializeXboxLive(final long xalInitArgs, final long xblInitArgs) {
         if (!isEduMode()) {
             final FutureTask<Long> futureTask = new FutureTask<>(() -> {
-                FirebaseApp.initializeApp(getApplicationContext());
+                try {
+                    try {
+                        FirebaseApp.getInstance();
+                    } catch (IllegalStateException e) {
+                        FirebaseOptions options = new FirebaseOptions.Builder()
+                                .setApplicationId("1:486187589451:android:b2331110821fe2304bd2ce")
+                                .setProjectId("minecraft-bedrock-57580")
+                                .setApiKey("AIzaSyDummy_API_Key_For_Initialization")
+                                .build();
+                        FirebaseApp.initializeApp(getApplicationContext(), options);
+                    }
+                } catch (Exception e) {
+                    Log.e("MinecraftPE", "Firebase initialization failed: " + e.getMessage());
+                }
                 return nativeInitializeXboxLive(xalInitArgs, xblInitArgs);
             });
             runOnUiThread(futureTask);
             try {
                 return futureTask.get();
             } catch (Exception e) {
+                Log.e("MinecraftPE", "XboxLive initialization failed: " + e.getMessage());
                 return -2147467259L;
             }
         }

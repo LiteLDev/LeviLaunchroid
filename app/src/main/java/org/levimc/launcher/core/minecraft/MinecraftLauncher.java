@@ -158,12 +158,21 @@ public class MinecraftLauncher {
 
     private void launchModernMinecraft(Intent sourceIntent, GameVersion version) {
         try {
+            System.gc();
+
             if (Application.context == null) {
                 Application.context = context.getApplicationContext();
             }
 
-            if (Application.mPESdk == null) {
+            if (Application.mPESdk == null || !Application.mPESdk.isInitialized()) {
+                Application.mPESdk = null;
+                System.gc();
+
                 Application.mPESdk = new PESdk(Application.context);
+
+                if (!Application.mPESdk.isInitialized()) {
+                    throw new RuntimeException("Failed to initialize PESdk properly");
+                }
             }
 
             fillIntentWithMcPath(sourceIntent, version);
@@ -174,15 +183,20 @@ public class MinecraftLauncher {
 
             if (version != null) {
                 preloadIntent.putExtra("MINECRAFT_VERSION", version.versionCode);
+
+                preloadIntent.putExtra("MINECRAFT_VERSION_DIR", version.directoryName);
             }
 
             if (context instanceof Activity) {
                 ((Activity) context).finish();
             }
+
+            Logger.get().info("Launching modern Minecraft version: " + (version != null ? version.versionCode : "unknown"));
+
             context.startActivity(preloadIntent);
 
         } catch (Exception e) {
-            Logger.get().error("Failed to launch modern Minecraft: " + e.getMessage());
+            Logger.get().error("Failed to launch modern Minecraft: " + e.getMessage(), e);
             showLaunchErrorOnUi(e.getMessage());
         }
     }
