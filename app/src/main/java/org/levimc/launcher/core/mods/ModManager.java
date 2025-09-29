@@ -251,4 +251,14 @@ public class ModManager {
     public synchronized void refreshMods() {
         postModChanged();
     }
+
+    public boolean hasEnabledMods() {
+        if (currentVersion == null || modsDir == null) return false;
+        for (Boolean enabled : enabledMap.values()) {
+            if (Boolean.TRUE.equals(enabled)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

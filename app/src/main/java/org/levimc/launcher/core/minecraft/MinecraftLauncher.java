@@ -144,7 +144,7 @@ public class MinecraftLauncher {
 
             activity.runOnUiThread(this::showLoading);
 
-            if (isVersionAtLeast(version.versionCode, "1.21.120")) {
+            if (isVersionAtLeast(version.versionCode, "1.21.94")) { //keeping version at 1.21.94 for testing mod loading
                 launchModernMinecraft(sourceIntent, version);
             } else {
                 launchLegacyMinecraft(sourceIntent, version);
@@ -183,8 +183,8 @@ public class MinecraftLauncher {
 
             if (version != null) {
                 preloadIntent.putExtra("MINECRAFT_VERSION", version.versionCode);
-
                 preloadIntent.putExtra("MINECRAFT_VERSION_DIR", version.directoryName);
+                preloadIntent.putExtra("MODS_ENABLED", ModManager.getInstance().hasEnabledMods());
             }
 
             if (context instanceof Activity) {

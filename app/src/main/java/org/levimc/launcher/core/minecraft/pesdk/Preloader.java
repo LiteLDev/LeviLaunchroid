@@ -98,6 +98,18 @@ public class Preloader {
             Log.d("Preloader", "Loading libminecraftpe.so...");
             LibraryLoader.loadMinecraftPE(nativeLibDir);
 
+            if (mBundle != null && mBundle.getBoolean("MODS_ENABLED", false)) {
+                try {
+                    Log.d("Preloader", "Loading mods after libminecraftpe.so...");
+                    org.levimc.launcher.core.mods.ModNativeLoader.loadEnabledSoMods(
+                            org.levimc.launcher.core.mods.ModManager.getInstance(),
+                            context.getCacheDir());
+                    Log.i("Preloader", "Successfully loaded mods");
+                } catch (Exception e) {
+                    Log.e("Preloader", "Error loading mods: " + e.getMessage(), e);
+                }
+            }
+
             mPreloadListener.onLoadGameLauncherLib();
             Log.d("Preloader", "Loading launcher core...");
             LibraryLoader.loadLauncher(nativeLibDir);
@@ -112,10 +124,10 @@ public class Preloader {
 
             throw new PreloadException(PreloadException.TYPE_LOAD_LIBS_FAILED, throwable);
         }
-            mAssetsArrayList = new ArrayList<>();
-            mLoadedNativeLibs = new ArrayList<>();
-            mAssetsArrayList.add(MinecraftInfo.getMinecraftPackageContext().getPackageResourcePath());
-            mPreloadListener.onFinish(mBundle);
+        mAssetsArrayList = new ArrayList<>();
+        mLoadedNativeLibs = new ArrayList<>();
+        mAssetsArrayList.add(MinecraftInfo.getMinecraftPackageContext().getPackageResourcePath());
+        mPreloadListener.onFinish(mBundle);
     }
 
     private String getDetailedErrorInfo(Context context, Throwable throwable) {

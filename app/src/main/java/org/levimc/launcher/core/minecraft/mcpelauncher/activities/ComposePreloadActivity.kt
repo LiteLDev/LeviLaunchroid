@@ -102,9 +102,15 @@ class ComposePreloadActivity : ComponentActivity() {
     private inner class PreloadThread : Thread() {
         override fun run() {
             try {
+                val modBundle = Bundle()
+                val modsEnabled = intent.getBooleanExtra("MODS_ENABLED", false)
+                modBundle.putBoolean("MODS_ENABLED", modsEnabled)
+
+                Logger.get().info("Minecraft launch with mods enabled: $modsEnabled")
+
                 val preloader = Preloader(
                     Application.mPESdk,
-                    null,
+                    modBundle,
                     object : Preloader.PreloadListener() {
                         override fun onFinish(bundle: Bundle) {
                             val message = Message()
