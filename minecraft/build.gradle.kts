@@ -29,6 +29,7 @@ android {
 
 dependencies {
     implementation(project(":fmod"))
+    implementation(project(":pairip"))
     implementation(project(":httpclient"))
     implementation(project(":microsoft:xal"))
     implementation(project(":microsoft:xbox"))
