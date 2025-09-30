@@ -26,11 +26,18 @@ okhttp = "5.1.0"
 okhttpVersion = "5.1.0"
 pkix = "1.54.0.0"
 preference-ktx = "1.2.1"
+roomRuntime = "2.8.1"
 shadowhook = "2.0.0"
 simpleXml = "2.7.1"
+billing = "8.0.0"
+sqliteFramework = "2.6.1"
 
 [libraries]
 androidx-games-activity-v122 = { module = "androidx.games:games-activity", version.ref = "gamesActivityVersion" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-sqlite-framework = { module = "androidx.sqlite:sqlite-framework", version.ref = "sqliteFramework" }
 annotations = { module = "org.jetbrains:annotations", version = "26.0.2-1" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
@@ -63,6 +70,7 @@ pkix = { module = "com.madgag.spongycastle:pkix", version.ref = "pkix" }
 prov = { module = "com.madgag.spongycastle:prov", version.ref = "core" }
 shadowhook = { module = "com.bytedance.android:shadowhook", version.ref = "shadowhook" }
 simple-xml = { group = "org.simpleframework", name = "simple-xml", version.ref = "simpleXml" }
+billing = { group = "com.android.billingclient", name = "billing", version.ref = "billing" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
