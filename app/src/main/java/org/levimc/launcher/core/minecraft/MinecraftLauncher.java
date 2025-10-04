@@ -10,6 +10,9 @@ import android.os.Build;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
+import org.levimc.launcher.core.minecraft.mcpelauncher.Application;
+import org.levimc.launcher.core.minecraft.mcpelauncher.activities.ComposePreloadActivity;
+import org.levimc.launcher.core.minecraft.pesdk.PESdk;
 import org.levimc.launcher.core.mods.ModManager;
 import org.levimc.launcher.core.mods.ModNativeLoader;
 import org.levimc.launcher.core.versions.GameVersion;
@@ -141,29 +144,77 @@ public class MinecraftLauncher {
 
             activity.runOnUiThread(this::showLoading);
 
-            ApplicationInfo mcInfo = getApplicationInfoForVersion(version);
-
-            fixNativeLibraryDirIfNeeded(version, mcInfo);
-
-            File dexCacheDir = createCacheDexDir();
-            cleanCacheDirectory(dexCacheDir);
-
-            Object pathList = getPathList(classLoader);
-
-            processDexFiles(mcInfo, dexCacheDir, pathList);
-
-            assertLauncherClassExists();
-
-            injectNativeLibraries(mcInfo, pathList);
-
-            fillIntentWithMcPath(sourceIntent, version);
-
-            launchMinecraftActivity(mcInfo, sourceIntent, version);
+            if (isVersionAtLeast(version.versionCode, "1.21.94")) { //keeping version at 1.21.94 for testing mod loading
+                launchModernMinecraft(sourceIntent, version);
+            } else {
+                launchLegacyMinecraft(sourceIntent, version);
+            }
 
         } catch (Exception e) {
             Logger.get().error("Launch failed: " + e.getMessage(), e);
             showLaunchErrorOnUi(e.getMessage());
         }
+    }
+
+    private void launchModernMinecraft(Intent sourceIntent, GameVersion version) {
+        try {
+            System.gc();
+
+            if (Application.context == null) {
+                Application.context = context.getApplicationContext();
+            }
+
+            if (Application.mPESdk == null || !Application.mPESdk.isInitialized()) {
+                Application.mPESdk = null;
+                System.gc();
+
+                Application.mPESdk = new PESdk(Application.context);
+
+                if (!Application.mPESdk.isInitialized()) {
+                    throw new RuntimeException("Failed to initialize PESdk properly");
+                }
+            }
+
+            fillIntentWithMcPath(sourceIntent, version);
+
+            Intent preloadIntent = new Intent(context, ComposePreloadActivity.class);
+            preloadIntent.putExtras(sourceIntent);
+            preloadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            if (version != null) {
+                preloadIntent.putExtra("MINECRAFT_VERSION", version.versionCode);
+                preloadIntent.putExtra("MINECRAFT_VERSION_DIR", version.directoryName);
+                preloadIntent.putExtra("MODS_ENABLED", ModManager.getInstance().hasEnabledMods());
+            }
+
+            if (context instanceof Activity) {
+                ((Activity) context).finish();
+            }
+
+            Logger.get().info("Launching modern Minecraft version: " + (version != null ? version.versionCode : "unknown"));
+
+            context.startActivity(preloadIntent);
+
+        } catch (Exception e) {
+            Logger.get().error("Failed to launch modern Minecraft: " + e.getMessage(), e);
+            showLaunchErrorOnUi(e.getMessage());
+        }
+    }
+
+    private void launchLegacyMinecraft(Intent sourceIntent, GameVersion version) throws Exception {
+        // Original launching code
+        ApplicationInfo mcInfo = getApplicationInfoForVersion(version);
+        fixNativeLibraryDirIfNeeded(version, mcInfo);
+
+        File dexCacheDir = createCacheDexDir();
+        cleanCacheDirectory(dexCacheDir);
+
+        Object pathList = getPathList(classLoader);
+        processDexFiles(mcInfo, dexCacheDir, pathList);
+        assertLauncherClassExists();
+        injectNativeLibraries(mcInfo, pathList);
+        fillIntentWithMcPath(sourceIntent, version);
+        launchMinecraftActivity(mcInfo, sourceIntent, version);
     }
 
     private ApplicationInfo getApplicationInfoForVersion(GameVersion version) throws Exception {

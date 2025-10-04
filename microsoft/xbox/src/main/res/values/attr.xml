@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<resources>
+    <declare-styleable name="SwitchButton">
+        <attr name="sb_shadow_radius" format="reference|dimension" />
+        <attr name="sb_shadow_offset" format="reference|dimension" />
+        <attr name="sb_shadow_color" format="reference|color" />
+        <attr name="sb_uncheck_color" format="reference|color" />
+        <attr name="sb_checked_color" format="reference|color" />
+
+        <attr name="sb_border_width" format="reference|dimension" />
+        <attr name="sb_checkline_color" format="reference|color" />
+        <attr name="sb_checkline_width" format="reference|dimension" />
+        <attr name="sb_uncheckcircle_color" format="reference|color" />
+        <attr name="sb_uncheckcircle_width" format="reference|dimension" />
+        <attr name="sb_uncheckcircle_radius" format="reference|dimension" />
+
+        <attr name="sb_checked" format="reference|boolean" />
+        <attr name="sb_shadow_effect" format="reference|boolean" />
+        <attr name="sb_effect_duration" format="reference|integer" />
+        <attr name="sb_button_color" format="reference|color" />
+        <attr name="sb_show_indicator" format="reference|boolean" />
+        <attr name="sb_background" format="reference|color" />
+        <attr name="sb_enable_effect" format="reference|boolean" />
+
+        <attr name="sb_checkedbutton_color" format="reference|color" />
+        <attr name="sb_uncheckbutton_color" format="reference|color" />
+    </declare-styleable>
+    <declare-styleable name="SwitchIconView">
+        <attr name="si_tint_color" format="color" />
+        <attr name="si_animation_duration" format="integer" />
+        <attr name="si_disabled_alpha" format="float" />
+        <attr name="si_disabled_color" format="color" />
+        <attr name="si_enabled" format="boolean" />
+        <attr name="si_no_dash" format="boolean" />
+    </declare-styleable>
+    <attr name="com_facebook_confirm_logout" format="boolean" />
+    <attr name="com_facebook_login_text" format="string" />
+    <attr name="com_facebook_logout_text" format="string" />
+    <attr name="com_facebook_tooltip_mode" format="enum">
+        <enum name="automatic" value="0" />
+        <enum name="display_always" value="1" />
+        <enum name="never_display" value="2" />
+    </attr>
+    <attr name="com_facebook_preset_size" format="enum">
+        <enum name="large" value="-4" />
+        <enum name="normal" value="-3" />
+        <enum name="small" value="-2" />
+    </attr>
+    <attr name="com_facebook_is_cropped" format="boolean" />
+    <attr name="com_facebook_foreground_color" format="color" />
+    <attr name="com_facebook_object_id" format="string" />
+    <attr name="com_facebook_object_type" format="enum">
+        <enum name="open_graph" value="1" />
+        <enum name="page" value="2" />
+        <enum name="unknown" value="0" />
+    </attr>
+    <attr name="com_facebook_style" format="enum">
+        <enum name="box_count" value="2" />
+        <enum name="button" value="1" />
+        <enum name="standard" value="0" />
+    </attr>
+    <attr name="com_facebook_auxiliary_view_position" format="enum">
+        <enum name="bottom" value="0" />
+        <enum name="inline" value="1" />
+        <enum name="top" value="2" />
+    </attr>
+    <attr name="com_facebook_horizontal_alignment" format="enum">
+        <enum name="center" value="0" />
+        <enum name="left" value="1" />
+        <enum name="right" value="2" />
+    </attr>
+    <attr name="isUnderlined" format="boolean" />
+    <attr name="maxWidth" format="reference|dimension" />
+    <attr name="maxHeight" format="reference|dimension" />
+    <attr name="aspectX" format="integer" />
+    <attr name="aspectY" format="integer" />
+    <attr name="fixDimension" format="flags">
+        <flag name="height" value="0x2" />
+        <flag name="width" value="0x1" />
+    </attr>
+    <attr name="headerText" format="string" />
+    <attr name="headerTextStyle" format="reference" />
+    <attr name="headerTextTypefaceSource" format="string" />
+    <attr name="subHeaderText" format="string" />
+    <attr name="subHeaderTextStyle" format="reference" />
+    <attr name="subHeaderTextTypefaceSource" format="string" />
+    <attr name="viewPagerTabLayoutStyle" format="reference" />
+    <attr name="viewPagerHeaderStyle" format="reference" />
+    <attr name="viewPagerBodyStyle" format="reference" />
+    <attr name="text_title" format="reference|string" />
+    <attr name="text" format="string" />
+    <attr name="text_subtitle" format="reference|string" />
+    <attr name="icon_uri" format="reference|string" />
+    <attr name="typefaceSource" format="string" />
+    <attr name="twoLineHeaderViewHeaderStyle" format="reference" />
+    <attr name="twoLineHeaderViewSubHeaderStyle" format="reference" />
+    <attr name="disabled" format="boolean" />
+    <attr name="disableSound" format="boolean" />
+    <attr name="disabledImage" format="reference" />
+    <attr name="enabledImage" format="reference" />
+    <attr name="pressedImage" format="reference" />
+    <attr name="disabledTextColor" format="color" />
+    <attr name="enabledTextColor" format="color" />
+    <attr name="alwaysClickable" format="boolean" />
+    <attr name="src" format="reference" />
+    <attr name="activityBody" format="reference" />
+    <attr name="showTitleBar" format="boolean" />
+    <attr name="isTopLevel" format="boolean" />
+    <attr name="headerName" format="string" />
+    <attr name="minScreenPercent" format="integer" />
+    <attr name="buttonIcon" format="reference" />
+    <attr name="iconPressed" format="reference" />
+    <attr name="iconSymbolText" format="string" />
+    <attr name="iconSymbolSize" format="dimension" />
+    <attr name="iconSymbolColor" format="color" />
+    <attr name="state" format="integer" />
+    <attr name="selectedState" format="integer" />
+    <attr name="iconSymbolTypeface" format="integer" />
+    <attr name="iconSymbolTypefaceSource" format="string" />
+    <attr name="iconSymbolStyle" format="integer" />
+    <attr name="iconSymbolAspectRatio" format="float" />
+    <attr name="iconSymbolAdjustForImageSize" format="boolean" />
+    <attr name="iconSymbolBackground" format="reference" />
+    <attr name="iconSymbolEraseColor" format="color" />
+    <attr name="iconTextSize" format="dimension" />
+    <attr name="screenPercent" format="integer" />
+    <attr name="screenDIPs" format="reference|dimension" />
+    <attr name="textStyle" format="reference" />
+    <attr name="textTypefaceSource" format="string" />
+    <attr name="subText" format="string" />
+    <attr name="subTextStyle" format="reference" />
+    <attr name="subTextTypefaceSource" format="string" />
+    <attr name="text_checked" format="reference|string" />
+    <attr name="text_unchecked" format="reference|string" />
+    <attr name="icon_checked" format="reference|string" />
+    <attr name="icon_unchecked" format="reference|string" />
+    <attr name="icon_size" format="dimension" />
+    <attr name="uri" format="string" />
+    <attr name="textAspectRatio" format="float" />
+    <attr name="adjustForImageSize" format="boolean" />
+    <attr name="eraseColor" format="color" />
+    <attr name="uppercaseText" format="string" />
+    <attr name="deleteOnActivityDestroyOrTombstone" format="boolean" />
+    <attr name="icon_bg" format="color" />
+    <attr name="image_uri" format="reference|string" />
+</resources>

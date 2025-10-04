@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="image_callback" id="0x7f070101" />
+    <item type="id" name="image_bound" id="0x7f070100" />
+</resources>

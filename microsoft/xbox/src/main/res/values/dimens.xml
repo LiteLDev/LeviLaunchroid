@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<resources>
+    <dimen name="xbid_header_image_diameter">60.0dp</dimen>
+    <dimen name="xbid_body_padding_horizontal">12.0dp</dimen>
+    <dimen name="xbid_margin_button">2.0dp</dimen>
+    <dimen name="xbid_margin_button_top">20.0dp</dimen>
+    <dimen name="xbid_bg_stroke_width">1.0dp</dimen>
+    <dimen name="xbid_button_border_width">2.0dp</dimen>
+    <dimen name="xbid_clickable_view_border_width">@dimen/xbid_button_border_width</dimen>
+    <dimen name="xbid_clickable_view_padding">3.0dp</dimen>
+    <dimen name="settingsScreenPropertySeparator">21.0dp</dimen>
+    <dimen name="changeFriendshipDialogUserNameSize">15.0sp</dimen>
+    <dimen name="changeFriendshipButtonWidth">200.0dp</dimen>
+    <dimen name="detailsMarginTop">1.0dp</dimen>
+    <dimen name="profileMsaPicSize">216.0dp</dimen>
+    <dimen name="profileSocialButtonsHeight">40.0dp</dimen>
+    <dimen name="profileSocialButtonsTopMargin">1.0dp</dimen>
+    <dimen name="friendFinderPageMargin">15.0dp</dimen>
+    <dimen name="friendFinderIconButtonHeight">50.0dp</dimen>
+    <dimen name="friendFinderIconButtonWidth">50.0dp</dimen>
+</resources>

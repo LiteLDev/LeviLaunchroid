@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <com.microsoft.xbox.toolkit.ui.SwitchPanel
+        android:id="@+id/change_friendship_switch_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:selectedState="0">
+
+        <com.microsoft.xbox.toolkit.ui.SwitchPanelItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:state="0">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:paddingStart="20dp"
+                        tools:ignore="RtlSymmetry">
+
+                        <com.microsoft.xbox.toolkit.ui.XLERoundedUniversalImageView
+                            android:id="@id/change_friendship_profile_pic"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/gamerpic_missing" />
+
+                        <com.microsoft.xbox.toolkit.ui.CustomTypefaceTextView
+                            android:id="@+id/people_favorites_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@+id/change_friendship_profile_pic"
+                            android:layout_alignTop="@+id/change_friendship_profile_pic"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginBottom="12dp"
+                            android:text="@string/ic_Favorite"
+                            android:textColor="@color/textSoftWhite"
+                            android:textSize="11sp"
+                            android:visibility="gone"
+                            tools:ignore="SmallSp" />
+
+                        <include layout="@layout/change_friendship_dialog_header" />
+                    </RelativeLayout>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="1.0"
+                        android:orientation="vertical">
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:id="@+id/add_as_friend"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:button="@drawable/apptheme_btn_radio_holo_light"
+                                android:text="@string/ChangeRelationship_Label_Friend" />
+
+                            <com.microsoft.xbox.toolkit.ui.CustomTypefaceTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="35dp"
+                                android:text="@string/ChangeRelationship_RadioButton_Subtext_Friend" />
+
+                            <RadioButton
+                                android:id="@+id/add_as_favorite"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/settingsScreenPropertySeparator"
+                                android:button="@drawable/apptheme_btn_radio_holo_light"
+                                android:text="@string/ChangeRelationship_Label_Favorite" />
+
+                            <com.microsoft.xbox.toolkit.ui.CustomTypefaceTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="35dp"
+                                android:text="@string/ChangeRelationship_RadioButton_Subtext_Favorite" />
+                        </RadioGroup>
+
+                        <com.microsoft.xbox.toolkit.ui.XLECheckBox
+                            android:id="@+id/share_real_name_checkbox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            app:subText="@string/ChangeRelationship_Checkbox_Subtext_ShareRealName_Everyone"
+                            app:subTextTypefaceSource="fonts/SegoeWP.ttf"
+                            app:text="@string/RealNameSharing_Share"
+                            app:textTypefaceSource="fonts/SegoeWP-Semibold.ttf" />
+
+                        <include
+                            android:id="@+id/remove_friend_btn_layout"
+                            layout="@layout/change_friendship_remove_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="10dp"
+                            android:visibility="gone" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:weightSum="2.0">
+
+                            <com.microsoft.xbox.toolkit.ui.XLEButton
+                                android:id="@+id/cancel_button"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1.0"
+                                android:gravity="center"
+                                android:text="@string/MessageDialog_Cancel" />
+
+                            <com.microsoft.xbox.toolkit.ui.XLEButton
+                                android:id="@+id/submit_button"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1.0"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:text="@string/OK_Text" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </ScrollView>
+
+            <com.microsoft.xbox.toolkit.ui.FastProgressBar
+                android:id="@+id/overlay_loading_indicator"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:indeterminateDrawable="@drawable/loading"
+                android:indeterminateOnly="true"
+                android:visibility="gone" />
+        </com.microsoft.xbox.toolkit.ui.SwitchPanelItem>
+
+        <com.microsoft.xbox.toolkit.ui.SwitchPanelItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:state="1">
+
+            <com.microsoft.xbox.toolkit.ui.FastProgressBar
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:indeterminateOnly="true" />
+        </com.microsoft.xbox.toolkit.ui.SwitchPanelItem>
+    </com.microsoft.xbox.toolkit.ui.SwitchPanel>
+</FrameLayout>
