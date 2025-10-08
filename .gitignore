@@ -70,3 +70,4 @@ Thumbs.db
 
 **/build/
 **/target/
+.kotlin
