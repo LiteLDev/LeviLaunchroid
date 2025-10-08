@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'org.levimc.preloader'
-    compileSdk 36
+    compileSdk 35
 
     defaultConfig {
         minSdk 24
@@ -13,21 +13,21 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
+
         ndk {
-            //noinspection ChromeOsAbiSupport
-            abiFilters 'arm64-v8a', 'armeabi-v7a'
+            abiFilters "arm64-v8a", "armeabi-v7a"
         }
-        xmake {
-            abiFilters 'arm64-v8a', 'armeabi-v7a'
-        }
-        externalNativeBuild {
-            xmake {
-                path "src/main/cpp/preloader/xmake.lua"
-                logLevel "verbose"
-                buildMode "release"
-            }
+
+
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/preloader/CMakeLists.txt"
+            version "3.22.1"
         }
     }
+
 
     buildTypes {
         release {
@@ -37,11 +37,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
-    ndkVersion "25.2.9519653"
+    ndkVersion "27.0.12077973"
 }
 
 dependencies {
