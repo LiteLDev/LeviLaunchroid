@@ -1,20 +1,21 @@
 package com.mojang.minecraftpe.store;
 
-
 public interface StoreListener {
-    void onPurchaseCanceled(String str);
 
-    void onPurchaseFailed(String str);
+    void onPurchaseCanceled(String product);
 
-    void onPurchaseSuccessful(String str, String str2);
+    void onPurchaseFailed(String product);
+
+    void onPurchaseSuccessful(String product);
 
     void onQueryProductsFail();
 
-    void onQueryProductsSuccess(Product[] productArr);
+    void onQueryProductsSuccess(Product[] products);
 
     void onQueryPurchasesFail();
 
-    void onQueryPurchasesSuccess(Purchase[] purchaseArr);
+    void onQueryPurchasesSuccess(Purchase[] purchases);
 
-    void onStoreInitialized(boolean z);
+    void onStoreInitialized(boolean available);
+
 }

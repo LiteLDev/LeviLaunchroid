@@ -112,6 +112,21 @@
 
     <string name="error_no_browser">无法打开浏览器</string>
 
+    <string name="dialog_title_no_version">未选择版本</string>
+    <string name="dialog_message_no_version">请在启动前选择游戏版本。</string>
+    <string name="dialog_title_version_isolation">需要版本隔离</string>
+    <string name="dialog_message_version_isolation">这是一个导入的版本。请在设置中启用版本隔离以启动此版本。</string>
+    <string name="dialog_positive_enable">启用</string>
+    <string name="dialog_title_no_base_game">需要基础游戏</string>
+    <string name="dialog_message_no_base_game">未找到Minecraft的基础安装。请从Play Store安装Minecraft以使用隔离版本。</string>
+    <string name="dialog_title_launch_failed">启动失败</string>
+    <string name="dialog_message_launch_failed">无法启动Minecraft：%1$s</string>
+    <string name="dialog_title_disable_version_isolation">禁用版本隔离</string>
+    <string name="dialog_message_disable_version_isolation">您尝试在启用版本隔离的情况下启动已安装的版本。请禁用版本隔离以继续。</string>
+    <string name="dialog_positive_disable">禁用</string>
+    <string name="dialog_positive_ok">确定</string>
+
+
     <string name="eula_title">LeviLauncher 用户协议</string>
     <string name="eula_message"><b>欢迎使用 LeviLauncher</b>\n\n使用本软件即表示您同意：\n\n• 此为<b>非官方</b> Minecraft 启动器\n• 您需拥有<b>合法授权</b>的 Minecraft 副本\n• 禁止任何形式的盗版或作弊行为\n• 模组/资源包使用风险自负\n• 与 Mojang/Microsoft 无关联\n\n继续使用视为接受条款</string>
     <string name="eula_agree">接受</string>

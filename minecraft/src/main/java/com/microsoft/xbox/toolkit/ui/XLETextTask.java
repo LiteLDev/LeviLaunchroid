@@ -10,11 +10,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLETextTask extends AsyncTask<XLETextArg, Void, Bitmap> {
     private static final String TAG = XLETextTask.class.getSimpleName();

@@ -6,11 +6,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEThreadPool {
     public static XLEThreadPool biOperationsThreadPool = new XLEThreadPool(false, 1, "XLEPerfMarkerOperationsPool");

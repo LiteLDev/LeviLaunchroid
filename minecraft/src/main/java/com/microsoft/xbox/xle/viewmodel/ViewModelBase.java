@@ -28,11 +28,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public abstract class ViewModelBase implements XLEObserver<UpdateData> {
     public static final String TAG_PAGE_LOADING_TIME = "performance_measure_page_loadingtime";

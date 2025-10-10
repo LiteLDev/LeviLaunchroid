@@ -19,11 +19,6 @@ import org.simpleframework.xml.ElementList;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEMAASAnimation extends MAASAnimation {
     @ElementList(required = false)

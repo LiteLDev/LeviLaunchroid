@@ -9,11 +9,6 @@ import org.apache.http.protocol.BasicHttpContext;
 
 import java.io.IOException;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEHttpClient extends AbstractXLEHttpClient {
     DefaultHttpClient client;

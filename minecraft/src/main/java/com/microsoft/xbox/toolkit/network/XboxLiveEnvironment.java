@@ -4,11 +4,6 @@ import com.microsoft.xbox.toolkit.XLEAssert;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XboxLiveEnvironment {
     public static final String NEVER_LIST_CONTRACT_VERSION = "1";

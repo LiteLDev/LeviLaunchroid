@@ -9,11 +9,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class BackgroundThreadWaitor {
     private static BackgroundThreadWaitor instance = new BackgroundThreadWaitor();

@@ -2,11 +2,6 @@ package com.microsoft.xbox.toolkit.ui;
 
 import java.net.URI;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEURIArg {
     private final int errorResourceId;

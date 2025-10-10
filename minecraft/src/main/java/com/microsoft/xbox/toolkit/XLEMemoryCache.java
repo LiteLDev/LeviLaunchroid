@@ -4,11 +4,6 @@ import android.util.LruCache;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEMemoryCache<K, V> {
     private final LruCache<K, XLEMemoryCacheEntry<V>> lruCache;

@@ -5,11 +5,6 @@ import android.widget.AdapterView;
 
 import com.microsoft.xbox.toolkit.XLEAssert;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class TouchUtil {
     public static View.OnClickListener createOnClickListener(View.OnClickListener onClickListener) {

@@ -6,11 +6,6 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class FastProgressBar extends ProgressBar {
     private boolean isEnabled;

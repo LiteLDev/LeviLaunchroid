@@ -12,11 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Stack;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public abstract class DialogManagerBase implements IProjectSpecificDialogManager {
     private final Stack<IXLEManagedDialog> dialogStack = new Stack<>();

@@ -7,11 +7,6 @@ import android.view.View;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEImageView extends AppCompatImageView {
     public static final int IMAGE_ERROR = 2;

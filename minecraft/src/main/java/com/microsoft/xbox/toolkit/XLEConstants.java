@@ -1,10 +1,5 @@
 package com.microsoft.xbox.toolkit;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEConstants {
     public static final long AVATAR_EDITOR_TITLE_ID = 1481443281;

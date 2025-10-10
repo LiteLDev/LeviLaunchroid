@@ -7,11 +7,6 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEClickableLayout extends RelativeLayout {
     public XLEClickableLayout(Context context) {

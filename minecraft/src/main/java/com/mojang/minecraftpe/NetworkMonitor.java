@@ -6,63 +6,99 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.os.Build;
-import androidx.annotation.NonNull;
 
-import java.util.HashMap;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class NetworkMonitor {
-    private static final int NETWORK_CATEGORY_ETHERNET = 0;
-    private static final int NETWORK_CATEGORY_OTHER = 2;
-    private static final int NETWORK_CATEGORY_WIFI = 1;
-    private final HashMap<Integer, HashSet<Network>> mAvailableNetworksPerCategory;
-    private final Context mContext;
+    private enum NetworkType {
+        Cable, Wifi, Other
+    }
+
+    private static int[] TRANSPORT_TYPE_CABLE = new int[] { NetworkCapabilities.TRANSPORT_ETHERNET };
+    private static int[] TRANSPORT_TYPE_WIFI = new int[] { NetworkCapabilities.TRANSPORT_WIFI };
+    private static int[] TRANSPORT_TYPE_OTHER = new int[] { NetworkCapabilities.TRANSPORT_CELLULAR, NetworkCapabilities.TRANSPORT_BLUETOOTH }; // TODO: transport usb
+
+    private Context context;
+    private List<ConnectivityManager.NetworkCallback> callbacks = new ArrayList<>();
+    private Set<Network> knownNetworks = new HashSet<>();
+    private int cableAvailable, wifiAvailable, otherAvailable;
 
     public NetworkMonitor(Context context) {
-        mContext = context;
-        HashMap<Integer, HashSet<Network>> hashMap = new HashMap<>();
-        mAvailableNetworksPerCategory = hashMap;
-        hashMap.put(0, new HashSet<>());
-        mAvailableNetworksPerCategory.put(1, new HashSet<>());
-        mAvailableNetworksPerCategory.put(2, new HashSet<>());
-        _addNetworkCallbacksForTransport(3, NETWORK_CATEGORY_ETHERNET);
-        _addNetworkCallbacksForTransport(1, NETWORK_CATEGORY_WIFI);
-        _addNetworkCallbacksForTransport(0, NETWORK_CATEGORY_OTHER);
-        _addNetworkCallbacksForTransport(2, NETWORK_CATEGORY_OTHER);
-        if (Build.VERSION.SDK_INT >= 31) {
-            _addNetworkCallbacksForTransport(8, NETWORK_CATEGORY_OTHER);
+        this.context = context;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            registerCallbacks();
+        } else {
+            nativeUpdateNetworkStatus(false, true, false);
         }
     }
 
-    private native void nativeUpdateNetworkStatus(boolean isEthernetConnected, boolean isWifiConnected, boolean isOtherConnected);
+    public void finish() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            this.unregisterCallbacks();
+    }
 
-    private void _addNetworkCallbacksForTransport(int transport, final int networkCategory) {
-        ((ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE)).registerNetworkCallback(_createNetworkRequestForTransport(transport), new ConnectivityManager.NetworkCallback() {
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void registerCallbacks() {
+        ConnectivityManager connMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        registerCallback(NetworkType.Cable, TRANSPORT_TYPE_CABLE);
+        registerCallback(NetworkType.Wifi, TRANSPORT_TYPE_WIFI);
+        registerCallback(NetworkType.Other, TRANSPORT_TYPE_OTHER);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void registerCallback(NetworkType type, int[] transportTypes) {
+        ConnectivityManager connMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager.NetworkCallback callback = new ConnectivityManager.NetworkCallback() {
             @Override
             public void onAvailable(@NonNull Network network) {
-                mAvailableNetworksPerCategory.get(networkCategory).add(network);
-                _updateStatus();
+                if (!knownNetworks.contains(network)) {
+                    knownNetworks.add(network);
+                    setHasNetworkType(type, true);
+                }
             }
 
             @Override
             public void onLost(@NonNull Network network) {
-                mAvailableNetworksPerCategory.get(networkCategory).remove(network);
-                _updateStatus();
+                if (knownNetworks.contains(network)) {
+                    setHasNetworkType(type, false);
+                    knownNetworks.remove(network);
+                }
             }
-        });
-    }
-
-    private NetworkRequest _createNetworkRequestForTransport(int transport) {
-        NetworkRequest.Builder builder = new NetworkRequest.Builder();
-        builder.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
-        if (Build.VERSION.SDK_INT >= 23) {
-            builder.addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+        };
+        this.callbacks.add(callback);
+        for (int transportType : transportTypes) {
+            NetworkRequest.Builder builder = new NetworkRequest.Builder()
+                    .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+            if (Build.VERSION.SDK_INT >= 23)
+                builder.addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+            builder.addTransportType(transportType);
+            connMan.registerNetworkCallback(builder.build(), callback);
         }
-        builder.addTransportType(transport);
-        return builder.build();
     }
 
-    public void _updateStatus() {
-        nativeUpdateNetworkStatus(!mAvailableNetworksPerCategory.get(0).isEmpty(), !mAvailableNetworksPerCategory.get(1).isEmpty(), !mAvailableNetworksPerCategory.get(2).isEmpty());
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void unregisterCallbacks() {
+        ConnectivityManager connMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        for (ConnectivityManager.NetworkCallback callback : callbacks)
+            connMan.unregisterNetworkCallback(callback);
     }
+
+    private void setHasNetworkType(NetworkType type, boolean available) {
+        if (type == NetworkType.Cable)
+            cableAvailable += available ? 1 : -1;
+        if (type == NetworkType.Wifi)
+            wifiAvailable += available ? 1 : -1;
+        if (type == NetworkType.Other)
+            otherAvailable += available ? 1 : -1;
+        nativeUpdateNetworkStatus(cableAvailable > 0, wifiAvailable > 0, otherAvailable > 0);
+    }
+
+
+    private native void nativeUpdateNetworkStatus(boolean cable, boolean wifi, boolean misc);
 }

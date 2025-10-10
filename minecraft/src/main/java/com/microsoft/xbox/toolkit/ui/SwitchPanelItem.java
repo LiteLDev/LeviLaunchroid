@@ -9,11 +9,6 @@ import android.widget.RelativeLayout;
 
 import com.microsoft.xbox.toolkit.XLERValueHelper;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class SwitchPanelItem extends FrameLayout implements SwitchPanel.SwitchPanelChild {
     private final int INVALID_STATE_ID = -1;

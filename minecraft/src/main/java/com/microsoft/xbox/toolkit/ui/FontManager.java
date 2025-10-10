@@ -5,11 +5,6 @@ import android.graphics.Typeface;
 
 import java.util.HashMap;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class FontManager {
     private static final FontManager instance = new FontManager();

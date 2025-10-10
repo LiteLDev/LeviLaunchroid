@@ -10,11 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.BufferedInputStream;
 import java.io.InputStreamReader;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ObjectLoader<T> extends WorkerLoader<ObjectLoader.Result<T>> {
     private static final String TAG = "ObjectLoader";

@@ -7,11 +7,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ThreadSafeFixedSizeHashtable<K, V> {
     private final PriorityQueue<ThreadSafeFixedSizeHashtable<K, V>.KeyTuple> fifo = new PriorityQueue<>();

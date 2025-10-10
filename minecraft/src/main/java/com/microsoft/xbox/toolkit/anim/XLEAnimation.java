@@ -5,11 +5,6 @@ import android.view.animation.Interpolator;
 
 import com.microsoft.xbox.toolkit.ThreadManager;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public abstract class XLEAnimation {
     protected Runnable endRunnable;

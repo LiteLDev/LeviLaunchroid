@@ -4,11 +4,6 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public abstract class BaseActivity extends AppCompatActivity {
     public boolean hasFragment(int i) {

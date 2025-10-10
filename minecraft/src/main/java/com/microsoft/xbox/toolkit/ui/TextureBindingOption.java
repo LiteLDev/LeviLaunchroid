@@ -5,11 +5,6 @@ import com.microsoft.xbox.toolkit.XLERValueHelper;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class TextureBindingOption {
     public static final int DO_NOT_SCALE = -1;

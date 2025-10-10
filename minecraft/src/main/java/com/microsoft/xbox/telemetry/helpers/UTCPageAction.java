@@ -4,11 +4,6 @@ import com.microsoft.xbox.telemetry.utc.PageAction;
 
 import java.util.HashMap;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class UTCPageAction {
     public static void track(String str, CharSequence charSequence) {

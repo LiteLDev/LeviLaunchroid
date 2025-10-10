@@ -81,6 +81,20 @@
     <string name="check_update">Check for updates</string>
     <string name="version_prefix">Version: </string>
 
+    <string name="dialog_title_no_version">No Version Selected</string>
+    <string name="dialog_message_no_version">Please select a game version before launching.</string>
+    <string name="dialog_title_version_isolation">Version Isolation Required</string>
+    <string name="dialog_message_version_isolation">This is an imported version. Please enable version isolation in settings to launch this version.</string>
+    <string name="dialog_positive_enable">Enable</string>
+    <string name="dialog_title_no_base_game">Base Game Required</string>
+    <string name="dialog_message_no_base_game">No base Minecraft installation found. Please install Minecraft from the Play Store to use isolated versions.</string>
+    <string name="dialog_title_launch_failed">Launch Failed</string>
+    <string name="dialog_message_launch_failed">Failed to launch Minecraft: %1$s</string>
+    <string name="dialog_title_disable_version_isolation">Disable Version Isolation</string>
+    <string name="dialog_message_disable_version_isolation">You are trying to launch an installed version with version isolation enabled. Please disable version isolation to proceed.</string>
+    <string name="dialog_positive_disable">Disable</string>
+    <string name="dialog_positive_ok">OK</string>
+
 
     <string name="new_version_found">New version found: %1$s</string>
     <string name="update_question">Do you want to download and install the latest version?</string>

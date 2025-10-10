@@ -13,11 +13,6 @@ import com.microsoft.xbox.idp.model.Const;
 import com.mojang.minecraftpe.R;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class CatchAllErrorFragment extends BaseFragment {
     public static final String TAG = CatchAllErrorFragment.class.getSimpleName();

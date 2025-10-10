@@ -2,11 +2,6 @@ package com.microsoft.xbox.telemetry.helpers;
 
 import android.util.Log;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class UTCLog {
     static final String UTCLOGTAG = "UTCLOGGING";

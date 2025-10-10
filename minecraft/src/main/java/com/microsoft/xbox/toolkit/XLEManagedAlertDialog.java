@@ -4,11 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEManagedAlertDialog extends AlertDialog implements IXLEManagedDialog {
     private IXLEManagedDialog.DialogType dialogType = IXLEManagedDialog.DialogType.NORMAL;

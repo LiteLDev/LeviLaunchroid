@@ -2,11 +2,6 @@ package com.microsoft.xbox.idp.services;
 
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class EndpointsFactory {
     @Nullable

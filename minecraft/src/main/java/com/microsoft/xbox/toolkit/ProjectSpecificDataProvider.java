@@ -1,10 +1,5 @@
 package com.microsoft.xbox.toolkit;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ProjectSpecificDataProvider implements IProjectSpecificDataProvider {
     private static final ProjectSpecificDataProvider instance = new ProjectSpecificDataProvider();

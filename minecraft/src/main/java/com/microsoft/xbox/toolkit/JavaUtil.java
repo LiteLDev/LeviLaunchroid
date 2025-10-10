@@ -26,11 +26,6 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class JavaUtil {
     private static final String HEX_PREFIX = "0x";

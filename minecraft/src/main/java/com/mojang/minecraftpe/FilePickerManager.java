@@ -4,11 +4,7 @@ import android.content.Intent;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * 13.08.2022
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
+
 public class FilePickerManager implements ActivityListener {
     static final int PICK_DIRECTORY_REQUEST_CODE = 246242755;
     FilePickerManagerHandler mHandler;

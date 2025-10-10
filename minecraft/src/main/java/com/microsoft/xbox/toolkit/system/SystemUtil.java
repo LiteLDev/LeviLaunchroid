@@ -18,11 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import java.net.NetworkInterface;
 import java.util.Collections;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class SystemUtil {
     private static final int MAX_SD_SCREEN_PIXELS = 384000;

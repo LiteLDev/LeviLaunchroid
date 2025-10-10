@@ -8,11 +8,6 @@ import com.microsoft.xbox.xle.viewmodel.ChangeFriendshipDialogViewModel;
 import com.microsoft.xbox.xle.viewmodel.ViewModelBase;
 import com.microsoft.xboxtcui.XboxTcuiSdk;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class SGProjectSpecificDialogManager extends DialogManagerBase {
     private static final IProjectSpecificDialogManager instance = new SGProjectSpecificDialogManager();

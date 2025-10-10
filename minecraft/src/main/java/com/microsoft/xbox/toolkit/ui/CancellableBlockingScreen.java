@@ -8,11 +8,6 @@ import android.widget.TextView;
 
 import com.microsoft.xbox.toolkit.XLERValueHelper;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class CancellableBlockingScreen extends Dialog {
     private final XLEButton cancelButton = findViewById(XLERValueHelper.getIdRValue("blocking_dialog_cancel"));

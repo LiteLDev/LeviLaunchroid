@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 file(GLOB_RECURSE SRC_FILES "src/*.cpp")
-
+add_subdirectory(unpaircore)
 add_library(
         leviutils
         SHARED

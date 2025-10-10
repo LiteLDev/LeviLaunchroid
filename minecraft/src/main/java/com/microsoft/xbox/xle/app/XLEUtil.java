@@ -12,11 +12,6 @@ import com.microsoft.xboxtcui.XboxTcuiSdk;
 
 import java.util.Date;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEUtil {
     @SuppressLint("WrongConstant")

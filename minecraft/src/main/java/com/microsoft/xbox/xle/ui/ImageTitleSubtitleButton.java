@@ -17,11 +17,6 @@ import com.microsoft.xbox.xle.app.XLEUtil;
 
 import java.net.URI;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ImageTitleSubtitleButton extends LinearLayout {
     private final XLEUniversalImageView iconImageView;

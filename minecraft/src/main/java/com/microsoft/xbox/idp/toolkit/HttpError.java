@@ -5,11 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.InputStream;
 import java.util.Scanner;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class HttpError {
     private static final String INPUT_START_TOKEN = "\\A";

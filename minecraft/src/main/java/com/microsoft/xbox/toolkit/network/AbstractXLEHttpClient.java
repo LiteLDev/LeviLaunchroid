@@ -13,11 +13,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public abstract class AbstractXLEHttpClient {
     public abstract HttpResponse execute(HttpUriRequest httpUriRequest) throws IOException;

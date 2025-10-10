@@ -5,11 +5,6 @@ import android.util.Log;
 import com.microsoft.xbox.idp.toolkit.BitmapLoader;
 import com.microsoft.xbox.idp.toolkit.ObjectLoader;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public final class CacheUtil {
     private static final String TAG = CacheUtil.class.getSimpleName();

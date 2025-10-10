@@ -19,11 +19,6 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.spongycastle.asn1.cmp.PKIFailureInfo;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class HttpClientFactory {
     private static final int CONNECTION_PER_ROUTE = 16;

@@ -13,11 +13,6 @@ import com.microsoft.xbox.toolkit.system.SystemUtil;
 import com.microsoft.xbox.toolkit.ui.NavigationManager;
 import com.microsoft.xbox.xle.anim.XLEMAASAnimationPackageNavigationManager;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEManagedDialog extends Dialog implements IXLEManagedDialog {
     protected static final String BODY_ANIMATION_NAME = "Dialog";

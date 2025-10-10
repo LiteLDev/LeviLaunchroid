@@ -4,11 +4,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class MultiMap<K, V> {
     private final Hashtable<K, HashSet<V>> data = new Hashtable<>();

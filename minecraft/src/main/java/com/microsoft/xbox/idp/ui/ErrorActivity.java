@@ -14,11 +14,6 @@ import com.mojang.minecraftpe.R;
 import org.jetbrains.annotations.Nullable;
 
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ErrorActivity extends BaseActivity implements HeaderFragment.Callbacks, ErrorButtonsFragment.Callbacks {
     public static final String ARG_ERROR_TYPE = "ARG_ERROR_TYPE";

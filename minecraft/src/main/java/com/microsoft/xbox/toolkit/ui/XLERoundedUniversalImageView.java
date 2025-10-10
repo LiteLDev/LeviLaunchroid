@@ -13,11 +13,6 @@ import android.util.AttributeSet;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLERoundedUniversalImageView extends XLEUniversalImageView {
     public XLERoundedUniversalImageView(Context context) {

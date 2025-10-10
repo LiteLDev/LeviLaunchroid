@@ -6,11 +6,6 @@ import com.microsoft.xbox.service.model.UserProfileData;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public final class FriendSelectorItem extends FollowersData {
     private static final long serialVersionUID = 5799344980951867134L;

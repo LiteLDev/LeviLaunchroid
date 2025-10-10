@@ -9,11 +9,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class TrieSearch {
     private static final String ComponentName = TrieSearch.class.getName();

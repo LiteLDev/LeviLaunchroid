@@ -3,11 +3,6 @@ package com.microsoft.xbox.service.network.managers;
 import com.microsoft.xbox.service.network.managers.xblshared.ISLSServiceManager;
 import com.microsoft.xbox.service.network.managers.xblshared.SLSXsapiServiceManager;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ServiceManagerFactory {
     private static final ServiceManagerFactory instance = new ServiceManagerFactory();

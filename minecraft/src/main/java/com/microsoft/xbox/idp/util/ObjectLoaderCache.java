@@ -4,11 +4,6 @@ import com.microsoft.xbox.idp.toolkit.ObjectLoader;
 
 import java.util.HashMap;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ObjectLoaderCache implements ObjectLoader.Cache {
     private final HashMap<Object, ObjectLoader.Result<?>> map = new HashMap<>();

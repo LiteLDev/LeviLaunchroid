@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -21,7 +20,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.minecraft.MinecraftLauncher;
 import org.levimc.launcher.core.mods.FileHandler;
@@ -49,14 +47,12 @@ import org.levimc.launcher.util.PlayStoreValidator;
 import org.levimc.launcher.util.ResourcepackHandler;
 import org.levimc.launcher.util.ThemeManager;
 import org.levimc.launcher.util.UIHelper;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends BaseActivity {
-
     static {
         System.loadLibrary("leviutils");
     }
@@ -79,45 +75,31 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setupManagersAndHandlers();
-
         AnimationHelper.prepareInitialStates(binding);
         AnimationHelper.runInitializationSequence(binding);
-
         setTextMinecraftVersion();
         updateViewModelVersion();
-
-
         checkResourcepack();
         handleIncomingFiles();
         initSettingsUi();
-
         new GithubReleaseUpdater(this, "LiteLDev", "LeviLaunchroid", permissionResultLauncher).checkUpdateOnLaunch();
-
         repairNeededVersions();
-
         requestBasicPermissions();
-
         showEulaIfNeeded();
-
         initModsRecycler();
     }
 
     private void setupManagersAndHandlers() {
         languageManager = new LanguageManager(this);
         languageManager.applySavedLanguage();
-
         viewModel = new ViewModelProvider(this, new MainViewModelFactory(getApplication())).get(MainViewModel.class);
         viewModel.getModsLiveData().observe(this, this::updateModsUI);
-
         versionManager = VersionManager.get(this);
         versionManager.loadAllVersions();
-
         apkImportManager = new ApkImportManager(this, viewModel);
-        minecraftLauncher = new MinecraftLauncher(this, getClassLoader());
+        minecraftLauncher = new MinecraftLauncher(this);
         fileHandler = new FileHandler(this, viewModel, versionManager);
-
         permissionResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -125,7 +107,6 @@ public class MainActivity extends BaseActivity {
                         permissionsHandler.onActivityResult(result.getResultCode(), result.getData());
                 }
         );
-
         apkImportResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -133,7 +114,6 @@ public class MainActivity extends BaseActivity {
                         apkImportManager.handleActivityResult(result.getResultCode(), result.getData());
                 }
         );
-
         soImportResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -156,10 +136,8 @@ public class MainActivity extends BaseActivity {
                     }
                 }
         );
-
         permissionsHandler = PermissionsHandler.getInstance();
         permissionsHandler.setActivity(this, permissionResultLauncher);
-
         initListeners();
     }
 
@@ -170,16 +148,12 @@ public class MainActivity extends BaseActivity {
         modsAdapter.setOnModEnableChangeListener((mod, enabled) -> {
             if (viewModel != null) viewModel.setModEnabled(mod.getFileName(), enabled);
         });
-
         modsAdapter.setOnModReorderListener(reorderedMods -> {
             if (viewModel != null) {
                 viewModel.reorderMods(reorderedMods);
-                runOnUiThread(() ->
-                    Toast.makeText(this, R.string.mod_reordered, Toast.LENGTH_SHORT).show()
-                );
+                runOnUiThread(() -> Toast.makeText(this, R.string.mod_reordered, Toast.LENGTH_SHORT).show());
             }
         });
-
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -207,7 +181,6 @@ public class MainActivity extends BaseActivity {
             }
         };
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.modsRecycler);
-
         viewModel.getModsLiveData().observe(this, this::updateModsUI);
     }
 
@@ -221,11 +194,7 @@ public class MainActivity extends BaseActivity {
     private void checkResourcepack() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         new ResourcepackHandler(
-                this,
-                minecraftLauncher,
-                executorService,
-                binding.progressLoader,
-                binding.launchButton
+                this, minecraftLauncher, executorService, binding.progressLoader, binding.launchButton
         ).checkIntentForResourcepack();
     }
 
@@ -238,24 +207,22 @@ public class MainActivity extends BaseActivity {
     }
 
     private void requestBasicPermissions() {
-        permissionsHandler.requestPermission(PermissionsHandler.PermissionType.STORAGE,
-                new PermissionsHandler.PermissionResultCallback() {
-                    @Override
-                    public void onPermissionGranted(PermissionsHandler.PermissionType type) {
-                        if (type == PermissionsHandler.PermissionType.STORAGE) {
-                            viewModel.refreshMods();
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionsHandler.PermissionType type, boolean permanentlyDenied) {
-                        if (type == PermissionsHandler.PermissionType.STORAGE) {
-                            Toast.makeText(MainActivity.this, R.string.storage_permission_not_granted, Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                    }
+        permissionsHandler.requestPermission(PermissionsHandler.PermissionType.STORAGE, new PermissionsHandler.PermissionResultCallback() {
+            @Override
+            public void onPermissionGranted(PermissionsHandler.PermissionType type) {
+                if (type == PermissionsHandler.PermissionType.STORAGE) {
+                    viewModel.refreshMods();
                 }
-        );
+            }
+
+            @Override
+            public void onPermissionDenied(PermissionsHandler.PermissionType type, boolean permanentlyDenied) {
+                if (type == PermissionsHandler.PermissionType.STORAGE) {
+                    Toast.makeText(MainActivity.this, R.string.storage_permission_not_granted, Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
     }
 
     private void showEulaIfNeeded() {
@@ -330,25 +297,81 @@ public class MainActivity extends BaseActivity {
     }
 
     private void launchGame() {
-        if (!PlayStoreValidator.isMinecraftInstalled(this)) {
-            PlayStoreValidationDialog.showNotInstalledDialog(this);
+        binding.launchButton.setEnabled(false);
+        binding.progressLoader.setVisibility(View.VISIBLE);
+
+        GameVersion version = versionManager != null ? versionManager.getSelectedVersion() : null;
+
+        // Check if no version is selected
+        if (version == null) {
+            binding.progressLoader.setVisibility(View.GONE);
+            binding.launchButton.setEnabled(true);
+            new CustomAlertDialog(this)
+                    .setTitleText(getString(R.string.dialog_title_no_version))
+                    .setMessage(getString(R.string.dialog_message_no_version))
+                    .setPositiveButton(getString(R.string.dialog_positive_ok), null)
+                    .show();
             return;
         }
 
+        // Check if trying to load installed version with version isolation enabled
+        if (version.isInstalled && FeatureSettings.getInstance().isVersionIsolationEnabled()) {
+            binding.progressLoader.setVisibility(View.GONE);
+            binding.launchButton.setEnabled(true);
+            new CustomAlertDialog(this)
+                    .setTitleText(getString(R.string.dialog_title_disable_version_isolation))
+                    .setMessage(getString(R.string.dialog_message_disable_version_isolation))
+                    .setPositiveButton(getString(R.string.dialog_positive_disable), v -> {
+                        FeatureSettings.getInstance().setVersionIsolationEnabled(false);
+                        launchGame(); // Retry launch after disabling version isolation
+                    })
+                    .setNegativeButton(getString(R.string.dialog_negative_cancel), null)
+                    .show();
+            return;
+        }
+
+        // Check if trying to load imported version without version isolation
+        if (!version.isInstalled && !FeatureSettings.getInstance().isVersionIsolationEnabled()) {
+            binding.progressLoader.setVisibility(View.GONE);
+            binding.launchButton.setEnabled(true);
+            new CustomAlertDialog(this)
+                    .setTitleText(getString(R.string.dialog_title_version_isolation))
+                    .setMessage(getString(R.string.dialog_message_version_isolation))
+                    .setPositiveButton(getString(R.string.dialog_positive_enable), v -> {
+                        FeatureSettings.getInstance().setVersionIsolationEnabled(true);
+                        launchGame(); // Retry launch after enabling version isolation
+                    })
+                    .setNegativeButton(getString(R.string.dialog_negative_cancel), null)
+                    .show();
+            return;
+        }
+
+        // Check if license is verified or Minecraft is from Play Store
         if (!PlayStoreValidator.isMinecraftFromPlayStore(this)) {
+            binding.progressLoader.setVisibility(View.GONE);
+            binding.launchButton.setEnabled(true);
             PlayStoreValidationDialog.showNotFromPlayStoreDialog(this);
             return;
         }
 
-        binding.launchButton.setEnabled(false);
-        binding.progressLoader.setVisibility(View.VISIBLE);
         new Thread(() -> {
-            GameVersion version = versionManager != null ? versionManager.getSelectedVersion() : null;
-            minecraftLauncher.launch(getIntent(), version);
-            runOnUiThread(() -> {
-                binding.progressLoader.setVisibility(View.GONE);
-                binding.launchButton.setEnabled(true);
-            });
+            try {
+                minecraftLauncher.launch(getIntent(), version);
+                runOnUiThread(() -> {
+                    binding.progressLoader.setVisibility(View.GONE);
+                    binding.launchButton.setEnabled(true);
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    binding.progressLoader.setVisibility(View.GONE);
+                    binding.launchButton.setEnabled(true);
+                    new CustomAlertDialog(this)
+                            .setTitleText(getString(R.string.dialog_title_launch_failed))
+                            .setMessage(getString(R.string.dialog_message_launch_failed, e.getMessage()))
+                            .setPositiveButton(getString(R.string.dialog_positive_ok), null)
+                            .show();
+                });
+            }
         }).start();
     }
 
@@ -398,7 +421,6 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(this, getString(R.string.not_found_version), Toast.LENGTH_SHORT).show();
             return;
         }
-
         Intent intent = new Intent(this, ContentManagementActivity.class);
         startActivity(intent);
     }
@@ -418,22 +440,21 @@ public class MainActivity extends BaseActivity {
                 .setTitleText(getString(R.string.dialog_title_delete_version))
                 .setMessage(getString(R.string.dialog_message_delete_version))
                 .setPositiveButton(getString(R.string.dialog_positive_delete), v2 -> {
-                    VersionManager.get(this).deleteCustomVersion(versionManager.getSelectedVersion(),
-                            new VersionManager.OnDeleteVersionCallback() {
-                                @Override
-                                public void onDeleteCompleted(boolean success) {
-                                    runOnUiThread(() -> {
-                                        Toast.makeText(MainActivity.this, getString(R.string.toast_delete_success), Toast.LENGTH_SHORT).show();
-                                        viewModel.setCurrentVersion(versionManager.getSelectedVersion());
-                                        setTextMinecraftVersion();
-                                    });
-                                }
-
-                                @Override
-                                public void onDeleteFailed(Exception e) {
-                                    runOnUiThread(() -> Toast.makeText(MainActivity.this, getString(R.string.toast_delete_failed, e.getMessage()), Toast.LENGTH_SHORT).show());
-                                }
+                    VersionManager.get(this).deleteCustomVersion(versionManager.getSelectedVersion(), new VersionManager.OnDeleteVersionCallback() {
+                        @Override
+                        public void onDeleteCompleted(boolean success) {
+                            runOnUiThread(() -> {
+                                Toast.makeText(MainActivity.this, getString(R.string.toast_delete_success), Toast.LENGTH_SHORT).show();
+                                viewModel.setCurrentVersion(versionManager.getSelectedVersion());
+                                setTextMinecraftVersion();
                             });
+                        }
+
+                        @Override
+                        public void onDeleteFailed(Exception e) {
+                            runOnUiThread(() -> Toast.makeText(MainActivity.this, getString(R.string.toast_delete_failed, e.getMessage()), Toast.LENGTH_SHORT).show());
+                        }
+                    });
                 })
                 .setNegativeButton(getString(R.string.dialog_negative_cancel), null)
                 .show();
@@ -443,7 +464,6 @@ public class MainActivity extends BaseActivity {
         FeatureSettings fs = FeatureSettings.getInstance();
         ThemeManager themeManager = new ThemeManager(this);
         SettingsDialog dlg = new SettingsDialog(this);
-
         dlg.addThemeSelectorItem(themeManager);
         dlg.addSwitchItem(
                 getString(R.string.enable_debug_log),
@@ -460,10 +480,7 @@ public class MainActivity extends BaseActivity {
                 getString(R.string.version_prefix) + localVersion,
                 getString(R.string.check_update),
                 v -> new GithubReleaseUpdater(
-                        this,
-                        "LiteLDev",
-                        "LeviLaunchroid",
-                        permissionResultLauncher
+                        this, "LiteLDev", "LeviLaunchroid", permissionResultLauncher
                 ).checkUpdate()
         );
         dlg.show();
@@ -471,8 +488,7 @@ public class MainActivity extends BaseActivity {
 
     public void setTextMinecraftVersion() {
         if (binding == null) return;
-        String display = versionManager.getSelectedVersion() != null ?
-                versionManager.getSelectedVersion().displayName : getString(R.string.not_found_version);
+        String display = versionManager.getSelectedVersion() != null ? versionManager.getSelectedVersion().displayName : getString(R.string.not_found_version);
         binding.textMinecraftVersion.setText(TextUtils.isEmpty(display) ? getString(R.string.not_found_version) : display);
         updateAbiLabel();
     }

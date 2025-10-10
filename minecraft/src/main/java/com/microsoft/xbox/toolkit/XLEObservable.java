@@ -3,11 +3,6 @@ package com.microsoft.xbox.toolkit;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public abstract class XLEObservable<T> {
     private final HashSet<XLEObserver<T>> data = new HashSet<>();

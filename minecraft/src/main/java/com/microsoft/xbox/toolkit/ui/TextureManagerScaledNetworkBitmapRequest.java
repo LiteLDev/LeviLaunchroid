@@ -2,11 +2,6 @@ package com.microsoft.xbox.toolkit.ui;
 
 import com.microsoft.xbox.toolkit.XLEFileCacheItemKey;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class TextureManagerScaledNetworkBitmapRequest implements XLEFileCacheItemKey {
     public final TextureBindingOption bindingOption;

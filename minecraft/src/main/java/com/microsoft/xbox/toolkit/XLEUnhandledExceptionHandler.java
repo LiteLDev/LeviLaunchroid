@@ -4,11 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEUnhandledExceptionHandler implements Thread.UncaughtExceptionHandler {
     public static XLEUnhandledExceptionHandler Instance = new XLEUnhandledExceptionHandler();

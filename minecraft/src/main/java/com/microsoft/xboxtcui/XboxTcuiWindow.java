@@ -9,7 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-
+import com.mojang.minecraftpe.R;
 import com.microsoft.xbox.service.model.ProfileModel;
 import com.microsoft.xbox.toolkit.BackgroundThreadWaitor;
 import com.microsoft.xbox.toolkit.DialogManager;

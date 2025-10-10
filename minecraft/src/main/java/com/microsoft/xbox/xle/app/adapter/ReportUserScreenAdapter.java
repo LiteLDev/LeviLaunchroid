@@ -18,11 +18,6 @@ import com.microsoft.xbox.xle.viewmodel.AdapterBase;
 import com.microsoft.xbox.xle.viewmodel.ReportUserScreenViewModel;
 import com.microsoft.xboxtcui.XboxTcuiSdk;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ReportUserScreenAdapter extends AdapterBase {
     private final XLEButton cancelButton = ((XLEButton) findViewById(R.id.report_user_cancel));

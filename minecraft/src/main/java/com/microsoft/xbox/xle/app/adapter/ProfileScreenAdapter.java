@@ -17,11 +17,6 @@ import com.microsoft.xbox.xle.ui.XLERootView;
 import com.microsoft.xbox.xle.viewmodel.AdapterBase;
 import com.microsoft.xboxtcui.XboxAppDeepLinker;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ProfileScreenAdapter extends AdapterBase {
     private final ScrollView contentScrollView = ((ScrollView) findViewById(R.id.profile_screen_content_list));

@@ -2,11 +2,6 @@ package com.microsoft.xbox.service.model.sls;
 
 import com.microsoft.xbox.toolkit.GsonUtil;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class NeverListRequest {
     public long xuid;

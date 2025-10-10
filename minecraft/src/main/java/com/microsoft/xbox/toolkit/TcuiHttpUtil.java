@@ -13,11 +13,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class TcuiHttpUtil {
     public static <T> T getResponseSync(@NotNull HttpCall httpCall, final Class<T> cls) throws XLEException {

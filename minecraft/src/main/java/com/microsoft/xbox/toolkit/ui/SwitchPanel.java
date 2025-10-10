@@ -13,11 +13,6 @@ import android.widget.RelativeLayout;
 import com.microsoft.xbox.toolkit.BackgroundThreadWaitor;
 import com.microsoft.xbox.toolkit.XLERValueHelper;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class SwitchPanel extends LinearLayout {
     private static final int LAYOUT_BLOCK_TIMEOUT_MS = 150;

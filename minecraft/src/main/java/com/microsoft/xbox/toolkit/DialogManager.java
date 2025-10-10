@@ -2,11 +2,6 @@ package com.microsoft.xbox.toolkit;
 
 import android.app.Dialog;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class DialogManager implements IProjectSpecificDialogManager {
     private static final DialogManager instance = new DialogManager();

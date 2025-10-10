@@ -13,11 +13,6 @@ import com.mojang.minecraftpe.R;
 
 import org.spongycastle.asn1.cmp.PKIFailureInfo;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLECheckBox extends ViewGroup {
     public final CheckBox checkBox;

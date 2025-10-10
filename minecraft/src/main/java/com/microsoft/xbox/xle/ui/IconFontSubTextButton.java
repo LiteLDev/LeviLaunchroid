@@ -14,11 +14,6 @@ import com.microsoft.xbox.toolkit.XLERValueHelper;
 import com.microsoft.xbox.toolkit.ui.CustomTypefaceTextView;
 import com.microsoft.xbox.xle.app.XLEUtil;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class IconFontSubTextButton extends LinearLayout {
     private final FrameLayout iconFrameLayout;

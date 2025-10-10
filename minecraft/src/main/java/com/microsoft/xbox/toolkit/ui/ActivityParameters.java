@@ -2,11 +2,6 @@ package com.microsoft.xbox.toolkit.ui;
 
 import java.util.HashMap;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ActivityParameters extends HashMap<String, Object> {
     private static final String FF_INFO_TYPE = "InfoType";

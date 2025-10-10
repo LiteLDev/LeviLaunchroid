@@ -22,11 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class SLSXsapiServiceManager implements ISLSServiceManager {
     private static final String TAG = SLSXsapiServiceManager.class.getSimpleName();

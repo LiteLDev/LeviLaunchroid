@@ -2,11 +2,6 @@ package com.microsoft.xbox.toolkit;
 
 import com.microsoft.xbox.toolkit.network.XLEThreadPool;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public abstract class NetworkAsyncTask<T> extends XLEAsyncTask<T> {
     protected boolean forceLoad = true;

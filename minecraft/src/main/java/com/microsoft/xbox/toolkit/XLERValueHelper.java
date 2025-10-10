@@ -9,11 +9,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLERValueHelper {
     public static int getStringRValue(String str) {

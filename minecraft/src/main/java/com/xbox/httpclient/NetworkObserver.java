@@ -8,11 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * 09.09.2025
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
+
 public class NetworkObserver {
     private static final String CONNECTIVITY_SERVICE = "connectivity";
 

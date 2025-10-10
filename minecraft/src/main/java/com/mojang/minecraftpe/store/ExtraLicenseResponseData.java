@@ -2,25 +2,17 @@ package com.mojang.minecraftpe.store;
 
 
 public class ExtraLicenseResponseData {
-    private long mRetryAttempts = 0;
-    private long mRetryUntilTime = 0;
-    private long mValidationTime = 0;
 
-    public ExtraLicenseResponseData(long validationTime, long retryUntilTime, long retryAttempts) {
-        mValidationTime = validationTime;
-        mRetryUntilTime = retryUntilTime;
-        mRetryAttempts = retryAttempts;
-    }
-
-    public long getValidationTime() {
-        return mValidationTime;
+    public long getRetryAttempts() {
+        return 0L;
     }
 
     public long getRetryUntilTime() {
-        return mRetryUntilTime;
+        return 0L;
     }
 
-    public long getRetryAttempts() {
-        return mRetryAttempts;
+    public long getValidationTime() {
+        return 0L;
     }
+
 }

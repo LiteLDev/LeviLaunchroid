@@ -9,11 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEBitmap {
     public static String ALLOCATION_TAG = "XLEBITMAP";

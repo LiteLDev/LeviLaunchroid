@@ -21,11 +21,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.UUID;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class CommonData {
     private static final String DEFAULTSANDBOX = "RETAIL";

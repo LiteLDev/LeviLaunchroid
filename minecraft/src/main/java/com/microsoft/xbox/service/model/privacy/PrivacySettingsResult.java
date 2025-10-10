@@ -7,11 +7,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class PrivacySettingsResult {
     public ArrayList<PrivacySettings.PrivacySetting> settings;

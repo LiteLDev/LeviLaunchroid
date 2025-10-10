@@ -1,58 +1,59 @@
 package com.mojang.minecraftpe.store;
 
-
 public class NativeStoreListener implements StoreListener {
-    long mStoreListener;
 
-    public NativeStoreListener(long storeListener) {
-        mStoreListener = storeListener;
+    private final long id;
+
+    NativeStoreListener(long id) {
+        this.id = id;
     }
 
-    public native void onPurchaseCanceled(long j, String str);
+    public native void onPurchaseCanceled(long id, String product);
 
-    public native void onPurchaseFailed(long j, String str);
-
-    public native void onPurchaseSuccessful(long j, String str, String str2);
-
-    public native void onQueryProductsFail(long j);
-
-    public native void onQueryProductsSuccess(long j, Product[] productArr);
-
-    public native void onQueryPurchasesFail(long j);
-
-    public native void onQueryPurchasesSuccess(long j, Purchase[] purchaseArr);
-
-    public native void onStoreInitialized(long j, boolean z);
-
-    public void onStoreInitialized(boolean available) {
-        onStoreInitialized(mStoreListener, available);
+    public void onPurchaseCanceled(String product) {
+        onPurchaseCanceled(id, product);
     }
 
-    public void onQueryProductsSuccess(Product[] products) {
-        onQueryProductsSuccess(mStoreListener, products);
+    public native void onPurchaseFailed(long id, String product);
+
+    public void onPurchaseFailed(String product) {
+        onPurchaseFailed(id, product);
     }
+
+    public native void onPurchaseSuccessful(long id, String product);
+
+    public void onPurchaseSuccessful(String product) {
+        onPurchaseSuccessful(id, product);
+    }
+
+    public native void onQueryProductsFail(long id);
 
     public void onQueryProductsFail() {
-        onQueryProductsFail(mStoreListener);
+        onQueryProductsFail(id);
     }
 
-    public void onPurchaseSuccessful(String productId, String receipt) {
-        onPurchaseSuccessful(mStoreListener, productId, receipt);
+    public native void onQueryProductsSuccess(long id, Product[] products);
+
+    public void onQueryProductsSuccess(Product[] products) {
+        onQueryProductsSuccess(id, products);
     }
 
-    public void onPurchaseCanceled(String productId) {
-        onPurchaseCanceled(mStoreListener, productId);
-    }
-
-    public void onPurchaseFailed(String productId) {
-        onPurchaseFailed(mStoreListener, productId);
-    }
-
-    public void onQueryPurchasesSuccess(Purchase[] purchases) {
-        onQueryPurchasesSuccess(mStoreListener, purchases);
-    }
+    public native void onQueryPurchasesFail(long id);
 
     public void onQueryPurchasesFail() {
-        onQueryPurchasesFail(mStoreListener);
+        onQueryPurchasesFail(id);
     }
+
+    public native void onQueryPurchasesSuccess(long id, Purchase[] purchases);
+
+    public void onQueryPurchasesSuccess(Purchase[] purchases) {
+        onQueryPurchasesSuccess(id, purchases);
+    }
+
+    public native void onStoreInitialized(long id, boolean available);
+
+    public void onStoreInitialized(boolean available) {
+        onStoreInitialized(id, available);
+    }
+
 }

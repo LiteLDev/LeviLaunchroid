@@ -1,28 +1,27 @@
 package com.mojang.minecraftpe.store;
 
-
 public interface Store {
-    void acknowledgePurchase(String str, String str2);
 
     void destructor();
 
-    ExtraLicenseResponseData getExtraLicenseData();
+    String getStoreId();
+
+    void purchase(String paramString, boolean paramBool, String paramString2);
+
+    void queryProducts(String[] paramArrayOfString);
+
+    void queryPurchases();
+
+    void acknowledgePurchase(String paramString, String paramString2);
 
     String getProductSkuPrefix();
 
     String getRealmsSkuPrefix();
 
-    String getStoreId();
-
     boolean hasVerifiedLicense();
 
-    void purchase(String str, boolean z, String str2);
-
-    void purchaseGame();
-
-    void queryProducts(String[] strArr);
-
-    void queryPurchases();
+    ExtraLicenseResponseData getExtraLicenseData();
 
     boolean receivedLicenseResponse();
+
 }

@@ -20,11 +20,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class SystemSettingsModel extends ModelBase<Version> {
     private final HashSet<String> hiddenMruItems;

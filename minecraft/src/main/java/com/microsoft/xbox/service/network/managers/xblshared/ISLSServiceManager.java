@@ -12,11 +12,6 @@ import com.microsoft.xbox.service.network.managers.ProfilePreferredColor;
 import com.microsoft.xbox.service.network.managers.ProfileSummaryResultContainer;
 import com.microsoft.xbox.toolkit.XLEException;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public interface ISLSServiceManager {
     IUserProfileResult.UserProfileResult SearchGamertag(String str) throws XLEException;

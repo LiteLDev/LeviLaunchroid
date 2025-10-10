@@ -2,11 +2,6 @@ package com.microsoft.xbox.toolkit;
 
 import java.util.HashMap;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEAllocationTracker {
     private static final XLEAllocationTracker instance = new XLEAllocationTracker();

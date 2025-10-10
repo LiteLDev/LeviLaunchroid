@@ -7,11 +7,6 @@ import com.mojang.minecraftpe.R;
 import com.microsoft.xbox.telemetry.helpers.UTCPeopleHub;
 import com.microsoft.xbox.xle.app.activity.ActivityBase;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ProfileScreen extends ActivityBase {
     public ProfileScreen() {

@@ -17,11 +17,6 @@ import com.microsoft.xbox.toolkit.ui.FontManager;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class IconFontToggleButton extends LinearLayout implements Checkable {
     private boolean checked;

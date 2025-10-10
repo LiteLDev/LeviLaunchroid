@@ -10,11 +10,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEGlobalData {
     private static final int MAX_SEARCH_TEXT_LENGTH = 120;

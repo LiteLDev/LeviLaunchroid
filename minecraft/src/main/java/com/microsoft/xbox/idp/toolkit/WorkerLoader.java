@@ -5,11 +5,6 @@ import android.os.Build;
 import android.os.Handler;
 import androidx.loader.content.Loader;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public abstract class WorkerLoader<D> extends Loader<D> {
     public final Handler dispatcher = new Handler();

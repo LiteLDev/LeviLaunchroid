@@ -7,9 +7,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Build;
 import android.provider.Settings;
-import com.mojang.minecraftpe.hardwareinfo.CPUCluster;
-import com.mojang.minecraftpe.hardwareinfo.CPUTopologyInfo;
-import com.mojang.minecraftpe.platforms.Platform;
+import android.text.TextUtils;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,25 +52,7 @@ public class HardwareInformation {
     }
 
     public static int getPerformanceCoreCount() {
-        CPUCluster[] clusterArray = CPUTopologyInfo.getInstance().getClusterArray();
-        int numCores = getNumCores();
-        if (clusterArray.length == 0) {
-            if (numCores > 2) {
-                return numCores >> 1;
-            }
-            return 1;
-        } else if (clusterArray.length == 1) {
-            return numCores;
-        } else {
-            CPUCluster cPUCluster = clusterArray[0];
-            long maxFreq = cPUCluster.getMaxFreq();
-            for (int i = 1; i < clusterArray.length; i++) {
-                if (clusterArray[i].getMaxFreq() < maxFreq) {
-                    cPUCluster = clusterArray[i];
-                }
-            }
-            return numCores - cPUCluster.getClusterCoreCount();
-        }
+        return 1;
     }
 
     public static @NotNull String getLocale() {
@@ -79,7 +60,10 @@ public class HardwareInformation {
     }
 
     public static String getCPUType() {
-        return Platform.createPlatform(false).getABIS();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return TextUtils.join(" ", Build.SUPPORTED_ABIS);
+        }
+        return Build.CPU_ABI;
     }
 
     @NotNull
@@ -98,12 +82,11 @@ public class HardwareInformation {
     }
 
     public static int getNumCores() {
-        int cPUCount = CPUTopologyInfo.getInstance().getCPUCount();
-        return cPUCount == 0 ? cpuInfo.getNumberCPUCores() : cPUCount;
+        return 2;
     }
 
     public static int getNumClusters() {
-        return CPUTopologyInfo.getInstance().getCPUClusterCount();
+        return 1;
     }
 
     @NotNull

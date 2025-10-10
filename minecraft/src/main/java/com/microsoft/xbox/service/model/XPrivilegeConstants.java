@@ -1,10 +1,5 @@
 package com.microsoft.xbox.service.model;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public final class XPrivilegeConstants {
     public static final String XPRIVILEGE_ADD_FRIEND = "255";

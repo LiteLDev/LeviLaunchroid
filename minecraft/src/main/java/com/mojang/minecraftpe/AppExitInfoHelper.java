@@ -9,11 +9,7 @@ import android.util.Log;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-/**
- * 09.09.2025
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
+
 public class AppExitInfoHelper {
     private Context mContext;
 

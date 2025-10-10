@@ -13,11 +13,6 @@ import com.microsoft.xbox.idp.compat.BaseFragment;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ErrorButtonsFragment extends BaseFragment implements View.OnClickListener {
     public static final String ARG_LEFT_ERROR_BUTTON_STRING_ID = "ARG_LEFT_ERROR_BUTTON_STRING_ID";

@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.mojang.minecraftpe.MainActivity
-import org.conscrypt.Conscrypt
-import java.security.Security
-
+import org.levimc.launcher.core.versions.GameVersion
+import org.levimc.launcher.settings.FeatureSettings
+import java.io.File
 
 class MinecraftActivity : MainActivity() {
 
@@ -15,45 +15,47 @@ class MinecraftActivity : MainActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
-            Log.d(TAG, "Initializing game manager...")
-            gameManager = GamePackageManager.getInstance(applicationContext)
+            val versionDir = intent.getStringExtra("MC_PATH")
+            val versionCode = intent.getStringExtra("MINECRAFT_VERSION") ?: ""
+            val versionDirName = intent.getStringExtra("MINECRAFT_VERSION_DIR") ?: ""
+            val isIsolated = !versionDir.isNullOrEmpty() && FeatureSettings.getInstance().isVersionIsolationEnabled()
 
-            Log.d(TAG, "Setting up security provider...")
+            val version = if (isIsolated && !versionDir.isNullOrEmpty()) {
+                GameVersion(
+                    versionDirName,
+                    versionCode,
+                    versionCode,
+                    File(versionDir),
+                    false,
+                    MinecraftLauncher.MC_PACKAGE_NAME,
+                    ""
+                )
+            } else if (!versionCode.isNullOrEmpty()) {
+                GameVersion(
+                    versionDirName,
+                    versionCode,
+                    versionCode,
+                    File(versionDir ?: ""),
+                    true,
+                    MinecraftLauncher.MC_PACKAGE_NAME,
+                    ""
+                )
+            } else {
+                null
+            }
+
+            gameManager = GamePackageManager.getInstance(applicationContext, version)
+
             try {
-                Security.insertProviderAt(Conscrypt.newProvider(), 1)
-            } catch (e: Exception) {
-                Log.w(TAG, "Conscrypt init failed: ${e.message}")
-            }
-
-            Log.d(TAG, "Loading native libraries...")
-            gameManager.loadAllLibraries()
-
-            val modsEnabled = intent.getBooleanExtra("MODS_ENABLED", false)
-            if (!modsEnabled) {
-                Log.d(TAG, "Loading game core...")
                 System.loadLibrary("preloader")
-
-                val libPath = if (gameManager.getPackageContext().applicationInfo.splitPublicSourceDirs?.isNotEmpty() == true) {
-                    "${applicationContext.cacheDir.path}/lib/${android.os.Build.CPU_ABI}/libminecraftpe.so"
-                } else {
-                    "${gameManager.getPackageContext().applicationInfo.nativeLibraryDir}/libminecraftpe.so"
-                }
-                nativeOnLauncherLoaded(libPath)
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to load preloader: ${e.message}")
             }
-
-            Log.i(TAG, "Game initialized successfully, calling super.onCreate()")
-
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to initialize game", e)
-            Toast.makeText(
-                this,
-                "Failed to load game: ${e.message}",
-                Toast.LENGTH_LONG
-            ).show()
+            Toast.makeText(this, "Failed to load game: ${e.message}", Toast.LENGTH_LONG).show()
             finish()
             return
         }
-
         super.onCreate(savedInstanceState)
     }
 
@@ -65,7 +67,16 @@ class MinecraftActivity : MainActivity() {
         }
     }
 
-    private external fun nativeOnLauncherLoaded(libPath: String)
+    override fun getFilesDir(): File {
+        val mcPath = intent.getStringExtra("MC_PATH")
+        val isVersionIsolationEnabled = FeatureSettings.getInstance().isVersionIsolationEnabled()
+
+        return if (isVersionIsolationEnabled && !mcPath.isNullOrEmpty()) {
+            File(mcPath)
+        } else {
+            super.getFilesDir()
+        }
+    }
 
     companion object {
         private const val TAG = "MinecraftActivity"

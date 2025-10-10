@@ -1,10 +1,5 @@
 package com.microsoft.xbox.service.network.managers.xblshared;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ProtectedRunnable implements Runnable {
     private static final String TAG = ProtectedRunnable.class.getSimpleName();

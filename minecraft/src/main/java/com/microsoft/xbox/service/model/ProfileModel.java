@@ -53,11 +53,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ProfileModel extends ModelBase<ProfileData> {
     private static final int MAX_PROFILE_MODELS = 20;

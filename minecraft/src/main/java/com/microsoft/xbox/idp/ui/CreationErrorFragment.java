@@ -15,11 +15,6 @@ import com.microsoft.xbox.idp.model.Const;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class CreationErrorFragment extends BaseFragment {
     public static final String TAG = CreationErrorFragment.class.getSimpleName();

@@ -12,11 +12,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public interface IFollowerPresenceResult {
 

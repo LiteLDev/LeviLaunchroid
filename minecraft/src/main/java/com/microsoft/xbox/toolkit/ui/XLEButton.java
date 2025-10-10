@@ -10,11 +10,6 @@ import android.widget.FrameLayout;
 import androidx.appcompat.widget.AppCompatButton;
 import com.microsoft.xbox.toolkit.XLERValueHelper;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEButton extends AppCompatButton {
     protected boolean disableSound;

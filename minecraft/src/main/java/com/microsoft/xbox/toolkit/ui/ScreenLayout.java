@@ -26,11 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public abstract class ScreenLayout extends FrameLayout {
     private static final ArrayList<View> badList = new ArrayList<>();

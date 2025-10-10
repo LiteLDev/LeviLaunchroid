@@ -3,11 +3,6 @@ package com.microsoft.xbox.toolkit;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ThreadSafePriorityQueue<T> {
     private final HashSet<T> hashSet = new HashSet<>();

@@ -9,11 +9,6 @@ import android.graphics.RectF;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class TextureResizer {
     public static @NotNull Bitmap createScaledBitmap8888(@NotNull Bitmap bitmap, int i, int i2, boolean z) {

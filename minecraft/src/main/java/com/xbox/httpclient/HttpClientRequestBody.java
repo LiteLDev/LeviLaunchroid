@@ -9,11 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * 13.08.2022
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
+
 public final class HttpClientRequestBody extends RequestBody {
     private final long callHandle;
     private final long contentLength;

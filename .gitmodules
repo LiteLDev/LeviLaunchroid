@@ -1,3 +1,6 @@
 [submodule "preloader/src/main/cpp/preloader"]
 	path = preloader/src/main/cpp/preloader
 	url = https://github.com/LiteLDev/preloader-android
+[submodule "app/src/main/cpp/leviutils/unpaircore"]
+	path = app/src/main/cpp/leviutils/unpaircore
+	url = https://github.com/Kitsuri-Studios/unpaircore

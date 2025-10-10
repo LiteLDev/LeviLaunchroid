@@ -8,11 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XMLHelper {
     private static final int XML_WAIT_TIMEOUT_MS = 1000;

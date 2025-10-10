@@ -33,11 +33,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class ProfileScreenViewModel extends ViewModelBase {
     private static final String TAG = ProfileScreenViewModel.class.getSimpleName();

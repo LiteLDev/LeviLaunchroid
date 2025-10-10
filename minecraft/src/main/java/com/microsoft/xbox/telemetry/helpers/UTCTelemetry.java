@@ -6,11 +6,6 @@ import com.microsoft.xbox.telemetry.utc.model.UTCNames;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class UTCTelemetry {
     public static final String UNKNOWNPAGE = "Unknown";

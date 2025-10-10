@@ -13,6 +13,7 @@ import com.microsoft.xbox.toolkit.ui.XLEButton;
 import com.mojang.minecraftpe.R;
 
 
+
 public class XboxTcuiWindowDialog extends Dialog {
     private final XboxTcuiWindow xboxTcuiWindow;
     private DetachedCallback detachedCallback;

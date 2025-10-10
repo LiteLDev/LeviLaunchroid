@@ -18,11 +18,6 @@ import org.spongycastle.asn1.cmp.PKIFailureInfo;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public class XLEUniversalImageView extends XLEImageView {
     private static final int JELLY_BEAN_MR1 = 17;

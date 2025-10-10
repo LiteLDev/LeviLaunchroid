@@ -14,11 +14,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
-/**
- * 07.01.2021
- *
- * @author <a href="https://github.com/timscriptov">timscriptov</a>
- */
 
 public abstract class ModelBase<T> extends XLEObservable<UpdateData> implements ModelData<T> {
     protected static final long MilliSecondsInADay = 86400000;
