@@ -54,7 +54,7 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends BaseActivity {
     static {
-        System.loadLibrary("leviutils");
+        System.loadLibrary("levilauncher");
     }
 
     private ActivityMainBinding binding;

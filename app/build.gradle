@@ -82,7 +82,7 @@ android {
 
     externalNativeBuild {
         cmake {
-            path "src/main/cpp/leviutils/CMakeLists.txt"
+            path "src/main/cpp/CMakeLists.txt"
         }
     }
 
@@ -91,7 +91,6 @@ android {
 
 dependencies {
     implementation project(':minecraft')
-    implementation project(':preloader')
     implementation libs.core.splashscreen
     implementation libs.apk.parser
     implementation libs.appcompat
