@@ -1,23 +1,28 @@
 <resources>
-    <!-- Важные -->
+    <!-- Общее -->
     <string name="app_name">LeviLauncher</string>
     <string name="minecraft">Minecraft</string>
     <string name="launch">Запустить</string>
+    <string name="beta_badge">Бета</string>
+    <string name="debug_badge">Отладочная сборка</string>
 
     <!-- Моды -->
     <string name="mods_title">🧩 Моды (%d)</string>
     <string name="no_mods_found">Моды не найдены</string>
     <string name="mod_load_order">Порядок загрузки: %d</string>
     <string name="drag_to_reorder">Перетащите для изменения порядка</string>
-    <string name="mod_reordered">Порядок модов обновлён</string>
+    <string name="mod_reordered">Порядок модов обновлен</string>
 
     <!-- О приложении -->
     <string name="about_title">☕ О приложении</string>
     <string name="copyright">©2024–2025 LeviMC. Все права защищены.</string>
     <string name="font_license">Это приложение использует шрифт Misans.</string>
+    <string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
     <string name="quick_actions_title">Быстрые действия</string>
-    <string name="content_management_subtitle">Управление мирами, ресурсами и пакетами поведения</string>
+    <string name="content_management_subtitle">Управление мирами, ресурсами и аддонами</string>
     <string name="import_apk_subtitle">Установка Minecraft из файла APK</string>
+    <string name="ms_add_account">Добавить аккаунт</string>
+    <string name="ms_add_account_subtitle">Войти через Microsoft</string>
 
     <!-- Диалоги -->
     <string name="resourcepack_detected_title">Обнаружен набор ресурсов</string>
@@ -36,19 +41,6 @@
     <string name="installed_packages">Установленные пакеты</string>
     <string name="local_custom">Доступные версии</string>
 
-
-    <string name="dialog_title_no_version">Версия не выбрана</string>
-    <string name="dialog_message_no_version">Пожалуйста, выберите версию игры перед запуском.</string>
-    <string name="dialog_title_version_isolation">Требуется изоляция версии</string>
-    <string name="dialog_message_version_isolation">Это импортированная версия. Пожалуйста, включите изоляцию версии в настройках, чтобы запустить эту версию.</string>
-    <string name="dialog_positive_enable">Включить</string>
-    <string name="dialog_title_launch_failed">Ошибка запуска</string>
-    <string name="dialog_message_launch_failed">Не удалось запустить Minecraft: %1$s</string>
-    <string name="dialog_title_disable_version_isolation">Отключить изоляцию версии</string>
-    <string name="dialog_message_disable_version_isolation">Вы пытаетесь запустить установленную версию с включенной изоляцией версии. Пожалуйста, отключите изоляцию версии, чтобы продолжить.</string>
-    <string name="dialog_positive_disable">Отключить</string>
-    <string name="dialog_positive_ok">ОК</string>
-
     <!-- Разрешения -->
     <string name="storage_permission_title">Необходимо разрешение на доступ к хранилищу</string>
     <string name="storage_permission_message">Пожалуйста выдайте доступ к хранилищу для доступа к папке модов и для определения модов.</string>
@@ -57,7 +49,7 @@
 
     <!-- Обратная связь -->
     <string name="files_processed">Успешно добавлены файлы мода %d </string>
-    <string name="user_cancelled">Импорт отменён пользователем</string>
+    <string name="user_cancelled">Импорт отменен пользователем</string>
 
 
     <string name="exit">Выйти</string>
@@ -79,7 +71,7 @@
     <string name="not_found_version">Версия не найдена</string>
 
     <string name="installing_title">Установка…</string>
-    <string name="installing_message">Пожалуйста подождите, установка Minecraft</string>
+    <string name="installing_message">Пожалуйста подождите, идет установка Minecraft</string>
 
     <string name="enable_debug_log">Включить журнал отладки</string>
 
@@ -91,6 +83,18 @@
 
     <string name="check_update">Проверить обновления</string>
     <string name="version_prefix">Версия: </string>
+
+    <string name="dialog_title_no_version">Версия не выбрана</string>
+    <string name="dialog_message_no_version">Пожалуйста, выберите версию игры перед запуском.</string>
+    <string name="dialog_title_version_isolation">Требуется изоляция версии</string>
+    <string name="dialog_message_version_isolation">Это импортированная версия. Пожалуйста, включите изоляцию версии в настройках, чтобы запустить эту версию.</string>
+    <string name="dialog_positive_enable">Включить</string>
+    <string name="dialog_title_launch_failed">Ошибка запуска</string>
+    <string name="dialog_message_launch_failed">Не удалось запустить Minecraft: %1$s</string>
+    <string name="dialog_title_disable_version_isolation">Отключить изоляцию версии</string>
+    <string name="dialog_message_disable_version_isolation">Вы пытаетесь запустить установленную версию с включенной изоляцией версии. Пожалуйста, отключите изоляцию версии, чтобы продолжить.</string>
+    <string name="dialog_positive_disable">Отключить</string>
+    <string name="dialog_positive_ok">ОК</string>
 
 
     <string name="new_version_found">Найдена новая версия: %1$s</string>
@@ -146,6 +150,7 @@
     <string name="dialog_message_delete_mod">Вы уверены, что хотите удалить этот мод?</string>
 
     <string name="version_isolation">Изоляция версий</string>
+
     <!-- Настройки языка -->
     <string name="language">Язык</string>
     <string name="english">English</string>
@@ -212,35 +217,40 @@
     <string name="game_version_select_title">Выбор версии игры</string>
     <string name="back">Назад</string>
 
-        <!-- Заставка -->
-    <string name="splash_logo_desc">Логотип-лист</string>
-    <string name="launcher_managed_mc_login">Войти в Minecraft с помощью LeviLauncher</string>
+    <!-- Заставка -->
+    <string name="splash_logo_desc">Логотип листа</string>
+
+    <!-- Accounts & Microsoft Login -->
     <string name="accounts_title">Аккаунты</string>
     <string name="microsoft_accounts">Аккаунты Microsoft</string>
-    <string name="manage_accounts">Управлять</string>
+    <string name="manage_accounts">Управление аккаунтами</string>
     <string name="not_signed_in">Не выполнен вход</string>
     <string name="xuid">XUID</string>
     <string name="sign_in">Войти</string>
     <string name="sign_out">Выйти</string>
     <string name="accounts_active_privilege">Выполнен вход</string>
+
     <string name="ms_login_title">Вход Microsoft</string>
     <string name="ms_login_starting">Начинается вход в Microsoft…</string>
-    <string name="ms_login_exchanging">Обмен токена…</string>
+    <string name="ms_login_exchanging">Обмен токеном…</string>
     <string name="ms_login_auth_xbox_device">Аутентификация устройства Xbox…</string>
     <string name="ms_login_fetch_minecraft_identity">Получение идентификатора Minecraft…</string>
     <string name="ms_login_success">Выполнен вход как %1$s</string>
-    <string name="ms_login_failed">Сбой входа Microsoft</string>
+    <string name="ms_login_failed">Сбой входа в Microsoft</string>
     <string name="ms_login_failed_detail">Сбой входа: %1$s</string>
+
     <string name="ms_set_active">Сделать активным</string>
     <string name="ms_delete">Удалить</string>
     <string name="ms_active_badge">Активный</string>
     <string name="ms_account_subtitle_format">ID пользователя: %1$s • Обновлено: %2$s</string>
     <string name="xbox_avatar">Аватар Xbox</string>
-
-    <string name="label_current_account">Текущий счет</string>
-    <string name="label_other_accounts">Другие счета</string>
+    <string name="launcher_managed_mc_login">Войти в Minecraft с помощью LeviLauncher</string>
     <string name="dialog_title_login_required">Требуется вход</string>
     <string name="dialog_message_login_required">Включён вход через лаунчер, но ни один аккаунт не авторизован. Перейдите в «Аккаунты», чтобы войти.</string>
     <string name="go_to_accounts">Аккаунты</string>
     <string name="disable_launcher_login_and_continue">Закрыть</string>
+
+    <!-- Popup labels -->
+    <string name="label_current_account">Текущий аккаунт</string>
+    <string name="label_other_accounts">Другие аккаунты</string>
 </resources>

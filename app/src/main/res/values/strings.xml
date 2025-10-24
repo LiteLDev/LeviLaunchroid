@@ -216,20 +216,20 @@
     <!-- Game Version Select Dialog -->
     <string name="game_version_select_title">Select Game Version</string>
     <string name="back">Back</string>
-    
+
     <!-- Splash -->
     <string name="splash_logo_desc">Leaf logo</string>
-    
+
     <!-- Accounts & Microsoft Login -->
     <string name="accounts_title">Accounts</string>
     <string name="microsoft_accounts">Microsoft Accounts</string>
-    <string name="manage_accounts">Manage</string>
+    <string name="manage_accounts">Manage accounts</string>
     <string name="not_signed_in">Not signed in</string>
     <string name="xuid">XUID</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>
     <string name="accounts_active_privilege">Signed in</string>
-    
+
     <string name="ms_login_title">Microsoft Login</string>
     <string name="ms_login_starting">Starting Microsoft login…</string>
     <string name="ms_login_exchanging">Exchanging token…</string>
@@ -238,7 +238,7 @@
     <string name="ms_login_success">Signed in as %1$s</string>
     <string name="ms_login_failed">Microsoft login failed</string>
     <string name="ms_login_failed_detail">Login failed: %1$s</string>
-    
+
     <string name="ms_set_active">Set Active</string>
     <string name="ms_delete">Delete</string>
     <string name="ms_active_badge">Active</string>
