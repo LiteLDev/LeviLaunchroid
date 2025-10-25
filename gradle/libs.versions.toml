@@ -2,7 +2,6 @@
 agp = "8.13.0"
 bcprovJdk15on = "1.70"
 bedrockConnection = "3.0.0.Beta10-SNAPSHOT"
-dlfunc = "0.1.6"
 espressoCore = "3.7.0"
 appcompat = "1.7.1"
 annotation = "1.9.1"
@@ -60,7 +59,6 @@ conscrypt-android = { module = "org.conscrypt:conscrypt-android", version.ref = 
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 core = { module = "com.madgag.spongycastle:core", version.ref = "core" }
 core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
-dlfunc = { module = "io.github.nift4.dlfunc:dlfunc", version.ref = "dlfunc" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 firebase-iid = { module = "com.google.firebase:firebase-iid", version.ref = "firebase-iid" }

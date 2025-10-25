@@ -107,7 +107,6 @@ android {
 dependencies {
     implementation project(':minecraft')
     implementation project(':minecraft-msftauth')
-    implementation libs.dlfunc
     implementation libs.core.splashscreen
     implementation libs.apk.parser
     implementation libs.appcompat

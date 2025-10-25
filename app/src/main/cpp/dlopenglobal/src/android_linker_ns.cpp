@@ -7,7 +7,6 @@
 #include <android/dlext.h>
 #include <unistd.h>
 #include <jni.h>
-#include <dlfunc.h>
 #include <android/log_macros.h>
 #include <pthread.h>
 #include "android_linker_ns.h"
@@ -57,9 +56,9 @@ void linkernsbypass_load(JNIEnv* env) {
     if (android_get_device_api_level() < 26)
         return;
 
-    void* libdlAndroidHandle = dlfunc_dlopen(env, "libdl_android.so", RTLD_NOW);
+    void* libdlAndroidHandle = dlopen( "libdl_android.so", RTLD_NOW);
     if (!libdlAndroidHandle) {
-        libdlAndroidHandle = dlfunc_dlopen(env, "libdl.so", RTLD_NOW);
+        libdlAndroidHandle = dlopen( "libdl.so", RTLD_NOW);
         if (!libdlAndroidHandle) {
             ALOGE("dlfunc_dlopen of libdl_android.so failed: %s", dlerror());
             return;
