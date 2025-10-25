@@ -1,6 +1,7 @@
 package org.levimc.launcher.core.mods;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.util.Log;
 
 import java.io.File;
@@ -13,6 +14,11 @@ import java.util.List;
 
 public class ModNativeLoader {
     private static final String TAG = "ModNativeLoader";
+
+    static { System.loadLibrary("dlopenglobal"); }
+    public static native long dlopenGlobal(String path);
+    public static native void initNativeLibraryDirAndModsDir(String nativeLibDir, String modsDir);
+
     @SuppressLint("UnsafeDynamicallyLoadedCode")
     public static void loadEnabledSoMods(ModManager modManager, File cacheDir) {
         List<Mod> mods = modManager.getMods();
@@ -24,7 +30,7 @@ public class ModNativeLoader {
             File dst = new File(dir, mod.getFileName());
             try {
                 copyFile(src, dst);
-                System.load(dst.getAbsolutePath());
+                dlopenGlobal(dst.getAbsolutePath());
                 Log.i(TAG, "Loaded so: " + dst.getName());
             } catch (IOException | UnsatisfiedLinkError e) {
                 Log.e(TAG, "Can't load " + src.getName() + ": " + e.getMessage());
