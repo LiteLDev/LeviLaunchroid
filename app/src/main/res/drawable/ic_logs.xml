@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Three horizontal lines to represent logs -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M5,7h14v2H5z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M5,11h14v2H5z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M5,15h10v2H5z"/>
+</vector>

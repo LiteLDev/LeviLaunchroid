@@ -23,6 +23,7 @@ import org.levimc.launcher.R;
 import org.levimc.launcher.settings.FeatureSettings;
 import org.levimc.launcher.ui.adapter.SettingsAdapter;
 import org.levimc.launcher.ui.animation.DynamicAnim;
+import org.levimc.launcher.ui.dialogs.LogcatOverlayManager;
 import org.levimc.launcher.util.GithubReleaseUpdater;
 import org.levimc.launcher.util.LanguageManager;
 import org.levimc.launcher.util.PermissionsHandler;
@@ -72,7 +73,7 @@ public class SettingsActivity extends BaseActivity {
             addSwitchItem(getString(R.string.show_logcat_overlay), fs.isLogcatOverlayEnabled(), (btn, checked) -> {
                 fs.setLogcatOverlayEnabled(checked);
                 try {
-                    org.levimc.launcher.ui.views.LogcatOverlayManager mgr = org.levimc.launcher.ui.views.LogcatOverlayManager.getInstance();
+                    LogcatOverlayManager mgr = LogcatOverlayManager.getInstance();
                     if (mgr != null) mgr.refreshVisibility();
                 } catch (Throwable ignored) {}
             });

@@ -78,7 +78,7 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
     static final int SAVE_FILE_RESULT_CODE = 4;
     private static final int STORAGE_PERMISSION_ID = 1;
     private static boolean _isPowerVr;
-    private static boolean mHasStoragePermission;
+    private static boolean mHasStoragePermission ;
     private static boolean mHasReadMediaImagesPermission;
     public static MainActivity mInstance;
     Class SystemProperties;
@@ -680,9 +680,8 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         });
     }
 
-
     public boolean hasWriteExternalStoragePermission() {
-        final boolean hasStoragePermission = checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) == PackageManager.PERMISSION_GRANTED;
+        final boolean hasStoragePermission = Build.VERSION.SDK_INT >= 33 || checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) == PackageManager.PERMISSION_GRANTED;
         mHasStoragePermission = hasStoragePermission;
         return hasStoragePermission;
     }
@@ -825,7 +824,6 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
             cachedText = null;
         });
     }
-
 
     public void showKeyboard(String text, int maxLen, boolean limitInput, boolean onlyNumbers) {
         showKeyboard(text, maxLen, limitInput, onlyNumbers, false);

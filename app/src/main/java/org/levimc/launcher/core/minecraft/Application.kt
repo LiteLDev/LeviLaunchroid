@@ -13,7 +13,7 @@ import xcrash.XCrash
 import java.io.File
 import android.content.Intent
 import org.levimc.launcher.ui.activities.CrashActivity
-import org.levimc.launcher.ui.views.LogcatOverlayManager
+import org.levimc.launcher.ui.dialogs.LogcatOverlayManager
 
 class LauncherApplication : Application() {
 

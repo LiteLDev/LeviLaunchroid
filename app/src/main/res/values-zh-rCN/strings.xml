@@ -260,6 +260,11 @@
      <string name="dialog_message_exit_app">确定要退出应用吗？</string>
      <string name="dialog_positive_exit">退出</string>
 
+     <!-- Logcat Overlay i18n additions -->
+     <string name="show_logcat_overlay">显示日志悬浮窗</string>
+    <string name="logcat_live">Logcat：<b>实时</b></string>
+     <string name="logcat_paused">Logcat：已暂停</string>
+
      <string name="logcat_filter_hint">关键字筛选</string>
      <string name="logcat_blacklist_hint">黑名单（逗号分隔）</string>
      <string name="logcat_filter_clear">清除筛选</string>

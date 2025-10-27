@@ -264,5 +264,20 @@
      <string name="dialog_title_exit_app">Выйти из приложения</string>
      <string name="dialog_message_exit_app">Вы уверены, что хотите выйти?</string>
      <string name="dialog_positive_exit">Выйти</string>
+
+     <!-- Logcat Overlay i18n -->
+     <string name="show_logcat_overlay">Оверлей Logcat</string>
+<string name="logcat_live">Logcat: <b>в реальном времени</b></string>
+     <string name="logcat_paused">Logcat: приостановлен</string>
+     <string name="logcat_filter_hint">Фильтр по ключевым словам</string>
+     <string name="logcat_blacklist_hint">Чёрный список (через запятую)</string>
+     <string name="logcat_filter_clear">Сбросить фильтры</string>
+     <string name="logcat_filter">Фильтр</string>
+     <string name="logcat_autoscroll">Автопрокрутка</string>
+     <string name="logcat_pause">Пауза</string>
+     <string name="logcat_clear">Очистить</string>
+     <string name="logcat_close">Закрыть</string>
+     <string name="logcat_corner_bottom_left">Изменить размер: нижний левый</string>
+     <string name="logcat_corner_bottom_right">Изменить размер: нижний правый</string>
  
  </resources>

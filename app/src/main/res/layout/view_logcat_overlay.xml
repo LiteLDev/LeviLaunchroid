@@ -79,15 +79,17 @@
             android:paddingBottom="4dp"
             android:visibility="gone">
 
-            <Spinner
+            <TextView
                 android:id="@+id/level_filter"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:minWidth="72dp"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:background="@drawable/bg_spinner_dark"
-                android:spinnerMode="dropdown" />
+                android:gravity="center_vertical|start"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:background="@drawable/bg_spinner_dark" />
 
             <EditText
                 android:id="@+id/filter_input"
@@ -121,23 +123,15 @@
                 android:tint="@android:color/white" />
         </LinearLayout>
 
-        <ScrollView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/log_scroll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:fillViewport="true">
-            <TextView
-                android:id="@+id/log_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:padding="8dp"
-                android:lineSpacingExtra="2dp"
-                android:textIsSelectable="true"
-                android:fontFamily="monospace"/>
-        </ScrollView>
+            android:clipToPadding="false"
+            android:padding="8dp"
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
 
         <View
             android:id="@+id/bottom_resize_bar"
@@ -161,4 +155,15 @@
         android:layout_gravity="bottom|end"
         android:background="@android:color/transparent"
         android:contentDescription="@string/logcat_corner_bottom_right" />
+
+    <ImageButton
+        android:id="@+id/minimize_bubble"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:background="@drawable/bg_bubble_dark"
+        android:tint="@android:color/white"
+        android:src="@drawable/ic_logs"
+        android:contentDescription="@string/show_logcat_overlay"/>
 </FrameLayout>

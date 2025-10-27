@@ -264,8 +264,8 @@
      <string name="dialog_title_exit_app">Exit App</string>
      <string name="dialog_message_exit_app">Are you sure you want to exit?</string>
      <string name="dialog_positive_exit">Exit</string>
-     <string name="show_logcat_overlay">In-app Logcat overlay</string>
-     <string name="logcat_live">Logcat: live</string>
+     <string name="show_logcat_overlay">Logcat overlay</string>
+    <string name="logcat_live">Logcat: <b>live</b></string>
      <string name="logcat_paused">Logcat: paused</string>
      <!-- Logcat Overlay i18n -->
      <string name="logcat_filter_hint">Keyword filter</string>
