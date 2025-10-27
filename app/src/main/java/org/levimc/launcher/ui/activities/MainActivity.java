@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ import org.levimc.launcher.ui.dialogs.gameversionselect.BigGroup;
 import org.levimc.launcher.ui.dialogs.gameversionselect.VersionUtil;
 import org.levimc.launcher.ui.views.MainViewModel;
 import org.levimc.launcher.ui.views.MainViewModelFactory;
+import org.levimc.launcher.ui.views.LogcatOverlay;
 import org.levimc.launcher.util.ApkImportManager;
 import org.levimc.launcher.util.GithubReleaseUpdater;
 import org.levimc.launcher.util.LanguageManager;
@@ -68,7 +70,7 @@ import coelho.msftauth.api.oauth20.OAuth20Token;
 import okhttp3.OkHttpClient;
  import okhttp3.Request;
  import okhttp3.Response;
- 
+
  import org.levimc.launcher.core.auth.MsftAccountStore;
  import org.levimc.launcher.core.auth.MsftAuthManager;
  import org.levimc.launcher.ui.dialogs.LoadingDialog;
@@ -331,12 +333,12 @@ import okhttp3.OkHttpClient;
         for (MsftAccountStore.MsftAccount a : list) {
             if (active == null || !android.text.TextUtils.equals(a.id, active.id)) displayList.add(a);
         }
- 
+
          class AccountRowViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
              TextView tv;
              AccountRowViewHolder(TextView t) { super(t); this.tv = t; }
          }
- 
+
          recyclerAccounts.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
          recyclerAccounts.setAdapter(new androidx.recyclerview.widget.RecyclerView.Adapter<AccountRowViewHolder>() {
              @Override
@@ -349,17 +351,17 @@ import okhttp3.OkHttpClient;
                  row.setBackgroundResource(selectableRes);
                  return new AccountRowViewHolder(row);
              }
- 
+
              @Override
              public void onBindViewHolder(AccountRowViewHolder holder, int position) {
                  MsftAccountStore.MsftAccount account = displayList.get(position);
                  holder.tv.setText(AccountTextUtils.titleOrUnknown(account));
                  holder.tv.setOnClickListener(v -> {
                      popup.dismiss();
- 
+
                      MsftAccountStore.setActive(MainActivity.this, account.id);
                      boolean withinSevenDays = AccountTextUtils.isRecentlyUpdated(account, 7);
- 
+
                      if (withinSevenDays) {
                          runOnUiThread(() -> {
                              DialogUtils.dismissQuietly(accountLoadingDialog);
@@ -369,21 +371,21 @@ import okhttp3.OkHttpClient;
                          });
                          return;
                      }
- 
+
                      accountLoadingDialog = DialogUtils.ensure(MainActivity.this, accountLoadingDialog);
                      DialogUtils.showWithMessage(accountLoadingDialog, getString(R.string.ms_login_auth_xbox_device));
- 
+
                      accountExecutor.execute(() -> {
                          OkHttpClient client = new OkHttpClient();
                          try {
                              MsftAuthManager.XboxAuthResult xbox = MsftAuthManager.refreshAndAuth(client, account, MainActivity.this);
- 
+
                              android.util.Pair<String, String> nameAndXuid = MsftAuthManager.fetchMinecraftIdentity(client, xbox.xstsToken());
                              String minecraftUsername = nameAndXuid != null ? nameAndXuid.first : null;
                              String xuid = nameAndXuid != null ? nameAndXuid.second : null;
                              MsftAccountStore.addOrUpdate(MainActivity.this, account.msUserId, account.refreshToken, xbox.gamertag(), minecraftUsername, xuid, xbox.avatarUrl());
                              MsftAccountStore.setActive(MainActivity.this, account.id);
- 
+
                              runOnUiThread(() -> {
                                  DialogUtils.dismissQuietly(accountLoadingDialog);
                                  String statusName = minecraftUsername != null ? minecraftUsername : getString(R.string.not_signed_in);
@@ -400,11 +402,11 @@ import okhttp3.OkHttpClient;
                      });
                  });
              }
- 
+
              @Override
              public int getItemCount() { return displayList.size(); }
          });
- 
+
          float density = getResources().getDisplayMetrics().density;
          if (displayList.size() > 2) {
              int limitHeight = (int) ((48 * 2 + 16) * density);
@@ -943,16 +945,5 @@ import okhttp3.OkHttpClient;
         super.onDestroy();
     }
 
-     @Override
-     public void onBackPressed() {
-         new org.levimc.launcher.ui.dialogs.CustomAlertDialog(this)
-                 .setTitleText(getString(org.levimc.launcher.R.string.dialog_title_exit_app))
-                 .setMessage(getString(org.levimc.launcher.R.string.dialog_message_exit_app))
-                 .setPositiveButton(getString(org.levimc.launcher.R.string.dialog_positive_exit), v -> {
-                     finishAffinity();
-                 })
-                 .setNegativeButton(getString(org.levimc.launcher.R.string.dialog_negative_cancel), null)
-                 .show();
-     }
-}
+ }
 

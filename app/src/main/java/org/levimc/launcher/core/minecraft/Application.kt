@@ -13,6 +13,7 @@ import xcrash.XCrash
 import java.io.File
 import android.content.Intent
 import org.levimc.launcher.ui.activities.CrashActivity
+import org.levimc.launcher.ui.views.LogcatOverlayManager
 
 class LauncherApplication : Application() {
 
@@ -20,6 +21,7 @@ class LauncherApplication : Application() {
         super.onCreate()
         context = applicationContext
         FeatureSettings.init(applicationContext)
+        LogcatOverlayManager.init(this)
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         val callback: ICrashCallback = ICrashCallback { logPath, emergency ->
@@ -45,7 +47,6 @@ class LauncherApplication : Application() {
             setNativeRethrow(false)
             setAnrRethrow(false)
         })
-
 
         try {
             System.loadLibrary("levi_init")

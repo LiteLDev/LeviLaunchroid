@@ -94,7 +94,7 @@
     <string name="dialog_title_disable_version_isolation">Disable Version Isolation</string>
     <string name="dialog_message_disable_version_isolation">You are trying to launch an installed version with version isolation enabled. Please disable version isolation to proceed.</string>
     <string name="dialog_positive_disable">Disable</string>
-    <string name="dialog_positive_ok">OK</string>
+     <string name="dialog_positive_ok">OK</string>
 
 
     <string name="new_version_found">New version found: %1$s</string>
@@ -264,4 +264,18 @@
      <string name="dialog_title_exit_app">Exit App</string>
      <string name="dialog_message_exit_app">Are you sure you want to exit?</string>
      <string name="dialog_positive_exit">Exit</string>
- </resources>
+     <string name="show_logcat_overlay">In-app Logcat overlay</string>
+     <string name="logcat_live">Logcat: live</string>
+     <string name="logcat_paused">Logcat: paused</string>
+     <!-- Logcat Overlay i18n -->
+     <string name="logcat_filter_hint">Keyword filter</string>
+     <string name="logcat_blacklist_hint">Blacklist (comma-separated)</string>
+     <string name="logcat_filter_clear">Clear filters</string>
+     <string name="logcat_filter">Filter</string>
+     <string name="logcat_autoscroll">Auto-scroll</string>
+     <string name="logcat_pause">Pause</string>
+     <string name="logcat_clear">Clear</string>
+     <string name="logcat_close">Close</string>
+     <string name="logcat_corner_bottom_left">Resize: bottom-left</string>
+     <string name="logcat_corner_bottom_right">Resize: bottom-right</string>
+  </resources>

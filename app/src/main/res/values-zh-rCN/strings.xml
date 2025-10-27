@@ -259,5 +259,16 @@
      <string name="dialog_title_exit_app">退出应用</string>
      <string name="dialog_message_exit_app">确定要退出应用吗？</string>
      <string name="dialog_positive_exit">退出</string>
+
+     <string name="logcat_filter_hint">关键字筛选</string>
+     <string name="logcat_blacklist_hint">黑名单（逗号分隔）</string>
+     <string name="logcat_filter_clear">清除筛选</string>
+     <string name="logcat_filter">筛选</string>
+     <string name="logcat_autoscroll">自动滚动</string>
+     <string name="logcat_pause">暂停</string>
+     <string name="logcat_clear">清空</string>
+     <string name="logcat_close">关闭</string>
+     <string name="logcat_corner_bottom_left">调整大小：左下角</string>
+     <string name="logcat_corner_bottom_right">调整大小：右下角</string>
  
  </resources>

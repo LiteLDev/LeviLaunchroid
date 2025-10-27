@@ -704,7 +704,7 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         public boolean onKeyPreIme(int keyCode, KeyEvent event) {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 activity.hideKeyboard();
-                // activity.nativeBackPressed();
+                activity.nativeBackPressed();
                 return true;
             }
 
@@ -746,7 +746,6 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
 
         @Override
         public void draw(Canvas canvas) {
-            //
             super.draw(canvas);
         }
     }

@@ -69,6 +69,13 @@ public class SettingsActivity extends BaseActivity {
             addLanguageSelectorItem(languageManager);
             addSwitchItem(getString(R.string.version_isolation), fs.isVersionIsolationEnabled(), (btn, checked) -> fs.setVersionIsolationEnabled(checked));
             addSwitchItem(getString(R.string.launcher_managed_mc_login), fs.isLauncherManagedMcLoginEnabled(), (btn, checked) -> fs.setLauncherManagedMcLoginEnabled(checked));
+            addSwitchItem(getString(R.string.show_logcat_overlay), fs.isLogcatOverlayEnabled(), (btn, checked) -> {
+                fs.setLogcatOverlayEnabled(checked);
+                try {
+                    org.levimc.launcher.ui.views.LogcatOverlayManager mgr = org.levimc.launcher.ui.views.LogcatOverlayManager.getInstance();
+                    if (mgr != null) mgr.refreshVisibility();
+                } catch (Throwable ignored) {}
+            });
 
             try {
                 String localVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;

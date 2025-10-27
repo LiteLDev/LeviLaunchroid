@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/overlay_container"
+        android:layout_width="280dp"
+        android:layout_height="200dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/overlay_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="6dp">
+
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:text="@string/logcat_live" />
+
+            <ImageButton
+                android:id="@+id/btn_filter"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/logcat_filter"
+                android:tint="@android:color/white"
+                android:src="@android:drawable/ic_menu_search" />
+
+            <ImageButton
+                android:id="@+id/btn_autoscroll"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/logcat_autoscroll"
+                android:tint="@android:color/white"
+                android:src="@drawable/ic_arrow_down" />
+
+            <ImageButton
+                android:id="@+id/btn_pause"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/logcat_pause"
+                android:src="@android:drawable/ic_media_pause" />
+
+            <ImageButton
+                android:id="@+id/btn_clear"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/logcat_clear"
+                android:src="@android:drawable/ic_menu_delete" />
+
+            <ImageButton
+                android:id="@+id/btn_close"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/logcat_close"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/filter_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="4dp"
+            android:visibility="gone">
+
+            <Spinner
+                android:id="@+id/level_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="72dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:background="@drawable/bg_spinner_dark"
+                android:spinnerMode="dropdown" />
+
+            <EditText
+                android:id="@+id/filter_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/logcat_filter_hint"
+                android:singleLine="true"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:textColorHint="#80FFFFFF" />
+
+            <EditText
+                android:id="@+id/exclude_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/logcat_blacklist_hint"
+                android:singleLine="true"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:textColorHint="#80FFFFFF" />
+
+            <ImageButton
+                android:id="@+id/btn_filter_clear"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/logcat_filter_clear"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:tint="@android:color/white" />
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/log_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+            <TextView
+                android:id="@+id/log_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:padding="8dp"
+                android:lineSpacingExtra="2dp"
+                android:textIsSelectable="true"
+                android:fontFamily="monospace"/>
+        </ScrollView>
+
+        <View
+            android:id="@+id/bottom_resize_bar"
+            android:layout_width="32dp"
+            android:layout_height="12dp"
+            android:layout_gravity="end"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/corner_bottom_left"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="bottom|start"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/logcat_corner_bottom_left" />
+
+    <View
+        android:id="@+id/corner_bottom_right"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="bottom|end"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/logcat_corner_bottom_right" />
+</FrameLayout>
