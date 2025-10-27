@@ -56,15 +56,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            ndk {
+                debugSymbolLevel 'FULL'
+            }
             buildConfigField "boolean", "IS_BETA", "false"
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            externalNativeBuild {
-                cmake {
-                    arguments "-DCMAKE_BUILD_TYPE=Release"
-                }
+            ndk {
+                debugSymbolLevel 'FULL'
             }
             buildConfigField "boolean", "IS_BETA", "false"
         }
@@ -75,11 +76,15 @@ android {
             resValue "string", "app_name", "LeviLauncher Beta"
             buildConfigField "boolean", "IS_BETA", "true"
             matchingFallbacks = ["release"]
+            ndk {
+                debugSymbolLevel 'FULL'
+            }
         }
 
     }
     packagingOptions {
         jniLibs.useLegacyPackaging = true
+        doNotStrip "**/*.so"
         resources.excludes += [
                 "DebugProbesKt.bin"
         ]

@@ -14,6 +14,7 @@
 #include <ranges>
 
 #include "LinkerNamespaces.h"
+#include "LinkerNamespaceCompat.h"
 #include "ElfUtils.h"
 
 #define LOG_TAG "LeviInit"
@@ -97,8 +98,8 @@ namespace runtime {
             LOGD("Failed to make main namespace writable.");
             return false;
         }
-        ctx.main_ns->set_isolated(false);
-        LOGD("Main namespace: %p", ctx.main_ns->get_name());
+        ns_compat::ns_set_isolated(ctx.main_ns, false);
+        LOGD("Main namespace: %p", ns_compat::ns_get_name(ctx.main_ns));
         return true;
     }
 
@@ -108,11 +109,11 @@ namespace runtime {
             return false;
         }
 
-        auto ldPaths = ctx.main_ns->get_ld_library_paths();
+        auto ldPaths = ns_compat::ns_get_ld_library_paths(ctx.main_ns);
         ldPaths.insert(ldPaths.end(),
                        std::make_move_iterator(paths.begin()),
                        std::make_move_iterator(paths.end()));
-        ctx.main_ns->set_ld_library_paths(std::move(ldPaths));
+        ns_compat::ns_set_ld_library_paths(ctx.main_ns, std::move(ldPaths));
 
         return true;
     }
