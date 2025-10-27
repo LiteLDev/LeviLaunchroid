@@ -38,7 +38,7 @@ LeviLauncher enables you to import your official Minecraft APK and run it direct
 
 Before installing LeviLauncher, ensure your device meets the following minimum specifications:
 
-- **Operating System:** Android 7.0 (API 24) or higher
+- **Operating System:** Android 8.0 (API 26) or higher
 - **Device Architecture:** ARM64 (v8a)
 - **RAM:** Minimum 1 GB available RAM (2 GB or more recommended)
 - **Storage:** At least 2 GB of available storage for Minecraft and game data

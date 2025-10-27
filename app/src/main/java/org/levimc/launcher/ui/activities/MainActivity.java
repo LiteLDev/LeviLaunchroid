@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.widget.Toast;
@@ -97,6 +99,7 @@ import okhttp3.OkHttpClient;
     private ExecutorService accountExecutor = Executors.newSingleThreadExecutor();
     private LoadingDialog accountLoadingDialog;
     private ActivityResultLauncher<Intent> accountLoginLauncher;
+    private OnBackPressedCallback onBackPressedCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +120,8 @@ import okhttp3.OkHttpClient;
         requestBasicPermissions();
         showEulaIfNeeded();
         initModsRecycler();
-        
+        setupOnBackPressedCallback();
+
         accountLoginLauncher = registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 String code = result.getData().getStringExtra("ms_auth_code");
@@ -189,6 +193,24 @@ import okhttp3.OkHttpClient;
         for (MsftAccountStore.MsftAccount a : list) if (a.active) return a;
         return null;
     }
+
+     private void setupOnBackPressedCallback() {
+         onBackPressedCallback = new OnBackPressedCallback(true) {
+             @Override
+             public void handleOnBackPressed() {
+                 new org.levimc.launcher.ui.dialogs.CustomAlertDialog(MainActivity.this)
+                         .setTitleText(getString(org.levimc.launcher.R.string.dialog_title_exit_app))
+                         .setMessage(getString(org.levimc.launcher.R.string.dialog_message_exit_app))
+                         .setPositiveButton(getString(org.levimc.launcher.R.string.dialog_positive_exit), v -> {
+                             finishAffinity();
+                         })
+                         .setNegativeButton(getString(org.levimc.launcher.R.string.dialog_negative_cancel), null)
+                         .show();
+             }
+         };
+
+         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+     }
 
     private void refreshAccountHeaderUI() {
         MsftAccountStore.MsftAccount active = getActiveAccount();
@@ -920,4 +942,17 @@ import okhttp3.OkHttpClient;
     protected void onDestroy() {
         super.onDestroy();
     }
+
+     @Override
+     public void onBackPressed() {
+         new org.levimc.launcher.ui.dialogs.CustomAlertDialog(this)
+                 .setTitleText(getString(org.levimc.launcher.R.string.dialog_title_exit_app))
+                 .setMessage(getString(org.levimc.launcher.R.string.dialog_message_exit_app))
+                 .setPositiveButton(getString(org.levimc.launcher.R.string.dialog_positive_exit), v -> {
+                     finishAffinity();
+                 })
+                 .setNegativeButton(getString(org.levimc.launcher.R.string.dialog_negative_cancel), null)
+                 .show();
+     }
 }
+

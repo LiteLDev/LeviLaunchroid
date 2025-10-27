@@ -253,4 +253,15 @@
     <!-- Popup labels -->
     <string name="label_current_account">Current Account</string>
     <string name="label_other_accounts">Other Accounts</string>
-</resources>
+    
+    <string name="crash_title">Application crashed</string>
+     <string name="crash_back_to_main">Back to Home</string>
+    <string name="crash_log_file_label">Log file:</string>
+    <string name="crash_log_file_missing">Log file not found or unreadable.</string>
+    <string name="crash_read_failed">Failed to read log: %1$s</string>
+    <string name="crash_emergency_label">Emergency:</string>
+    <string name="crash_no_details">No crash details available.</string>
+     <string name="dialog_title_exit_app">Exit App</string>
+     <string name="dialog_message_exit_app">Are you sure you want to exit?</string>
+     <string name="dialog_positive_exit">Exit</string>
+ </resources>

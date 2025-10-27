@@ -4,8 +4,8 @@
     tools:ignore="MissingClass">
 
     <uses-sdk
-        android:minSdkVersion="24"
-        android:targetSdkVersion="35"
+        android:minSdkVersion="26"
+        android:targetSdkVersion="36"
         tools:overrideLibrary="androidx.core.splashscreen" />
 
     <uses-feature
@@ -224,6 +224,13 @@
             android:configChanges="keyboardHidden|orientation|screenSize|uiMode"
             android:alwaysRetainTaskState="true"
             tools:replace="android:configChanges,android:exported" />
+
+        <activity
+            android:name="org.levimc.launcher.ui.activities.CrashActivity"
+            android:exported="false"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/Base.Theme.FullScreen"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

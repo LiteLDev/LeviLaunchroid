@@ -16,7 +16,6 @@ firebase-iid = "21.1.0"
 firebase-messaging = "25.0.1"
 fragmentKtx = "1.8.9"
 gamesActivity = "4.0.0"
-gamesActivityVersion = "4.0.0"
 gson = "2.13.2"
 guava = "33.5.0-jre"
 httpclient = "4.5.14"
@@ -33,9 +32,9 @@ simpleXml = "2.7.1"
 billing = "8.0.0"
 sqliteFramework = "2.6.1"
 dynamicanimation = "1.1.0"
+xcrashAndroidLib = "3.1.0"
 
 [libraries]
-androidx-games-activity-v122 = { module = "androidx.games:games-activity", version.ref = "gamesActivityVersion" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
@@ -74,6 +73,7 @@ prov = { module = "com.madgag.spongycastle:prov", version.ref = "core" }
 simple-xml = { group = "org.simpleframework", name = "simple-xml", version.ref = "simpleXml" }
 billing = { group = "com.android.billingclient", name = "billing", version.ref = "billing" }
 androidx-dynamicanimation = { module = "androidx.dynamicanimation:dynamicanimation", version.ref = "dynamicanimation" }
+xcrash-android-lib = { module = "com.iqiyi.xcrash:xcrash-android-lib", version.ref = "xcrashAndroidLib" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/crash_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/crash_title"
+        android:textColor="@color/on_surface"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/misans"
+        android:paddingBottom="8dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+        <TextView
+            android:id="@+id/crash_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/on_surface"
+            android:textSize="12sp"
+            android:fontFamily="@font/misans"
+            android:alpha="0.9"
+            android:lineSpacingExtra="4dp" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_back_to_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/crash_back_to_main"
+        android:textAllCaps="false"
+        android:fontFamily="@font/misans"
+        android:textColor="@color/on_surface"
+        android:padding="12dp"
+        android:layout_marginTop="12dp" />
+
+</LinearLayout>

@@ -248,4 +248,16 @@
 
     <string name="label_current_account">当前账号</string>
     <string name="label_other_accounts">其他账号</string>
-</resources>
+
+    <string name="crash_title">应用发生崩溃</string>
+    <string name="crash_back_to_main">返回主页面</string>
+    <string name="crash_log_file_label">日志文件：</string>
+    <string name="crash_log_file_missing">日志文件不存在或不可读。</string>
+    <string name="crash_read_failed">读取日志失败：%1$s</string>
+    <string name="crash_emergency_label">紧急信息：</string>
+    <string name="crash_no_details">未获取到崩溃详情。</string>
+     <string name="dialog_title_exit_app">退出应用</string>
+     <string name="dialog_message_exit_app">确定要退出应用吗？</string>
+     <string name="dialog_positive_exit">退出</string>
+ 
+ </resources>

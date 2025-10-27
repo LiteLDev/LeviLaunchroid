@@ -253,4 +253,16 @@
     <!-- Popup labels -->
     <string name="label_current_account">Текущий аккаунт</string>
     <string name="label_other_accounts">Другие аккаунты</string>
-</resources>
+    
+    <string name="crash_title">Приложение аварийно завершило работу</string>
+    <string name="crash_back_to_main">Вернуться на главную</string>
+    <string name="crash_log_file_label">Файл журнала:</string>
+    <string name="crash_log_file_missing">Файл журнала не найден или недоступен для чтения.</string>
+    <string name="crash_read_failed">Не удалось прочитать журнал: %1$s</string>
+    <string name="crash_emergency_label">Экстренные сведения:</string>
+    <string name="crash_no_details">Сведения об аварии отсутствуют.</string>
+     <string name="dialog_title_exit_app">Выйти из приложения</string>
+     <string name="dialog_message_exit_app">Вы уверены, что хотите выйти?</string>
+     <string name="dialog_positive_exit">Выйти</string>
+ 
+ </resources>

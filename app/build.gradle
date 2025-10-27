@@ -29,11 +29,11 @@ static def getVersionCodeByTimestamp() {
 
 android {
     namespace 'org.levimc.launcher'
-    compileSdk 36
+    compileSdkVersion 36
     defaultConfig {
         applicationId "org.levimc.launcher"
-        minSdk 24
-        targetSdk 35
+        minSdkVersion 26
+        targetSdkVersion 36
         versionCode getVersionCodeByTimestamp()
         versionName getGitTag()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -114,12 +114,13 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.material
     implementation libs.gson
-    implementation(libs.androidx.preference.ktx)
-    implementation(libs.conscrypt.android)
-    implementation(libs.androidx.games.activity.v122)
+    implementation libs.androidx.preference.ktx
+    implementation libs.conscrypt.android
+    implementation libs.androidx.games.activity
     implementation libs.okhttp
-    implementation(libs.androidx.dynamicanimation)
-    implementation(libs.bedrock.connection)
+    implementation libs.androidx.dynamicanimation
+    implementation libs.bedrock.connection
+    implementation libs.xcrash.android.lib
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
