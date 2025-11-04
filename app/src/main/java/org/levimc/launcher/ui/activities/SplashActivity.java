@@ -42,9 +42,27 @@ public class SplashActivity extends BaseActivity {
         binding.tvAppName.setText("");
         binding.tvAppName.setAlpha(0f);
         applyInitialTextStyle(binding.tvAppName, fullAppNameText);
+        
+        createNoMediaFile();
+        
         binding.getRoot().post(() ->
                 startLeafAnimation(() -> startAppNameAnimation(this::navigateToMain))
         );
+    }
+    
+    private void createNoMediaFile() {
+        try {
+            java.io.File baseDir = new java.io.File(android.os.Environment.getExternalStorageDirectory(), "games/org.levimc");
+            if (!baseDir.exists()) {
+                baseDir.mkdirs();
+            }
+            java.io.File noMediaFile = new java.io.File(baseDir, ".nomedia");
+            if (!noMediaFile.exists()) {
+                noMediaFile.createNewFile();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
