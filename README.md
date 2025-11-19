@@ -1,6 +1,6 @@
 <div align="center">
 
-![LeviLauncher Logo](https://media.discordapp.net/attachments/1425451887699689505/1426231628228726915/78095377.png?ex=68ea7936&is=68e927b6&hm=c396178117c324b35712605ea3f921d431b8097c71fe9b70200b77494c4edb88&=&format=webp&quality=lossless&width=275&height=275)
+![LeviLauncher Logo](https://avatars.githubusercontent.com/u/78095377?s=200&v=4)
 
 # LeviLauncher
 
