@@ -1,3 +1,6 @@
 [submodule "app/src/main/cpp/preloader"]
 	path = app/src/main/cpp/preloader
 	url = https://github.com/LiteLDev/preloader-android
+[submodule "app/src/main/cpp/libHttpClient"]
+	path = app/src/main/cpp/libHttpClient
+	url = https://github.com/microsoft/libHttpClient
