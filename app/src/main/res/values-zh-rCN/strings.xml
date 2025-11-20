@@ -169,6 +169,10 @@
     <string name="worlds_title">🌍 世界</string>
     <string name="resource_packs_title">📦 资源包</string>
     <string name="behavior_packs_title">⚙️ 行为包</string>
+    <string name="storage_internal">内部</string>
+    <string name="storage_external">外部</string>
+    <string name="storage_version_isolation">版本隔离</string>
+    <string name="select_storage_label">选择存储：</string>
 
     <!-- World Management -->
     <string name="world_size">大小：%s</string>

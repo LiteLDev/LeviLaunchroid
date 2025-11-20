@@ -171,6 +171,10 @@
     <string name="worlds_title">🌍 Worlds</string>
     <string name="resource_packs_title">📦 Resource Packs</string>
     <string name="behavior_packs_title">⚙️ Behavior Packs</string>
+    <string name="storage_internal">Internal</string>
+    <string name="storage_external">External</string>
+    <string name="storage_version_isolation">Version Isolation</string>
+    <string name="select_storage_label">Select Storage:</string>
 
     <!-- World Management -->
     <string name="world_size">Size: %s</string>

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.levimc.launcher.core.versions.GameVersion;
 
+import java.io.File;
 import java.util.List;
 
 public class ContentManager {
@@ -39,6 +40,12 @@ public class ContentManager {
         this.currentVersion = version;
         worldManager.setCurrentVersion(version);
         resourcePackManager.setCurrentVersion(version);
+        refreshContent();
+    }
+
+    public void setStorageDirectories(File worldsDir, File resourcePacksDir, File behaviorPacksDir) {
+        worldManager.setWorldsDirectory(worldsDir);
+        resourcePackManager.setPackDirectories(resourcePacksDir, behaviorPacksDir);
         refreshContent();
     }
 

@@ -75,6 +75,35 @@
 
     </LinearLayout>
 
+    <!-- Storage Selection -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/card_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/misans"
+            android:gravity="center_vertical"
+            android:text="@string/select_storage_label"
+            android:textColor="@color/on_surface"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/storage_type_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
+
     <!-- Tab Layout -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"

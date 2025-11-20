@@ -9,6 +9,12 @@ public class FeatureSettings {
     private boolean launcherManagedMcLoginEnabled = false;
     private boolean logcatOverlayEnabled = false;
 
+    public enum StorageType {
+        INTERNAL,
+        EXTERNAL,
+        VERSION_ISOLATION
+    }
+
     public static void init(Context context) {
         appContext = context.getApplicationContext();
     }

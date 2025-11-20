@@ -53,6 +53,13 @@ public class WorldManager {
         }
     }
 
+    public void setWorldsDirectory(File directory) {
+        this.worldsDirectory = directory;
+        if (worldsDirectory != null && !worldsDirectory.exists()) {
+            worldsDirectory.mkdirs();
+        }
+    }
+
     public List<WorldItem> getWorlds() {
         List<WorldItem> worlds = new ArrayList<>();
         

@@ -53,6 +53,18 @@ public class ResourcePackManager {
         }
     }
 
+    public void setPackDirectories(File resourcePacksDir, File behaviorPacksDir) {
+        this.resourcePacksDirectory = resourcePacksDir;
+        this.behaviorPacksDirectory = behaviorPacksDir;
+        
+        if (resourcePacksDirectory != null && !resourcePacksDirectory.exists()) {
+            resourcePacksDirectory.mkdirs();
+        }
+        if (behaviorPacksDirectory != null && !behaviorPacksDirectory.exists()) {
+            behaviorPacksDirectory.mkdirs();
+        }
+    }
+
     public List<ResourcePackItem> getResourcePacks() {
         List<ResourcePackItem> packs = new ArrayList<>();
         
