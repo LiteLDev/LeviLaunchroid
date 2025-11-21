@@ -66,14 +66,20 @@
 
 
 
-        <ImageButton
+        <Button
             android:id="@+id/pack_delete_button"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_delete"
-            android:contentDescription="@string/delete_resource_pack"
-            app:tint="@color/error" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/error"
+            android:fontFamily="@font/misans"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="6dp"
+            android:text="@string/delete_pack"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="11sp" />
 
     </LinearLayout>
 

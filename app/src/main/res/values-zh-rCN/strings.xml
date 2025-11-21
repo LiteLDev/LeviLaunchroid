@@ -181,11 +181,17 @@
     <string name="export_world">导出世界</string>
     <string name="delete_world">删除世界</string>
     <string name="backup_world">备份世界</string>
+    <string name="export">导出</string>
+    <string name="backup">备份</string>
+    <string name="delete">删除</string>
+    <string name="delete_pack">删除</string>
 
     <!-- Resource Pack Management -->
     <string name="import_resource_pack">导入资源包</string>
     <string name="import_behavior_pack">导入行为包</string>
     <string name="delete_resource_pack">删除资源包</string>
+    <string name="import_skin_pack">导入皮肤包</string>
+    <string name="delete_skin_pack">删除皮肤包</string>
 
     <!-- Content Operations -->
     <string name="confirm_delete_world">您确定要删除这个世界吗？此操作无法撤销。</string>

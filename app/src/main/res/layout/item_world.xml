@@ -30,37 +30,52 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
-
-            <ImageButton
+            <Button
                 android:id="@+id/world_export_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_arrow_down"
-                android:contentDescription="@string/export_world"
-                app:tint="@color/on_surface" />
+                android:backgroundTint="@color/primary"
+                android:fontFamily="@font/misans"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="6dp"
+                android:text="@string/export"
+                android:textAllCaps="false"
+                android:textColor="@color/on_primary"
+                android:textSize="11sp" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/world_backup_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_arrow_down"
-                android:rotation="180"
-                android:contentDescription="@string/backup_world"
-                app:tint="@color/on_surface" />
+                android:backgroundTint="@color/primary"
+                android:fontFamily="@font/misans"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="6dp"
+                android:text="@string/backup"
+                android:textAllCaps="false"
+                android:textColor="@color/on_primary"
+                android:textSize="11sp" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/world_delete_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_delete"
-                android:contentDescription="@string/delete_world"
-                app:tint="@color/error" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/error"
+                android:fontFamily="@font/misans"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="6dp"
+                android:text="@string/delete"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="11sp" />
 
         </LinearLayout>
 

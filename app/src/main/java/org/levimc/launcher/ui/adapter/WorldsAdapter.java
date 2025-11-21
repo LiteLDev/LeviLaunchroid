@@ -3,7 +3,7 @@ package org.levimc.launcher.ui.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -84,9 +84,9 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
         TextView worldSize;
         TextView worldLastPlayed;
         TextView worldDescription;
-        ImageButton exportButton;
-        ImageButton backupButton;
-        ImageButton deleteButton;
+        Button exportButton;
+        Button backupButton;
+        Button deleteButton;
 
         public WorldViewHolder(@NonNull View itemView) {
             super(itemView);

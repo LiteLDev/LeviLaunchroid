@@ -23,6 +23,7 @@ public class ResourcePackManager {
     private final ExecutorService executor;
     private File resourcePacksDirectory;
     private File behaviorPacksDirectory;
+    private File skinPacksDirectory;
     
     public interface PackOperationCallback {
         void onSuccess(String message);
@@ -40,6 +41,7 @@ public class ResourcePackManager {
             File gameDataDir = new File(version.versionDir, "games/com.mojang");
             this.resourcePacksDirectory = new File(gameDataDir, "resource_packs");
             this.behaviorPacksDirectory = new File(gameDataDir, "behavior_packs");
+            this.skinPacksDirectory = new File(gameDataDir, "skin_packs");
             
             if (!resourcePacksDirectory.exists()) {
                 resourcePacksDirectory.mkdirs();
@@ -47,21 +49,29 @@ public class ResourcePackManager {
             if (!behaviorPacksDirectory.exists()) {
                 behaviorPacksDirectory.mkdirs();
             }
+            if (!skinPacksDirectory.exists()) {
+                skinPacksDirectory.mkdirs();
+            }
         } else {
             this.resourcePacksDirectory = null;
             this.behaviorPacksDirectory = null;
+            this.skinPacksDirectory = null;
         }
     }
 
-    public void setPackDirectories(File resourcePacksDir, File behaviorPacksDir) {
+    public void setPackDirectories(File resourcePacksDir, File behaviorPacksDir, File skinPacksDir) {
         this.resourcePacksDirectory = resourcePacksDir;
         this.behaviorPacksDirectory = behaviorPacksDir;
+        this.skinPacksDirectory = skinPacksDir;
         
         if (resourcePacksDirectory != null && !resourcePacksDirectory.exists()) {
             resourcePacksDirectory.mkdirs();
         }
         if (behaviorPacksDirectory != null && !behaviorPacksDirectory.exists()) {
             behaviorPacksDirectory.mkdirs();
+        }
+        if (skinPacksDirectory != null && !skinPacksDirectory.exists()) {
+            skinPacksDirectory.mkdirs();
         }
     }
 
@@ -80,6 +90,16 @@ public class ResourcePackManager {
         
         if (behaviorPacksDirectory != null && behaviorPacksDirectory.exists()) {
             addPacksFromDirectory(behaviorPacksDirectory, ResourcePackItem.PackType.BEHAVIOR_PACK, packs);
+        }
+        
+        return packs;
+    }
+
+    public List<ResourcePackItem> getSkinPacks() {
+        List<ResourcePackItem> packs = new ArrayList<>();
+        
+        if (skinPacksDirectory != null && skinPacksDirectory.exists()) {
+            addPacksFromDirectory(skinPacksDirectory, ResourcePackItem.PackType.RESOURCE_PACK, packs);
         }
         
         return packs;
@@ -128,6 +148,9 @@ public class ResourcePackManager {
                 } else if (fileName.toLowerCase().endsWith(".mcaddon")) {
                     targetDir = resourcePacksDirectory;
                     packType = ResourcePackItem.PackType.ADDON;
+                } else if (fileName.toLowerCase().endsWith(".zip")) {
+                    targetDir = resourcePacksDirectory;
+                    packType = ResourcePackItem.PackType.RESOURCE_PACK;
                 } else {
                     callback.onError("Unsupported pack format");
                     return;

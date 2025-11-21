@@ -171,6 +171,11 @@
     <string name="worlds_title">🌍 Worlds</string>
     <string name="resource_packs_title">📦 Resource Packs</string>
     <string name="behavior_packs_title">⚙️ Behavior Packs</string>
+    <string name="skin_packs_title">👤 Skin Packs</string>
+    <string name="worlds_category">Worlds</string>
+    <string name="resource_packs_category">Resource Packs</string>
+    <string name="behavior_packs_category">Behavior Packs</string>
+    <string name="skin_packs_category">Skin Packs</string>
     <string name="storage_internal">Internal</string>
     <string name="storage_external">External</string>
     <string name="storage_version_isolation">Version Isolation</string>
@@ -183,11 +188,17 @@
     <string name="export_world">Export World</string>
     <string name="delete_world">Delete World</string>
     <string name="backup_world">Backup World</string>
+    <string name="export">Export</string>
+    <string name="backup">Backup</string>
+    <string name="delete">Delete</string>
+    <string name="delete_pack">Delete</string>
 
     <!-- Resource Pack Management -->
     <string name="import_resource_pack">Import Resource Pack</string>
     <string name="import_behavior_pack">Import Behavior Pack</string>
+    <string name="import_skin_pack">Import Skin Pack</string>
     <string name="delete_resource_pack">Delete Resource Pack</string>
+    <string name="delete_skin_pack">Delete Skin Pack</string>
 
     <!-- Content Operations -->
     <string name="confirm_delete_world">Are you sure you want to delete this world? This action cannot be undone.</string>

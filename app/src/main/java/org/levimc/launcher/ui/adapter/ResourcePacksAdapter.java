@@ -3,7 +3,7 @@ package org.levimc.launcher.ui.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -78,7 +78,7 @@ public class ResourcePacksAdapter extends RecyclerView.Adapter<ResourcePacksAdap
         TextView packType;
         TextView packDescription;
         TextView packSize;
-        ImageButton deleteButton;
+        Button deleteButton;
 
         public ResourcePackViewHolder(@NonNull View itemView) {
             super(itemView);

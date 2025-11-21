@@ -78,6 +78,13 @@
             tools:ignore="DiscouragedApi" />
 
         <activity
+            android:name="org.levimc.launcher.ui.activities.ContentListActivity"
+            android:exported="false"
+            android:screenOrientation="sensorLandscape"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"
+            tools:ignore="DiscouragedApi" />
+
+        <activity
             android:name="org.levimc.launcher.ui.activities.SettingsActivity"
             android:exported="false"
             android:screenOrientation="sensorLandscape"

@@ -184,11 +184,17 @@
     <string name="export_world">Экспортировать мир</string>
     <string name="delete_world">Удалить мир</string>
     <string name="backup_world">Создать резервную копию мира</string>
+    <string name="export">Экспорт</string>
+    <string name="backup">Резервное копирование</string>
+    <string name="delete">Удалить</string>
+    <string name="delete_pack">Удалить</string>
 
     <!-- Resource Pack Management -->
     <string name="import_resource_pack">Импортировать набор ресурсов</string>
     <string name="import_behavior_pack">Импортировать набор поведений</string>
     <string name="delete_resource_pack">Удалить набор ресурсов</string>
+    <string name="import_skin_pack">Импортировать скин-пак</string>
+    <string name="delete_skin_pack">Удалить скин-пак</string>
 
     <!-- Content Operations -->
     <string name="confirm_delete_world">Вы уверены, что хотите удалить этот мир? Это действие необратимо.</string>

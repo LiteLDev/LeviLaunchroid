@@ -21,6 +21,7 @@ public class ContentManager {
     private final MutableLiveData<List<WorldItem>> worldsLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<ResourcePackItem>> resourcePacksLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<ResourcePackItem>> behaviorPacksLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<ResourcePackItem>> skinPacksLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> statusLiveData = new MutableLiveData<>();
 
     private ContentManager(Context context) {
@@ -43,9 +44,9 @@ public class ContentManager {
         refreshContent();
     }
 
-    public void setStorageDirectories(File worldsDir, File resourcePacksDir, File behaviorPacksDir) {
+    public void setStorageDirectories(File worldsDir, File resourcePacksDir, File behaviorPacksDir, File skinPacksDir) {
         worldManager.setWorldsDirectory(worldsDir);
-        resourcePackManager.setPackDirectories(resourcePacksDir, behaviorPacksDir);
+        resourcePackManager.setPackDirectories(resourcePacksDir, behaviorPacksDir, skinPacksDir);
         refreshContent();
     }
 
@@ -53,6 +54,7 @@ public class ContentManager {
         refreshWorlds();
         refreshResourcePacks();
         refreshBehaviorPacks();
+        refreshSkinPacks();
     }
 
     public void refreshWorlds() {
@@ -70,6 +72,11 @@ public class ContentManager {
         behaviorPacksLiveData.postValue(behaviorPacks);
     }
 
+    public void refreshSkinPacks() {
+        List<ResourcePackItem> skinPacks = resourcePackManager.getSkinPacks();
+        skinPacksLiveData.postValue(skinPacks);
+    }
+
     public LiveData<List<WorldItem>> getWorldsLiveData() {
         return worldsLiveData;
     }
@@ -80,6 +87,10 @@ public class ContentManager {
 
     public LiveData<List<ResourcePackItem>> getBehaviorPacksLiveData() {
         return behaviorPacksLiveData;
+    }
+
+    public LiveData<List<ResourcePackItem>> getSkinPacksLiveData() {
+        return skinPacksLiveData;
     }
 
     public LiveData<String> getStatusLiveData() {
