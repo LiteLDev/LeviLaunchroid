@@ -206,6 +206,7 @@ public class ContentManager {
             public void onSuccess(String message) {
                 refreshResourcePacks();
                 refreshBehaviorPacks();
+                refreshSkinPacks();
                 setStatus(message);
                 if (callback != null) callback.onSuccess(message);
             }
@@ -231,6 +232,7 @@ public class ContentManager {
             public void onSuccess(String message) {
                 refreshResourcePacks();
                 refreshBehaviorPacks();
+                refreshSkinPacks();
                 setStatus(message);
                 if (callback != null) callback.onSuccess(message);
             }

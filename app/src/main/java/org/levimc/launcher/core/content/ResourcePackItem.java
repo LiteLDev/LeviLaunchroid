@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class ResourcePackItem extends ContentItem {
     private static final String TAG = "ResourcePackItem";
@@ -83,9 +81,6 @@ public class ResourcePackItem extends ContentItem {
 
         if (file.isDirectory()) {
             loadPackInfoFromDirectory();
-        } else if (file.getName().toLowerCase().endsWith(".mcpack") || 
-                   file.getName().toLowerCase().endsWith(".mcaddon")) {
-            loadPackInfoFromZip();
         } else {
             isValid = false;
         }
@@ -105,28 +100,6 @@ public class ResourcePackItem extends ContentItem {
             parseManifest(jsonStr);
         } catch (IOException e) {
             Log.e(TAG, "Failed to read manifest.json from directory", e);
-            isValid = false;
-        }
-    }
-
-    private void loadPackInfoFromZip() {
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(file))) {
-            ZipEntry entry;
-            while ((entry = zis.getNextEntry()) != null) {
-                if ("manifest.json".equals(entry.getName())) {
-                    byte[] buffer = new byte[1024];
-                    StringBuilder sb = new StringBuilder();
-                    int len;
-                    while ((len = zis.read(buffer)) > 0) {
-                        sb.append(new String(buffer, 0, len, StandardCharsets.UTF_8));
-                    }
-                    parseManifest(sb.toString());
-                    return;
-                }
-            }
-            isValid = false;
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to read manifest.json from zip", e);
             isValid = false;
         }
     }
@@ -177,6 +150,8 @@ public class ResourcePackItem extends ContentItem {
                             packType = PackType.RESOURCE_PACK;
                         } else if ("data".equals(moduleType) || "script".equals(moduleType)) {
                             packType = PackType.BEHAVIOR_PACK;
+                        } else if ("skin_pack".equals(moduleType)) {
+                            packType = PackType.RESOURCE_PACK;
                         }
                     }
                 }

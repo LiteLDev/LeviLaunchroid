@@ -7,6 +7,7 @@ import android.util.Log;
 import org.levimc.launcher.core.versions.GameVersion;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -114,12 +115,6 @@ public class ResourcePackManager {
                     if (pack.isValid()) {
                         packs.add(pack);
                     }
-                } else if (packDir.getName().toLowerCase().endsWith(".mcpack") ||
-                          packDir.getName().toLowerCase().endsWith(".mcaddon")) {
-                    ResourcePackItem pack = new ResourcePackItem(packDir.getName(), packDir, packType);
-                    if (pack.isValid()) {
-                        packs.add(pack);
-                    }
                 }
             }
         }
@@ -143,52 +138,60 @@ public class ResourcePackManager {
                     fileName = "imported_pack_" + System.currentTimeMillis();
                 }
 
-                File targetDir;
-                ResourcePackItem.PackType packType;
-                
-                if (fileName.toLowerCase().endsWith(".mcpack")) {
-                    targetDir = resourcePacksDirectory;
-                    packType = ResourcePackItem.PackType.RESOURCE_PACK;
-                } else if (fileName.toLowerCase().endsWith(".mcaddon")) {
-                    targetDir = resourcePacksDirectory;
-                    packType = ResourcePackItem.PackType.ADDON;
-                } else if (fileName.toLowerCase().endsWith(".zip")) {
-                    targetDir = resourcePacksDirectory;
-                    packType = ResourcePackItem.PackType.RESOURCE_PACK;
-                } else {
-                    callback.onError("Unsupported pack format");
-                    return;
-                }
-
-                if (targetDir == null) {
+                if (resourcePacksDirectory == null || behaviorPacksDirectory == null || skinPacksDirectory == null) {
                     callback.onError("No version selected");
+                    inputStream.close();
                     return;
                 }
 
-                String packName = generateUniquePackName(fileName, targetDir);
-                File targetFile = new File(targetDir, packName);
+                String tempDirName = "temp_pack_" + System.currentTimeMillis();
+                File tempDir = new File(context.getCacheDir(), tempDirName);
+                tempDir.mkdirs();
 
                 try {
-                    copyStream(inputStream, new FileOutputStream(targetFile));
+                    extractZip(inputStream, tempDir);
 
-                    ResourcePackItem pack = new ResourcePackItem(packName, targetFile, packType);
-                    if (!pack.isValid()) {
-                        targetFile.delete();
-                        callback.onError("Invalid pack file");
+                    File packContentDir = findPackDirectory(tempDir);
+                    if (packContentDir == null) {
+                        callback.onError("Invalid pack file - no manifest found");
                         return;
                     }
 
-                    if (packType == ResourcePackItem.PackType.ADDON) {
-                        File finalTarget;
-                        if (pack.isBehaviorPack()) {
-                            finalTarget = new File(behaviorPacksDirectory, packName);
-                            targetFile.renameTo(finalTarget);
-                        }
+                    File manifestFile = new File(packContentDir, "manifest.json");
+                    if (!manifestFile.exists()) {
+                        callback.onError("Invalid pack file - no manifest found");
+                        return;
                     }
+
+                    ResourcePackItem.PackType packType = determinePackType(manifestFile);
+                    
+                    File targetDir = switch (packType) {
+                        case BEHAVIOR_PACK -> behaviorPacksDirectory;
+                        case RESOURCE_PACK -> {
+                            if (isSkinPack(manifestFile)) {
+                                yield skinPacksDirectory;
+                            }
+                            yield resourcePacksDirectory;
+                        }
+                        default -> resourcePacksDirectory;
+                    };
+
+                    String baseName;
+                    if (packContentDir.equals(tempDir)) {
+                        baseName = fileName.replaceAll("\\.(mcpack|mcaddon|zip)$", "");
+                    } else {
+                        baseName = packContentDir.getName();
+                    }
+                    
+                    String uniqueName = generateUniquePackName(baseName, targetDir);
+                    File finalDir = new File(targetDir, uniqueName);
+
+                    copyDirectory(packContentDir, finalDir);
 
                     callback.onSuccess("Pack imported successfully");
                     
                 } finally {
+                    deleteFile(tempDir);
                     inputStream.close();
                 }
 
@@ -231,17 +234,18 @@ public class ResourcePackManager {
     }
 
     private String generateUniquePackName(String baseName, File directory) {
-        String packName = baseName;
+        String sanitized = sanitizeFileName(baseName);
+        String packName = sanitized;
         int counter = 1;
         
         while (new File(directory, packName).exists()) {
-            String nameWithoutExt = baseName;
+            String nameWithoutExt = sanitized;
             String extension = "";
             
-            int lastDot = baseName.lastIndexOf('.');
+            int lastDot = sanitized.lastIndexOf('.');
             if (lastDot > 0) {
-                nameWithoutExt = baseName.substring(0, lastDot);
-                extension = baseName.substring(lastDot);
+                nameWithoutExt = sanitized.substring(0, lastDot);
+                extension = sanitized.substring(lastDot);
             }
             
             packName = nameWithoutExt + "_" + counter + extension;
@@ -249,6 +253,11 @@ public class ResourcePackManager {
         }
         
         return packName;
+    }
+
+    private String sanitizeFileName(String fileName) {
+        if (fileName == null) return "pack";
+        return fileName.replaceAll("[:\\\\/*\"?|<>]", "_");
     }
 
     private void copyStream(InputStream input, FileOutputStream output) throws IOException {
@@ -272,6 +281,143 @@ public class ResourcePackManager {
             }
         }
         return file.delete();
+    }
+
+    private void extractZip(InputStream inputStream, File targetDir) throws IOException {
+        java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream(inputStream);
+        java.util.zip.ZipEntry entry;
+        byte[] buffer = new byte[BUFFER_SIZE];
+        
+        while ((entry = zis.getNextEntry()) != null) {
+            File entryFile = new File(targetDir, entry.getName());
+
+            if (!entryFile.getCanonicalPath().startsWith(targetDir.getCanonicalPath())) {
+                continue;
+            }
+            
+            if (entry.isDirectory()) {
+                entryFile.mkdirs();
+            } else {
+                entryFile.getParentFile().mkdirs();
+                try (FileOutputStream fos = new FileOutputStream(entryFile)) {
+                    int len;
+                    while ((len = zis.read(buffer)) > 0) {
+                        fos.write(buffer, 0, len);
+                    }
+                }
+            }
+        }
+    }
+
+    private File findPackDirectory(File searchDir) {
+        File manifest = new File(searchDir, "manifest.json");
+        if (manifest.exists()) {
+            return searchDir;
+        }
+        
+        File[] files = searchDir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    File manifestInSubdir = new File(file, "manifest.json");
+                    if (manifestInSubdir.exists()) {
+                        return file;
+                    }
+                    File found = findPackDirectory(file);
+                    if (found != null) {
+                        return found;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private ResourcePackItem.PackType determinePackType(File manifestFile) {
+        try (FileInputStream fis = new FileInputStream(manifestFile)) {
+            byte[] data = new byte[(int) manifestFile.length()];
+            fis.read(data);
+            String jsonStr = new String(data, java.nio.charset.StandardCharsets.UTF_8);
+            
+            org.json.JSONObject manifest = new org.json.JSONObject(jsonStr);
+            
+            if (manifest.has("modules")) {
+                org.json.JSONArray modules = manifest.getJSONArray("modules");
+                for (int i = 0; i < modules.length(); i++) {
+                    org.json.JSONObject module = modules.getJSONObject(i);
+                    if (module.has("type")) {
+                        String moduleType = module.getString("type");
+                        if ("data".equals(moduleType) || "script".equals(moduleType)) {
+                            return ResourcePackItem.PackType.BEHAVIOR_PACK;
+                        }
+                    }
+                }
+            }
+            
+            return ResourcePackItem.PackType.RESOURCE_PACK;
+            
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to determine pack type", e);
+            return ResourcePackItem.PackType.RESOURCE_PACK;
+        }
+    }
+
+    private boolean isSkinPack(File manifestFile) {
+        try (FileInputStream fis = new FileInputStream(manifestFile)) {
+            byte[] data = new byte[(int) manifestFile.length()];
+            fis.read(data);
+            String jsonStr = new String(data, java.nio.charset.StandardCharsets.UTF_8);
+            
+            org.json.JSONObject manifest = new org.json.JSONObject(jsonStr);
+            
+            if (manifest.has("modules")) {
+                org.json.JSONArray modules = manifest.getJSONArray("modules");
+                for (int i = 0; i < modules.length(); i++) {
+                    org.json.JSONObject module = modules.getJSONObject(i);
+                    if (module.has("type")) {
+                        String moduleType = module.getString("type");
+                        if ("skin_pack".equals(moduleType)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            
+            return false;
+            
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void copyDirectory(File source, File target) throws IOException {
+        if (source.isDirectory()) {
+            if (!target.exists()) {
+                target.mkdirs();
+            }
+            
+            File[] files = source.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    copyDirectory(file, new File(target, file.getName()));
+                }
+            }
+        } else {
+            copyFile(source, target);
+        }
+    }
+
+    private void copyFile(File source, File target) throws IOException {
+        target.getParentFile().mkdirs();
+        try (FileInputStream fis = new FileInputStream(source);
+             FileOutputStream fos = new FileOutputStream(target)) {
+            
+            byte[] buffer = new byte[BUFFER_SIZE];
+            int len;
+            while ((len = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, len);
+            }
+        }
     }
 
     public void shutdown() {

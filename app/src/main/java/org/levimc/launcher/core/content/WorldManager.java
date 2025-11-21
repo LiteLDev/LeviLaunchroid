@@ -223,12 +223,17 @@ public class WorldManager {
     }
 
     private File findWorldDirectory(File searchDir) {
+        File levelDat = new File(searchDir, "level.dat");
+        if (levelDat.exists()) {
+            return searchDir;
+        }
+        
         File[] files = searchDir.listFiles();
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    File levelDat = new File(file, "level.dat");
-                    if (levelDat.exists()) {
+                    File levelDatInSubdir = new File(file, "level.dat");
+                    if (levelDatInSubdir.exists()) {
                         return file;
                     }
                     File found = findWorldDirectory(file);

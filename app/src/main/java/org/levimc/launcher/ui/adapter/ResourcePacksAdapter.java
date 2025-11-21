@@ -49,23 +49,14 @@ public class ResourcePacksAdapter extends RecyclerView.Adapter<ResourcePacksAdap
         ResourcePackItem pack = resourcePacks.get(position);
         
         holder.packName.setText(pack.getPackName());
-        holder.packType.setText(pack.getType());
         holder.packDescription.setText(pack.getDescription());
-        holder.packSize.setText(pack.getFormattedSize());
+        holder.packSize.setText("Size: " + pack.getFormattedSize());
 
         holder.deleteButton.setOnClickListener(v -> {
             if (onResourcePackActionListener != null) {
                 onResourcePackActionListener.onResourcePackDelete(pack);
             }
         });
-
-        if (pack.isResourcePack()) {
-            holder.packType.setBackgroundResource(R.drawable.bg_abi_arm64_v8a);
-        } else if (pack.isBehaviorPack()) {
-            holder.packType.setBackgroundResource(R.drawable.bg_abi_x86_64);
-        } else {
-            holder.packType.setBackgroundResource(R.drawable.bg_abi_default);
-        }
     }
 
     @Override
@@ -75,7 +66,6 @@ public class ResourcePacksAdapter extends RecyclerView.Adapter<ResourcePacksAdap
 
     static class ResourcePackViewHolder extends RecyclerView.ViewHolder {
         TextView packName;
-        TextView packType;
         TextView packDescription;
         TextView packSize;
         Button deleteButton;
@@ -83,7 +73,6 @@ public class ResourcePacksAdapter extends RecyclerView.Adapter<ResourcePacksAdap
         public ResourcePackViewHolder(@NonNull View itemView) {
             super(itemView);
             packName = itemView.findViewById(R.id.pack_name);
-            packType = itemView.findViewById(R.id.pack_type);
             packDescription = itemView.findViewById(R.id.pack_description);
             packSize = itemView.findViewById(R.id.pack_size);
             deleteButton = itemView.findViewById(R.id.pack_delete_button);
