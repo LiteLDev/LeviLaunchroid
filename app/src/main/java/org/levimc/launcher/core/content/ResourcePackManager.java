@@ -126,6 +126,10 @@ public class ResourcePackManager {
     }
 
     public void importPack(Uri packUri, PackOperationCallback callback) {
+        if (executor.isShutdown()) {
+            callback.onError("ResourcePackManager has been shut down");
+            return;
+        }
         executor.execute(() -> {
             try {
                 InputStream inputStream = context.getContentResolver().openInputStream(packUri);
@@ -196,6 +200,10 @@ public class ResourcePackManager {
     }
 
     public void deletePack(ResourcePackItem pack, PackOperationCallback callback) {
+        if (executor.isShutdown()) {
+            callback.onError("ResourcePackManager has been shut down");
+            return;
+        }
         executor.execute(() -> {
             try {
                 if (deleteFile(pack.getFile())) {

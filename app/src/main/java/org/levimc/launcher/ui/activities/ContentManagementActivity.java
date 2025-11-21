@@ -200,8 +200,5 @@ public class ContentManagementActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (contentManager != null) {
-            contentManager.shutdown();
-        }
     }
 }

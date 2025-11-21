@@ -81,6 +81,10 @@ public class WorldManager {
     }
 
     public void importWorld(Uri worldUri, WorldOperationCallback callback) {
+        if (executor.isShutdown()) {
+            callback.onError("WorldManager has been shut down");
+            return;
+        }
         executor.execute(() -> {
             try {
                 if (worldsDirectory == null) {
@@ -127,6 +131,10 @@ public class WorldManager {
     }
 
     public void exportWorld(WorldItem world, Uri exportUri, WorldOperationCallback callback) {
+        if (executor.isShutdown()) {
+            callback.onError("WorldManager has been shut down");
+            return;
+        }
         executor.execute(() -> {
             try {
                 OutputStream outputStream = context.getContentResolver().openOutputStream(exportUri);
@@ -150,6 +158,10 @@ public class WorldManager {
     }
 
     public void deleteWorld(WorldItem world, WorldOperationCallback callback) {
+        if (executor.isShutdown()) {
+            callback.onError("WorldManager has been shut down");
+            return;
+        }
         executor.execute(() -> {
             try {
                 createBackup(world);
@@ -168,6 +180,10 @@ public class WorldManager {
     }
 
     public void backupWorld(WorldItem world, WorldOperationCallback callback) {
+        if (executor.isShutdown()) {
+            callback.onError("WorldManager has been shut down");
+            return;
+        }
         executor.execute(() -> {
             try {
                 String backupPath = createBackup(world);
