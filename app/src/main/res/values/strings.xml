@@ -180,6 +180,7 @@
     <string name="storage_external">External</string>
     <string name="storage_version_isolation">Version Isolation</string>
     <string name="select_storage_label">Select Storage:</string>
+    <string name="search_hint">Search…</string>
 
     <!-- World Management -->
     <string name="world_size">Size: %s</string>

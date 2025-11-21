@@ -3,6 +3,8 @@ package org.levimc.launcher.ui.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -20,6 +22,10 @@ import org.levimc.launcher.ui.adapter.ResourcePacksAdapter;
 import org.levimc.launcher.ui.adapter.WorldsAdapter;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ContentListActivity extends BaseActivity {
 
@@ -39,6 +45,9 @@ public class ContentListActivity extends BaseActivity {
     private ActivityResultLauncher<Intent> importLauncher;
     private ActivityResultLauncher<Intent> exportLauncher;
     private WorldItem pendingExportWorld;
+
+    private List<WorldItem> allWorlds = new ArrayList<>();
+    private List<ResourcePackItem> allPacks = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +120,47 @@ public class ContentListActivity extends BaseActivity {
         }
 
         binding.importButton.setOnClickListener(v -> startImport());
+
+        setupSearchFilter();
+    }
+
+    private void setupSearchFilter() {
+        binding.searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterContent(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void filterContent(String query) {
+        String lowerQuery = query.toLowerCase().trim();
+
+        if (contentType == TYPE_WORLDS) {
+            if (lowerQuery.isEmpty()) {
+                worldsAdapter.updateWorlds(allWorlds);
+            } else {
+                List<WorldItem> filtered = allWorlds.stream()
+                    .filter(world -> world.getWorldName().toLowerCase().contains(lowerQuery))
+                    .collect(Collectors.toList());
+                worldsAdapter.updateWorlds(filtered);
+            }
+        } else {
+            if (lowerQuery.isEmpty()) {
+                packsAdapter.updateResourcePacks(allPacks);
+            } else {
+                List<ResourcePackItem> filtered = allPacks.stream()
+                    .filter(pack -> pack.getPackName().toLowerCase().contains(lowerQuery))
+                    .collect(Collectors.toList());
+                packsAdapter.updateResourcePacks(filtered);
+            }
+        }
     }
 
     private void setupWorldsRecyclerView() {
@@ -150,29 +200,33 @@ public class ContentListActivity extends BaseActivity {
         switch (contentType) {
             case TYPE_WORLDS:
                 contentManager.getWorldsLiveData().observe(this, worlds -> {
+                    allWorlds = worlds != null ? worlds : new ArrayList<>();
                     if (worldsAdapter != null) {
-                        worldsAdapter.updateWorlds(worlds);
+                        filterContent(binding.searchEditText.getText().toString());
                     }
                 });
                 break;
             case TYPE_SKIN_PACKS:
                 contentManager.getSkinPacksLiveData().observe(this, packs -> {
+                    allPacks = packs != null ? packs : new ArrayList<>();
                     if (packsAdapter != null) {
-                        packsAdapter.updateResourcePacks(packs);
+                        filterContent(binding.searchEditText.getText().toString());
                     }
                 });
                 break;
             case TYPE_RESOURCE_PACKS:
                 contentManager.getResourcePacksLiveData().observe(this, packs -> {
+                    allPacks = packs != null ? packs : new ArrayList<>();
                     if (packsAdapter != null) {
-                        packsAdapter.updateResourcePacks(packs);
+                        filterContent(binding.searchEditText.getText().toString());
                     }
                 });
                 break;
             case TYPE_BEHAVIOR_PACKS:
                 contentManager.getBehaviorPacksLiveData().observe(this, packs -> {
+                    allPacks = packs != null ? packs : new ArrayList<>();
                     if (packsAdapter != null) {
-                        packsAdapter.updateResourcePacks(packs);
+                        filterContent(binding.searchEditText.getText().toString());
                     }
                 });
                 break;

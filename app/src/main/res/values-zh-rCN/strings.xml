@@ -173,6 +173,7 @@
     <string name="storage_external">外部</string>
     <string name="storage_version_isolation">版本隔离</string>
     <string name="select_storage_label">选择存储：</string>
+    <string name="search_hint">搜索…</string>
 
     <!-- World Management -->
     <string name="world_size">大小：%s</string>
