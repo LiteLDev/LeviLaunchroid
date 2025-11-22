@@ -44,10 +44,11 @@ SKY_STATIC_HOOK(
 ) {
 }
 
+uintptr_t MyHook2Ptr = 0;
 SKY_STATIC_HOOK(
         MyHook2,
         memory::HookPriority::Normal,
-        "? ? ? D1 ? ? ? A9 ? ? ? A9 ? ? ? A9 ? ? ? A9 ? ? ? A9 ? ? ? A9 ? ? ? 91 ? ? ? D5 ? ? ? F0 F4 03 02 AA",
+        MyHook2Ptr,
         "libminecraftpe.so",
         void, void *a1, Data* scopedData, void* threadId
 ) {
@@ -56,6 +57,40 @@ SKY_STATIC_HOOK(
 }
 
 namespace core {
+
+    void hookTimer() {
+        uintptr_t code_addr = [] {
+            constexpr std::array<std::string_view, 2> signatures = {
+                    "? ? ? 96 ? ? ? A9 ? ? ? A9 ? ? ? 94",
+                    "? ? ? 97 ? ? ? F9 ? ? ? BD ? ? ? 94 E0 03 00 91"
+            };
+            for (auto sig : signatures) {
+                if (auto addr = pl::signature::pl_resolve_signature(sig.data(), "libminecraftpe.so"); addr != 0)
+                    return addr;
+            }
+            return static_cast<uintptr_t>(0);
+        }();
+
+        if (code_addr == 0) {
+            logger.error("Failed to resolve timer signature.");
+            return;
+        }
+
+        const uint32_t bl_insn = *reinterpret_cast<const uint32_t*>(code_addr);
+
+        if ((bl_insn & 0xFC000000) != 0x94000000) {
+            return;
+        }
+
+        const uint32_t imm26 = bl_insn & 0x03FFFFFF;
+        int32_t signed_imm26 = static_cast<int32_t>(imm26);
+
+        if (signed_imm26 & (1 << 25)) {
+            signed_imm26 -= (1 << 26);
+        }
+        MyHook2Ptr = code_addr + (signed_imm26 << 2);
+        MyHook2::hook();
+    }
 
     void patchMinecraftLogo() {
         uintptr_t code_addr = [] {
@@ -107,6 +142,5 @@ namespace core {
 
     void setupHooks() {
         MyHook1::hook();
-        MyHook2::hook();
     }
 }
