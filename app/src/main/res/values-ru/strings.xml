@@ -201,6 +201,20 @@
     <string name="confirm_delete_world">Вы уверены, что хотите удалить этот мир? Это действие необратимо.</string>
     <string name="confirm_delete_resource_pack">Вы уверены, что хотите удалить этот набор ресурсов? Это действие необратимо.</string>
 
+    <!-- World Editor -->
+    <string name="edit_world">Редактировать мир</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Сохранить</string>
+    <string name="level_dat_not_found">Файл level.dat не найден</string>
+    <string name="no_editable_properties">Редактируемые свойства не найдены</string>
+    <string name="no_data">Нет данных</string>
+    <string name="error_loading_world">Ошибка загрузки мира</string>
+    <string name="world_saved">Мир успешно сохранён</string>
+    <string name="save_failed">Ошибка сохранения</string>
+    <string name="unsaved_changes">Несохранённые изменения</string>
+    <string name="discard_changes_message">У вас есть несохранённые изменения. Сбросить их?</string>
+    <string name="discard">Сбросить</string>
+
     <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">Требуется версия из Play Маркета</string>
     <string name="minecraft_playstore_required_message">Этот лаунчер работает только с официальным приложением Minecraft из Google Play Маркета. Пожалуйста, установите версию из Play Маркета, чтобы продолжить.</string>

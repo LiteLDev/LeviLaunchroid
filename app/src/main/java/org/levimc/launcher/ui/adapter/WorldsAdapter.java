@@ -24,6 +24,7 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
         void onWorldExport(WorldItem world);
         void onWorldDelete(WorldItem world);
         void onWorldBackup(WorldItem world);
+        void onWorldEdit(WorldItem world);
     }
 
     public WorldsAdapter() {
@@ -55,6 +56,12 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
         holder.worldLastPlayed.setText(holder.itemView.getContext().getString(R.string.world_last_played, world.getFormattedLastModified()));
         holder.worldDescription.setText(world.getDescription());
 
+        holder.editButton.setOnClickListener(v -> {
+            if (onWorldActionListener != null) {
+                onWorldActionListener.onWorldEdit(world);
+            }
+        });
+
         holder.exportButton.setOnClickListener(v -> {
             if (onWorldActionListener != null) {
                 onWorldActionListener.onWorldExport(world);
@@ -84,6 +91,7 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
         TextView worldSize;
         TextView worldLastPlayed;
         TextView worldDescription;
+        Button editButton;
         Button exportButton;
         Button backupButton;
         Button deleteButton;
@@ -94,6 +102,7 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
             worldSize = itemView.findViewById(R.id.world_size);
             worldLastPlayed = itemView.findViewById(R.id.world_last_played);
             worldDescription = itemView.findViewById(R.id.world_description);
+            editButton = itemView.findViewById(R.id.world_edit_button);
             exportButton = itemView.findViewById(R.id.world_export_button);
             backupButton = itemView.findViewById(R.id.world_backup_button);
             deleteButton = itemView.findViewById(R.id.world_delete_button);

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:background="@drawable/bg_rounded_card"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/property_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/misans"
+            android:text="Property Name"
+            android:textColor="@color/on_surface"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/property_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/misans"
+            android:text="Int"
+            android:textColor="@color/on_surface"
+            android:textSize="11sp"
+            android:alpha="0.7" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/property_value"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_edit_text"
+        android:fontFamily="@font/misans"
+        android:gravity="end"
+        android:hint="Value"
+        android:inputType="text"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:textColor="@color/on_surface"
+        android:textColorHint="@color/on_surface"
+        android:textSize="13sp"
+        android:imeOptions="actionDone"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:nextFocusDown="@id/property_value"
+        android:nextFocusUp="@id/property_value"
+        android:nextFocusLeft="@id/property_value"
+        android:nextFocusRight="@id/property_value"
+        android:nextFocusForward="@id/property_value" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/property_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+</LinearLayout>

@@ -205,6 +205,20 @@
     <string name="confirm_delete_world">Are you sure you want to delete this world? This action cannot be undone.</string>
     <string name="confirm_delete_resource_pack">Are you sure you want to delete this resource pack? This action cannot be undone.</string>
 
+    <!-- World Editor -->
+    <string name="edit_world">Edit World</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="level_dat_not_found">level.dat not found</string>
+    <string name="no_editable_properties">No editable properties found</string>
+    <string name="no_data">No data</string>
+    <string name="error_loading_world">Error loading world</string>
+    <string name="world_saved">World saved successfully</string>
+    <string name="save_failed">Save failed</string>
+    <string name="unsaved_changes">Unsaved Changes</string>
+    <string name="discard_changes_message">You have unsaved changes. Do you want to discard them?</string>
+    <string name="discard">Discard</string>
+
     <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">Play Store Version Required</string>
     <string name="minecraft_playstore_required_message">This launcher works only with the official Minecraft app from the Google Play Store. Please install the Play Store version to continue.</string>

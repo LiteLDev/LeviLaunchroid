@@ -23,6 +23,7 @@ import org.levimc.launcher.ui.adapter.WorldsAdapter;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -180,11 +181,29 @@ public class ContentListActivity extends BaseActivity {
             public void onWorldBackup(WorldItem world) {
                 backupWorld(world);
             }
+
+            @Override
+            public void onWorldEdit(WorldItem world) {
+                openWorldEditor(world);
+            }
         });
 
         binding.contentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.contentRecyclerView.setAdapter(worldsAdapter);
         binding.contentRecyclerView.post(() -> DynamicAnim.staggerRecyclerChildren(binding.contentRecyclerView));
+    }
+
+    private void openWorldEditor(WorldItem world) {
+        File worldFile = world.getFile();
+        if (worldFile == null || !worldFile.exists()) {
+            Toast.makeText(this, "World directory not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        Intent intent = new Intent(this, WorldEditorActivity.class);
+        intent.putExtra(WorldEditorActivity.EXTRA_WORLD_PATH, worldFile.getAbsolutePath());
+        intent.putExtra(WorldEditorActivity.EXTRA_WORLD_NAME, world.getWorldName());
+        startActivity(intent);
     }
 
     private void setupPacksRecyclerView() {
@@ -384,5 +403,11 @@ public class ContentListActivity extends BaseActivity {
             @Override
             public void onProgress(int progress) {}
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadContent();
     }
 }

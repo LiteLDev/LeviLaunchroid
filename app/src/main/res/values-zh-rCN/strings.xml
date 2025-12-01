@@ -198,6 +198,20 @@
     <string name="confirm_delete_world">您确定要删除这个世界吗？此操作无法撤销。</string>
     <string name="confirm_delete_resource_pack">您确定要删除这个资源包吗？此操作无法撤销。</string>
 
+    <!-- World Editor -->
+    <string name="edit_world">编辑世界</string>
+    <string name="edit">编辑</string>
+    <string name="save">保存</string>
+    <string name="level_dat_not_found">未找到 level.dat</string>
+    <string name="no_editable_properties">未找到可编辑属性</string>
+    <string name="no_data">无数据</string>
+    <string name="error_loading_world">加载世界时出错</string>
+    <string name="world_saved">世界保存成功</string>
+    <string name="save_failed">保存失败</string>
+    <string name="unsaved_changes">未保存的更改</string>
+    <string name="discard_changes_message">您有未保存的更改。要放弃这些更改吗？</string>
+    <string name="discard">放弃</string>
+
     <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">需要 Play 商店版本</string>
     <string name="minecraft_playstore_required_message">此启动器仅适用于从 Google Play 商店下载的官方 Minecraft。请安装 Play 商店版本后再继续。</string>
