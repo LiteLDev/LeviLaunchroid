@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="4dp"
+    android:background="@drawable/bg_rounded_card"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/layer_number"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/bg_circle"
+        android:fontFamily="@font/misans"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/on_primary"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/block_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_edit_text"
+        android:fontFamily="@font/misans"
+        android:hint="minecraft:stone"
+        android:inputType="text"
+        android:maxLines="1"
+        android:padding="6dp"
+        android:textColor="@color/on_surface"
+        android:textColorHint="@color/outline"
+        android:textSize="13sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/misans"
+        android:text="×"
+        android:textColor="@color/on_surface"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/count_edit"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/bg_edit_text"
+        android:fontFamily="@font/misans"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="3"
+        android:padding="6dp"
+        android:text="1"
+        android:textColor="@color/on_surface"
+        android:textSize="13sp" />
+
+</LinearLayout>

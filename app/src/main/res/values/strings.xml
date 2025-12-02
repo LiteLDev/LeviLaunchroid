@@ -94,7 +94,7 @@
     <string name="dialog_title_disable_version_isolation">Disable Version Isolation</string>
     <string name="dialog_message_disable_version_isolation">You are trying to launch an installed version with version isolation enabled. Please disable version isolation to proceed.</string>
     <string name="dialog_positive_disable">Disable</string>
-     <string name="dialog_positive_ok">OK</string>
+    <string name="dialog_positive_ok">OK</string>
 
 
     <string name="new_version_found">New version found: %1$s</string>
@@ -219,6 +219,20 @@
     <string name="discard_changes_message">You have unsaved changes. Do you want to discard them?</string>
     <string name="discard">Discard</string>
 
+    <!-- Custom Flat World -->
+    <string name="custom_flat_world">Custom Flat World</string>
+    <string name="world_name">World Name</string>
+    <string name="enter_world_name">Enter world name</string>
+    <string name="biome">Biome</string>
+    <string name="game_mode">Game Mode</string>
+    <string name="layers">Layers (bottom to top)</string>
+    <string name="layers_hint">Drag to reorder, swipe left to delete</string>
+    <string name="add_layer">+ Add Layer</string>
+    <string name="create_world">Create World</string>
+    <string name="add_at_least_one_layer">Add at least one layer</string>
+    <string name="world_created_successfully">World created successfully</string>
+    <string name="failed_to_create_world">Failed to create world</string>
+
     <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">Play Store Version Required</string>
     <string name="minecraft_playstore_required_message">This launcher works only with the official Minecraft app from the Google Play Store. Please install the Play Store version to continue.</string>
@@ -283,29 +297,29 @@
     <!-- Popup labels -->
     <string name="label_current_account">Current Account</string>
     <string name="label_other_accounts">Other Accounts</string>
-    
+
     <string name="crash_title">Application crashed</string>
-     <string name="crash_back_to_main">Back to Home</string>
+    <string name="crash_back_to_main">Back to Home</string>
     <string name="crash_log_file_label">Log file:</string>
     <string name="crash_log_file_missing">Log file not found or unreadable.</string>
     <string name="crash_read_failed">Failed to read log: %1$s</string>
     <string name="crash_emergency_label">Emergency:</string>
     <string name="crash_no_details">No crash details available.</string>
-     <string name="dialog_title_exit_app">Exit App</string>
-     <string name="dialog_message_exit_app">Are you sure you want to exit?</string>
-     <string name="dialog_positive_exit">Exit</string>
-     <string name="show_logcat_overlay">Logcat overlay</string>
+    <string name="dialog_title_exit_app">Exit App</string>
+    <string name="dialog_message_exit_app">Are you sure you want to exit?</string>
+    <string name="dialog_positive_exit">Exit</string>
+    <string name="show_logcat_overlay">Logcat overlay</string>
     <string name="logcat_live">Logcat: <b>live</b></string>
-     <string name="logcat_paused">Logcat: paused</string>
-     <!-- Logcat Overlay i18n -->
-     <string name="logcat_filter_hint">Keyword filter</string>
-     <string name="logcat_blacklist_hint">Blacklist (comma-separated)</string>
-     <string name="logcat_filter_clear">Clear filters</string>
-     <string name="logcat_filter">Filter</string>
-     <string name="logcat_autoscroll">Auto-scroll</string>
-     <string name="logcat_pause">Pause</string>
-     <string name="logcat_clear">Clear</string>
-     <string name="logcat_close">Close</string>
-     <string name="logcat_corner_bottom_left">Resize: bottom-left</string>
-     <string name="logcat_corner_bottom_right">Resize: bottom-right</string>
-  </resources>
+    <string name="logcat_paused">Logcat: paused</string>
+    <!-- Logcat Overlay i18n -->
+    <string name="logcat_filter_hint">Keyword filter</string>
+    <string name="logcat_blacklist_hint">Blacklist (comma-separated)</string>
+    <string name="logcat_filter_clear">Clear filters</string>
+    <string name="logcat_filter">Filter</string>
+    <string name="logcat_autoscroll">Auto-scroll</string>
+    <string name="logcat_pause">Pause</string>
+    <string name="logcat_clear">Clear</string>
+    <string name="logcat_close">Close</string>
+    <string name="logcat_corner_bottom_left">Resize: bottom-left</string>
+    <string name="logcat_corner_bottom_right">Resize: bottom-right</string>
+</resources>

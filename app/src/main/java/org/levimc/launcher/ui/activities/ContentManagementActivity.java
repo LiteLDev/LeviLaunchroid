@@ -117,7 +117,40 @@ public class ContentManagementActivity extends BaseActivity {
     private void openContentList(int contentType) {
         Intent intent = new Intent(this, ContentListActivity.class);
         intent.putExtra(ContentListActivity.EXTRA_CONTENT_TYPE, contentType);
+        
+        if (contentType == ContentListActivity.TYPE_WORLDS) {
+            File worldsDir = getWorldsDirectory();
+            if (worldsDir != null) {
+                intent.putExtra(ContentListActivity.EXTRA_WORLDS_DIRECTORY, worldsDir.getAbsolutePath());
+            }
+        }
+        
         startActivity(intent);
+    }
+
+    private File getWorldsDirectory() {
+        GameVersion currentVersion = versionManager.getSelectedVersion();
+        if (currentVersion == null) return null;
+
+        switch (currentStorageType) {
+            case VERSION_ISOLATION:
+                if (currentVersion.versionDir != null) {
+                    File gameDataDir = new File(currentVersion.versionDir, "games/com.mojang");
+                    return new File(gameDataDir, "minecraftWorlds");
+                }
+                break;
+            case EXTERNAL:
+                File externalDir = getExternalFilesDir(null);
+                if (externalDir != null) {
+                    File gameDataDir = new File(externalDir, "games/com.mojang");
+                    return new File(gameDataDir, "minecraftWorlds");
+                }
+                break;
+            case INTERNAL:
+                File internalDir = new File(getDataDir(), "games/com.mojang");
+                return new File(internalDir, "minecraftWorlds");
+        }
+        return null;
     }
 
     private void loadCurrentVersion() {

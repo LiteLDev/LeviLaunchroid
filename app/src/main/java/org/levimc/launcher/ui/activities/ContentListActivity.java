@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 public class ContentListActivity extends BaseActivity {
 
     public static final String EXTRA_CONTENT_TYPE = "content_type";
+    public static final String EXTRA_WORLDS_DIRECTORY = "worlds_directory";
     public static final int TYPE_WORLDS = 0;
     public static final int TYPE_SKIN_PACKS = 1;
     public static final int TYPE_RESOURCE_PACKS = 2;
@@ -39,12 +41,14 @@ public class ContentListActivity extends BaseActivity {
     private ActivityContentListBinding binding;
     private ContentManager contentManager;
     private int contentType;
+    private File worldsDirectory;
 
     private WorldsAdapter worldsAdapter;
     private ResourcePacksAdapter packsAdapter;
 
     private ActivityResultLauncher<Intent> importLauncher;
     private ActivityResultLauncher<Intent> exportLauncher;
+    private ActivityResultLauncher<Intent> customFlatWorldLauncher;
     private WorldItem pendingExportWorld;
 
     private List<WorldItem> allWorlds = new ArrayList<>();
@@ -92,15 +96,30 @@ public class ContentListActivity extends BaseActivity {
                 pendingExportWorld = null;
             }
         );
+
+        customFlatWorldLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    loadContent();
+                }
+            }
+        );
     }
 
     private void setupUI() {
         binding.backButton.setOnClickListener(v -> finish());
 
+        String worldsPath = getIntent().getStringExtra(EXTRA_WORLDS_DIRECTORY);
+        if (worldsPath != null) {
+            worldsDirectory = new File(worldsPath);
+        }
+
         switch (contentType) {
             case TYPE_WORLDS:
                 binding.titleText.setText(getString(R.string.worlds_title));
                 binding.importButton.setText(getString(R.string.import_world));
+                binding.customFlatButton.setVisibility(View.VISIBLE);
                 setupWorldsRecyclerView();
                 break;
             case TYPE_SKIN_PACKS:
@@ -121,6 +140,7 @@ public class ContentListActivity extends BaseActivity {
         }
 
         binding.importButton.setOnClickListener(v -> startImport());
+        binding.customFlatButton.setOnClickListener(v -> openCustomFlatWorld());
 
         setupSearchFilter();
     }
@@ -403,6 +423,17 @@ public class ContentListActivity extends BaseActivity {
             @Override
             public void onProgress(int progress) {}
         });
+    }
+
+    private void openCustomFlatWorld() {
+        if (worldsDirectory == null || !worldsDirectory.exists()) {
+            Toast.makeText(this, "Worlds directory not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        Intent intent = new Intent(this, CustomFlatWorldActivity.class);
+        intent.putExtra(CustomFlatWorldActivity.EXTRA_WORLDS_DIRECTORY, worldsDirectory.getAbsolutePath());
+        customFlatWorldLauncher.launch(intent);
     }
 
     @Override

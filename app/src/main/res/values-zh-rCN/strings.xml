@@ -212,6 +212,20 @@
     <string name="discard_changes_message">您有未保存的更改。要放弃这些更改吗？</string>
     <string name="discard">放弃</string>
 
+    <!-- Custom Flat World -->
+    <string name="custom_flat_world">自定义超平坦世界</string>
+    <string name="world_name">世界名称</string>
+    <string name="enter_world_name">输入世界名称</string>
+    <string name="biome">生物群系</string>
+    <string name="game_mode">游戏模式</string>
+    <string name="layers">层（从下到上）</string>
+    <string name="layers_hint">拖动排序，向左滑动删除</string>
+    <string name="add_layer">+ 添加层</string>
+    <string name="create_world">创建世界</string>
+    <string name="add_at_least_one_layer">请至少添加一层</string>
+    <string name="world_created_successfully">世界创建成功</string>
+    <string name="failed_to_create_world">创建世界失败</string>
+
     <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">需要 Play 商店版本</string>
     <string name="minecraft_playstore_required_message">此启动器仅适用于从 Google Play 商店下载的官方 Minecraft。请安装 Play 商店版本后再继续。</string>

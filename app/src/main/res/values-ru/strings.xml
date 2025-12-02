@@ -215,6 +215,20 @@
     <string name="discard_changes_message">У вас есть несохранённые изменения. Сбросить их?</string>
     <string name="discard">Сбросить</string>
 
+    <!-- Custom Flat World -->
+    <string name="custom_flat_world">Настраиваемый плоский мир</string>
+    <string name="world_name">Название мира</string>
+    <string name="enter_world_name">Введите название мира</string>
+    <string name="biome">Биом</string>
+    <string name="game_mode">Режим игры</string>
+    <string name="layers">Слои (снизу вверх)</string>
+    <string name="layers_hint">Перетащите для сортировки, смахните влево для удаления</string>
+    <string name="add_layer">+ Добавить слой</string>
+    <string name="create_world">Создать мир</string>
+    <string name="add_at_least_one_layer">Добавьте хотя бы один слой</string>
+    <string name="world_created_successfully">Мир успешно создан</string>
+    <string name="failed_to_create_world">Не удалось создать мир</string>
+
     <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">Требуется версия из Play Маркета</string>
     <string name="minecraft_playstore_required_message">Этот лаунчер работает только с официальным приложением Minecraft из Google Play Маркета. Пожалуйста, установите версию из Play Маркета, чтобы продолжить.</string>
@@ -279,7 +293,7 @@
     <!-- Popup labels -->
     <string name="label_current_account">Текущий аккаунт</string>
     <string name="label_other_accounts">Другие аккаунты</string>
-    
+
     <string name="crash_title">Приложение аварийно завершило работу</string>
     <string name="crash_back_to_main">Вернуться на главную</string>
     <string name="crash_log_file_label">Файл журнала:</string>
@@ -287,23 +301,23 @@
     <string name="crash_read_failed">Не удалось прочитать журнал: %1$s</string>
     <string name="crash_emergency_label">Экстренные сведения:</string>
     <string name="crash_no_details">Сведения об аварии отсутствуют.</string>
-     <string name="dialog_title_exit_app">Выйти из приложения</string>
-     <string name="dialog_message_exit_app">Вы уверены, что хотите выйти?</string>
-     <string name="dialog_positive_exit">Выйти</string>
+    <string name="dialog_title_exit_app">Выйти из приложения</string>
+    <string name="dialog_message_exit_app">Вы уверены, что хотите выйти?</string>
+    <string name="dialog_positive_exit">Выйти</string>
 
-     <!-- Logcat Overlay i18n -->
-     <string name="show_logcat_overlay">Оверлей Logcat</string>
-<string name="logcat_live">Logcat: <b>в реальном времени</b></string>
-     <string name="logcat_paused">Logcat: приостановлен</string>
-     <string name="logcat_filter_hint">Фильтр по ключевым словам</string>
-     <string name="logcat_blacklist_hint">Чёрный список (через запятую)</string>
-     <string name="logcat_filter_clear">Сбросить фильтры</string>
-     <string name="logcat_filter">Фильтр</string>
-     <string name="logcat_autoscroll">Автопрокрутка</string>
-     <string name="logcat_pause">Пауза</string>
-     <string name="logcat_clear">Очистить</string>
-     <string name="logcat_close">Закрыть</string>
-     <string name="logcat_corner_bottom_left">Изменить размер: нижний левый</string>
-     <string name="logcat_corner_bottom_right">Изменить размер: нижний правый</string>
+    <!-- Logcat Overlay i18n -->
+    <string name="show_logcat_overlay">Оверлей Logcat</string>
+    <string name="logcat_live">Logcat: <b>в реальном времени</b></string>
+    <string name="logcat_paused">Logcat: приостановлен</string>
+    <string name="logcat_filter_hint">Фильтр по ключевым словам</string>
+    <string name="logcat_blacklist_hint">Чёрный список (через запятую)</string>
+    <string name="logcat_filter_clear">Сбросить фильтры</string>
+    <string name="logcat_filter">Фильтр</string>
+    <string name="logcat_autoscroll">Автопрокрутка</string>
+    <string name="logcat_pause">Пауза</string>
+    <string name="logcat_clear">Очистить</string>
+    <string name="logcat_close">Закрыть</string>
+    <string name="logcat_corner_bottom_left">Изменить размер: нижний левый</string>
+    <string name="logcat_corner_bottom_right">Изменить размер: нижний правый</string>
 
- </resources>
+</resources>
