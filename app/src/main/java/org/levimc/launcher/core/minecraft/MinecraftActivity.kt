@@ -53,6 +53,10 @@ class MinecraftActivity : MainActivity() {
             } catch (e: Exception) {
                 Log.w(TAG, "Failed to load preloader: ${e.message}")
             }
+
+            if (!gameManager.loadLibrary("minecraftpe")) {
+                throw RuntimeException("Failed to load libminecraftpe.so")
+            }
         } catch (e: Exception) {
             Toast.makeText(this, "Failed to load game: ${e.message}", Toast.LENGTH_LONG).show()
             finish()
