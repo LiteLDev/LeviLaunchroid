@@ -3,7 +3,7 @@
     <color name="primary">#4AE0A0</color>
     <color name="on_primary">#000000</color>
 
-    <color name="secondary">#00D9FF</color>
+    <color name="secondary">#00FFFF</color>
     <color name="on_secondary">#000000</color>
 
     <color name="tertiary">#66BB6A</color>
@@ -21,4 +21,7 @@
 
     <color name="white">#FFFFFF</color>
     <color name="scrim">#99000000</color>
+
+    <color name="glow_green">#4AE0A0</color>
+    <color name="glow_cyan">#00FFFF</color>
 </resources>

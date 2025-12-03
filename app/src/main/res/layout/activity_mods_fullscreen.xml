@@ -1,127 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background"
-    android:paddingStart="15dp"
-    android:paddingEnd="15dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="24dp">
+    android:background="@color/background">
+
+    <org.levimc.launcher.ui.views.AmoledGlowView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/header_background"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
-
-        <ImageButton
-            android:id="@+id/close_fullscreen_button"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="12dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_arrow_down"
-            android:rotation="90"
-            android:tint="@color/on_surface" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/full_mods_title"
-            android:fontFamily="@font/misans"
-            android:textColor="@color/on_surface"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/card_background"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="12dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/total_mods"
-            android:textSize="14sp"
-            android:textColor="@color/on_surface"
-            android:fontFamily="@font/misans"
-            android:layout_marginEnd="4dp" />
-
-        <TextView
-            android:id="@+id/total_mods_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="14sp"
-            android:textColor="@color/on_primary"
-            android:fontFamily="@font/misans"
-            android:textStyle="bold"
-            android:layout_marginEnd="16dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/enabled_mods"
-            android:textSize="14sp"
-            android:textColor="@color/on_surface"
-            android:fontFamily="@font/misans"
-            android:layout_marginEnd="4dp" />
-
-        <TextView
-            android:id="@+id/enabled_mods_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="14sp"
-            android:textColor="@color/on_primary"
-            android:fontFamily="@font/misans"
-            android:textStyle="bold" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/add_mod_fullscreen_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="0dp"
-            android:backgroundTint="@color/primary"
-            android:text="@string/add_mod"
-            android:textColor="@color/on_primary"
-            android:paddingHorizontal="12dp"
-            android:layout_marginStart="8dp"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:fontFamily="@font/misans" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/card_background"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="24dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mods_recycler_fullscreen"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:padding="8dp" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/header_background"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <ImageButton
+                android:id="@+id/close_fullscreen_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_down"
+                android:rotation="90"
+                android:tint="@color/on_surface" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/full_mods_title"
+                android:fontFamily="@font/misans"
+                android:textColor="@color/on_surface"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/card_background"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_mods"
+                android:textSize="14sp"
+                android:textColor="@color/on_surface"
+                android:fontFamily="@font/misans"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/total_mods_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="14sp"
+                android:textColor="@color/on_primary"
+                android:fontFamily="@font/misans"
+                android:textStyle="bold"
+                android:layout_marginEnd="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enabled_mods"
+                android:textSize="14sp"
+                android:textColor="@color/on_surface"
+                android:fontFamily="@font/misans"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/enabled_mods_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="14sp"
+                android:textColor="@color/on_primary"
+                android:fontFamily="@font/misans"
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/add_mod_fullscreen_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="0dp"
+                android:backgroundTint="@color/primary"
+                android:text="@string/add_mod"
+                android:textColor="@color/on_primary"
+                android:paddingHorizontal="12dp"
+                android:layout_marginStart="8dp"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/misans" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/card_background"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mods_recycler_fullscreen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:padding="8dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>
