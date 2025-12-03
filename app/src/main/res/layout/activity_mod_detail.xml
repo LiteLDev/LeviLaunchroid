@@ -15,7 +15,7 @@
         android:id="@+id/mod_detail_header_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/card_background"
+        android:background="@drawable/header_background"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="16dp">
