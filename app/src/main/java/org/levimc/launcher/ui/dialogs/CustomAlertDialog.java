@@ -132,18 +132,45 @@ public class CustomAlertDialog extends Dialog {
 
     @Override
     public void dismiss() {
-        Window window = getWindow();
-        if (window != null) {
+        try {
+            if (!isShowing()) {
+                return;
+            }
+            Window window = getWindow();
+            if (window == null || window.getDecorView().getParent() == null) {
+                try {
+                    super.dismiss();
+                } catch (Exception ignored) {}
+                return;
+            }
             window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             WindowManager.LayoutParams params = window.getAttributes();
             params.dimAmount = 0f;
             window.setAttributes(params);
-        }
-        View content = findViewById(android.R.id.content);
-        if (content != null) {
-            DynamicAnim.animateDialogDismiss(content, () -> CustomAlertDialog.super.dismiss());
-        } else {
-            super.dismiss();
-        }
+
+            View content = findViewById(android.R.id.content);
+            if (content != null) {
+                DynamicAnim.animateDialogDismiss(content, () -> {
+                    try {
+                        if (isShowing()) {
+                            Window w = getWindow();
+                            if (w != null && w.getDecorView().getParent() != null) {
+                                CustomAlertDialog.super.dismiss();
+                            }
+                        }
+                    } catch (Exception ignored) {}
+                });
+            } else {
+                super.dismiss();
+            }
+        } catch (Exception ignored) {}
+    }
+
+    public void dismissImmediately() {
+        try {
+            if (isShowing()) {
+                super.dismiss();
+            }
+        } catch (Exception ignored) {}
     }
 }

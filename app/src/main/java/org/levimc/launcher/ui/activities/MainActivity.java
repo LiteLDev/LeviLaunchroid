@@ -202,10 +202,11 @@ import okhttp3.OkHttpClient;
          onBackPressedCallback = new OnBackPressedCallback(true) {
              @Override
              public void handleOnBackPressed() {
-                 new org.levimc.launcher.ui.dialogs.CustomAlertDialog(MainActivity.this)
-                         .setTitleText(getString(org.levimc.launcher.R.string.dialog_title_exit_app))
+                 org.levimc.launcher.ui.dialogs.CustomAlertDialog exitDialog = new org.levimc.launcher.ui.dialogs.CustomAlertDialog(MainActivity.this);
+                 exitDialog.setTitleText(getString(org.levimc.launcher.R.string.dialog_title_exit_app))
                          .setMessage(getString(org.levimc.launcher.R.string.dialog_message_exit_app))
                          .setPositiveButton(getString(org.levimc.launcher.R.string.dialog_positive_exit), v -> {
+                             exitDialog.dismissImmediately();
                              finishAffinity();
                          })
                          .setNegativeButton(getString(org.levimc.launcher.R.string.dialog_negative_cancel), null)
