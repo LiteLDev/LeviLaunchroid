@@ -20,4 +20,7 @@
     <color name="white">#FFFFFF</color>
 
     <color name="scrim">#66000000</color>
+
+    <color name="glow_green">#4AE0A0</color>
+    <color name="glow_cyan">#00FFFF</color>
 </resources>
