@@ -55,9 +55,7 @@ public class AmoledGlowView extends View {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (isDarkMode()) {
-            startAnimations();
-        }
+        startAnimations();
     }
 
     @Override
@@ -122,12 +120,10 @@ public class AmoledGlowView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (!isDarkMode()) {
-            return;
-        }
-
         int width = getWidth();
         int height = getHeight();
+
+        boolean darkMode = isDarkMode();
 
         float minScale = 0.75f;
         float maxScale = 1.0f;
@@ -140,8 +136,15 @@ public class AmoledGlowView extends View {
         float greenRadius = baseRadius * 1.2f * greenScale;
         float cyanRadius = baseRadius * cyanScale;
 
-        float greenAlpha = 0.16f + 0.08f * greenProgress;
-        float cyanAlpha = 0.08f + 0.06f * cyanProgress;
+        float greenAlpha, cyanAlpha;
+        if (darkMode) {
+            greenAlpha = 0.16f + 0.08f * greenProgress;
+            cyanAlpha = 0.08f + 0.06f * cyanProgress;
+        } else {
+            greenAlpha = 0.12f + 0.06f * greenProgress;
+            cyanAlpha = 0.08f + 0.04f * cyanProgress;
+        }
+
 
         int greenStart = Color.argb((int)(greenAlpha * 255), 0, 255, 127);
         int greenEnd = Color.argb(0, 0, 255, 127);
