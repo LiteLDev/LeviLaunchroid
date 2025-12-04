@@ -308,8 +308,7 @@
                 android:layout_weight="1"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
-                android:weightSum="2"
-                android:paddingEnd="8dp">
+                android:weightSum="2">
                 <LinearLayout
                     android:id="@+id/mod_card"
                     android:layout_width="0dp"
@@ -319,7 +318,6 @@
                     android:background="@drawable/card_background"
                     android:orientation="vertical"
                     android:padding="15dp"
-                    android:paddingEnd="8dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground">
@@ -328,8 +326,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingEnd="8dp">
+                        android:gravity="center_vertical">
 
                         <TextView
                             android:id="@+id/mods_title_text"
@@ -373,8 +370,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/card_background"
                     android:orientation="vertical"
-                    android:padding="15dp"
-                    android:paddingEnd="8dp">
+                    android:padding="15dp">
 
                     <TextView
                         android:layout_width="wrap_content"
