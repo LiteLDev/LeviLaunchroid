@@ -25,4 +25,5 @@
     <color name="glow_cyan">#00FFFF</color>
 
     <color name="abi_label_text">#000000</color>
+    <color name="accent_text">#1B5E20</color>
 </resources>

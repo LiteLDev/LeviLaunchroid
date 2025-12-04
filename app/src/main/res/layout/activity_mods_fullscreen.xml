@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textSize="14sp"
-                android:textColor="@color/on_primary"
+                android:textColor="@color/accent_text"
                 android:fontFamily="@font/misans"
                 android:textStyle="bold"
                 android:layout_marginEnd="16dp" />
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textSize="14sp"
-                android:textColor="@color/on_primary"
+                android:textColor="@color/accent_text"
                 android:fontFamily="@font/misans"
                 android:textStyle="bold" />
 
