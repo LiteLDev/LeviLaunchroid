@@ -52,7 +52,12 @@ public class ThemeManager {
     }
 
     public int getCurrentMode() {
-        return prefs.getInt(THEME_MODE_KEY, MODE_FOLLOW_SYSTEM);
+        int mode = prefs.getInt(THEME_MODE_KEY, MODE_FOLLOW_SYSTEM);
+        if (mode < MODE_FOLLOW_SYSTEM || mode > MODE_DARK) {
+            mode = MODE_FOLLOW_SYSTEM;
+            prefs.edit().putInt(THEME_MODE_KEY, mode).apply();
+        }
+        return mode;
     }
 
     public static int getThemeChangeGeneration() {

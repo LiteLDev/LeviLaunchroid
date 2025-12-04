@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
+    <org.levimc.launcher.ui.views.AmoledGlowView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

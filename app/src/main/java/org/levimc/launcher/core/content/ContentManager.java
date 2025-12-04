@@ -9,6 +9,8 @@ import org.levimc.launcher.core.versions.GameVersion;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ContentManager {
     private static ContentManager instance;
@@ -16,6 +18,7 @@ public class ContentManager {
     private final Context context;
     private final WorldManager worldManager;
     private final ResourcePackManager resourcePackManager;
+    private final ExecutorService refreshExecutor;
     
     private GameVersion currentVersion;
     private final MutableLiveData<List<WorldItem>> worldsLiveData = new MutableLiveData<>();
@@ -28,6 +31,7 @@ public class ContentManager {
         this.context = context.getApplicationContext();
         this.worldManager = new WorldManager(this.context);
         this.resourcePackManager = new ResourcePackManager(this.context);
+        this.refreshExecutor = Executors.newSingleThreadExecutor();
     }
 
     public static synchronized ContentManager getInstance(Context context) {
@@ -58,23 +62,31 @@ public class ContentManager {
     }
 
     public void refreshWorlds() {
-        List<WorldItem> worlds = worldManager.getWorlds();
-        worldsLiveData.postValue(worlds);
+        refreshExecutor.execute(() -> {
+            List<WorldItem> worlds = worldManager.getWorlds();
+            worldsLiveData.postValue(worlds);
+        });
     }
 
     public void refreshResourcePacks() {
-        List<ResourcePackItem> resourcePacks = resourcePackManager.getResourcePacks();
-        resourcePacksLiveData.postValue(resourcePacks);
+        refreshExecutor.execute(() -> {
+            List<ResourcePackItem> resourcePacks = resourcePackManager.getResourcePacks();
+            resourcePacksLiveData.postValue(resourcePacks);
+        });
     }
 
     public void refreshBehaviorPacks() {
-        List<ResourcePackItem> behaviorPacks = resourcePackManager.getBehaviorPacks();
-        behaviorPacksLiveData.postValue(behaviorPacks);
+        refreshExecutor.execute(() -> {
+            List<ResourcePackItem> behaviorPacks = resourcePackManager.getBehaviorPacks();
+            behaviorPacksLiveData.postValue(behaviorPacks);
+        });
     }
 
     public void refreshSkinPacks() {
-        List<ResourcePackItem> skinPacks = resourcePackManager.getSkinPacks();
-        skinPacksLiveData.postValue(skinPacks);
+        refreshExecutor.execute(() -> {
+            List<ResourcePackItem> skinPacks = resourcePackManager.getSkinPacks();
+            skinPacksLiveData.postValue(skinPacks);
+        });
     }
 
     public LiveData<List<WorldItem>> getWorldsLiveData() {
@@ -104,6 +116,7 @@ public class ContentManager {
     public void shutdown() {
         worldManager.shutdown();
         resourcePackManager.shutdown();
+        refreshExecutor.shutdown();
     }
     
     public void importWorld(android.net.Uri worldUri, WorldManager.WorldOperationCallback callback) {

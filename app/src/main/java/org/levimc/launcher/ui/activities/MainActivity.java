@@ -3,6 +3,9 @@ package org.levimc.launcher.ui.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -106,6 +109,7 @@ import okhttp3.OkHttpClient;
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        applyHeaderAppNameGradient();
         updateBetaBadge();
         updateDebugBadge();
         setupManagersAndHandlers();
@@ -936,6 +940,25 @@ import okhttp3.OkHttpClient;
             TextView tv = new TextView(this);
             tv.setText(R.string.no_mods_found);
         }
+    }
+
+    private void applyHeaderAppNameGradient() {
+        TextView appNameView = binding.headerAppName;
+        if (appNameView == null) return;
+        appNameView.post(() -> {
+            String text = appNameView.getText().toString();
+            float textWidth = appNameView.getPaint().measureText(text);
+            int green = Color.parseColor("#2ECC71");
+            int cyan = Color.parseColor("#00D9FF");
+            Shader shader = new LinearGradient(
+                0, 0, Math.max(1f, textWidth), 0,
+                new int[]{green, cyan},
+                new float[]{0f, 1f},
+                Shader.TileMode.CLAMP
+            );
+            appNameView.getPaint().setShader(shader);
+            appNameView.invalidate();
+        });
     }
 
     @Override
