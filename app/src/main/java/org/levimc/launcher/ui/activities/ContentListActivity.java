@@ -243,6 +243,7 @@ public class ContentListActivity extends BaseActivity {
                     if (worldsAdapter != null) {
                         filterContent(binding.searchEditText.getText().toString());
                     }
+                    showLoading(false);
                 });
                 break;
             case TYPE_SKIN_PACKS:
@@ -251,6 +252,7 @@ public class ContentListActivity extends BaseActivity {
                     if (packsAdapter != null) {
                         filterContent(binding.searchEditText.getText().toString());
                     }
+                    showLoading(false);
                 });
                 break;
             case TYPE_RESOURCE_PACKS:
@@ -259,6 +261,7 @@ public class ContentListActivity extends BaseActivity {
                     if (packsAdapter != null) {
                         filterContent(binding.searchEditText.getText().toString());
                     }
+                    showLoading(false);
                 });
                 break;
             case TYPE_BEHAVIOR_PACKS:
@@ -267,12 +270,14 @@ public class ContentListActivity extends BaseActivity {
                     if (packsAdapter != null) {
                         filterContent(binding.searchEditText.getText().toString());
                     }
+                    showLoading(false);
                 });
                 break;
         }
     }
 
     private void loadContent() {
+        showLoading(true);
         switch (contentType) {
             case TYPE_WORLDS:
                 contentManager.refreshWorlds();
@@ -287,6 +292,10 @@ public class ContentListActivity extends BaseActivity {
                 contentManager.refreshBehaviorPacks();
                 break;
         }
+    }
+
+    private void showLoading(boolean show) {
+        binding.loadingOverlay.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private void startImport() {
