@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF000000"
+    android:background="@color/background"
     tools:context=".ui.activities.SplashActivity">
 
     <View
@@ -58,7 +58,7 @@
         android:includeFontPadding="false"
         android:letterSpacing="0.05"
         android:text="@string/app_name"
-        android:textColor="#FFFFFFFF"
+        android:textColor="@color/on_background"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +86,7 @@
         android:layout_marginTop="14dp"
         android:alpha="0.6"
         android:text="Preparing to launch"
-        android:textColor="#FFFFFFFF"
+        android:textColor="@color/on_background"
         android:textSize="12sp"
         android:letterSpacing="0.08"
         app:layout_constraintEnd_toEndOf="parent"

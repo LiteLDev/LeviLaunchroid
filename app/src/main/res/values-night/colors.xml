@@ -24,4 +24,6 @@
 
     <color name="glow_green">#4AE0A0</color>
     <color name="glow_cyan">#00FFFF</color>
+
+    <color name="abi_label_text">#FFFFFF</color>
 </resources>

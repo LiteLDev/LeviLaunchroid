@@ -213,7 +213,7 @@
                         android:gravity="center"
                         android:text="Vanilla"
                         android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/abi_label_text"
                         android:textSize="16sp"
                         android:background="@drawable/bg_abi_default"/>
 
