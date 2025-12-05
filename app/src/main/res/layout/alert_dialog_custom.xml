@@ -1,71 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_rounded_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fillViewport="true">
+    android:maxHeight="500dp">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:background="@drawable/bg_rounded_card"
+    <TextView
+        android:id="@+id/tv_title"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minWidth="400dp"
-        android:maxWidth="600dp">
+        android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="12dp"
+        android:fillViewport="true">
 
         <TextView
             android:id="@+id/tv_message"
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:minHeight="40dp" />
+    </ScrollView>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/btn_container"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btn_negative"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:gravity="end">
+            android:minHeight="48dp"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
 
-            <Button
-                android:id="@+id/btn_negative"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="100dp"
-                android:textSize="16sp"/>
+        <View
+            android:id="@+id/btn_spacing_neg_neu"
+            android:layout_width="8dp"
+            android:layout_height="0dp" />
 
-            <View
-                android:id="@+id/btn_spacing_neg_neu"
-                android:layout_width="12dp"
-                android:layout_height="0dp" />
+        <Button
+            android:id="@+id/btn_neutral"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:visibility="gone" />
 
-            <Button
-                android:id="@+id/btn_neutral"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="100dp"
-                android:textSize="16sp"
-                android:visibility="gone" />
+        <View
+            android:id="@+id/btn_spacing_neu_pos"
+            android:layout_width="8dp"
+            android:layout_height="0dp" />
 
-            <View
-                android:id="@+id/btn_spacing_neu_pos"
-                android:layout_width="12dp"
-                android:layout_height="0dp" />
-
-            <Button
-                android:id="@+id/btn_positive"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="100dp"
-                android:textSize="16sp" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/btn_positive"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

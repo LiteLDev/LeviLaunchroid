@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.levimc.launcher.R;
@@ -68,30 +69,56 @@ public class CustomAlertDialog extends Dialog {
         Button btnPositive = findViewById(R.id.btn_positive);
         Button btnNegative = findViewById(R.id.btn_negative);
         Button btnNeutral = findViewById(R.id.btn_neutral);
-
-        View spacingNegativeNeutral = findViewById(R.id.btn_spacing_neg_neu);
-        View spacingNeutralPositive = findViewById(R.id.btn_spacing_neu_pos);
+        View spacingNegNeu = findViewById(R.id.btn_spacing_neg_neu);
+        View spacingNeuPos = findViewById(R.id.btn_spacing_neu_pos);
 
         tvTitle.setText(mTitle != null ? mTitle : "");
         tvMessage.setText(mMessage != null ? mMessage : "");
 
+        boolean hasThreeButtons = mPositiveText != null && mNegativeText != null && mNeutralText != null;
+        LinearLayout btnContainer = findViewById(R.id.btn_container);
+        
+        if (hasThreeButtons && btnContainer != null) {
+            btnContainer.setOrientation(LinearLayout.VERTICAL);
+            
+            LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            btnParams.topMargin = (int) (8 * getContext().getResources().getDisplayMetrics().density);
+            
+            LinearLayout.LayoutParams firstBtnParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            
+            btnPositive.setLayoutParams(firstBtnParams);
+            btnNeutral.setLayoutParams(btnParams);
+            btnNegative.setLayoutParams(btnParams);
+            
+            if (spacingNegNeu != null) spacingNegNeu.setVisibility(View.GONE);
+            if (spacingNeuPos != null) spacingNeuPos.setVisibility(View.GONE);
+            
+            btnContainer.removeAllViews();
+            btnContainer.addView(btnPositive);
+            btnContainer.addView(btnNeutral);
+            btnContainer.addView(btnNegative);
+        }
+
         if (mNegativeText != null) {
             btnNegative.setText(mNegativeText);
             btnNegative.setVisibility(View.VISIBLE);
-            if (spacingNegativeNeutral != null) spacingNegativeNeutral.setVisibility(View.VISIBLE);
         } else {
             btnNegative.setVisibility(View.GONE);
-            if (spacingNegativeNeutral != null) spacingNegativeNeutral.setVisibility(View.GONE);
         }
 
         if (mNeutralText != null) {
             btnNeutral.setText(mNeutralText);
             btnNeutral.setVisibility(View.VISIBLE);
-            if (spacingNeutralPositive != null) spacingNeutralPositive.setVisibility(View.VISIBLE);
-            if (spacingNegativeNeutral != null) spacingNegativeNeutral.setVisibility(View.VISIBLE);
+            if (!hasThreeButtons) {
+                if (spacingNegNeu != null) spacingNegNeu.setVisibility(mNegativeText != null ? View.VISIBLE : View.GONE);
+                if (spacingNeuPos != null) spacingNeuPos.setVisibility(mPositiveText != null ? View.VISIBLE : View.GONE);
+            }
         } else {
             btnNeutral.setVisibility(View.GONE);
-            if (spacingNeutralPositive != null) spacingNeutralPositive.setVisibility(View.GONE);
+            if (spacingNegNeu != null) spacingNegNeu.setVisibility(View.GONE);
+            if (spacingNeuPos != null) spacingNeuPos.setVisibility(mNegativeText != null && mPositiveText != null ? View.VISIBLE : View.GONE);
         }
 
         if (mPositiveText != null) {
@@ -119,6 +146,11 @@ public class CustomAlertDialog extends Dialog {
         Window window = getWindow();
         if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            float density = getContext().getResources().getDisplayMetrics().density;
+            int screenWidth = getContext().getResources().getDisplayMetrics().widthPixels;
+            int maxWidth = (int) (400 * density);
+            int dialogWidth = Math.min((int) (screenWidth * 0.9), maxWidth);
+            window.setLayout(dialogWidth, WindowManager.LayoutParams.WRAP_CONTENT);
         }
 
         View content = findViewById(android.R.id.content);
