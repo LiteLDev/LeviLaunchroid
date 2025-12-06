@@ -114,6 +114,11 @@ public class ModsAdapter extends RecyclerView.Adapter<ModsAdapter.ModViewHolder>
     }
 
     public void moveItem(int fromPosition, int toPosition) {
+        if (mods == null || mods.isEmpty()) return;
+        if (fromPosition < 0 || toPosition < 0) return;
+        if (fromPosition >= mods.size() || toPosition >= mods.size()) return;
+        if (fromPosition == toPosition) return;
+
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(mods, i, i + 1);
