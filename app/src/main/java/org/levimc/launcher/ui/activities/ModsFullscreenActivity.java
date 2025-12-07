@@ -20,7 +20,10 @@ import androidx.core.app.ActivityOptionsCompat;
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.mods.FileHandler;
 import org.levimc.launcher.core.mods.Mod;
+import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
+import org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod;
 import org.levimc.launcher.core.versions.VersionManager;
+import org.levimc.launcher.ui.adapter.AddedInbuiltModsAdapter;
 import org.levimc.launcher.ui.adapter.ModsAdapter;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.views.MainViewModel;
@@ -31,12 +34,15 @@ import java.util.List;
 public class ModsFullscreenActivity extends BaseActivity {
 
     private RecyclerView modsRecycler;
+    private RecyclerView inbuiltModsRecycler;
     private ModsAdapter modsAdapter;
+    private AddedInbuiltModsAdapter inbuiltModsAdapter;
     private MainViewModel viewModel;
     private TextView totalModsCount;
     private TextView enabledModsCount;
     private ActivityResultLauncher<Intent> pickModLauncher;
     private FileHandler fileHandler;
+    private InbuiltModManager inbuiltModManager;
     private int lastModsCount = -1;
 
     @Override
@@ -49,9 +55,11 @@ public class ModsFullscreenActivity extends BaseActivity {
             DynamicAnim.applyPressScaleRecursively(root);
         }
 
+        inbuiltModManager = InbuiltModManager.getInstance(this);
         setupViews();
         setupViewModel();
         setupRecyclerView();
+        setupInbuiltModsRecycler();
         fileHandler = new FileHandler(this, viewModel, VersionManager.get(this));
         
         pickModLauncher = registerForActivityResult(
@@ -87,6 +95,13 @@ public class ModsFullscreenActivity extends BaseActivity {
             startFilePicker();
         });
         DynamicAnim.applyPressScale(addModButton);
+
+        Button inbuiltModsButton = findViewById(R.id.inbuilt_mods_button);
+        inbuiltModsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, InbuiltModsActivity.class);
+            startActivity(intent);
+        });
+        DynamicAnim.applyPressScale(inbuiltModsButton);
 
         totalModsCount = findViewById(R.id.total_mods_count);
         enabledModsCount = findViewById(R.id.enabled_mods_count);
@@ -159,6 +174,28 @@ public class ModsFullscreenActivity extends BaseActivity {
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(modsRecycler);
     }
 
+    private void setupInbuiltModsRecycler() {
+        inbuiltModsRecycler = findViewById(R.id.inbuilt_mods_recycler);
+        inbuiltModsAdapter = new AddedInbuiltModsAdapter();
+        inbuiltModsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        inbuiltModsRecycler.setAdapter(inbuiltModsAdapter);
+        
+        inbuiltModsAdapter.setOnRemoveClickListener(mod -> {
+            inbuiltModManager.removeMod(mod.getId());
+            Toast.makeText(this, getString(R.string.inbuilt_mod_removed, mod.getName()), Toast.LENGTH_SHORT).show();
+            refreshInbuiltMods();
+            updateModsCount();
+        });
+        
+        refreshInbuiltMods();
+    }
+
+    private void refreshInbuiltMods() {
+        List<InbuiltMod> addedMods = inbuiltModManager.getAddedMods(this);
+        inbuiltModsAdapter.updateMods(addedMods);
+        inbuiltModsRecycler.setVisibility(addedMods.isEmpty() ? View.GONE : View.VISIBLE);
+    }
+
     private void updateModsUI(List<Mod> mods) {
         if (modsAdapter != null) {
             modsAdapter.updateMods(mods);
@@ -176,18 +213,22 @@ public class ModsFullscreenActivity extends BaseActivity {
 
     private void updateModsCount() {
         List<Mod> mods = viewModel.getModsLiveData().getValue();
+        InbuiltModManager inbuiltManager = InbuiltModManager.getInstance(this);
+        List<InbuiltMod> inbuiltMods = inbuiltManager.getAddedMods(this);
+        
+        int total = (mods != null ? mods.size() : 0) + inbuiltMods.size();
+        int enabled = inbuiltMods.size();
+        
         if (mods != null) {
-            int total = mods.size();
-            int enabled = 0;
             for (Mod mod : mods) {
                 if (mod.isEnabled()) {
                     enabled++;
                 }
             }
-
-            totalModsCount.setText(String.valueOf(total));
-            enabledModsCount.setText(String.valueOf(enabled));
         }
+
+        totalModsCount.setText(String.valueOf(total));
+        enabledModsCount.setText(String.valueOf(enabled));
     }
 
     @Override
@@ -196,7 +237,7 @@ public class ModsFullscreenActivity extends BaseActivity {
         if (viewModel != null) {
             viewModel.refreshMods();
         }
+        refreshInbuiltMods();
+        updateModsCount();
     }
-    
-    
 }

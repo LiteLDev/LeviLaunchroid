@@ -927,20 +927,16 @@ import okhttp3.OkHttpClient;
         }, false);
     }
 
-     private void updateModsUI(List<Mod> mods) {
-         modsAdapter.updateMods(mods != null ? mods : new ArrayList<>());
-         int count = (mods != null) ? mods.size() : 0;
-         if (lastModsCount == -1 || count != lastModsCount) {
-             DynamicAnim.staggerRecyclerChildren(binding.modsRecycler);
-         }
-         lastModsCount = count;
-         if (binding == null) return;
-         int modCount = (mods != null) ? mods.size() : 0;
-         binding.modsTitleText.setText(getString(R.string.mods_title, modCount));
-        if (modCount == 0) {
-            TextView tv = new TextView(this);
-            tv.setText(R.string.no_mods_found);
+    private void updateModsUI(List<Mod> mods) {
+        modsAdapter.updateMods(mods != null ? mods : new ArrayList<>());
+        int count = (mods != null) ? mods.size() : 0;
+        if (lastModsCount == -1 || count != lastModsCount) {
+            DynamicAnim.staggerRecyclerChildren(binding.modsRecycler);
         }
+        lastModsCount = count;
+        if (binding == null) return;
+        int modCount = (mods != null) ? mods.size() : 0;
+        binding.modsTitleText.setText(getString(R.string.mods_title, modCount));
     }
 
     private void applyHeaderAppNameGradient() {

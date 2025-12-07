@@ -322,4 +322,29 @@
     <string name="logcat_close">Close</string>
     <string name="logcat_corner_bottom_left">Resize: bottom-left</string>
     <string name="logcat_corner_bottom_right">Resize: bottom-right</string>
+
+    <!-- Inbuilt Mods -->
+    <string name="inbuilt_mods">Inbuilt Mods</string>
+    <string name="inbuilt_mods_title">🔧 Inbuilt Mods</string>
+    <string name="inbuilt_mods_subtitle">Internal mods that run without native libraries</string>
+    <string name="no_inbuilt_mods_available">All inbuilt mods have been added</string>
+    <string name="inbuilt_mod_added">%s added to mods</string>
+    <string name="inbuilt_mod_removed">%s removed from mods</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    
+    <!-- Inbuilt Mods -->
+    <string name="inbuilt_mod_quick_drop">Quick Drop</string>
+    <string name="inbuilt_mod_quick_drop_desc">Drop items quickly</string>
+    <string name="inbuilt_mod_camera">Quick Camera Perspective</string>
+    <string name="inbuilt_mod_camera_desc">Toggle camera view</string>
+    <string name="inbuilt_mod_hud">Hide HUD</string>
+    <string name="inbuilt_mod_hud_desc">Hide hotbar and UI</string>
+    <string name="inbuilt_mod_autosprint">Auto Sprint</string>
+    <string name="inbuilt_mod_autosprint_desc">Toggle sprint on/off</string>
+    <string name="inbuilt_badge">INBUILT</string>
+    <string name="autosprint_key_ctrl">Ctrl Left</string>
+    <string name="autosprint_key_shift">Shift</string>
+    <string name="autosprint_key_label">Sprint Key:</string>
+    <string name="configure">Configure</string>
 </resources>

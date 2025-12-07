@@ -320,4 +320,29 @@
     <string name="logcat_corner_bottom_left">Изменить размер: нижний левый</string>
     <string name="logcat_corner_bottom_right">Изменить размер: нижний правый</string>
 
+    <!-- Inbuilt Mods -->
+    <string name="inbuilt_mods">Встроенные моды</string>
+    <string name="inbuilt_mods_title">🔧 Встроенные моды</string>
+    <string name="inbuilt_mods_subtitle">Внутренние моды, работающие без нативных библиотек</string>
+    <string name="no_inbuilt_mods_available">Все встроенные моды уже добавлены</string>
+    <string name="inbuilt_mod_added">%s добавлен в моды</string>
+    <string name="inbuilt_mod_removed">%s удален из модов</string>
+    <string name="add">Добавить</string>
+    <string name="remove">Удалить</string>
+
+    <!-- Inbuilt Mods -->
+    <string name="inbuilt_mod_quick_drop">Быстрый сброс</string>
+    <string name="inbuilt_mod_quick_drop_desc">Быстрое выбрасывание предметов</string>
+    <string name="inbuilt_mod_camera">Быстрая смена камеры</string>
+    <string name="inbuilt_mod_camera_desc">Переключение вида камеры</string>
+    <string name="inbuilt_mod_hud">Скрыть интерфейс</string>
+    <string name="inbuilt_mod_hud_desc">Скрыть панель быстрого доступа и UI</string>
+    <string name="inbuilt_mod_autosprint">Авто-спринт</string>
+    <string name="inbuilt_mod_autosprint_desc">Включение/выключение спринта</string>
+    <string name="inbuilt_badge">ВСТРОЕН</string>
+    <string name="autosprint_key_ctrl">Левый Ctrl</string>
+    <string name="autosprint_key_shift">Shift</string>
+    <string name="autosprint_key_label">Кнопка спринта:</string>
+    <string name="configure">Настроить</string>
+
 </resources>

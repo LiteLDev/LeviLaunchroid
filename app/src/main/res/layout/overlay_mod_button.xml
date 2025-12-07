@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mod_overlay_button"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:background="@drawable/bg_overlay_button"
+    android:scaleType="centerInside"
+    android:padding="10dp"
+    android:alpha="0.85"
+    android:contentDescription="@string/inbuilt_mods"
+    tools:ignore="TouchTargetSizeCheck" />

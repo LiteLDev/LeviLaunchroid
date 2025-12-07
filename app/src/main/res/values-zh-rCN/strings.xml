@@ -314,5 +314,30 @@
      <string name="logcat_close">关闭</string>
      <string name="logcat_corner_bottom_left">调整大小：左下角</string>
      <string name="logcat_corner_bottom_right">调整大小：右下角</string>
- 
+
+    <!-- Inbuilt Mods -->
+    <string name="inbuilt_mods">内置模组</string>
+    <string name="inbuilt_mods_title">🔧 内置模组</string>
+    <string name="inbuilt_mods_subtitle">无需原生库即可运行的内部模组</string>
+    <string name="no_inbuilt_mods_available">所有内置模组均已添加</string>
+    <string name="inbuilt_mod_added">%s 已添加到模组</string>
+    <string name="inbuilt_mod_removed">%s 已从模组移除</string>
+    <string name="add">添加</string>
+    <string name="remove">移除</string>
+
+    <!-- Inbuilt Mods -->
+    <string name="inbuilt_mod_quick_drop">快速丢弃</string>
+    <string name="inbuilt_mod_quick_drop_desc">快速丢弃物品</string>
+    <string name="inbuilt_mod_camera">快速切换视角</string>
+    <string name="inbuilt_mod_camera_desc">切换相机视角</string>
+    <string name="inbuilt_mod_hud">隐藏界面</string>
+    <string name="inbuilt_mod_hud_desc">隐藏快捷栏和 UI</string>
+    <string name="inbuilt_mod_autosprint">自动疾跑</string>
+    <string name="inbuilt_mod_autosprint_desc">切换疾跑开启/关闭</string>
+    <string name="inbuilt_badge">内置</string>
+    <string name="autosprint_key_ctrl">左 Ctrl</string>
+    <string name="autosprint_key_shift">Shift</string>
+    <string name="autosprint_key_label">疾跑按键：</string>
+    <string name="configure">配置</string>
+
  </resources>

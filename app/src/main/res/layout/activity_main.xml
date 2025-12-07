@@ -352,14 +352,15 @@
                             android:src="@drawable/ic_add" />
                     </LinearLayout>
 
-                     <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/mods_recycler"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:clipToPadding="false"
-                            android:padding="8dp"
-                            android:paddingTop="0dp"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/mods_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:clipToPadding="false"
+                        android:nestedScrollingEnabled="false"
+                        android:padding="8dp"
+                        android:paddingTop="0dp" />
                 </LinearLayout>
 
                 <LinearLayout

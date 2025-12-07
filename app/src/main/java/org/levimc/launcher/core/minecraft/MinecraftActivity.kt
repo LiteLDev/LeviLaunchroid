@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.mojang.minecraftpe.MainActivity
+import org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager
 import org.levimc.launcher.core.versions.GameVersion
 import org.levimc.launcher.settings.FeatureSettings
 import java.io.File
@@ -13,6 +14,7 @@ import java.io.File
 class MinecraftActivity : MainActivity() {
 
     private lateinit var gameManager: GamePackageManager
+    private var overlayManager: InbuiltOverlayManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -65,6 +67,16 @@ class MinecraftActivity : MainActivity() {
         super.onCreate(savedInstanceState)
         MinecraftActivityState.onCreated(this)
     }
+    
+    private fun startInbuiltModServices() {
+        overlayManager = InbuiltOverlayManager(this)
+        overlayManager?.showEnabledOverlays()
+    }
+    
+    private fun stopInbuiltModServices() {
+        overlayManager?.hideAllOverlays()
+        overlayManager = null
+    }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -73,6 +85,10 @@ class MinecraftActivity : MainActivity() {
     override fun onResume() {
         super.onResume()
         MinecraftActivityState.onResumed()
+
+        if (overlayManager == null) {
+            startInbuiltModServices()
+        }
     }
 
     override fun onPause() {
@@ -82,6 +98,7 @@ class MinecraftActivity : MainActivity() {
 
     override fun onDestroy() {
         MinecraftActivityState.onDestroyed()
+        stopInbuiltModServices()
         super.onDestroy()
 
         val intent = Intent(applicationContext, org.levimc.launcher.ui.activities.MainActivity::class.java)

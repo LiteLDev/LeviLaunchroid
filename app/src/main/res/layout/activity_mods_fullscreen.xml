@@ -99,6 +99,21 @@
                 android:layout_weight="1" />
 
             <Button
+                android:id="@+id/inbuilt_mods_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="0dp"
+                android:backgroundTint="@color/secondary"
+                android:text="@string/inbuilt_mods"
+                android:textColor="@color/on_secondary"
+                android:paddingHorizontal="12dp"
+                android:layout_marginStart="8dp"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/misans" />
+
+            <Button
                 android:id="@+id/add_mod_fullscreen_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -114,23 +129,40 @@
                 android:fontFamily="@font/misans" />
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginTop="12dp"
             android:background="@drawable/card_background"
-            android:orientation="vertical"
-            android:padding="8dp">
+            android:fillViewport="true">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/mods_recycler_fullscreen"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:padding="8dp" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-        </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/inbuilt_mods_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingHorizontal="8dp"
+                    android:paddingTop="8dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mods_recycler_fullscreen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 </FrameLayout>
