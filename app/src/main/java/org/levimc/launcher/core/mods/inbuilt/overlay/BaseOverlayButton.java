@@ -58,7 +58,8 @@ public abstract class BaseOverlayButton {
                 WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                    | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                    | WindowManager.LayoutParams.FLAG_SPLIT_TOUCH
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 PixelFormat.TRANSLUCENT
             );
             wmParams.gravity = Gravity.TOP | Gravity.START;
@@ -125,6 +126,7 @@ public abstract class BaseOverlayButton {
                 initialTouchY = event.getRawY();
                 isDragging = false;
                 touchDownTime = SystemClock.uptimeMillis();
+                v.getParent().requestDisallowInterceptTouchEvent(true);
                 return true;
 
             case MotionEvent.ACTION_MOVE:
@@ -146,11 +148,13 @@ public abstract class BaseOverlayButton {
                     handler.post(this::onButtonClick);
                 }
                 isDragging = false;
+                v.getParent().requestDisallowInterceptTouchEvent(false);
                 return true;
 
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_OUTSIDE:
                 isDragging = false;
+                v.getParent().requestDisallowInterceptTouchEvent(false);
                 return false;
         }
         return false;
@@ -166,6 +170,7 @@ public abstract class BaseOverlayButton {
                 initialTouchY = event.getRawY();
                 isDragging = false;
                 touchDownTime = SystemClock.uptimeMillis();
+                v.getParent().requestDisallowInterceptTouchEvent(true);
                 return true;
 
             case MotionEvent.ACTION_MOVE:
@@ -187,10 +192,12 @@ public abstract class BaseOverlayButton {
                     handler.post(this::onButtonClick);
                 }
                 isDragging = false;
+                v.getParent().requestDisallowInterceptTouchEvent(false);
                 return true;
 
             case MotionEvent.ACTION_CANCEL:
                 isDragging = false;
+                v.getParent().requestDisallowInterceptTouchEvent(false);
                 return true;
         }
         return false;
