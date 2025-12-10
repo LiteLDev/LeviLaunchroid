@@ -733,7 +733,7 @@ import okhttp3.OkHttpClient;
         adapter.setOnActionClickListener(actionId -> {
             switch (actionId) {
                 case 1 -> openContentManagement();
-                case 2 -> startFilePicker("application/vnd.android.package-archive", apkImportResultLauncher);
+                case 2 -> startApkFilePicker();
                 case 3 -> {
                     Intent intent = new Intent(this, AccountsActivity.class);
                     startActivity(intent);
@@ -864,6 +864,15 @@ import okhttp3.OkHttpClient;
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType(type);
         launcher.launch(intent);
+    }
+
+    private void startApkFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        String[] mimeTypes = {"application/vnd.android.package-archive", "application/octet-stream", "application/zip"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        apkImportResultLauncher.launch(intent);
     }
 
     private void openContentManagement() {

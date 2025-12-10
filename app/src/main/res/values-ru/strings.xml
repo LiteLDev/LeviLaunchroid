@@ -20,7 +20,7 @@
     <string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
     <string name="quick_actions_title">Быстрые действия</string>
     <string name="content_management_subtitle">Управление мирами, ресурсами и аддонами</string>
-    <string name="import_apk_subtitle">Установка Minecraft из файла APK</string>
+    <string name="import_apk_subtitle">Установка Minecraft из файла APK или APKS</string>
     <string name="ms_add_account">Добавить аккаунт</string>
     <string name="ms_add_account_subtitle">Войти через Microsoft</string>
 
@@ -67,6 +67,7 @@
 
     <string name="illegal_apk_title">Нелегальный APK</string>
     <string name="not_mc_apk">Не APK Minecraft</string>
+    <string name="not_apk_or_apks">Пожалуйста, выберите файл APK или APKS</string>
 
     <string name="not_found_version">Версия не найдена</string>
 

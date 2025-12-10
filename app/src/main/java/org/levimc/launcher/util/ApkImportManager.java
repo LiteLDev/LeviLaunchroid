@@ -2,7 +2,9 @@ package org.levimc.launcher.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,13 +32,28 @@ public class ApkImportManager {
     public void handleApkImportResult(Intent data) {
         Uri apkUri = data.getData();
         if (apkUri == null) return;
-        String initialVersionName = ApkUtils.extractMinecraftVersionNameFromUri(activity, apkUri);
+        
+        String fileName = getFileName(apkUri);
+        boolean isApks = fileName != null && fileName.toLowerCase().endsWith(".apks");
+        
+        if (!isApks && fileName != null && !fileName.toLowerCase().endsWith(".apk")) {
+            new CustomAlertDialog(activity)
+                    .setTitleText(activity.getString(R.string.illegal_apk_title))
+                    .setMessage(activity.getString(R.string.not_apk_or_apks))
+                    .setPositiveButton(activity.getString(R.string.exit), v -> {})
+                    .show();
+            return;
+        }
+        
+        String initialVersionName = isApks 
+                ? ApkUtils.extractMinecraftVersionNameFromApksUri(activity, apkUri)
+                : ApkUtils.extractMinecraftVersionNameFromUri(activity, apkUri);
+                
         if ("Error Apk".equals(initialVersionName)) {
             new CustomAlertDialog(activity)
                     .setTitleText(activity.getString(R.string.illegal_apk_title))
                     .setMessage(activity.getString(R.string.not_mc_apk))
-                    .setPositiveButton(activity.getString(R.string.exit), v -> {
-                    })
+                    .setPositiveButton(activity.getString(R.string.exit), v -> {})
                     .show();
             return;
         }
@@ -98,4 +115,21 @@ public class ApkImportManager {
         }
     }
 
+    private String getFileName(Uri uri) {
+        String result = null;
+        if ("content".equals(uri.getScheme())) {
+            try (Cursor cursor = activity.getContentResolver().query(uri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (nameIndex != -1) {
+                        result = cursor.getString(nameIndex);
+                    }
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.getLastPathSegment();
+        }
+        return result;
+    }
 }

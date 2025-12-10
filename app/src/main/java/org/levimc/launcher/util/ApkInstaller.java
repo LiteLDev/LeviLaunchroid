@@ -82,20 +82,40 @@ public class ApkInstaller {
 
                 String fileName = getFileName(apkOrApksUri);
                 if (fileName != null && fileName.toLowerCase().endsWith(".apks")) {
-                    boolean foundApk = false;
+                    boolean foundBaseApk = false;
+                    File splitsDir = new File(baseDir, "splits");
+                    
                     try (InputStream is = context.getContentResolver().openInputStream(apkOrApksUri);
                          ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is))) {
                         ZipEntry entry;
                         while ((entry = zis.getNextEntry()) != null) {
-                            String outputName = entry.isDirectory() ? entry.getName() : (entry.getName().equals("base.apk") ? APK_FILE_NAME : entry.getName());
-                            File outFile = new File(baseDir, outputName);
                             if (entry.isDirectory()) {
-                                outFile.mkdirs();
                                 zis.closeEntry();
                                 continue;
                             }
+                            
+                            String entryName = entry.getName();
+                            if (!entryName.endsWith(".apk")) {
+                                zis.closeEntry();
+                                continue;
+                            }
+                            
+                            File outFile;
+                            String outputName;
+                            
+                            if (entryName.equals("base.apk") || entryName.endsWith("/base.apk")) {
+                                outFile = new File(baseDir, APK_FILE_NAME);
+                                outputName = APK_FILE_NAME;
+                            } else {
+                                if (!splitsDir.exists()) splitsDir.mkdirs();
+                                String splitName = new File(entryName).getName();
+                                splitName = splitName.replace(".apk", ".apk.levi");
+                                outFile = new File(splitsDir, splitName);
+                                outputName = splitName;
+                            }
+                            
                             File parent = outFile.getParentFile();
-                            if (!parent.exists()) parent.mkdirs();
+                            if (parent != null && !parent.exists()) parent.mkdirs();
 
                             try (FileOutputStream fos = new FileOutputStream(outFile)) {
                                 copyStream(zis, fos);
@@ -106,15 +126,18 @@ public class ApkInstaller {
                                      ZipInputStream zis2 = new ZipInputStream(new BufferedInputStream(is2))) {
                                     ApkUtils.unzipLibsToSystemAbi(libTargetDir, zis2);
                                 }
-                                foundApk = true;
-                            } else if (outputName.endsWith(".apk")) {
-                                foundApk = true;
+                                foundBaseApk = true;
+                            } else if (outputName.contains("arm64") || outputName.contains("armeabi") || outputName.contains("x86")) {
+                                try (InputStream is2 = new FileInputStream(outFile);
+                                     ZipInputStream zis2 = new ZipInputStream(new BufferedInputStream(is2))) {
+                                    ApkUtils.unzipLibsToSystemAbi(libTargetDir, zis2);
+                                }
                             }
                             zis.closeEntry();
                         }
                     }
-                    if (!foundApk) {
-                        postError("No apk file");
+                    if (!foundBaseApk) {
+                        postError("No base.apk found in APKS bundle");
                         return;
                     }
                 } else {

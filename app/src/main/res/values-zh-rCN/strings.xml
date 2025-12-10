@@ -17,7 +17,7 @@
     <string name="font_license">本软件使用 Misans 字体</string>
     <string name="quick_actions_title">快捷操作</string>
     <string name="content_management_subtitle">管理世界、资源包和行为包</string>
-    <string name="import_apk_subtitle">从 APK 文件安装 Minecraft</string>
+    <string name="import_apk_subtitle">从 APK 或 APKS 文件安装 Minecraft</string>
     <string name="ms_add_account">添加账号</string>
     <string name="ms_add_account_subtitle">使用 Microsoft 登录</string>
     <string name="microsoft_accounts">Microsoft 账号</string>
@@ -69,6 +69,7 @@
 
     <string name="illegal_apk_title">非法APK</string>
     <string name="not_mc_apk">不是Minecraft APK</string>
+    <string name="not_apk_or_apks">请选择 APK 或 APKS 文件</string>
 
     <string name="not_found_version">未发现版本</string>
 
