@@ -68,6 +68,9 @@ public class SettingsActivity extends BaseActivity {
             FeatureSettings fs = FeatureSettings.getInstance();
             addThemeSelectorItem(themeManager);
             addLanguageSelectorItem(languageManager);
+            addSwitchItem(getString(R.string.memory_editor_enable), fs.isMemoryEditorEnabled(), (btn, checked) -> {
+                fs.setMemoryEditorEnabled(checked);
+            });
             addSwitchItem(getString(R.string.version_isolation), fs.isVersionIsolationEnabled(), (btn, checked) -> fs.setVersionIsolationEnabled(checked));
             addSwitchItem(getString(R.string.launcher_managed_mc_login), fs.isLauncherManagedMcLoginEnabled(), (btn, checked) -> fs.setLauncherManagedMcLoginEnabled(checked));
             addSwitchItem(getString(R.string.show_logcat_overlay), fs.isLogcatOverlayEnabled(), (btn, checked) -> {

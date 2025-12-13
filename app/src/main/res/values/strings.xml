@@ -348,4 +348,22 @@
     <string name="autosprint_key_shift">Shift</string>
     <string name="autosprint_key_label">Sprint Key:</string>
     <string name="configure">Configure</string>
+
+    <!-- Memory Editor -->
+    <string name="memory_editor_enable">Memory Editor</string>
+    <string name="memory_editor_title">Memory Editor</string>
+    <string name="memory_editor_minimize">Minimize</string>
+    <string name="memory_editor_close">Close</string>
+    <string name="memory_editor_value_hint">Value</string>
+    <string name="memory_editor_search">Search</string>
+    <string name="memory_editor_filter">Filter</string>
+    <string name="memory_editor_reset">Reset</string>
+    <string name="memory_editor_address">Address</string>
+    <string name="memory_editor_value">Value</string>
+    <string name="memory_editor_action">Action</string>
+    <string name="memory_editor_tab_search">Search</string>
+    <string name="memory_editor_tab_saved">Saved</string>
+    <string name="memory_editor_save">Save</string>
+    <string name="memory_editor_freeze">Freeze</string>
+    <string name="memory_editor_delete">Delete</string>
 </resources>

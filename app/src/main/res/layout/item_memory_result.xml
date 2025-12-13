@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="32dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    android:background="@drawable/bg_memory_item">
+
+    <TextView
+        android:id="@+id/address_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#00DDFF"
+        android:textSize="11sp"
+        android:fontFamily="monospace" />
+
+    <EditText
+        android:id="@+id/value_edit"
+        android:layout_width="80dp"
+        android:layout_height="26dp"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
+        android:singleLine="true"
+        android:inputType="numberDecimal|numberSigned"
+        android:imeOptions="actionDone"
+        android:background="@drawable/bg_edit_memory_small"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:gravity="center"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <ImageButton
+        android:id="@+id/btn_save"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="4dp"
+        android:background="@android:color/transparent"
+        android:src="@android:drawable/ic_menu_save"
+        android:tint="#88FF88"
+        android:contentDescription="@string/memory_editor_save" />
+
+    <ImageButton
+        android:id="@+id/btn_freeze"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@android:color/transparent"
+        android:src="@android:drawable/ic_lock_lock"
+        android:tint="#888888"
+        android:contentDescription="@string/memory_editor_freeze" />
+</LinearLayout>

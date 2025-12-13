@@ -4,6 +4,8 @@ import android.app.Activity;
 
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
+import org.levimc.launcher.core.mods.memoryeditor.MemoryEditorButton;
+import org.levimc.launcher.settings.FeatureSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 public class InbuiltOverlayManager {
     private final Activity activity;
     private final List<BaseOverlayButton> overlays = new ArrayList<>();
+    private MemoryEditorButton memoryEditorButton;
 
     public InbuiltOverlayManager(Activity activity) {
         this.activity = activity;
@@ -44,6 +47,12 @@ public class InbuiltOverlayManager {
             AutoSprintOverlay overlay = new AutoSprintOverlay(activity, manager.getAutoSprintKey());
             overlay.show(x, y);
             overlays.add(overlay);
+            y += spacing;
+        }
+
+        if (FeatureSettings.getInstance().isMemoryEditorEnabled()) {
+            memoryEditorButton = new MemoryEditorButton(activity);
+            memoryEditorButton.show(x, y);
         }
     }
 
@@ -52,5 +61,12 @@ public class InbuiltOverlayManager {
             overlay.hide();
         }
         overlays.clear();
+        if (memoryEditorButton != null) {
+            if (memoryEditorButton.getEditorOverlay() != null) {
+                memoryEditorButton.getEditorOverlay().hide();
+            }
+            memoryEditorButton.hide();
+            memoryEditorButton = null;
+        }
     }
 }

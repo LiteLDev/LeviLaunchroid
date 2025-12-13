@@ -341,4 +341,22 @@
     <string name="autosprint_key_label">疾跑按键：</string>
     <string name="configure">配置</string>
 
+    <!-- Memory Editor -->
+    <string name="memory_editor_enable">内存编辑器</string>
+    <string name="memory_editor_title">内存编辑器</string>
+    <string name="memory_editor_minimize">最小化</string>
+    <string name="memory_editor_close">关闭</string>
+    <string name="memory_editor_value_hint">数值</string>
+    <string name="memory_editor_search">搜索</string>
+    <string name="memory_editor_filter">筛选</string>
+    <string name="memory_editor_reset">重置</string>
+    <string name="memory_editor_address">地址</string>
+    <string name="memory_editor_value">数值</string>
+    <string name="memory_editor_action">操作</string>
+    <string name="memory_editor_tab_search">搜索</string>
+    <string name="memory_editor_tab_saved">已保存</string>
+    <string name="memory_editor_save">保存</string>
+    <string name="memory_editor_freeze">锁定</string>
+    <string name="memory_editor_delete">删除</string>
+
  </resources>

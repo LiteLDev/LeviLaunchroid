@@ -346,4 +346,22 @@
     <string name="autosprint_key_label">Кнопка спринта:</string>
     <string name="configure">Настроить</string>
 
+    <!-- Memory Editor -->
+    <string name="memory_editor_enable">Редактор памяти</string>
+    <string name="memory_editor_title">Редактор памяти</string>
+    <string name="memory_editor_minimize">Свернуть</string>
+    <string name="memory_editor_close">Закрыть</string>
+    <string name="memory_editor_value_hint">Значение</string>
+    <string name="memory_editor_search">Поиск</string>
+    <string name="memory_editor_filter">Фильтр</string>
+    <string name="memory_editor_reset">Сброс</string>
+    <string name="memory_editor_address">Адрес</string>
+    <string name="memory_editor_value">Значение</string>
+    <string name="memory_editor_action">Действие</string>
+    <string name="memory_editor_tab_search">Поиск</string>
+    <string name="memory_editor_tab_saved">Сохранённые</string>
+    <string name="memory_editor_save">Сохранить</string>
+    <string name="memory_editor_freeze">Заморозить</string>
+    <string name="memory_editor_delete">Удалить</string>
+
 </resources>
