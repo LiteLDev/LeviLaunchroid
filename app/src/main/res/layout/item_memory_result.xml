@@ -51,4 +51,13 @@
         android:src="@android:drawable/ic_lock_lock"
         android:tint="#888888"
         android:contentDescription="@string/memory_editor_freeze" />
+
+    <ImageButton
+        android:id="@+id/btn_overlay"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_memory_overlay"
+        android:tint="#888888"
+        android:contentDescription="@string/memory_editor_overlay" />
 </LinearLayout>

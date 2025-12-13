@@ -43,6 +43,11 @@ public class SavedAddressManager {
                 addr.setLabel(e.label);
                 addr.setFrozen(e.frozen);
                 addr.setFrozenValue(e.frozenValue);
+                addr.setOverlayEnabled(e.overlayEnabled);
+                addr.setOverlayToggleable(e.overlayToggleable);
+                addr.setOverlayOriginalValue(e.overlayOriginalValue != null ? e.overlayOriginalValue : "");
+                addr.setOverlayNewValue(e.overlayNewValue != null ? e.overlayNewValue : "");
+                addr.setOverlayName(e.overlayName != null ? e.overlayName : "");
                 savedAddresses.add(addr);
             }
         }
@@ -57,6 +62,11 @@ public class SavedAddressManager {
             e.label = addr.getLabel();
             e.frozen = addr.isFrozen();
             e.frozenValue = addr.getFrozenValue();
+            e.overlayEnabled = addr.isOverlayEnabled();
+            e.overlayToggleable = addr.isOverlayToggleable();
+            e.overlayOriginalValue = addr.getOverlayOriginalValue();
+            e.overlayNewValue = addr.getOverlayNewValue();
+            e.overlayName = addr.getOverlayName();
             entries.add(e);
         }
         prefs.edit().putString(KEY_ADDRESSES, gson.toJson(entries)).apply();
@@ -90,11 +100,26 @@ public class SavedAddressManager {
         save();
     }
 
+    public List<MemoryAddress> getOverlayEnabledAddresses() {
+        List<MemoryAddress> result = new ArrayList<>();
+        for (MemoryAddress addr : savedAddresses) {
+            if (addr.isOverlayEnabled()) {
+                result.add(addr);
+            }
+        }
+        return result;
+    }
+
     private static class SavedEntry {
         long address;
         int typeId;
         String label;
         boolean frozen;
         String frozenValue;
+        boolean overlayEnabled;
+        boolean overlayToggleable;
+        String overlayOriginalValue;
+        String overlayNewValue;
+        String overlayName;
     }
 }

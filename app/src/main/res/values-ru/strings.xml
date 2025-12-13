@@ -363,5 +363,13 @@
     <string name="memory_editor_save">Сохранить</string>
     <string name="memory_editor_freeze">Заморозить</string>
     <string name="memory_editor_delete">Удалить</string>
+    <string name="memory_editor_overlay">Оверлей</string>
+    <string name="memory_overlay_config_title">Настройка кнопки оверлея</string>
+    <string name="memory_overlay_name">Название кнопки</string>
+    <string name="memory_overlay_name_hint">Например: Здоровье, Скорость</string>
+    <string name="memory_overlay_original_value">Исходное значение</string>
+    <string name="memory_overlay_new_value">Новое значение</string>
+    <string name="memory_overlay_new_value_hint">Введите значение для применения</string>
+    <string name="memory_overlay_toggleable">Переключаемая</string>
 
 </resources>

@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.levimc.launcher.R;
 import org.levimc.launcher.ui.adapter.MemoryResultAdapter;
 import org.levimc.launcher.ui.adapter.MemorySavedAdapter;
+import android.app.AlertDialog;
+import android.widget.CheckBox;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -155,6 +157,20 @@ public class MemoryEditorOverlay {
             }
             @Override
             public void onFreeze(MemoryAddress address, boolean frozen) {}
+            @Override
+            public void onOverlayConfig(MemoryAddress address) {
+                List<MemoryAddress> saved = SavedAddressManager.getInstance(activity).getSavedAddresses();
+                int position = -1;
+                for (int i = 0; i < saved.size(); i++) {
+                    if (saved.get(i).getAddress() == address.getAddress()) {
+                        position = i;
+                        break;
+                    }
+                }
+                if (position >= 0) {
+                    showOverlayConfigDialog(position, saved.get(position));
+                }
+            }
         });
 
         savedAdapter.setOnItemActionListener(new MemorySavedAdapter.OnItemActionListener() {
@@ -168,6 +184,10 @@ public class MemoryEditorOverlay {
             @Override
             public void onUpdate(int position, MemoryAddress address) {
                 SavedAddressManager.getInstance(activity).updateAddress(position, address);
+            }
+            @Override
+            public void onOverlayConfig(int position, MemoryAddress address) {
+                showOverlayConfigDialog(position, address);
             }
         });
 
@@ -463,5 +483,80 @@ public class MemoryEditorOverlay {
 
     public boolean isShowing() {
         return isShowing;
+    }
+
+    private void showOverlayConfigDialog(int position, MemoryAddress address) {
+        View dialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_memory_overlay_config, null);
+        EditText editName = dialogView.findViewById(R.id.edit_name);
+        EditText editOriginal = dialogView.findViewById(R.id.edit_original_value);
+        EditText editNew = dialogView.findViewById(R.id.edit_new_value);
+        CheckBox checkToggleable = dialogView.findViewById(R.id.checkbox_toggleable);
+        Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
+        Button btnSave = dialogView.findViewById(R.id.btn_save);
+
+        String currentValue = address.readValue();
+        editName.setText(address.getOverlayName());
+        editOriginal.setText(address.isOverlayEnabled() ? address.getOverlayOriginalValue() : currentValue);
+        editNew.setText(address.getOverlayNewValue());
+        checkToggleable.setChecked(address.isOverlayToggleable());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.MemoryEditorDialogTheme);
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
+        btnCancel.setOnClickListener(v -> {
+            if (address.isOverlayEnabled()) {
+                long addrValue = address.getAddress();
+                address.setOverlayEnabled(false);
+                address.setOverlayToggleable(false);
+                address.setOverlayOriginalValue("");
+                address.setOverlayNewValue("");
+                address.setOverlayName("");
+                SavedAddressManager.getInstance(activity).updateAddress(position, address);
+                savedAdapter.notifyOverlayStateChanged(position);
+                org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager mgr = 
+                    org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager.getInstance();
+                if (mgr != null) {
+                    mgr.removeMemoryOverlay(addrValue);
+                }
+            }
+            dialog.dismiss();
+        });
+
+        btnSave.setOnClickListener(v -> {
+            String nameVal = editName.getText().toString().trim();
+            String originalVal = editOriginal.getText().toString().trim();
+            String newVal = editNew.getText().toString().trim();
+            if (newVal.isEmpty()) {
+                editNew.setError(activity.getString(R.string.memory_overlay_new_value_hint));
+                return;
+            }
+            boolean wasEnabled = address.isOverlayEnabled();
+            address.setOverlayEnabled(true);
+            address.setOverlayToggleable(checkToggleable.isChecked());
+            address.setOverlayOriginalValue(originalVal);
+            address.setOverlayNewValue(newVal);
+            address.setOverlayName(nameVal);
+            SavedAddressManager.getInstance(activity).updateAddress(position, address);
+            savedAdapter.notifyOverlayStateChanged(position);
+            if (!wasEnabled) {
+                org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager mgr = 
+                    org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager.getInstance();
+                if (mgr != null) {
+                    mgr.addMemoryOverlay(address);
+                }
+            }
+            dialog.dismiss();
+        });
+
+        dialog.show();
+        if (dialog.getWindow() != null) {
+            float density = activity.getResources().getDisplayMetrics().density;
+            int widthPx = (int) (400 * density);
+            dialog.getWindow().setLayout(widthPx, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
     }
 }

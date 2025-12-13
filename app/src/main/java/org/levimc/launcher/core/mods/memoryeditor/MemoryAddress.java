@@ -6,6 +6,11 @@ public class MemoryAddress {
     private String label;
     private boolean frozen;
     private String frozenValue;
+    private boolean overlayEnabled;
+    private boolean overlayToggleable;
+    private String overlayOriginalValue;
+    private String overlayNewValue;
+    private String overlayName;
 
     public MemoryAddress(long address, ValueType type) {
         this.address = address;
@@ -13,6 +18,11 @@ public class MemoryAddress {
         this.label = "";
         this.frozen = false;
         this.frozenValue = "";
+        this.overlayEnabled = false;
+        this.overlayToggleable = false;
+        this.overlayOriginalValue = "";
+        this.overlayNewValue = "";
+        this.overlayName = "";
     }
 
     public long getAddress() { return address; }
@@ -25,6 +35,16 @@ public class MemoryAddress {
     public void setFrozen(boolean frozen) { this.frozen = frozen; }
     public String getFrozenValue() { return frozenValue; }
     public void setFrozenValue(String frozenValue) { this.frozenValue = frozenValue; }
+    public boolean isOverlayEnabled() { return overlayEnabled; }
+    public void setOverlayEnabled(boolean overlayEnabled) { this.overlayEnabled = overlayEnabled; }
+    public boolean isOverlayToggleable() { return overlayToggleable; }
+    public void setOverlayToggleable(boolean overlayToggleable) { this.overlayToggleable = overlayToggleable; }
+    public String getOverlayOriginalValue() { return overlayOriginalValue; }
+    public void setOverlayOriginalValue(String overlayOriginalValue) { this.overlayOriginalValue = overlayOriginalValue; }
+    public String getOverlayNewValue() { return overlayNewValue; }
+    public void setOverlayNewValue(String overlayNewValue) { this.overlayNewValue = overlayNewValue; }
+    public String getOverlayName() { return overlayName; }
+    public void setOverlayName(String overlayName) { this.overlayName = overlayName; }
 
     public String getAddressHex() {
         return String.format("0x%X", address);

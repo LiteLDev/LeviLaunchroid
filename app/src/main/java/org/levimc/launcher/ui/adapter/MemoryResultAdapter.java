@@ -25,6 +25,7 @@ public class MemoryResultAdapter extends RecyclerView.Adapter<MemoryResultAdapte
     public interface OnItemActionListener {
         void onSave(MemoryAddress address);
         void onFreeze(MemoryAddress address, boolean frozen);
+        void onOverlayConfig(MemoryAddress address);
     }
 
     public void setOnItemActionListener(OnItemActionListener listener) {
@@ -97,6 +98,13 @@ public class MemoryResultAdapter extends RecyclerView.Adapter<MemoryResultAdapte
             holder.btnFreeze.setColorFilter(newState ? 0xFF00FF88 : 0xFF888888);
             if (listener != null) listener.onFreeze(item, newState);
         });
+        holder.btnOverlay.setColorFilter(item.isOverlayEnabled() ? 0xFF00FF88 : 0xFF888888);
+        holder.btnOverlay.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onSave(item);
+                listener.onOverlayConfig(item);
+            }
+        });
     }
 
     @Override
@@ -107,7 +115,7 @@ public class MemoryResultAdapter extends RecyclerView.Adapter<MemoryResultAdapte
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView addressText;
         EditText valueEdit;
-        ImageButton btnSave, btnFreeze;
+        ImageButton btnSave, btnFreeze, btnOverlay;
         TextWatcher watcher;
 
         ViewHolder(View v) {
@@ -116,6 +124,7 @@ public class MemoryResultAdapter extends RecyclerView.Adapter<MemoryResultAdapte
             valueEdit = v.findViewById(R.id.value_edit);
             btnSave = v.findViewById(R.id.btn_save);
             btnFreeze = v.findViewById(R.id.btn_freeze);
+            btnOverlay = v.findViewById(R.id.btn_overlay);
         }
     }
 }

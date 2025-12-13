@@ -26,6 +26,7 @@ public class MemorySavedAdapter extends RecyclerView.Adapter<MemorySavedAdapter.
         void onDelete(int position);
         void onFreeze(MemoryAddress address, boolean frozen);
         void onUpdate(int position, MemoryAddress address);
+        void onOverlayConfig(int position, MemoryAddress address);
     }
 
     public void setOnItemActionListener(OnItemActionListener listener) {
@@ -100,12 +101,40 @@ public class MemorySavedAdapter extends RecyclerView.Adapter<MemorySavedAdapter.
             holder.btnFreeze.setColorFilter(newState ? 0xFF00FF88 : 0xFF888888);
             if (listener != null) listener.onFreeze(item, newState);
         });
+        holder.btnOverlay.setColorFilter(item.isOverlayEnabled() ? 0xFF00FF88 : 0xFF888888);
+        holder.btnOverlay.setOnClickListener(v -> {
+            int pos = holder.getAdapterPosition();
+            if (pos >= 0 && listener != null) {
+                if (item.isOverlayEnabled()) {
+                    long addrValue = item.getAddress();
+                    item.setOverlayEnabled(false);
+                    item.setOverlayToggleable(false);
+                    item.setOverlayOriginalValue("");
+                    item.setOverlayNewValue("");
+                    item.setOverlayName("");
+                    listener.onUpdate(pos, item);
+                    holder.btnOverlay.setColorFilter(0xFF888888);
+                    org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager mgr = 
+                        org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager.getInstance();
+                    if (mgr != null) {
+                        mgr.removeMemoryOverlay(addrValue);
+                    }
+                } else {
+                    listener.onOverlayConfig(pos, item);
+                }
+            }
+        });
+
         holder.btnDelete.setOnClickListener(v -> {
             int pos = holder.getAdapterPosition();
             if (pos >= 0 && listener != null) {
                 listener.onDelete(pos);
             }
         });
+    }
+
+    public void notifyOverlayStateChanged(int position) {
+        notifyItemChanged(position);
     }
 
     @Override
@@ -116,7 +145,7 @@ public class MemorySavedAdapter extends RecyclerView.Adapter<MemorySavedAdapter.
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView labelText, addressText;
         EditText valueEdit;
-        ImageButton btnFreeze, btnDelete;
+        ImageButton btnFreeze, btnOverlay, btnDelete;
         TextWatcher watcher;
 
         ViewHolder(View v) {
@@ -125,6 +154,7 @@ public class MemorySavedAdapter extends RecyclerView.Adapter<MemorySavedAdapter.
             addressText = v.findViewById(R.id.address_text);
             valueEdit = v.findViewById(R.id.value_edit);
             btnFreeze = v.findViewById(R.id.btn_freeze);
+            btnOverlay = v.findViewById(R.id.btn_overlay);
             btnDelete = v.findViewById(R.id.btn_delete);
         }
     }

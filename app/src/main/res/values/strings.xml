@@ -366,4 +366,12 @@
     <string name="memory_editor_save">Save</string>
     <string name="memory_editor_freeze">Freeze</string>
     <string name="memory_editor_delete">Delete</string>
+    <string name="memory_editor_overlay">Overlay</string>
+    <string name="memory_overlay_config_title">Configure Overlay Button</string>
+    <string name="memory_overlay_name">Button Name</string>
+    <string name="memory_overlay_name_hint">e.g. Health, Speed</string>
+    <string name="memory_overlay_original_value">Original Value</string>
+    <string name="memory_overlay_new_value">New Value</string>
+    <string name="memory_overlay_new_value_hint">Enter value to apply</string>
+    <string name="memory_overlay_toggleable">Toggleable</string>
 </resources>
