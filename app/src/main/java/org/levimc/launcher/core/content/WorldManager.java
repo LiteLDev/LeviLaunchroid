@@ -290,7 +290,7 @@ public class WorldManager {
 
     private void createWorldZip(File worldDir, OutputStream outputStream, WorldOperationCallback callback) throws IOException {
         ZipOutputStream zos = new ZipOutputStream(outputStream);
-        zipDirectory(worldDir, worldDir.getName(), zos);
+        zipDirectory(worldDir, "", zos);
         zos.close();
     }
 
@@ -298,7 +298,7 @@ public class WorldManager {
         File[] files = dir.listFiles();
         if (files != null) {
             for (File file : files) {
-                String entryPath = basePath + "/" + file.getName();
+                String entryPath = basePath.isEmpty() ? file.getName() : basePath + "/" + file.getName();
                 if (file.isDirectory()) {
                     zipDirectory(file, entryPath, zos);
                 } else {
@@ -319,7 +319,8 @@ public class WorldManager {
     }
 
     private String createBackup(WorldItem world) throws IOException {
-        File backupDir = new File(context.getExternalFilesDir("backups"), "worlds");
+        File storageDir = android.os.Environment.getExternalStorageDirectory();
+        File backupDir = new File(storageDir, "games/org.levimc/backups/worlds");
         backupDir.mkdirs();
         
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
