@@ -29,6 +29,7 @@ class GamePackageManager private constructor(private val context: Context, priva
         "libfmod.so",
         "libMediaDecoders_Android.so",
         "libmaesdk.so",
+        "libHttpClient.Android.so",
         "libminecraftpe.so"
     )
 
