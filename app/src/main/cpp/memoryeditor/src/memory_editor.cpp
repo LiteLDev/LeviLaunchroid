@@ -1,5 +1,6 @@
 #include <jni.h>
 #include <cstdint>
+#include <cinttypes>
 #include <cstring>
 #include <cstdio>
 #include <vector>
@@ -9,8 +10,11 @@
 #include <algorithm>
 #include <unistd.h>
 #include <sys/mman.h>
+#include <sys/uio.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <signal.h>
+#include <setjmp.h>
 
 struct MemoryRegion {
     uintptr_t start;
@@ -23,20 +27,40 @@ struct MemoryRegion {
 static std::vector<MemoryRegion> g_regions;
 static std::vector<uintptr_t> g_results;
 static int g_searchType = 0;
-static int g_memFd = -1;
+static pid_t g_pid = 0;
+
+static thread_local sigjmp_buf g_jumpBuf;
+static thread_local volatile sig_atomic_t g_inSafeAccess = 0;
+
+static void segfaultHandler(int sig) {
+    if (g_inSafeAccess) {
+        siglongjmp(g_jumpBuf, 1);
+    }
+}
+
+static void setupSignalHandler() {
+    struct sigaction sa;
+    sa.sa_handler = segfaultHandler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    sigaction(SIGSEGV, &sa, nullptr);
+    sigaction(SIGBUS, &sa, nullptr);
+}
 
 static void parseMemoryMaps() {
     g_regions.clear();
     std::ifstream maps("/proc/self/maps");
+    if (!maps.is_open()) return;
     std::string line;
     while (std::getline(maps, line)) {
-        uintptr_t start, end;
-        char perms[5];
+        unsigned long long start, end;
+        char perms[5] = {0};
         char name[256] = {0};
-        if (sscanf(line.c_str(), "%lx-%lx %4s %*s %*s %*s %255[^\n]", &start, &end, perms, name) >= 3) {
+        int parsed = sscanf(line.c_str(), "%llx-%llx %4s %*s %*s %*s %255[^\n]", &start, &end, perms, name);
+        if (parsed >= 3) {
             MemoryRegion region;
-            region.start = start;
-            region.end = end;
+            region.start = static_cast<uintptr_t>(start);
+            region.end = static_cast<uintptr_t>(end);
             region.readable = (perms[0] == 'r');
             region.writable = (perms[1] == 'w');
             char* n = name;
@@ -49,25 +73,60 @@ static void parseMemoryMaps() {
     }
 }
 
-static bool openMemFd() {
-    if (g_memFd < 0) {
-        g_memFd = open("/proc/self/mem", O_RDWR);
+static bool readMemoryPvm(uintptr_t addr, void* buffer, size_t size) {
+    struct iovec local[1];
+    struct iovec remote[1];
+    local[0].iov_base = buffer;
+    local[0].iov_len = size;
+    remote[0].iov_base = reinterpret_cast<void*>(addr);
+    remote[0].iov_len = size;
+    ssize_t nread = process_vm_readv(g_pid, local, 1, remote, 1, 0);
+    return nread == static_cast<ssize_t>(size);
+}
+
+static bool writeMemoryPvm(uintptr_t addr, const void* buffer, size_t size) {
+    struct iovec local[1];
+    struct iovec remote[1];
+    local[0].iov_base = const_cast<void*>(buffer);
+    local[0].iov_len = size;
+    remote[0].iov_base = reinterpret_cast<void*>(addr);
+    remote[0].iov_len = size;
+    ssize_t nwritten = process_vm_writev(g_pid, local, 1, remote, 1, 0);
+    return nwritten == static_cast<ssize_t>(size);
+}
+
+static bool readMemoryDirect(uintptr_t addr, void* buffer, size_t size) {
+    g_inSafeAccess = 1;
+    if (sigsetjmp(g_jumpBuf, 1) == 0) {
+        memcpy(buffer, reinterpret_cast<void*>(addr), size);
+        g_inSafeAccess = 0;
+        return true;
     }
-    return g_memFd >= 0;
+    g_inSafeAccess = 0;
+    return false;
+}
+
+static bool writeMemoryDirect(uintptr_t addr, const void* buffer, size_t size) {
+    g_inSafeAccess = 1;
+    if (sigsetjmp(g_jumpBuf, 1) == 0) {
+        memcpy(reinterpret_cast<void*>(addr), buffer, size);
+        g_inSafeAccess = 0;
+        return true;
+    }
+    g_inSafeAccess = 0;
+    return false;
 }
 
 template<typename T>
 static bool readMemory(uintptr_t addr, T* value) {
-    if (g_memFd < 0 && !openMemFd()) return false;
-    if (lseek64(g_memFd, addr, SEEK_SET) == -1) return false;
-    return read(g_memFd, value, sizeof(T)) == sizeof(T);
+    if (readMemoryPvm(addr, value, sizeof(T))) return true;
+    return readMemoryDirect(addr, value, sizeof(T));
 }
 
 template<typename T>
 static bool writeMemory(uintptr_t addr, T value) {
-    if (g_memFd < 0 && !openMemFd()) return false;
-    if (lseek64(g_memFd, addr, SEEK_SET) == -1) return false;
-    return write(g_memFd, &value, sizeof(T)) == sizeof(T);
+    if (writeMemoryPvm(addr, &value, sizeof(T))) return true;
+    return writeMemoryDirect(addr, &value, sizeof(T));
 }
 
 static bool shouldSearchRegion(const MemoryRegion& region) {
@@ -87,9 +146,8 @@ static bool shouldSearchRegion(const MemoryRegion& region) {
 static uint8_t g_chunk[CHUNK_SIZE];
 
 static bool readChunk(uintptr_t addr, size_t size) {
-    if (g_memFd < 0 && !openMemFd()) return false;
-    if (lseek64(g_memFd, addr, SEEK_SET) == -1) return false;
-    return read(g_memFd, g_chunk, size) == (ssize_t)size;
+    if (readMemoryPvm(addr, g_chunk, size)) return true;
+    return readMemoryDirect(addr, g_chunk, size);
 }
 
 template<typename T>
@@ -111,6 +169,7 @@ static void searchValue(T targetValue, bool isXor, uint64_t xorKey) {
         }
     }
 }
+
 
 template<typename T>
 static void filterValue(T targetValue, int condition, bool isXor, uint64_t xorKey) {
@@ -139,8 +198,9 @@ extern "C" {
 
 JNIEXPORT void JNICALL
 Java_org_levimc_launcher_core_mods_memoryeditor_MemoryEditorNative_nativeInit(JNIEnv *env, jclass clazz) {
+    g_pid = getpid();
+    setupSignalHandler();
     parseMemoryMaps();
-    openMemFd();
 }
 
 JNIEXPORT void JNICALL
@@ -240,6 +300,7 @@ JNIEXPORT void JNICALL
 Java_org_levimc_launcher_core_mods_memoryeditor_MemoryEditorNative_nativeFilterQword(JNIEnv *env, jclass clazz, jlong value, jint condition, jboolean isXor, jlong xorKey) {
     filterValue<int64_t>(value, condition, isXor, xorKey);
 }
+
 
 JNIEXPORT void JNICALL
 Java_org_levimc_launcher_core_mods_memoryeditor_MemoryEditorNative_nativeFilterFloat(JNIEnv *env, jclass clazz, jfloat targetValue, jint condition, jboolean isXor, jlong xorKey) {
@@ -388,12 +449,9 @@ Java_org_levimc_launcher_core_mods_memoryeditor_MemoryEditorNative_nativeGetSear
 
 JNIEXPORT void JNICALL
 Java_org_levimc_launcher_core_mods_memoryeditor_MemoryEditorNative_nativeClose(JNIEnv *env, jclass clazz) {
-    if (g_memFd >= 0) {
-        close(g_memFd);
-        g_memFd = -1;
-    }
     g_results.clear();
     g_regions.clear();
+    g_pid = 0;
 }
 
 }
