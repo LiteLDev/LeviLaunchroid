@@ -6,6 +6,9 @@
     <color name="secondary">#00FFFF</color>
     <color name="on_secondary">#000000</color>
 
+    <color name="primary_container">#1A3A2A</color>
+    <color name="on_primary_container">#4AE0A0</color>
+
     <color name="tertiary">#66BB6A</color>
     <color name="on_tertiary">#000000</color>
 

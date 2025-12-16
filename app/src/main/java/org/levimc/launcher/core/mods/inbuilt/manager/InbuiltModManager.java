@@ -17,6 +17,8 @@ public class InbuiltModManager {
     private static final String PREFS_NAME = "inbuilt_mods_prefs";
     private static final String KEY_ADDED_MODS = "added_mods";
     private static final String KEY_AUTOSPRINT_KEY = "autosprint_key";
+    private static final String KEY_OVERLAY_BUTTON_SIZE = "overlay_button_size";
+    private static final int DEFAULT_OVERLAY_BUTTON_SIZE = 48;
 
     private static volatile InbuiltModManager instance;
     private final SharedPreferences prefs;
@@ -100,6 +102,14 @@ public class InbuiltModManager {
 
     public void setAutoSprintKey(int keyCode) {
         prefs.edit().putInt(KEY_AUTOSPRINT_KEY, keyCode).apply();
+    }
+
+    public int getOverlayButtonSize() {
+        return prefs.getInt(KEY_OVERLAY_BUTTON_SIZE, DEFAULT_OVERLAY_BUTTON_SIZE);
+    }
+
+    public void setOverlayButtonSize(int sizeDp) {
+        prefs.edit().putInt(KEY_OVERLAY_BUTTON_SIZE, sizeDp).apply();
     }
 
     private void savePrefs() {

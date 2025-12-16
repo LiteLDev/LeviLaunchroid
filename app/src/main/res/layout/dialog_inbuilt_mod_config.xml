@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/bg_dialog_config">
+
+    <TextView
+        android:id="@+id/config_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/on_surface"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/misans" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/outline"
+        android:alpha="0.3" />
+
+    <!-- Overlay Button Size -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/overlay_button_size"
+            android:textColor="@color/on_surface"
+            android:textSize="14sp"
+            android:fontFamily="@font/misans" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp">
+
+            <SeekBar
+                android:id="@+id/seekbar_button_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:min="32"
+                android:max="120"
+                android:progress="48"
+                android:progressTint="@color/primary"
+                android:thumbTint="@color/primary" />
+
+            <TextView
+                android:id="@+id/text_button_size"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                android:text="48dp"
+                android:textColor="@color/on_surface"
+                android:textSize="13sp"
+                android:fontFamily="@font/misans" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/config_autosprint_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/autosprint_key_label"
+            android:textColor="@color/on_surface"
+            android:textSize="14sp"
+            android:fontFamily="@font/misans" />
+
+        <Spinner
+            android:id="@+id/spinner_autosprint_key"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_inbuilt_badge"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:minHeight="0dp"
+            android:backgroundTint="@color/surface"
+            android:text="@string/dialog_negative_cancel"
+            android:textColor="@color/on_surface"
+            android:textSize="13sp"
+            android:fontFamily="@font/misans"
+            android:textAllCaps="false"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:minHeight="0dp"
+            android:backgroundTint="@color/primary"
+            android:text="@string/save"
+            android:textColor="@color/on_primary"
+            android:textSize="13sp"
+            android:fontFamily="@font/misans"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+</LinearLayout>

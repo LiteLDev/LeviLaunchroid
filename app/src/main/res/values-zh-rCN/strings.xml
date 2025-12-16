@@ -342,6 +342,8 @@
     <string name="autosprint_key_shift">Shift</string>
     <string name="autosprint_key_label">疾跑按键：</string>
     <string name="configure">配置</string>
+    <string name="overlay_button_size">悬浮按钮大小</string>
+    <string name="settings">设置</string>
 
     <!-- Memory Editor -->
     <string name="memory_editor_enable">内存编辑器</string>

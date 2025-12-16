@@ -5,6 +5,9 @@
     <color name="secondary">#A5D6A7</color>
     <color name="on_secondary">#1B5E20</color>
 
+    <color name="primary_container">#E8F5E9</color>
+    <color name="on_primary_container">#1B5E20</color>
+
     <color name="tertiary">#E8F5E9</color>
     <color name="on_tertiary">#1B5E20</color>
 

@@ -350,6 +350,8 @@
     <string name="autosprint_key_shift">Shift</string>
     <string name="autosprint_key_label">Sprint Key:</string>
     <string name="configure">Configure</string>
+    <string name="overlay_button_size">Overlay Button Size</string>
+    <string name="settings">Settings</string>
 
     <!-- Memory Editor -->
     <string name="memory_editor_enable">Memory Editor</string>

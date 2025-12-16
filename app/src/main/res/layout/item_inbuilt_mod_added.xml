@@ -1,70 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
-    android:gravity="center_vertical"
-    android:background="@drawable/card_background"
-    android:layout_marginBottom="8dp">
-
-    <View
-        android:layout_width="4dp"
-        android:layout_height="match_parent"
-        android:background="@color/secondary"
-        android:layout_marginEnd="12dp" />
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="12dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/inbuilt_mod_icon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_horizontal"
+                android:padding="6dp"
+                android:background="@drawable/bg_mod_icon_circle"
+                android:tint="@color/primary" />
+
+            <ImageButton
+                android:id="@+id/inbuilt_mod_settings"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end|top"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_settings"
+                android:padding="2dp"
+                android:tint="@color/on_surface"
+                android:alpha="0.6"
+                android:contentDescription="@string/settings" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/inbuilt_mod_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/inbuilt_mod_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="@color/on_surface"
-                android:fontFamily="@font/misans" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/inbuilt_badge"
-                android:textSize="10sp"
-                android:textColor="@color/on_secondary"
-                android:background="@drawable/bg_inbuilt_badge"
-                android:paddingHorizontal="6dp"
-                android:paddingVertical="2dp"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/misans" />
-        </LinearLayout>
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textColor="@color/on_surface"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/misans"
+            android:maxLines="1"
+            android:ellipsize="end" />
 
         <TextView
             android:id="@+id/inbuilt_mod_desc"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:layout_height="32dp"
+            android:layout_marginTop="2dp"
+            android:gravity="center|top"
             android:textColor="@color/on_surface"
-            android:alpha="0.6"
+            android:textSize="10sp"
             android:fontFamily="@font/misans"
-            android:layout_marginTop="2dp" />
-    </LinearLayout>
+            android:alpha="0.6"
+            android:maxLines="2"
+            android:ellipsize="end" />
 
-    <ImageButton
-        android:id="@+id/remove_inbuilt_button"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_close"
-        android:contentDescription="@string/remove"
-        android:padding="8dp" />
-</LinearLayout>
+        <ImageButton
+            android:id="@+id/remove_inbuilt_button"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_remove_button"
+            android:src="@drawable/ic_close"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            android:tint="@color/error"
+            android:contentDescription="@string/remove" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

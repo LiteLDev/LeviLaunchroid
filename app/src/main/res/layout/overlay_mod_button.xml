@@ -5,8 +5,8 @@
     android:layout_width="48dp"
     android:layout_height="48dp"
     android:background="@drawable/bg_overlay_button"
-    android:scaleType="centerInside"
-    android:padding="10dp"
+    android:scaleType="fitCenter"
+    android:padding="8dp"
     android:alpha="0.85"
     android:contentDescription="@string/inbuilt_mods"
     tools:ignore="TouchTargetSizeCheck" />

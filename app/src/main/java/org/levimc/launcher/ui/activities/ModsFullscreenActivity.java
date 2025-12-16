@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -177,7 +178,7 @@ public class ModsFullscreenActivity extends BaseActivity {
     private void setupInbuiltModsRecycler() {
         inbuiltModsRecycler = findViewById(R.id.inbuilt_mods_recycler);
         inbuiltModsAdapter = new AddedInbuiltModsAdapter();
-        inbuiltModsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        inbuiltModsRecycler.setLayoutManager(new GridLayoutManager(this, 3));
         inbuiltModsRecycler.setAdapter(inbuiltModsAdapter);
         
         inbuiltModsAdapter.setOnRemoveClickListener(mod -> {

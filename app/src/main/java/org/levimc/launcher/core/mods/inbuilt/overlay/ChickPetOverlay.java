@@ -11,11 +11,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import org.levimc.launcher.R;
+import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 
 import java.util.Random;
 
 public class ChickPetOverlay {
-    private static final int SIZE_DP = 48;
+    private static final int DEFAULT_SIZE_DP = 48;
     private static final int FRAME_DELAY = 200;
     private static final int BLINK_DELAY = 2500;
     private static final int STATE_CHANGE_MIN = 4000;
@@ -95,7 +96,8 @@ public class ChickPetOverlay {
         if (isShowing || activity.isFinishing() || activity.isDestroyed()) return;
 
         float density = activity.getResources().getDisplayMetrics().density;
-        chickSize = (int) (SIZE_DP * density);
+        int sizeDp = InbuiltModManager.getInstance(activity).getOverlayButtonSize();
+        chickSize = (int) (sizeDp * density);
         screenWidth = activity.getResources().getDisplayMetrics().widthPixels;
         screenHeight = activity.getResources().getDisplayMetrics().heightPixels;
 

@@ -347,6 +347,8 @@
     <string name="autosprint_key_shift">Shift</string>
     <string name="autosprint_key_label">Кнопка спринта:</string>
     <string name="configure">Настроить</string>
+    <string name="overlay_button_size">Размер кнопки наложения</string>
+    <string name="settings">Настройки</string>
 
     <!-- Memory Editor -->
     <string name="memory_editor_enable">Редактор памяти</string>

@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         android:paddingTop="16dp"
         android:paddingBottom="24dp">
 
@@ -41,7 +41,7 @@
                 android:text="@string/inbuilt_mods_title"
                 android:fontFamily="@font/misans"
                 android:textColor="@color/on_surface"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -51,18 +51,17 @@
             android:layout_marginTop="8dp"
             android:text="@string/inbuilt_mods_subtitle"
             android:textColor="@color/on_surface"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:fontFamily="@font/misans"
             android:alpha="0.7"
             android:paddingHorizontal="4dp" />
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginTop="12dp"
             android:background="@drawable/card_background"
-            android:orientation="vertical"
             android:padding="8dp">
 
             <TextView
@@ -72,7 +71,7 @@
                 android:gravity="center"
                 android:text="@string/no_inbuilt_mods_available"
                 android:textColor="@color/on_surface"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:fontFamily="@font/misans"
                 android:alpha="0.5"
                 android:visibility="gone" />
@@ -82,9 +81,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:padding="8dp" />
+                android:padding="4dp" />
 
-        </LinearLayout>
+        </FrameLayout>
 
     </LinearLayout>
 </FrameLayout>

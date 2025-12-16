@@ -1,14 +1,21 @@
 package org.levimc.launcher.ui.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -56,29 +63,11 @@ public class InbuiltModsAdapter extends RecyclerView.Adapter<InbuiltModsAdapter.
         holder.name.setText(mod.getName());
         holder.description.setText(mod.getDescription());
 
-        if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
-            holder.configContainer.setVisibility(View.VISIBLE);
-            String[] options = {context.getString(R.string.autosprint_key_ctrl), context.getString(R.string.autosprint_key_shift)};
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item_inbuilt, options);
-            adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_inbuilt);
-            holder.configSpinner.setAdapter(adapter);
+        int iconRes = getModIcon(mod.getId());
+        holder.icon.setImageResource(iconRes);
 
-            InbuiltModManager manager = InbuiltModManager.getInstance(context);
-            int currentKey = manager.getAutoSprintKey();
-            holder.configSpinner.setSelection(currentKey == KeyEvent.KEYCODE_SHIFT_LEFT ? 1 : 0);
-
-            holder.configSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                    int key = pos == 1 ? KeyEvent.KEYCODE_SHIFT_LEFT : KeyEvent.KEYCODE_CTRL_LEFT;
-                    manager.setAutoSprintKey(key);
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {}
-            });
-        } else {
-            holder.configContainer.setVisibility(View.GONE);
-        }
+        holder.settingsButton.setOnClickListener(v -> showConfigDialog(context, mod));
+        DynamicAnim.applyPressScale(holder.settingsButton);
 
         holder.addButton.setOnClickListener(v -> {
             if (onAddClickListener != null) {
@@ -88,24 +77,107 @@ public class InbuiltModsAdapter extends RecyclerView.Adapter<InbuiltModsAdapter.
         DynamicAnim.applyPressScale(holder.addButton);
     }
 
+    private int getModIcon(String modId) {
+        return switch (modId) {
+            case ModIds.QUICK_DROP -> R.drawable.ic_quick_drop;
+            case ModIds.CAMERA_PERSPECTIVE -> R.drawable.ic_camera;
+            case ModIds.TOGGLE_HUD -> R.drawable.ic_hud;
+            case ModIds.AUTO_SPRINT -> R.drawable.ic_sprint;
+            case ModIds.CHICK_PET -> R.drawable.chick_idle_1;
+            default -> R.drawable.ic_settings;
+        };
+    }
+
+    private void showConfigDialog(Context context, InbuiltMod mod) {
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_inbuilt_mod_config);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(
+                (int) (context.getResources().getDisplayMetrics().widthPixels * 0.9),
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+        }
+
+        TextView title = dialog.findViewById(R.id.config_title);
+        SeekBar seekBarSize = dialog.findViewById(R.id.seekbar_button_size);
+        TextView textSize = dialog.findViewById(R.id.text_button_size);
+        LinearLayout autoSprintContainer = dialog.findViewById(R.id.config_autosprint_container);
+        Spinner spinnerAutoSprint = dialog.findViewById(R.id.spinner_autosprint_key);
+        Button btnCancel = dialog.findViewById(R.id.btn_cancel);
+        Button btnSave = dialog.findViewById(R.id.btn_save);
+
+        InbuiltModManager manager = InbuiltModManager.getInstance(context);
+        title.setText(mod.getName());
+
+        int currentSize = manager.getOverlayButtonSize();
+        seekBarSize.setProgress(currentSize);
+        textSize.setText(currentSize + "dp");
+
+        seekBarSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                textSize.setText(progress + "dp");
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
+            autoSprintContainer.setVisibility(View.VISIBLE);
+            String[] options = {
+                context.getString(R.string.autosprint_key_ctrl),
+                context.getString(R.string.autosprint_key_shift)
+            };
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item_inbuilt, options);
+            adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_inbuilt);
+            spinnerAutoSprint.setAdapter(adapter);
+
+            int currentKey = manager.getAutoSprintKey();
+            spinnerAutoSprint.setSelection(currentKey == KeyEvent.KEYCODE_SHIFT_LEFT ? 1 : 0);
+        } else {
+            autoSprintContainer.setVisibility(View.GONE);
+        }
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        DynamicAnim.applyPressScale(btnCancel);
+
+        btnSave.setOnClickListener(v -> {
+            manager.setOverlayButtonSize(seekBarSize.getProgress());
+            if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
+                int key = spinnerAutoSprint.getSelectedItemPosition() == 1 
+                    ? KeyEvent.KEYCODE_SHIFT_LEFT 
+                    : KeyEvent.KEYCODE_CTRL_LEFT;
+                manager.setAutoSprintKey(key);
+            }
+            dialog.dismiss();
+        });
+        DynamicAnim.applyPressScale(btnSave);
+
+        dialog.show();
+    }
+
     @Override
     public int getItemCount() {
         return mods.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView icon;
         TextView name, description;
+        ImageButton settingsButton;
         Button addButton;
-        LinearLayout configContainer;
-        Spinner configSpinner;
 
         ViewHolder(View itemView) {
             super(itemView);
+            icon = itemView.findViewById(R.id.inbuilt_mod_icon);
             name = itemView.findViewById(R.id.inbuilt_mod_name);
             description = itemView.findViewById(R.id.inbuilt_mod_description);
+            settingsButton = itemView.findViewById(R.id.inbuilt_mod_settings);
             addButton = itemView.findViewById(R.id.inbuilt_mod_add_button);
-            configContainer = itemView.findViewById(R.id.config_container);
-            configSpinner = itemView.findViewById(R.id.config_spinner);
         }
     }
 }

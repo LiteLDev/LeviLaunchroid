@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import org.levimc.launcher.R;
+import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 
 public abstract class BaseOverlayButton {
     protected final Activity activity;
@@ -39,6 +40,12 @@ public abstract class BaseOverlayButton {
         this.windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
     }
 
+    protected int getButtonSizePx() {
+        int sizeDp = InbuiltModManager.getInstance(activity).getOverlayButtonSize();
+        float density = activity.getResources().getDisplayMetrics().density;
+        return (int) (sizeDp * density);
+    }
+
     public void show(int startX, int startY) {
         if (isShowing) return;
         handler.postDelayed(() -> showInternal(startX, startY), 500);
@@ -52,9 +59,13 @@ public abstract class BaseOverlayButton {
             ImageButton btn = (ImageButton) overlayView;
             btn.setImageResource(getIconResource());
 
+            int buttonSize = getButtonSizePx();
+            int padding = (int) (buttonSize * 0.22f);
+            btn.setPadding(padding, padding, padding, padding);
+            btn.setScaleType(ImageButton.ScaleType.FIT_CENTER);
             wmParams = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
+                buttonSize,
+                buttonSize,
                 WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -85,9 +96,14 @@ public abstract class BaseOverlayButton {
         ImageButton btn = (ImageButton) overlayView;
         btn.setImageResource(getIconResource());
 
+        int buttonSize = getButtonSizePx();
+        int padding = (int) (buttonSize * 0.22f);
+        btn.setPadding(padding, padding, padding, padding);
+        btn.setScaleType(ImageButton.ScaleType.FIT_CENTER);
+        
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.WRAP_CONTENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT
+            buttonSize,
+            buttonSize
         );
         params.gravity = Gravity.TOP | Gravity.START;
         params.leftMargin = startX;
