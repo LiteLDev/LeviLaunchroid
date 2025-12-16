@@ -343,6 +343,8 @@
     <string name="inbuilt_mod_hud_desc">Hide hotbar and UI</string>
     <string name="inbuilt_mod_autosprint">Auto Sprint</string>
     <string name="inbuilt_mod_autosprint_desc">Toggle sprint on/off</string>
+    <string name="inbuilt_mod_chick_pet">Chick Pet</string>
+    <string name="inbuilt_mod_chick_pet_desc">A cute pixelated chick that walks around, sleeps, and runs when touched!</string>
     <string name="inbuilt_badge">INBUILT</string>
     <string name="autosprint_key_ctrl">Ctrl Left</string>
     <string name="autosprint_key_shift">Shift</string>

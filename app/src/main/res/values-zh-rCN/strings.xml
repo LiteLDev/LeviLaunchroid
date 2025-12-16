@@ -335,6 +335,8 @@
     <string name="inbuilt_mod_hud_desc">隐藏快捷栏和 UI</string>
     <string name="inbuilt_mod_autosprint">自动疾跑</string>
     <string name="inbuilt_mod_autosprint_desc">切换疾跑开启/关闭</string>
+    <string name="inbuilt_mod_chick_pet">小鸡宠物</string>
+    <string name="inbuilt_mod_chick_pet_desc">一只可爱的像素小鸡，会四处走动、睡觉，触摸它会跑开！</string>
     <string name="inbuilt_badge">内置</string>
     <string name="autosprint_key_ctrl">左 Ctrl</string>
     <string name="autosprint_key_shift">Shift</string>

@@ -52,6 +52,9 @@ public class InbuiltModManager {
         mods.add(new InbuiltMod(ModIds.AUTO_SPRINT,
             context.getString(R.string.inbuilt_mod_autosprint),
             context.getString(R.string.inbuilt_mod_autosprint_desc), true, addedMods.contains(ModIds.AUTO_SPRINT)));
+        mods.add(new InbuiltMod(ModIds.CHICK_PET,
+            context.getString(R.string.inbuilt_mod_chick_pet),
+            context.getString(R.string.inbuilt_mod_chick_pet_desc), false, addedMods.contains(ModIds.CHICK_PET)));
         return mods;
     }
 

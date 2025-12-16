@@ -19,6 +19,7 @@ public class InbuiltOverlayManager {
     private final List<BaseOverlayButton> overlays = new ArrayList<>();
     private final List<MemoryOverlayButton> memoryOverlays = new ArrayList<>();
     private MemoryEditorButton memoryEditorButton;
+    private ChickPetOverlay chickPetOverlay;
     private int nextY = 150;
     private static final int SPACING = 70;
     private static final int START_X = 50;
@@ -59,6 +60,11 @@ public class InbuiltOverlayManager {
             overlay.show(START_X, nextY);
             overlays.add(overlay);
             nextY += SPACING;
+        }
+
+        if (manager.isModAdded(ModIds.CHICK_PET)) {
+            chickPetOverlay = new ChickPetOverlay(activity);
+            chickPetOverlay.show();
         }
 
         if (FeatureSettings.getInstance().isMemoryEditorEnabled()) {
@@ -112,6 +118,10 @@ public class InbuiltOverlayManager {
             memOverlay.hide();
         }
         memoryOverlays.clear();
+        if (chickPetOverlay != null) {
+            chickPetOverlay.hide();
+            chickPetOverlay = null;
+        }
         if (memoryEditorButton != null) {
             if (memoryEditorButton.getEditorOverlay() != null) {
                 memoryEditorButton.getEditorOverlay().hide();

@@ -340,6 +340,8 @@
     <string name="inbuilt_mod_hud_desc">Скрыть панель быстрого доступа и UI</string>
     <string name="inbuilt_mod_autosprint">Авто-спринт</string>
     <string name="inbuilt_mod_autosprint_desc">Включение/выключение спринта</string>
+    <string name="inbuilt_mod_chick_pet">Питомец-цыплёнок</string>
+    <string name="inbuilt_mod_chick_pet_desc">Милый пиксельный цыплёнок, который гуляет, спит и убегает при касании!</string>
     <string name="inbuilt_badge">ВСТРОЕН</string>
     <string name="autosprint_key_ctrl">Левый Ctrl</string>
     <string name="autosprint_key_shift">Shift</string>
