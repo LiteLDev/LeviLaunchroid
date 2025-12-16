@@ -128,6 +128,13 @@ public class MemorySavedAdapter extends RecyclerView.Adapter<MemorySavedAdapter.
         holder.btnDelete.setOnClickListener(v -> {
             int pos = holder.getAdapterPosition();
             if (pos >= 0 && listener != null) {
+                if (item.isOverlayEnabled()) {
+                    org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager mgr = 
+                        org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager.getInstance();
+                    if (mgr != null) {
+                        mgr.removeMemoryOverlay(item.getAddress());
+                    }
+                }
                 listener.onDelete(pos);
             }
         });
