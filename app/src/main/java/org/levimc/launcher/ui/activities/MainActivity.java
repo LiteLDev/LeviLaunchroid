@@ -487,6 +487,7 @@ import okhttp3.OkHttpClient;
         externalModsCount = binding.externalModsCount;
         inbuiltModsCount = binding.inbuiltModsCount;
         
+        binding.modCard.setOnClickListener(v -> openModsFullscreen());
         binding.manageModsButton.setOnClickListener(v -> openModsFullscreen());
         DynamicAnim.applyPressScale(binding.manageModsButton);
         
