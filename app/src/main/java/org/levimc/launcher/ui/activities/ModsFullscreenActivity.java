@@ -11,7 +11,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,8 +23,9 @@ import org.levimc.launcher.core.mods.Mod;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod;
 import org.levimc.launcher.core.versions.VersionManager;
-import org.levimc.launcher.ui.adapter.AddedInbuiltModsAdapter;
+import org.levimc.launcher.ui.adapter.InbuiltModsListAdapter;
 import org.levimc.launcher.ui.adapter.ModsAdapter;
+import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.views.MainViewModel;
 import org.levimc.launcher.ui.views.MainViewModelFactory;
@@ -37,10 +37,12 @@ public class ModsFullscreenActivity extends BaseActivity {
     private RecyclerView modsRecycler;
     private RecyclerView inbuiltModsRecycler;
     private ModsAdapter modsAdapter;
-    private AddedInbuiltModsAdapter inbuiltModsAdapter;
+    private InbuiltModsListAdapter inbuiltModsAdapter;
     private MainViewModel viewModel;
     private TextView totalModsCount;
     private TextView enabledModsCount;
+    private TextView inbuiltModsHeader;
+    private TextView externalModsHeader;
     private ActivityResultLauncher<Intent> pickModLauncher;
     private FileHandler fileHandler;
     private InbuiltModManager inbuiltModManager;
@@ -106,6 +108,8 @@ public class ModsFullscreenActivity extends BaseActivity {
 
         totalModsCount = findViewById(R.id.total_mods_count);
         enabledModsCount = findViewById(R.id.enabled_mods_count);
+        inbuiltModsHeader = findViewById(R.id.inbuilt_mods_header);
+        externalModsHeader = findViewById(R.id.external_mods_header);
     }
     
     private void startFilePicker() {
@@ -158,7 +162,7 @@ public class ModsFullscreenActivity extends BaseActivity {
             }
         });
         
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 int fromPosition = viewHolder.getAdapterPosition();
@@ -169,7 +173,20 @@ public class ModsFullscreenActivity extends BaseActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                modsAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
+                int pos = viewHolder.getAdapterPosition();
+                Mod mod = modsAdapter.getItem(pos);
+                new CustomAlertDialog(ModsFullscreenActivity.this)
+                        .setTitleText(getString(R.string.dialog_title_delete_mod))
+                        .setMessage(getString(R.string.dialog_message_delete_mod))
+                        .setPositiveButton(getString(R.string.dialog_positive_delete), v -> {
+                            viewModel.removeMod(mod);
+                            modsAdapter.removeAt(pos);
+                            updateModsCount();
+                        })
+                        .setNegativeButton(getString(R.string.dialog_negative_cancel), v -> {
+                            modsAdapter.notifyItemChanged(pos);
+                        })
+                        .show();
             }
         };
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(modsRecycler);
@@ -177,8 +194,8 @@ public class ModsFullscreenActivity extends BaseActivity {
 
     private void setupInbuiltModsRecycler() {
         inbuiltModsRecycler = findViewById(R.id.inbuilt_mods_recycler);
-        inbuiltModsAdapter = new AddedInbuiltModsAdapter();
-        inbuiltModsRecycler.setLayoutManager(new GridLayoutManager(this, 3));
+        inbuiltModsAdapter = new InbuiltModsListAdapter();
+        inbuiltModsRecycler.setLayoutManager(new LinearLayoutManager(this));
         inbuiltModsRecycler.setAdapter(inbuiltModsAdapter);
         
         inbuiltModsAdapter.setOnRemoveClickListener(mod -> {
@@ -194,16 +211,31 @@ public class ModsFullscreenActivity extends BaseActivity {
     private void refreshInbuiltMods() {
         List<InbuiltMod> addedMods = inbuiltModManager.getAddedMods(this);
         inbuiltModsAdapter.updateMods(addedMods);
-        inbuiltModsRecycler.setVisibility(addedMods.isEmpty() ? View.GONE : View.VISIBLE);
+        boolean hasInbuilt = !addedMods.isEmpty();
+        inbuiltModsRecycler.setVisibility(hasInbuilt ? View.VISIBLE : View.GONE);
+        if (inbuiltModsHeader != null) {
+            inbuiltModsHeader.setVisibility(hasInbuilt ? View.VISIBLE : View.GONE);
+        }
+        updateExternalModsHeader();
+    }
+    
+    private void updateExternalModsHeader() {
+        List<Mod> mods = viewModel.getModsLiveData().getValue();
+        List<InbuiltMod> inbuiltMods = inbuiltModManager.getAddedMods(this);
+        boolean hasExternal = mods != null && !mods.isEmpty();
+        boolean hasInbuilt = !inbuiltMods.isEmpty();
+        if (externalModsHeader != null) {
+            externalModsHeader.setVisibility(hasExternal && hasInbuilt ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void updateModsUI(List<Mod> mods) {
         if (modsAdapter != null) {
             modsAdapter.updateMods(mods);
             updateModsCount();
+            updateExternalModsHeader();
             if (modsRecycler != null) {
                 int count = (mods != null) ? mods.size() : 0;
-                // 仅在首次或数量变化时触发整列动画，避免开关引发整个列表重动画
                 if (lastModsCount == -1 || count != lastModsCount) {
                     modsRecycler.post(() -> DynamicAnim.staggerRecyclerChildren(modsRecycler));
                 }

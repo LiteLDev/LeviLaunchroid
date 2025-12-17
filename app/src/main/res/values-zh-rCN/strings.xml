@@ -6,6 +6,10 @@
 
     <!-- Mods -->
     <string name="mods_title">🧩 模组 (%d)</string>
+    <string name="mods_section_title">🧩 模组</string>
+    <string name="external_mods_label">外部模组</string>
+    <string name="inbuilt_mods_label">内置模组</string>
+    <string name="manage_mods">管理模组</string>
     <string name="no_mods_found">未找到模组</string>
     <string name="mod_load_order">加载顺序：%d</string>
     <string name="drag_to_reorder">拖动以重新排序</string>

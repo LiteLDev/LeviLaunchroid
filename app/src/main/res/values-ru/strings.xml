@@ -8,6 +8,10 @@
 
     <!-- Моды -->
     <string name="mods_title">🧩 Моды (%d)</string>
+    <string name="mods_section_title">🧩 Моды</string>
+    <string name="external_mods_label">Внешние моды</string>
+    <string name="inbuilt_mods_label">Встроенные моды</string>
+    <string name="manage_mods">Управление модами</string>
     <string name="no_mods_found">Моды не найдены</string>
     <string name="mod_load_order">Порядок загрузки: %d</string>
     <string name="drag_to_reorder">Перетащите для изменения порядка</string>

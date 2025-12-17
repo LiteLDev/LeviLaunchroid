@@ -8,6 +8,10 @@
 
     <!-- Mods -->
     <string name="mods_title">🧩 Mods (%d)</string>
+    <string name="mods_section_title">🧩 Mods</string>
+    <string name="external_mods_label">External Mods</string>
+    <string name="inbuilt_mods_label">Inbuilt Mods</string>
+    <string name="manage_mods">Manage Mods</string>
     <string name="no_mods_found">No Mods Found</string>
     <string name="mod_load_order">Load order: %d</string>
     <string name="drag_to_reorder">Drag to reorder</string>

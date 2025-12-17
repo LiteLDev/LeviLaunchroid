@@ -317,50 +317,95 @@
                     android:layout_weight="1"
                     android:background="@drawable/card_background"
                     android:orientation="vertical"
-                    android:padding="15dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground">
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/mods_title_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mods_section_title"
+                        android:fontFamily="@font/misans"
+                        android:textColor="@color/on_surface"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="12dp">
 
                         <TextView
-                            android:id="@+id/mods_title_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/mods_title"
+                            android:text="@string/external_mods_label"
                             android:fontFamily="@font/misans"
                             android:textColor="@color/on_surface"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textSize="14sp" />
 
                         <Space
                             android:layout_width="0dp"
                             android:layout_height="1dp"
                             android:layout_weight="1" />
 
-                        <ImageButton
-                            android:id="@+id/add_mod_button"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:layout_marginEnd="6dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:src="@drawable/ic_add" />
+                        <TextView
+                            android:id="@+id/external_mods_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:fontFamily="@font/misans"
+                            android:textColor="@color/accent_text"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/mods_recycler"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/inbuilt_mods_label"
+                            android:fontFamily="@font/misans"
+                            android:textColor="@color/on_surface"
+                            android:textSize="14sp" />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/inbuilt_mods_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:fontFamily="@font/misans"
+                            android:textColor="@color/accent_text"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <Space
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:clipToPadding="false"
-                        android:nestedScrollingEnabled="false"
-                        android:padding="8dp"
-                        android:paddingTop="0dp" />
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/manage_mods_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="40dp"
+                        android:backgroundTint="@color/primary"
+                        android:text="@string/manage_mods"
+                        android:textColor="@color/on_primary"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/misans" />
                 </LinearLayout>
 
                 <LinearLayout

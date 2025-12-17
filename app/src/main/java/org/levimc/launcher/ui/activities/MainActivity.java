@@ -13,26 +13,23 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.SimpleItemAnimator;
+
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.minecraft.MinecraftLauncher;
 import org.levimc.launcher.core.mods.FileHandler;
 import org.levimc.launcher.core.mods.Mod;
+import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.versions.GameVersion;
 import org.levimc.launcher.core.versions.VersionManager;
 import org.levimc.launcher.databinding.ActivityMainBinding;
 import org.levimc.launcher.settings.FeatureSettings;
-import org.levimc.launcher.ui.adapter.ModsAdapter;
 import org.levimc.launcher.ui.adapter.QuickActionsAdapter;
 import org.levimc.launcher.ui.animation.AnimationHelper;
 import org.levimc.launcher.ui.animation.DynamicAnim;
@@ -89,9 +86,9 @@ import okhttp3.OkHttpClient;
     private VersionManager versionManager;
     private ActivityResultLauncher<Intent> permissionResultLauncher;
     private ActivityResultLauncher<Intent> apkImportResultLauncher;
-    private ActivityResultLauncher<Intent> soImportResultLauncher;
-    private ModsAdapter modsAdapter;
-    private int lastModsCount = -1;
+
+    private TextView externalModsCount;
+    private TextView inbuiltModsCount;
 
     private com.microsoft.xbox.idp.toolkit.CircleImageView accountAvatar;
     private View accountAvatarContainer;
@@ -123,7 +120,7 @@ import okhttp3.OkHttpClient;
         repairNeededVersions();
         requestBasicPermissions();
         showEulaIfNeeded();
-        initModsRecycler();
+        initModsSection();
         setupOnBackPressedCallback();
 
         accountLoginLauncher = registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(), result -> {
@@ -481,77 +478,18 @@ import okhttp3.OkHttpClient;
                         apkImportManager.handleActivityResult(result.getResultCode(), result.getData());
                 }
         );
-        soImportResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null && fileHandler != null) {
-                        fileHandler.processIncomingFilesWithConfirmation(result.getData(), new FileHandler.FileOperationCallback() {
-                            @Override
-                            public void onSuccess(int processedFiles) {
-                                UIHelper.showToast(MainActivity.this, getString(R.string.files_processed, processedFiles));
-                            }
-
-                            @Override
-                            public void onError(String errorMessage) {
-                            }
-
-                            @Override
-                            public void onProgressUpdate(int progress) {
-                                if (binding != null) binding.progressLoader.setProgress(progress);
-                            }
-                        }, true);
-                    }
-                }
-        );
         permissionsHandler = PermissionsHandler.getInstance();
         permissionsHandler.setActivity(this, permissionResultLauncher);
         initListeners();
     }
 
-    private void initModsRecycler() {
-        modsAdapter = new ModsAdapter(new ArrayList<>());
-        binding.modsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        binding.modsRecycler.setAdapter(modsAdapter);
-        if (binding.modsRecycler.getItemAnimator() instanceof SimpleItemAnimator) {
-            ((SimpleItemAnimator) binding.modsRecycler.getItemAnimator()).setSupportsChangeAnimations(false);
-        }
-        DynamicAnim.staggerRecyclerChildren(binding.modsRecycler);
-        modsAdapter.setOnModEnableChangeListener((mod, enabled) -> {
-            if (viewModel != null) viewModel.setModEnabled(mod.getFileName(), enabled);
-        });
-        modsAdapter.setOnModReorderListener(reorderedMods -> {
-            if (viewModel != null) {
-                viewModel.reorderMods(reorderedMods);
-                runOnUiThread(() -> Toast.makeText(this, R.string.mod_reordered, Toast.LENGTH_SHORT).show());
-            }
-        });
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                int fromPosition = viewHolder.getAdapterPosition();
-                int toPosition = target.getAdapterPosition();
-                modsAdapter.moveItem(fromPosition, toPosition);
-                return true;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                int pos = viewHolder.getAdapterPosition();
-                Mod mod = modsAdapter.getItem(pos);
-                new CustomAlertDialog(MainActivity.this)
-                        .setTitleText(getString(R.string.dialog_title_delete_mod))
-                        .setMessage(getString(R.string.dialog_message_delete_mod))
-                        .setPositiveButton(getString(R.string.dialog_positive_delete), v -> {
-                            viewModel.removeMod(mod);
-                            modsAdapter.removeAt(pos);
-                        })
-                        .setNegativeButton(getString(R.string.dialog_negative_cancel), v -> {
-                            modsAdapter.notifyItemChanged(pos);
-                        })
-                        .show();
-            }
-        };
-        new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.modsRecycler);
+    private void initModsSection() {
+        externalModsCount = binding.externalModsCount;
+        inbuiltModsCount = binding.inbuiltModsCount;
+        
+        binding.manageModsButton.setOnClickListener(v -> openModsFullscreen());
+        DynamicAnim.applyPressScale(binding.manageModsButton);
+        
         viewModel.getModsLiveData().observe(this, this::updateModsUI);
     }
 
@@ -625,6 +563,7 @@ import okhttp3.OkHttpClient;
         refreshAccountHeaderUI();
         updateBetaBadge();
         updateDebugBadge();
+        updateModsUI(viewModel.getModsLiveData().getValue());
     }
 
     private void updateAbiLabel() {
@@ -682,8 +621,7 @@ import okhttp3.OkHttpClient;
         DynamicAnim.applyPressScale(binding.launchButton);
         binding.selectVersionButton.setOnClickListener(v -> showVersionSelectDialog());
         DynamicAnim.applyPressScale(binding.selectVersionButton);
-        binding.addModButton.setOnClickListener(v -> startFilePicker("*/*", soImportResultLauncher));
-        DynamicAnim.applyPressScale(binding.addModButton);
+
         binding.settingsButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
@@ -698,8 +636,6 @@ import okhttp3.OkHttpClient;
         DynamicAnim.applyPressScale(binding.genuineLabel);
 
         initQuickActionsRecycler();
-
-        binding.modCard.setOnClickListener(v -> openModsFullscreen());
 
         FeatureSettings.init(getApplicationContext());
     }
@@ -937,15 +873,16 @@ import okhttp3.OkHttpClient;
     }
 
     private void updateModsUI(List<Mod> mods) {
-        modsAdapter.updateMods(mods != null ? mods : new ArrayList<>());
-        int count = (mods != null) ? mods.size() : 0;
-        if (lastModsCount == -1 || count != lastModsCount) {
-            DynamicAnim.staggerRecyclerChildren(binding.modsRecycler);
-        }
-        lastModsCount = count;
         if (binding == null) return;
-        int modCount = (mods != null) ? mods.size() : 0;
-        binding.modsTitleText.setText(getString(R.string.mods_title, modCount));
+        int externalCount = (mods != null) ? mods.size() : 0;
+        int internalCount = InbuiltModManager.getInstance(this).getAddedMods(this).size();
+        
+        if (externalModsCount != null) {
+            externalModsCount.setText(String.valueOf(externalCount));
+        }
+        if (inbuiltModsCount != null) {
+            inbuiltModsCount.setText(String.valueOf(internalCount));
+        }
     }
 
     private void applyHeaderAppNameGradient() {
