@@ -5,9 +5,16 @@ import android.view.KeyEvent;
 
 import org.levimc.launcher.R;
 
+import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
+
 public class CameraPerspectiveOverlay extends BaseOverlayButton {
     public CameraPerspectiveOverlay(Activity activity) {
         super(activity);
+    }
+
+    @Override
+    protected String getModId() {
+        return ModIds.CAMERA_PERSPECTIVE;
     }
 
     @Override

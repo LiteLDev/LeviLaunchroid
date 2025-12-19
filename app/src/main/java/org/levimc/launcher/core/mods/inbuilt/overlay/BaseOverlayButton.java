@@ -41,10 +41,12 @@ public abstract class BaseOverlayButton {
     }
 
     protected int getButtonSizePx() {
-        int sizeDp = InbuiltModManager.getInstance(activity).getOverlayButtonSize();
+        int sizeDp = InbuiltModManager.getInstance(activity).getOverlayButtonSize(getModId());
         float density = activity.getResources().getDisplayMetrics().density;
         return (int) (sizeDp * density);
     }
+
+    protected abstract String getModId();
 
     public void show(int startX, int startY) {
         if (isShowing) return;

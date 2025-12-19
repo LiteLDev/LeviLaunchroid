@@ -109,7 +109,7 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
         InbuiltModManager manager = InbuiltModManager.getInstance(context);
         title.setText(mod.getName());
 
-        int currentSize = manager.getOverlayButtonSize();
+        int currentSize = manager.getOverlayButtonSize(mod.getId());
         seekBarSize.setProgress(currentSize);
         textSize.setText(currentSize + "dp");
 
@@ -144,7 +144,7 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
         DynamicAnim.applyPressScale(btnCancel);
 
         btnSave.setOnClickListener(v -> {
-            manager.setOverlayButtonSize(seekBarSize.getProgress());
+            manager.setOverlayButtonSize(mod.getId(), seekBarSize.getProgress());
             if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
                 int key = spinnerAutoSprint.getSelectedItemPosition() == 1 
                     ? KeyEvent.KEYCODE_SHIFT_LEFT 

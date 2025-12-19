@@ -5,9 +5,16 @@ import android.view.KeyEvent;
 
 import org.levimc.launcher.R;
 
+import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
+
 public class QuickDropOverlay extends BaseOverlayButton {
     public QuickDropOverlay(Activity activity) {
         super(activity);
+    }
+
+    @Override
+    protected String getModId() {
+        return ModIds.QUICK_DROP;
     }
 
     @Override
