@@ -25,6 +25,7 @@ public class CustomAlertDialog extends Dialog {
     private View.OnClickListener mPositiveListener;
     private View.OnClickListener mNegativeListener;
     private View.OnClickListener mNeutralListener;
+    private Button mPositiveButton;
 
     public CustomAlertDialog(Context context) {
         super(context);
@@ -69,6 +70,7 @@ public class CustomAlertDialog extends Dialog {
         Button btnPositive = findViewById(R.id.btn_positive);
         Button btnNegative = findViewById(R.id.btn_negative);
         Button btnNeutral = findViewById(R.id.btn_neutral);
+        mPositiveButton = btnPositive;
         View spacingNegNeu = findViewById(R.id.btn_spacing_neg_neu);
         View spacingNeuPos = findViewById(R.id.btn_spacing_neu_pos);
 
@@ -204,5 +206,9 @@ public class CustomAlertDialog extends Dialog {
                 super.dismiss();
             }
         } catch (Exception ignored) {}
+    }
+
+    public Button getPositiveButton() {
+        return mPositiveButton;
     }
 }
