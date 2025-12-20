@@ -486,7 +486,7 @@ public class ContentListActivity extends BaseActivity {
                 runOnUiThread(() -> {
                     binding.loadingOverlay.setVisibility(View.GONE);
                     if (structures.isEmpty()) {
-                        Toast.makeText(ContentListActivity.this, R.string.no_structures_found, Toast.LENGTH_SHORT).show();
+                        showNoStructuresFoundDialog();
                     } else {
                         showStructureSelectionDialog(world, structures);
                     }
@@ -501,6 +501,14 @@ public class ContentListActivity extends BaseActivity {
                 });
             }
         });
+    }
+
+    private void showNoStructuresFoundDialog() {
+        new CustomAlertDialog(this)
+            .setTitleText(getString(R.string.no_structures_found_title))
+            .setMessage(getString(R.string.no_structures_found_message))
+            .setPositiveButton(getString(R.string.dialog_positive_ok), null)
+            .show();
     }
 
     private void showStructureSelectionDialog(WorldItem world, List<StructureExtractor.StructureInfo> structures) {

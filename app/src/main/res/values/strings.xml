@@ -389,6 +389,8 @@
     <!-- Extract Structures -->
     <string name="extract_structures">Extract Structures</string>
     <string name="no_structures_found">No structures found in this world</string>
+    <string name="no_structures_found_title">No Structures Found</string>
+    <string name="no_structures_found_message">No structures were found in this world.\n\nTo extract a structure:\n1. Open this world in Minecraft using this launcher\n2. Place a Structure Block and set it to Save mode\n3. Give your structure a name and press Save\n4. Exit the world and return here\n5. Press \"Extract Structures\" again</string>
     <string name="structures_exported">Exported %d structures to %s</string>
     <string name="structures_exported_zip">Exported %d structures to ZIP</string>
     <string name="structure_found">Structure Found</string>

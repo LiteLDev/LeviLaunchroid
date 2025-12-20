@@ -386,6 +386,8 @@
     <!-- Extract Structures -->
     <string name="extract_structures">Извлечь структуры</string>
     <string name="no_structures_found">В этом мире не найдено структур</string>
+    <string name="no_structures_found_title">Структуры не найдены</string>
+    <string name="no_structures_found_message">В этом мире не найдено структур.\n\nЧтобы извлечь структуру:\n1. Откройте этот мир в Minecraft через этот лаунчер\n2. Поставьте Блок структуры и переключите в режим Сохранения\n3. Дайте структуре имя и нажмите Сохранить\n4. Выйдите из мира и вернитесь сюда\n5. Нажмите «Извлечь структуры» снова</string>
     <string name="structures_exported">Экспортировано %d структур в %s</string>
     <string name="structures_exported_zip">Экспортировано %d структур в ZIP</string>
     <string name="structure_found">Структура найдена</string>

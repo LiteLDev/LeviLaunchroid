@@ -381,6 +381,8 @@
     <!-- Extract Structures -->
     <string name="extract_structures">提取结构</string>
     <string name="no_structures_found">在此世界中未发现任何结构</string>
+    <string name="no_structures_found_title">未找到结构</string>
+    <string name="no_structures_found_message">在此世界中未发现任何结构。\n\n要提取结构：\n1. 通过此启动器在 Minecraft 中打开此世界\n2. 放置结构方块并设置为保存模式\n3. 为结构命名并点击保存\n4. 退出世界并返回此处\n5. 再次点击"提取结构"</string>
     <string name="structures_exported">已导出 %d 个结构至 %s</string>
     <string name="structures_exported_zip">已导出 %d 个结构至 ZIP</string>
     <string name="structure_found">发现结构</string>
