@@ -19,7 +19,9 @@ public class InbuiltModManager {
     private static final String KEY_AUTOSPRINT_KEY = "autosprint_key";
     private static final String KEY_OVERLAY_BUTTON_SIZE_PREFIX = "overlay_button_size_";
     private static final String KEY_OVERLAY_BUTTON_SIZE_GLOBAL = "overlay_button_size";
+    private static final String KEY_OVERLAY_OPACITY_PREFIX = "overlay_opacity_";
     private static final int DEFAULT_OVERLAY_BUTTON_SIZE = 48;
+    private static final int DEFAULT_OVERLAY_OPACITY = 100;
 
     private static volatile InbuiltModManager instance;
     private final SharedPreferences prefs;
@@ -119,6 +121,14 @@ public class InbuiltModManager {
 
     public void setOverlayButtonSize(String modId, int sizeDp) {
         prefs.edit().putInt(KEY_OVERLAY_BUTTON_SIZE_PREFIX + modId, sizeDp).apply();
+    }
+
+    public int getOverlayOpacity(String modId) {
+        return prefs.getInt(KEY_OVERLAY_OPACITY_PREFIX + modId, DEFAULT_OVERLAY_OPACITY);
+    }
+
+    public void setOverlayOpacity(String modId, int opacity) {
+        prefs.edit().putInt(KEY_OVERLAY_OPACITY_PREFIX + modId, Math.max(0, Math.min(100, opacity))).apply();
     }
 
     private void savePrefs() {
