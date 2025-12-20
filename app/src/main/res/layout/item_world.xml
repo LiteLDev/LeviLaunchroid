@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
@@ -24,77 +23,6 @@
             android:textColor="@color/on_surface"
             android:textSize="16sp"
             android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/world_edit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:backgroundTint="@color/primary"
-                android:fontFamily="@font/misans"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="6dp"
-                android:text="@string/edit"
-                android:textAllCaps="false"
-                android:textColor="@color/on_primary"
-                android:textSize="11sp" />
-
-            <Button
-                android:id="@+id/world_export_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:backgroundTint="@color/primary"
-                android:fontFamily="@font/misans"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="6dp"
-                android:text="@string/export"
-                android:textAllCaps="false"
-                android:textColor="@color/on_primary"
-                android:textSize="11sp" />
-
-            <Button
-                android:id="@+id/world_backup_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:backgroundTint="@color/primary"
-                android:fontFamily="@font/misans"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="6dp"
-                android:text="@string/backup"
-                android:textAllCaps="false"
-                android:textColor="@color/on_primary"
-                android:textSize="11sp" />
-
-            <Button
-                android:id="@+id/world_delete_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/error"
-                android:fontFamily="@font/misans"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="6dp"
-                android:text="@string/delete"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="11sp" />
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <TextView
@@ -131,7 +59,96 @@
             android:text="Last played: Dec 25, 2024 14:30"
             android:textColor="@color/on_surface"
             android:textSize="11sp" />
-
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/world_edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/misans"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            android:text="@string/edit"
+            android:textAllCaps="false"
+            android:textColor="@color/on_primary"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/world_extract_structures_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:backgroundTint="@color/tertiary"
+            android:fontFamily="@font/misans"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            android:text="@string/extract_structures"
+            android:textAllCaps="false"
+            android:textColor="@color/on_tertiary"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/world_export_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/misans"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            android:text="@string/export"
+            android:textAllCaps="false"
+            android:textColor="@color/on_primary"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/world_backup_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/misans"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            android:text="@string/backup"
+            android:textAllCaps="false"
+            android:textColor="@color/on_primary"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/world_delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/error"
+            android:fontFamily="@font/misans"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            android:text="@string/delete"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="10sp" />
+    </LinearLayout>
 </LinearLayout>

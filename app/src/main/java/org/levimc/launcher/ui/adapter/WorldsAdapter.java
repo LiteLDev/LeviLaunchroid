@@ -25,6 +25,7 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
         void onWorldDelete(WorldItem world);
         void onWorldBackup(WorldItem world);
         void onWorldEdit(WorldItem world);
+        void onWorldExtractStructures(WorldItem world);
     }
 
     public WorldsAdapter() {
@@ -50,7 +51,7 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
     @Override
     public void onBindViewHolder(@NonNull WorldViewHolder holder, int position) {
         WorldItem world = worlds.get(position);
-        
+
         holder.worldName.setText(world.getWorldName());
         holder.worldSize.setText(holder.itemView.getContext().getString(R.string.world_size, world.getFormattedSize()));
         holder.worldLastPlayed.setText(holder.itemView.getContext().getString(R.string.world_last_played, world.getFormattedLastModified()));
@@ -79,6 +80,12 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
                 onWorldActionListener.onWorldDelete(world);
             }
         });
+
+        holder.extractStructuresButton.setOnClickListener(v -> {
+            if (onWorldActionListener != null) {
+                onWorldActionListener.onWorldExtractStructures(world);
+            }
+        });
     }
 
     @Override
@@ -95,6 +102,7 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
         Button exportButton;
         Button backupButton;
         Button deleteButton;
+        Button extractStructuresButton;
 
         public WorldViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,6 +114,7 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
             exportButton = itemView.findViewById(R.id.world_export_button);
             backupButton = itemView.findViewById(R.id.world_backup_button);
             deleteButton = itemView.findViewById(R.id.world_delete_button);
+            extractStructuresButton = itemView.findViewById(R.id.world_extract_structures_button);
         }
     }
 }

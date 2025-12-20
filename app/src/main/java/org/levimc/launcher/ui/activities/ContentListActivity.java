@@ -16,6 +16,7 @@ import org.levimc.launcher.R;
 import org.levimc.launcher.core.content.ContentManager;
 import org.levimc.launcher.core.content.ResourcePackItem;
 import org.levimc.launcher.core.content.ResourcePackManager;
+import org.levimc.launcher.core.content.StructureExtractor;
 import org.levimc.launcher.core.content.WorldItem;
 import org.levimc.launcher.core.content.WorldManager;
 import org.levimc.launcher.databinding.ActivityContentListBinding;
@@ -49,7 +50,11 @@ public class ContentListActivity extends BaseActivity {
     private ActivityResultLauncher<Intent> importLauncher;
     private ActivityResultLauncher<Intent> exportLauncher;
     private ActivityResultLauncher<Intent> customFlatWorldLauncher;
+    private ActivityResultLauncher<Intent> structureExportLauncher;
     private WorldItem pendingExportWorld;
+    private WorldItem pendingStructureExportWorld;
+    private StructureExtractor.StructureInfo pendingStructureInfo;
+    private StructureExtractor structureExtractor;
 
     private List<WorldItem> allWorlds = new ArrayList<>();
     private List<ResourcePackItem> allPacks = new ArrayList<>();
@@ -105,6 +110,22 @@ public class ContentListActivity extends BaseActivity {
                 }
             }
         );
+
+        structureExportLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null && pendingStructureExportWorld != null && pendingStructureInfo != null) {
+                    Uri uri = result.getData().getData();
+                    if (uri != null) {
+                        exportStructureToFile(pendingStructureExportWorld, pendingStructureInfo, uri);
+                    }
+                }
+                pendingStructureExportWorld = null;
+                pendingStructureInfo = null;
+            }
+        );
+
+        structureExtractor = new StructureExtractor(this);
     }
 
     private void setupUI() {
@@ -205,6 +226,11 @@ public class ContentListActivity extends BaseActivity {
             @Override
             public void onWorldEdit(WorldItem world) {
                 openWorldEditor(world);
+            }
+
+            @Override
+            public void onWorldExtractStructures(WorldItem world) {
+                showExtractStructuresDialog(world);
             }
         });
 
@@ -445,9 +471,97 @@ public class ContentListActivity extends BaseActivity {
         customFlatWorldLauncher.launch(intent);
     }
 
+    private void showExtractStructuresDialog(WorldItem world) {
+        File worldFile = world.getFile();
+        if (worldFile == null || !worldFile.exists()) {
+            Toast.makeText(this, "World directory not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        binding.loadingOverlay.setVisibility(View.VISIBLE);
+
+        structureExtractor.loadStructures(worldFile, new StructureExtractor.StructureListCallback() {
+            @Override
+            public void onComplete(List<StructureExtractor.StructureInfo> structures) {
+                runOnUiThread(() -> {
+                    binding.loadingOverlay.setVisibility(View.GONE);
+                    if (structures.isEmpty()) {
+                        Toast.makeText(ContentListActivity.this, R.string.no_structures_found, Toast.LENGTH_SHORT).show();
+                    } else {
+                        showStructureSelectionDialog(world, structures);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    binding.loadingOverlay.setVisibility(View.GONE);
+                    Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show();
+                });
+            }
+        });
+    }
+
+    private void showStructureSelectionDialog(WorldItem world, List<StructureExtractor.StructureInfo> structures) {
+        StructureExtractor.StructureInfo structure = structures.get(0);
+        String message = getString(R.string.structure_found_with_size, structure.getName(), structure.getFormattedSize());
+        
+        new CustomAlertDialog(this)
+            .setTitleText(getString(R.string.structure_found))
+            .setMessage(message)
+            .setPositiveButton(getString(R.string.extract), v -> startStructureExport(world, structure))
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show();
+    }
+
+    private void startStructureExport(WorldItem world, StructureExtractor.StructureInfo structure) {
+        pendingStructureExportWorld = world;
+        pendingStructureInfo = structure;
+        
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/octet-stream");
+        intent.putExtra(Intent.EXTRA_TITLE, structure.getFileName());
+        structureExportLauncher.launch(intent);
+    }
+
+    private void exportStructureToFile(WorldItem world, StructureExtractor.StructureInfo structure, Uri uri) {
+        binding.loadingOverlay.setVisibility(View.VISIBLE);
+
+        structureExtractor.exportSingleStructure(structure, uri, new StructureExtractor.ExtractionCallback() {
+
+            @Override
+            public void onComplete(int extractedCount, String outputPath) {
+                runOnUiThread(() -> {
+                    binding.loadingOverlay.setVisibility(View.GONE);
+                    Toast.makeText(ContentListActivity.this,
+                            getString(R.string.structure_exported, structure.getName()),
+                            Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    binding.loadingOverlay.setVisibility(View.GONE);
+                    Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show();
+                });
+            }
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         loadContent();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (structureExtractor != null) {
+            structureExtractor.shutdown();
+        }
     }
 }

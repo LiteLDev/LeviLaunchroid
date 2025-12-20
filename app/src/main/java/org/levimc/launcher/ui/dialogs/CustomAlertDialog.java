@@ -2,15 +2,21 @@ package org.levimc.launcher.ui.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.levimc.launcher.R;
 import org.levimc.launcher.ui.animation.DynamicAnim;
@@ -26,6 +32,8 @@ public class CustomAlertDialog extends Dialog {
     private View.OnClickListener mNegativeListener;
     private View.OnClickListener mNeutralListener;
     private Button mPositiveButton;
+    private String[] mItems;
+    private DialogInterface.OnClickListener mItemClickListener;
 
     public CustomAlertDialog(Context context) {
         super(context);
@@ -59,6 +67,12 @@ public class CustomAlertDialog extends Dialog {
         return this;
     }
 
+    public CustomAlertDialog setItems(String[] items, DialogInterface.OnClickListener listener) {
+        this.mItems = items;
+        this.mItemClickListener = listener;
+        return this;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,26 +91,42 @@ public class CustomAlertDialog extends Dialog {
         tvTitle.setText(mTitle != null ? mTitle : "");
         tvMessage.setText(mMessage != null ? mMessage : "");
 
+        RecyclerView itemsRecyclerView = findViewById(R.id.items_recycler_view);
+        View messageScrollView = findViewById(R.id.message_scroll_view);
+        if (mItems != null && mItems.length > 0) {
+            messageScrollView.setVisibility(View.GONE);
+            itemsRecyclerView.setVisibility(View.VISIBLE);
+            itemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            itemsRecyclerView.setAdapter(new ItemsAdapter(mItems, (position) -> {
+                if (mItemClickListener != null) {
+                    mItemClickListener.onClick(this, position);
+                }
+                dismiss();
+            }));
+        } else {
+            itemsRecyclerView.setVisibility(View.GONE);
+        }
+
         boolean hasThreeButtons = mPositiveText != null && mNegativeText != null && mNeutralText != null;
         LinearLayout btnContainer = findViewById(R.id.btn_container);
-        
+
         if (hasThreeButtons && btnContainer != null) {
             btnContainer.setOrientation(LinearLayout.VERTICAL);
-            
+
             LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             btnParams.topMargin = (int) (8 * getContext().getResources().getDisplayMetrics().density);
-            
+
             LinearLayout.LayoutParams firstBtnParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            
+
             btnPositive.setLayoutParams(firstBtnParams);
             btnNeutral.setLayoutParams(btnParams);
             btnNegative.setLayoutParams(btnParams);
-            
+
             if (spacingNegNeu != null) spacingNegNeu.setVisibility(View.GONE);
             if (spacingNeuPos != null) spacingNeuPos.setVisibility(View.GONE);
-            
+
             btnContainer.removeAllViews();
             btnContainer.addView(btnPositive);
             btnContainer.addView(btnNeutral);
@@ -210,5 +240,58 @@ public class CustomAlertDialog extends Dialog {
 
     public Button getPositiveButton() {
         return mPositiveButton;
+    }
+
+    private static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
+        private final String[] items;
+        private final OnItemClickListener listener;
+
+        interface OnItemClickListener {
+            void onClick(int position);
+        }
+
+        ItemsAdapter(String[] items, OnItemClickListener listener) {
+            this.items = items;
+            this.listener = listener;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            TextView textView = new TextView(parent.getContext());
+            textView.setLayoutParams(new RecyclerView.LayoutParams(
+                    RecyclerView.LayoutParams.MATCH_PARENT,
+                    RecyclerView.LayoutParams.WRAP_CONTENT));
+            int padding = (int) (16 * parent.getContext().getResources().getDisplayMetrics().density);
+            textView.setPadding(padding, padding, padding, padding);
+            textView.setTextSize(14);
+            textView.setTextColor(parent.getContext().getResources().getColor(R.color.text_primary, null));
+            textView.setBackgroundResource(android.R.drawable.list_selector_background);
+            return new ViewHolder(textView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.textView.setText(items[position]);
+            holder.textView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onClick(position);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return items != null ? items.length : 0;
+        }
+
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            TextView textView;
+
+            ViewHolder(TextView itemView) {
+                super(itemView);
+                this.textView = itemView;
+            }
+        }
     }
 }

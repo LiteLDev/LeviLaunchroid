@@ -8,19 +8,21 @@
     <color name="primary_container">#E8F5E9</color>
     <color name="on_primary_container">#1B5E20</color>
 
-    <color name="tertiary">#E8F5E9</color>
-    <color name="on_tertiary">#1B5E20</color>
+    <color name="tertiary">#81D4FA</color>
+    <color name="on_tertiary">#01579B</color>
 
     <color name="error">#F44336</color>
     <color name="on_error">#FFFFFF</color>
 
     <color name="background">#F8FFF0</color>
     <color name="surface">#F1F8E9</color>
+    <color name="surface_variant">#E8F5E9</color>
     <color name="on_background">#212121</color>
     <color name="on_surface">#212121</color>
 
     <color name="outline">#BDBDBD</color>
     <color name="white">#FFFFFF</color>
+    <color name="divider">#E0E0E0</color>
 
     <color name="scrim">#66000000</color>
 
@@ -29,4 +31,7 @@
 
     <color name="abi_label_text">#000000</color>
     <color name="accent_text">#1B5E20</color>
+
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
 </resources>

@@ -377,4 +377,14 @@
     <string name="memory_editor_warning_title">⚠️ 开发者功能警告</string>
     <string name="memory_editor_warning_message">内存编辑器是一个高级工具，仅供模组开发和调试使用。\n\n此功能不适合普通用户。不当使用可能导致：\n• 游戏崩溃\n• 数据损坏\n• 意外行为\n\n请仅在您了解其用途时启用此功能。</string>
 
+    <!-- Extract Structures -->
+    <string name="extract_structures">提取结构</string>
+    <string name="no_structures_found">在此世界中未发现任何结构</string>
+    <string name="structures_exported">已导出 %d 个结构至 %s</string>
+    <string name="structures_exported_zip">已导出 %d 个结构至 ZIP</string>
+    <string name="structure_found">发现结构</string>
+    <string name="structure_found_with_size">%1$s (%2$s)</string>
+    <string name="structure_exported">已导出：%s</string>
+    <string name="extract">提取</string>
+
  </resources>

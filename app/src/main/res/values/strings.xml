@@ -384,4 +384,15 @@
     <string name="memory_overlay_toggleable">Toggleable</string>
     <string name="memory_editor_warning_title">⚠️ Developer Feature Warning</string>
     <string name="memory_editor_warning_message">The Memory Editor is an advanced tool intended ONLY for mod development and debugging purposes.\n\nThis feature is NOT for normal users. Improper use may cause:\n• Game crashes\n• Data corruption\n• Unexpected behavior\n\nOnly enable this if you understand what you are doing.</string>
+
+    <!-- Extract Structures -->
+    <string name="extract_structures">Extract Structures</string>
+    <string name="no_structures_found">No structures found in this world</string>
+    <string name="structures_exported">Exported %d structures to %s</string>
+    <string name="structures_exported_zip">Exported %d structures to ZIP</string>
+    <string name="structure_found">Structure Found</string>
+    <string name="structure_found_with_size">%1$s (%2$s)</string>
+    <string name="structure_exported">Exported: %s</string>
+    <string name="extract">Extract</string>
+
 </resources>

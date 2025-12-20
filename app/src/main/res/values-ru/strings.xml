@@ -382,4 +382,14 @@
     <string name="memory_editor_warning_title">⚠️ Предупреждение для разработчиков</string>
     <string name="memory_editor_warning_message">Редактор памяти — это продвинутый инструмент, предназначенный ТОЛЬКО для разработки модов и отладки.\n\nЭта функция НЕ для обычных пользователей. Неправильное использование может привести к:\n• Сбоям игры\n• Повреждению данных\n• Непредвиденному поведению\n\nВключайте только если понимаете, что делаете.</string>
 
+    <!-- Extract Structures -->
+    <string name="extract_structures">Извлечь структуры</string>
+    <string name="no_structures_found">В этом мире не найдено структур</string>
+    <string name="structures_exported">Экспортировано %d структур в %s</string>
+    <string name="structures_exported_zip">Экспортировано %d структур в ZIP</string>
+    <string name="structure_found">Структура найдена</string>
+    <string name="structure_found_with_size">%1$s (%2$s)</string>
+    <string name="structure_exported">Экспортировано: %s</string>
+    <string name="extract">Извлечь</string>
+
 </resources>
