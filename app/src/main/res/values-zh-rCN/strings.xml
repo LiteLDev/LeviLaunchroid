@@ -389,5 +389,7 @@
     <string name="structure_found_with_size">%1$s (%2$s)</string>
     <string name="structure_exported">已导出：%s</string>
     <string name="extract">提取</string>
+    <string name="structures_found_title">发现结构</string>
+    <string name="structures_found_count">在此世界中发现 %d 个结构</string>
 
  </resources>

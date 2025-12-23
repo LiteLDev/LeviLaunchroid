@@ -6,11 +6,16 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.content.ContentManager;
@@ -21,6 +26,7 @@ import org.levimc.launcher.core.content.WorldItem;
 import org.levimc.launcher.core.content.WorldManager;
 import org.levimc.launcher.databinding.ActivityContentListBinding;
 import org.levimc.launcher.ui.adapter.ResourcePacksAdapter;
+import org.levimc.launcher.ui.adapter.StructuresAdapter;
 import org.levimc.launcher.ui.adapter.WorldsAdapter;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
@@ -512,15 +518,31 @@ public class ContentListActivity extends BaseActivity {
     }
 
     private void showStructureSelectionDialog(WorldItem world, List<StructureExtractor.StructureInfo> structures) {
-        StructureExtractor.StructureInfo structure = structures.get(0);
-        String message = getString(R.string.structure_found_with_size, structure.getName(), structure.getFormattedSize());
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_structure_list, null);
         
-        new CustomAlertDialog(this)
-            .setTitleText(getString(R.string.structure_found))
-            .setMessage(message)
-            .setPositiveButton(getString(R.string.extract), v -> startStructureExport(world, structure))
-            .setNegativeButton(getString(R.string.cancel), null)
-            .show();
+        TextView structureCount = dialogView.findViewById(R.id.structure_count);
+        RecyclerView recyclerView = dialogView.findViewById(R.id.structures_recycler_view);
+        
+        structureCount.setText(getString(R.string.structures_found_count, structures.size()));
+        
+        StructuresAdapter adapter = new StructuresAdapter();
+        adapter.setStructures(structures);
+        
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.structures_found_title)
+            .setView(dialogView)
+            .setNegativeButton(R.string.cancel, null)
+            .create();
+        
+        adapter.setOnStructureExportListener(structure -> {
+            dialog.dismiss();
+            startStructureExport(world, structure);
+        });
+        
+        dialog.show();
     }
 
     private void startStructureExport(WorldItem world, StructureExtractor.StructureInfo structure) {

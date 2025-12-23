@@ -397,5 +397,7 @@
     <string name="structure_found_with_size">%1$s (%2$s)</string>
     <string name="structure_exported">Exported: %s</string>
     <string name="extract">Extract</string>
+    <string name="structures_found_title">Structures Found</string>
+    <string name="structures_found_count">%d structures found in this world</string>
 
 </resources>
