@@ -29,7 +29,6 @@ class GamePackageManager private constructor(private val context: Context, priva
         "libfmod.so",
         "libMediaDecoders_Android.so",
         "libmaesdk.so",
-        "libHttpClient.Android.so",
         "libminecraftpe.so"
     )
 
@@ -281,10 +280,8 @@ class GamePackageManager private constructor(private val context: Context, priva
                     Log.d(TAG, "Loaded $name from $nativeLibDir")
                     true
                 } else {
-                    Log.w(TAG, "Library $name not found in $nativeLibDir, attempting system load")
-                    System.loadLibrary(name.removePrefix("lib").removeSuffix(".so"))
-                    Log.d(TAG, "Loaded $name as system library")
-                    true
+                    Log.w(TAG, "Library $name not found in $nativeLibDir, skipping")
+                    false
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load $name: ${e.message}")
@@ -293,10 +290,14 @@ class GamePackageManager private constructor(private val context: Context, priva
         }
     }
 
-    fun loadAllLibraries() {
+    fun loadAllLibraries(excludeLibs: Set<String> = emptySet()) {
         val allLibs = requiredLibs + systemLoadedLibs
         allLibs.forEach { lib ->
             val libName = lib.removePrefix("lib").removeSuffix(".so")
+            if (excludeLibs.contains(libName) || excludeLibs.contains(lib)) {
+                Log.d(TAG, "Skipping excluded library: $libName")
+                return@forEach
+            }
             if (!loadLibrary(libName)) {
                 Log.e(TAG, "Failed to load required library $libName")
             }

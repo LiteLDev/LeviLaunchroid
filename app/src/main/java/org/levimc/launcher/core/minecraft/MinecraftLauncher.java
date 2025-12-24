@@ -127,8 +127,26 @@ public class MinecraftLauncher {
                 sourceIntent.putExtra("MINECRAFT_VERSION", version.versionCode);
                 sourceIntent.putExtra("MINECRAFT_VERSION_DIR", version.directoryName);
 
+                boolean customHttpClientLoaded = false;
+                if (shouldLoadHttpClient(version)) {
+                    try {
+                        System.loadLibrary("HttpClient.Android");
+                        Log.d(TAG, "Loaded custom libHttpClient.Android.so");
+                        customHttpClientLoaded = true;
+                    } catch (UnsatisfiedLinkError e) {
+                        Log.w(TAG, "Custom libHttpClient.Android.so not available: " + e.getMessage());
+                        if (gameManager.loadLibrary("HttpClient.Android")) {
+                            Log.d(TAG, "Loaded Minecraft's libHttpClient.Android.so");
+                            customHttpClientLoaded = true;
+                        }
+                    }
+                }
+
                 if (shouldLoadMaesdk(version)) {
-                    gameManager.loadAllLibraries();
+                    java.util.Set<String> excludeLibs = customHttpClientLoaded ? 
+                        java.util.Collections.singleton("HttpClient.Android") : 
+                        java.util.Collections.emptySet();
+                    gameManager.loadAllLibraries(excludeLibs);
                 } else {
                     gameManager.loadLibrary("c++_shared");
                     gameManager.loadLibrary("fmod");
@@ -158,6 +176,15 @@ public class MinecraftLauncher {
         }
         String versionCode = version.versionCode;
         String targetVersion = versionCode.contains("beta") ? "1.21.110.22" : "1.21.110";
+        return isVersionAtLeast(versionCode, targetVersion);
+    }
+
+    private boolean shouldLoadHttpClient(GameVersion version) {
+        if (version == null || version.versionCode == null) {
+            return false;
+        }
+        String versionCode = version.versionCode;
+        String targetVersion = versionCode.contains("beta") ? "1.21.130.20" : "1.21.130";
         return isVersionAtLeast(versionCode, targetVersion);
     }
 
