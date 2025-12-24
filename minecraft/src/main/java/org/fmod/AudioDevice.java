@@ -61,4 +61,8 @@ public class AudioDevice {
     public void write(byte[] bArr, int i) {
         mTrack.write(bArr, 0, i);
     }
+
+    public void write(short[] sArr, int i) {
+        mTrack.write(sArr, 0, i);
+    }
 }
