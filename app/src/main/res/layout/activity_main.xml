@@ -92,28 +92,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/settings_button"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginHorizontal="5dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_settings"
-                app:tint="@color/on_surface" />
-
-            <ImageButton
-                android:id="@+id/language_button"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginStart="12dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_internet"
-                android:visibility="gone"
-                app:tint="@color/on_surface" />
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -167,6 +145,27 @@
                         android:visibility="gone" />
                 </FrameLayout>
             </LinearLayout>
+            <ImageButton
+                android:id="@+id/settings_button"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginHorizontal="5dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_settings"
+                app:tint="@color/on_surface" />
+
+            <ImageButton
+                android:id="@+id/language_button"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginStart="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_internet"
+                android:visibility="gone"
+                app:tint="@color/on_surface" />
         </LinearLayout>
 
         <LinearLayout

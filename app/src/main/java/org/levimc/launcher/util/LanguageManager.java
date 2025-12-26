@@ -59,6 +59,9 @@ public class LanguageManager {
         } else if (itemId == R.id.action_russian) {
             setAppLanguage("ru");
             return true;
+        } else if (itemId == R.id.action_indonesian) {
+            setAppLanguage("idn");
+            return true;
         }
         return false;
     });
