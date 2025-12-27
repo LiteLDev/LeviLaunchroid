@@ -214,12 +214,14 @@ public class SettingsActivity extends BaseActivity {
         String[] languageOptions = {
                 getString(R.string.english),
                 getString(R.string.chinese),
-                getString(R.string.russian)
+                getString(R.string.russian),
+                getString(R.string.indonesian)
         };
         String currentCode = languageManager.getCurrentLanguage();
         int defaultIdx = switch (currentCode) {
             case "zh", "zh-CN" -> 1;
             case "ru" -> 2;
+            case "idn" -> 3;
             default -> 0; 
         };
         Spinner spinner = addSpinnerItem(getString(R.string.language), languageOptions, defaultIdx);
@@ -229,6 +231,7 @@ public class SettingsActivity extends BaseActivity {
                 String code = switch (position) {
                     case 1 -> "zh-CN";
                     case 2 -> "ru";
+                    case 3 -> "idn";
                     default -> "en";
                 };
                 if (!code.equals(languageManager.getCurrentLanguage())) {
