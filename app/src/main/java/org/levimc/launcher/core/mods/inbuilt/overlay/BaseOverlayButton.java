@@ -40,6 +40,8 @@ public abstract class BaseOverlayButton {
     private static final float DRAG_THRESHOLD = 10f;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private boolean isShowing = false;
+    private boolean isHiding = false;
+    private Runnable pendingShowRunnable;
     
     private View sliderOverlay;
     private WindowManager.LayoutParams sliderParams;
@@ -73,12 +75,17 @@ public abstract class BaseOverlayButton {
     protected abstract String getModId();
 
     public void show(int startX, int startY) {
-        if (isShowing) return;
-        handler.postDelayed(() -> showInternal(startX, startY), 500);
+        if (isShowing || isHiding) return;
+        if (pendingShowRunnable != null) {
+            handler.removeCallbacks(pendingShowRunnable);
+        }
+        pendingShowRunnable = () -> showInternal(startX, startY);
+        handler.postDelayed(pendingShowRunnable, 500);
     }
 
     private void showInternal(int startX, int startY) {
-        if (isShowing || activity.isFinishing() || activity.isDestroyed()) return;
+        pendingShowRunnable = null;
+        if (isShowing || isHiding || activity.isFinishing() || activity.isDestroyed()) return;
         
         try {
             overlayView = LayoutInflater.from(activity).inflate(R.layout.overlay_mod_button, null);
@@ -144,22 +151,29 @@ public abstract class BaseOverlayButton {
     }
 
     public void hide() {
-        if (!isShowing || overlayView == null) return;
-        hideSliderOverlay();
-        handler.post(() -> {
-            try {
-                if (wmParams != null && windowManager != null) {
-                    windowManager.removeView(overlayView);
-                } else {
-                    ViewGroup rootView = activity.findViewById(android.R.id.content);
-                    if (rootView != null) {
-                        rootView.removeView(overlayView);
-                    }
-                }
-            } catch (Exception ignored) {}
-            overlayView = null;
+        if (pendingShowRunnable != null) {
+            handler.removeCallbacks(pendingShowRunnable);
+            pendingShowRunnable = null;
+        }
+        if (!isShowing || overlayView == null) {
             isShowing = false;
-        });
+            return;
+        }
+        isHiding = true;
+        hideSliderOverlay();
+        try {
+            if (wmParams != null && windowManager != null) {
+                windowManager.removeView(overlayView);
+            } else {
+                ViewGroup rootView = activity.findViewById(android.R.id.content);
+                if (rootView != null) {
+                    rootView.removeView(overlayView);
+                }
+            }
+        } catch (Exception ignored) {}
+        overlayView = null;
+        isShowing = false;
+        isHiding = false;
     }
 
     private boolean handleTouch(View v, MotionEvent event) {

@@ -33,6 +33,8 @@ public class ChickPetOverlay {
     private ImageView chickView;
     private WindowManager.LayoutParams wmParams;
     private boolean isShowing = false;
+    private boolean isHiding = false;
+    private Runnable pendingShowRunnable;
 
     private State currentState = State.IDLE;
     private int posX, posY;
@@ -89,12 +91,17 @@ public class ChickPetOverlay {
     }
 
     public void show() {
-        if (isShowing || activity.isFinishing() || activity.isDestroyed()) return;
-        handler.postDelayed(this::showInternal, 800);
+        if (isShowing || isHiding || activity.isFinishing() || activity.isDestroyed()) return;
+        if (pendingShowRunnable != null) {
+            handler.removeCallbacks(pendingShowRunnable);
+        }
+        pendingShowRunnable = this::showInternal;
+        handler.postDelayed(pendingShowRunnable, 800);
     }
 
     private void showInternal() {
-        if (isShowing || activity.isFinishing() || activity.isDestroyed()) return;
+        pendingShowRunnable = null;
+        if (isShowing || isHiding || activity.isFinishing() || activity.isDestroyed()) return;
 
         float density = activity.getResources().getDisplayMetrics().density;
         int sizeDp = InbuiltModManager.getInstance(activity).getOverlayButtonSize(ModIds.CHICK_PET);
@@ -274,17 +281,24 @@ public class ChickPetOverlay {
     }
 
     public void hide() {
-        if (!isShowing) return;
+        if (pendingShowRunnable != null) {
+            handler.removeCallbacks(pendingShowRunnable);
+            pendingShowRunnable = null;
+        }
+        if (!isShowing) {
+            isShowing = false;
+            return;
+        }
+        isHiding = true;
         isShowing = false;
         handler.removeCallbacks(animationRunnable);
         handler.removeCallbacks(stateChangeRunnable);
-        handler.post(() -> {
-            try {
-                if (chickView != null && windowManager != null) {
-                    windowManager.removeView(chickView);
-                }
-            } catch (Exception ignored) {}
-            chickView = null;
-        });
+        try {
+            if (chickView != null && windowManager != null) {
+                windowManager.removeView(chickView);
+            }
+        } catch (Exception ignored) {}
+        chickView = null;
+        isHiding = false;
     }
 }

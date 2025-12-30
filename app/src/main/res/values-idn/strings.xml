@@ -350,6 +350,8 @@
     <string name="inbuilt_mod_autosprint_desc">Aktifkan/nonaktifkan lari cepat</string>
     <string name="inbuilt_mod_chick_pet">Chick Pet</string>
     <string name="inbuilt_mod_chick_pet_desc">Seekor anak ayam piksel yang lucu yang bisa berjalan, tidur, dan berlari saat disentuh!</string>
+    <string name="inbuilt_mod_zoom">Zoom</string>
+    <string name="inbuilt_mod_zoom_desc">Tahan untuk memperbesar, seperti zoom OptiFine</string>
     <string name="inbuilt_badge">BAWAAN</string>
     <string name="autosprint_key_ctrl">Ctrl Left</string>
     <string name="autosprint_key_shift">Shift</string>
@@ -400,5 +402,22 @@
     <string name="extract">Ekstrak</string>
     <string name="structures_found_title">Struktur Ditemukan</string>
     <string name="structures_found_count">%d struktur yang ditemukan di dunia ini</string>
+
+    <!-- Mod Menu -->
+    <string name="mod_menu">Menu Mod</string>
+    <string name="mod_menu_modules">Modul</string>
+    <string name="mod_menu_search_hint">Cari mod…</string>
+    <string name="mod_menu_no_mods">Tidak ada mod yang ditambahkan</string>
+    <string name="mod_menu_settings_coming">Pengaturan segera hadir</string>
+    <string name="mod_menu_notifications">Notifikasi</string>
+    <string name="mod_menu_notifications_desc">Tampilkan notifikasi saat mengaktifkan mod</string>
+    <string name="mod_menu_version">v1.0</string>
+    <string name="mod_menu_enabled">Menu Mod diaktifkan</string>
+    <string name="mod_menu_disabled">Menu Mod dinonaktifkan</string>
+    <string name="mod_menu_active_title">Menu Mod Aktif</string>
+    <string name="mod_menu_active_desc">Semua mod bawaan sekarang dapat diakses melalui Menu Mod dalam game. Nonaktifkan Menu Mod untuk menambahkan tombol overlay individual.</string>
+    <string name="mod_status_enabled">Diaktifkan</string>
+    <string name="mod_status_disabled">Dinonaktifkan</string>
+    <string name="mod_notification_enabled">%s diaktifkan</string>
 
 </resources>

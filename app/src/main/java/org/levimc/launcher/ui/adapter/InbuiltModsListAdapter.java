@@ -82,6 +82,7 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
             case ModIds.TOGGLE_HUD -> R.drawable.ic_hud;
             case ModIds.AUTO_SPRINT -> R.drawable.ic_sprint;
             case ModIds.CHICK_PET -> R.drawable.chick_idle_1;
+            case ModIds.ZOOM -> R.drawable.ic_zoom;
             default -> R.drawable.ic_settings;
         };
     }

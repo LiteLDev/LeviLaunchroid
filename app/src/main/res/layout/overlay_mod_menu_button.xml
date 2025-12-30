@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:padding="2dp">
+
+    <ImageButton
+        android:id="@+id/mod_menu_fab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_mod_menu_fab"
+        android:src="@drawable/ic_mod_menu"
+        android:padding="10dp"
+        android:scaleType="fitCenter" />
+
+</FrameLayout>

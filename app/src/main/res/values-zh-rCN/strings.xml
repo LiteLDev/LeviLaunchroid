@@ -342,6 +342,8 @@
     <string name="inbuilt_mod_autosprint_desc">切换疾跑开启/关闭</string>
     <string name="inbuilt_mod_chick_pet">小鸡宠物</string>
     <string name="inbuilt_mod_chick_pet_desc">一只可爱的像素小鸡，会四处走动、睡觉，触摸它会跑开！</string>
+    <string name="inbuilt_mod_zoom">缩放</string>
+    <string name="inbuilt_mod_zoom_desc">按住放大，类似 OptiFine 缩放</string>
     <string name="inbuilt_badge">内置</string>
     <string name="autosprint_key_ctrl">左 Ctrl</string>
     <string name="autosprint_key_shift">Shift</string>
@@ -392,5 +394,22 @@
     <string name="extract">提取</string>
     <string name="structures_found_title">发现结构</string>
     <string name="structures_found_count">在此世界中发现 %d 个结构</string>
+
+    <!-- Mod Menu -->
+    <string name="mod_menu">模组菜单</string>
+    <string name="mod_menu_modules">模块</string>
+    <string name="mod_menu_search_hint">搜索模组…</string>
+    <string name="mod_menu_no_mods">未添加模组</string>
+    <string name="mod_menu_settings_coming">设置即将推出</string>
+    <string name="mod_menu_notifications">通知</string>
+    <string name="mod_menu_notifications_desc">启用模组时显示通知</string>
+    <string name="mod_menu_version">v1.0</string>
+    <string name="mod_menu_enabled">模组菜单已启用</string>
+    <string name="mod_menu_disabled">模组菜单已禁用</string>
+    <string name="mod_menu_active_title">模组菜单已激活</string>
+    <string name="mod_menu_active_desc">所有内置模组现在都可以通过游戏内模组菜单访问。禁用模组菜单以添加单个悬浮窗按钮。</string>
+    <string name="mod_status_enabled">已启用</string>
+    <string name="mod_status_disabled">已禁用</string>
+    <string name="mod_notification_enabled">%s 已启用</string>
 
  </resources>

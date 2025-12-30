@@ -347,6 +347,8 @@
     <string name="inbuilt_mod_autosprint_desc">Включение/выключение спринта</string>
     <string name="inbuilt_mod_chick_pet">Питомец-цыплёнок</string>
     <string name="inbuilt_mod_chick_pet_desc">Милый пиксельный цыплёнок, который гуляет, спит и убегает при касании!</string>
+    <string name="inbuilt_mod_zoom">Зум</string>
+    <string name="inbuilt_mod_zoom_desc">Удерживайте для приближения, как в OptiFine</string>
     <string name="inbuilt_badge">ВСТРОЕН</string>
     <string name="autosprint_key_ctrl">Левый Ctrl</string>
     <string name="autosprint_key_shift">Shift</string>
@@ -397,5 +399,22 @@
     <string name="extract">Извлечь</string>
     <string name="structures_found_title">Найдены структуры</string>
     <string name="structures_found_count">Найдено %d структур в этом мире</string>
+
+    <!-- Mod Menu -->
+    <string name="mod_menu">Мод-меню</string>
+    <string name="mod_menu_modules">Модули</string>
+    <string name="mod_menu_search_hint">Поиск модов…</string>
+    <string name="mod_menu_no_mods">Моды не добавлены</string>
+    <string name="mod_menu_settings_coming">Настройки скоро появятся</string>
+    <string name="mod_menu_notifications">Уведомления</string>
+    <string name="mod_menu_notifications_desc">Показывать уведомление при включении модов</string>
+    <string name="mod_menu_version">v1.0</string>
+    <string name="mod_menu_enabled">Мод-меню включено</string>
+    <string name="mod_menu_disabled">Мод-меню выключено</string>
+    <string name="mod_menu_active_title">Мод-меню активно</string>
+    <string name="mod_menu_active_desc">Все встроенные моды теперь доступны через игровое мод-меню. Отключите мод-меню, чтобы добавить отдельные кнопки поверх экрана.</string>
+    <string name="mod_status_enabled">Включено</string>
+    <string name="mod_status_disabled">Выключено</string>
+    <string name="mod_notification_enabled">%s включено</string>
 
 </resources>

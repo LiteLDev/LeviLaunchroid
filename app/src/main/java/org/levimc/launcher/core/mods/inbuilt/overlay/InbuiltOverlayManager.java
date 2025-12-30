@@ -11,18 +11,26 @@ import org.levimc.launcher.core.mods.memoryeditor.SavedAddressManager;
 import org.levimc.launcher.settings.FeatureSettings;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InbuiltOverlayManager {
     private static volatile InbuiltOverlayManager instance;
     private final Activity activity;
     private final List<BaseOverlayButton> overlays = new ArrayList<>();
     private final List<MemoryOverlayButton> memoryOverlays = new ArrayList<>();
+    private final Map<String, Boolean> modActiveStates = new HashMap<>();
+    private final Map<String, BaseOverlayButton> modOverlayMap = new HashMap<>();
+    private final Map<String, Integer> modPositionMap = new HashMap<>();
     private MemoryEditorButton memoryEditorButton;
     private ChickPetOverlay chickPetOverlay;
-    private int nextY = 150;
+    private ZoomOverlay zoomOverlay;
+    private ModMenuButton modMenuButton;
+    private int baseY = 150;
     private static final int SPACING = 70;
     private static final int START_X = 50;
+    private boolean isModMenuMode = false;
 
     public InbuiltOverlayManager(Activity activity) {
         this.activity = activity;
@@ -35,8 +43,143 @@ public class InbuiltOverlayManager {
 
     public void showEnabledOverlays() {
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
-        nextY = 150;
+        int nextY = baseY;
 
+        isModMenuMode = manager.isModMenuEnabled();
+
+        if (isModMenuMode) {
+            nextY = showModMenuMode(manager, nextY);
+        } else {
+            nextY = showIndividualOverlays(manager, nextY);
+        }
+
+        if (FeatureSettings.getInstance().isMemoryEditorEnabled()) {
+            memoryEditorButton = new MemoryEditorButton(activity);
+            memoryEditorButton.show(START_X, nextY);
+            nextY += SPACING;
+        }
+
+        List<MemoryAddress> overlayAddresses = SavedAddressManager.getInstance(activity).getOverlayEnabledAddresses();
+        for (MemoryAddress addr : overlayAddresses) {
+            MemoryOverlayButton overlayBtn = new MemoryOverlayButton(activity, addr);
+            overlayBtn.show(START_X, nextY);
+            memoryOverlays.add(overlayBtn);
+            nextY += SPACING;
+        }
+    }
+
+    private int showModMenuMode(InbuiltModManager manager, int nextY) {
+        modActiveStates.put(ModIds.QUICK_DROP, false);
+        modActiveStates.put(ModIds.CAMERA_PERSPECTIVE, false);
+        modActiveStates.put(ModIds.TOGGLE_HUD, false);
+        modActiveStates.put(ModIds.AUTO_SPRINT, false);
+        modActiveStates.put(ModIds.CHICK_PET, false);
+        modActiveStates.put(ModIds.ZOOM, false);
+
+        modPositionMap.put(ModIds.QUICK_DROP, nextY + SPACING);
+        modPositionMap.put(ModIds.CAMERA_PERSPECTIVE, nextY + SPACING * 2);
+        modPositionMap.put(ModIds.TOGGLE_HUD, nextY + SPACING * 3);
+        modPositionMap.put(ModIds.AUTO_SPRINT, nextY + SPACING * 4);
+        modPositionMap.put(ModIds.ZOOM, nextY + SPACING * 5);
+
+        modMenuButton = new ModMenuButton(activity);
+        modMenuButton.show(START_X, nextY);
+        return nextY + SPACING;
+    }
+
+    public void handleModToggle(String modId, boolean enabled) {
+        boolean wasEnabled = modActiveStates.getOrDefault(modId, false);
+        modActiveStates.put(modId, enabled);
+        
+        if (enabled && !wasEnabled) {
+            showModOverlay(modId);
+        } else if (!enabled && wasEnabled) {
+            hideModOverlay(modId);
+        }
+    }
+
+    private void showModOverlay(String modId) {
+        if (modOverlayMap.containsKey(modId)) {
+            return;
+        }
+
+        int posY = modPositionMap.getOrDefault(modId, baseY + SPACING);
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+
+        switch (modId) {
+            case ModIds.QUICK_DROP:
+                QuickDropOverlay quickDrop = new QuickDropOverlay(activity);
+                quickDrop.show(START_X, posY);
+                overlays.add(quickDrop);
+                modOverlayMap.put(modId, quickDrop);
+                break;
+            case ModIds.CAMERA_PERSPECTIVE:
+                CameraPerspectiveOverlay camera = new CameraPerspectiveOverlay(activity);
+                camera.show(START_X, posY);
+                overlays.add(camera);
+                modOverlayMap.put(modId, camera);
+                break;
+            case ModIds.TOGGLE_HUD:
+                ToggleHudOverlay hud = new ToggleHudOverlay(activity);
+                hud.show(START_X, posY);
+                overlays.add(hud);
+                modOverlayMap.put(modId, hud);
+                break;
+            case ModIds.AUTO_SPRINT:
+                AutoSprintOverlay sprint = new AutoSprintOverlay(activity, manager.getAutoSprintKey());
+                sprint.show(START_X, posY);
+                overlays.add(sprint);
+                modOverlayMap.put(modId, sprint);
+                break;
+            case ModIds.CHICK_PET:
+                if (chickPetOverlay == null) {
+                    chickPetOverlay = new ChickPetOverlay(activity);
+                    chickPetOverlay.show();
+                }
+                break;
+            case ModIds.ZOOM:
+                if (zoomOverlay == null) {
+                    zoomOverlay = new ZoomOverlay(activity);
+                    zoomOverlay.show(START_X, posY);
+                    overlays.add(zoomOverlay);
+                    modOverlayMap.put(modId, zoomOverlay);
+                }
+                break;
+        }
+    }
+
+    private void hideModOverlay(String modId) {
+        if (modId.equals(ModIds.CHICK_PET)) {
+            if (chickPetOverlay != null) {
+                chickPetOverlay.hide();
+                chickPetOverlay = null;
+            }
+            return;
+        }
+        
+        if (modId.equals(ModIds.ZOOM)) {
+            if (zoomOverlay != null) {
+                zoomOverlay.hide();
+                overlays.remove(zoomOverlay);
+                modOverlayMap.remove(modId);
+                zoomOverlay = null;
+            }
+            return;
+        }
+        
+        BaseOverlayButton overlay = modOverlayMap.get(modId);
+        if (overlay != null) {
+            overlay.hide();
+            overlays.remove(overlay);
+            modOverlayMap.remove(modId);
+        }
+    }
+
+    public boolean isModActive(String modId) {
+        return modActiveStates.getOrDefault(modId, false);
+    }
+
+    private int showIndividualOverlays(InbuiltModManager manager, int nextY) {
         if (manager.isModAdded(ModIds.QUICK_DROP)) {
             QuickDropOverlay overlay = new QuickDropOverlay(activity);
             overlay.show(START_X, nextY);
@@ -67,19 +210,13 @@ public class InbuiltOverlayManager {
             chickPetOverlay.show();
         }
 
-        if (FeatureSettings.getInstance().isMemoryEditorEnabled()) {
-            memoryEditorButton = new MemoryEditorButton(activity);
-            memoryEditorButton.show(START_X, nextY);
+        if (manager.isModAdded(ModIds.ZOOM)) {
+            zoomOverlay = new ZoomOverlay(activity);
+            zoomOverlay.show(START_X, nextY);
+            overlays.add(zoomOverlay);
             nextY += SPACING;
         }
-
-        List<MemoryAddress> overlayAddresses = SavedAddressManager.getInstance(activity).getOverlayEnabledAddresses();
-        for (MemoryAddress addr : overlayAddresses) {
-            MemoryOverlayButton overlayBtn = new MemoryOverlayButton(activity, addr);
-            overlayBtn.show(START_X, nextY);
-            memoryOverlays.add(overlayBtn);
-            nextY += SPACING;
-        }
+        return nextY;
     }
 
     public void addMemoryOverlay(MemoryAddress address) {
@@ -89,10 +226,10 @@ public class InbuiltOverlayManager {
                 return;
             }
         }
+        int posY = baseY + (overlays.size() + memoryOverlays.size() + 1) * SPACING;
         MemoryOverlayButton overlayBtn = new MemoryOverlayButton(activity, address);
-        overlayBtn.show(START_X, nextY);
+        overlayBtn.show(START_X, posY);
         memoryOverlays.add(overlayBtn);
-        nextY += SPACING;
     }
 
     public void removeMemoryOverlay(long addressValue) {
@@ -114,13 +251,24 @@ public class InbuiltOverlayManager {
             overlay.hide();
         }
         overlays.clear();
+        modOverlayMap.clear();
         for (MemoryOverlayButton memOverlay : memoryOverlays) {
             memOverlay.hide();
         }
         memoryOverlays.clear();
+        modActiveStates.clear();
+        modPositionMap.clear();
         if (chickPetOverlay != null) {
             chickPetOverlay.hide();
             chickPetOverlay = null;
+        }
+        if (zoomOverlay != null) {
+            zoomOverlay.hide();
+            zoomOverlay = null;
+        }
+        if (modMenuButton != null) {
+            modMenuButton.hide();
+            modMenuButton = null;
         }
         if (memoryEditorButton != null) {
             if (memoryEditorButton.getEditorOverlay() != null) {
@@ -130,5 +278,9 @@ public class InbuiltOverlayManager {
             memoryEditorButton = null;
         }
         instance = null;
+    }
+
+    public ZoomOverlay getZoomOverlay() {
+        return zoomOverlay;
     }
 }

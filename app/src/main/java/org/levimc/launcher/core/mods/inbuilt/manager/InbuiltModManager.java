@@ -20,6 +20,8 @@ public class InbuiltModManager {
     private static final String KEY_OVERLAY_BUTTON_SIZE_PREFIX = "overlay_button_size_";
     private static final String KEY_OVERLAY_BUTTON_SIZE_GLOBAL = "overlay_button_size";
     private static final String KEY_OVERLAY_OPACITY_PREFIX = "overlay_opacity_";
+    private static final String KEY_MOD_MENU_ENABLED = "mod_menu_enabled";
+    private static final String KEY_NOTIFICATIONS_ENABLED = "notifications_enabled";
     private static final int DEFAULT_OVERLAY_BUTTON_SIZE = 48;
     private static final int DEFAULT_OVERLAY_OPACITY = 100;
 
@@ -60,6 +62,9 @@ public class InbuiltModManager {
         mods.add(new InbuiltMod(ModIds.CHICK_PET,
             context.getString(R.string.inbuilt_mod_chick_pet),
             context.getString(R.string.inbuilt_mod_chick_pet_desc), false, addedMods.contains(ModIds.CHICK_PET)));
+        mods.add(new InbuiltMod(ModIds.ZOOM,
+            context.getString(R.string.inbuilt_mod_zoom),
+            context.getString(R.string.inbuilt_mod_zoom_desc), false, addedMods.contains(ModIds.ZOOM)));
         return mods;
     }
 
@@ -129,6 +134,22 @@ public class InbuiltModManager {
 
     public void setOverlayOpacity(String modId, int opacity) {
         prefs.edit().putInt(KEY_OVERLAY_OPACITY_PREFIX + modId, Math.max(0, Math.min(100, opacity))).apply();
+    }
+
+    public boolean isModMenuEnabled() {
+        return prefs.getBoolean(KEY_MOD_MENU_ENABLED, false);
+    }
+
+    public void setModMenuEnabled(boolean enabled) {
+        prefs.edit().putBoolean(KEY_MOD_MENU_ENABLED, enabled).apply();
+    }
+
+    public boolean isNotificationsEnabled() {
+        return prefs.getBoolean(KEY_NOTIFICATIONS_ENABLED, true);
+    }
+
+    public void setNotificationsEnabled(boolean enabled) {
+        prefs.edit().putBoolean(KEY_NOTIFICATIONS_ENABLED, enabled).apply();
     }
 
     private void savePrefs() {
