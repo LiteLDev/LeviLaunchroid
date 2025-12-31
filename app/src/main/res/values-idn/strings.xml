@@ -352,6 +352,11 @@
     <string name="inbuilt_mod_chick_pet_desc">Seekor anak ayam piksel yang lucu yang bisa berjalan, tidur, dan berlari saat disentuh!</string>
     <string name="inbuilt_mod_zoom">Zoom</string>
     <string name="inbuilt_mod_zoom_desc">Tahan untuk memperbesar, seperti zoom OptiFine</string>
+    <string name="zoom_level_label">Tingkat Zoom:</string>
+    <string name="inbuilt_mod_fps_display">Tampilan FPS</string>
+    <string name="inbuilt_mod_fps_display_desc">Menampilkan jumlah bingkai per detik saat ini</string>
+    <string name="inbuilt_mod_cps_display">Tampilan CPS</string>
+    <string name="inbuilt_mod_cps_display_desc">Menampilkan jumlah klik per detik</string>
     <string name="inbuilt_badge">BAWAAN</string>
     <string name="autosprint_key_ctrl">Ctrl Left</string>
     <string name="autosprint_key_shift">Shift</string>

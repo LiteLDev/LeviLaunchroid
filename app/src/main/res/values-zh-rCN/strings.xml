@@ -344,6 +344,11 @@
     <string name="inbuilt_mod_chick_pet_desc">一只可爱的像素小鸡，会四处走动、睡觉，触摸它会跑开！</string>
     <string name="inbuilt_mod_zoom">缩放</string>
     <string name="inbuilt_mod_zoom_desc">按住放大，类似 OptiFine 缩放</string>
+    <string name="zoom_level_label">缩放级别：</string>
+    <string name="inbuilt_mod_fps_display">FPS 显示</string>
+    <string name="inbuilt_mod_fps_display_desc">显示当前每秒帧数</string>
+    <string name="inbuilt_mod_cps_display">CPS 显示</string>
+    <string name="inbuilt_mod_cps_display_desc">显示每秒点击次数</string>
     <string name="inbuilt_badge">内置</string>
     <string name="autosprint_key_ctrl">左 Ctrl</string>
     <string name="autosprint_key_shift">Shift</string>

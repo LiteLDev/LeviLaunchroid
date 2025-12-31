@@ -349,6 +349,11 @@
     <string name="inbuilt_mod_chick_pet_desc">Милый пиксельный цыплёнок, который гуляет, спит и убегает при касании!</string>
     <string name="inbuilt_mod_zoom">Зум</string>
     <string name="inbuilt_mod_zoom_desc">Удерживайте для приближения, как в OptiFine</string>
+    <string name="zoom_level_label">Уровень масштаба:</string>
+    <string name="inbuilt_mod_fps_display">Отображение FPS</string>
+    <string name="inbuilt_mod_fps_display_desc">Показывает текущую частоту кадров в секунду</string>
+    <string name="inbuilt_mod_cps_display">Отображение CPS</string>
+    <string name="inbuilt_mod_cps_display_desc">Показывает количество кликов в секунду</string>
     <string name="inbuilt_badge">ВСТРОЕН</string>
     <string name="autosprint_key_ctrl">Левый Ctrl</string>
     <string name="autosprint_key_shift">Shift</string>

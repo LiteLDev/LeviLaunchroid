@@ -108,6 +108,9 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
         TextView textOpacity = dialog.findViewById(R.id.text_button_opacity);
         LinearLayout autoSprintContainer = dialog.findViewById(R.id.config_autosprint_container);
         Spinner spinnerAutoSprint = dialog.findViewById(R.id.spinner_autosprint_key);
+        LinearLayout zoomContainer = dialog.findViewById(R.id.config_zoom_container);
+        SeekBar seekBarZoom = dialog.findViewById(R.id.seekbar_zoom_level);
+        TextView textZoom = dialog.findViewById(R.id.text_zoom_level);
         Button btnCancel = dialog.findViewById(R.id.btn_cancel);
         Button btnSave = dialog.findViewById(R.id.btn_save);
 
@@ -160,6 +163,26 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
             autoSprintContainer.setVisibility(View.GONE);
         }
 
+        if (mod.getId().equals(ModIds.ZOOM)) {
+            zoomContainer.setVisibility(View.VISIBLE);
+            int currentZoom = manager.getZoomLevel();
+            seekBarZoom.setProgress(currentZoom);
+            textZoom.setText(currentZoom + "%");
+
+            seekBarZoom.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    textZoom.setText(progress + "%");
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+        } else {
+            zoomContainer.setVisibility(View.GONE);
+        }
+
         btnCancel.setOnClickListener(v -> dialog.dismiss());
         DynamicAnim.applyPressScale(btnCancel);
 
@@ -171,6 +194,9 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
                     ? KeyEvent.KEYCODE_SHIFT_LEFT 
                     : KeyEvent.KEYCODE_CTRL_LEFT;
                 manager.setAutoSprintKey(key);
+            }
+            if (mod.getId().equals(ModIds.ZOOM)) {
+                manager.setZoomLevel(seekBarZoom.getProgress());
             }
             dialog.dismiss();
         });
