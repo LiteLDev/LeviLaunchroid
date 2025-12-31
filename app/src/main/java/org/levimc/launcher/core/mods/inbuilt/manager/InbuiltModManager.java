@@ -65,6 +65,12 @@ public class InbuiltModManager {
         mods.add(new InbuiltMod(ModIds.ZOOM,
             context.getString(R.string.inbuilt_mod_zoom),
             context.getString(R.string.inbuilt_mod_zoom_desc), false, addedMods.contains(ModIds.ZOOM)));
+        mods.add(new InbuiltMod(ModIds.FPS_DISPLAY,
+            context.getString(R.string.inbuilt_mod_fps_display),
+            context.getString(R.string.inbuilt_mod_fps_display_desc), false, addedMods.contains(ModIds.FPS_DISPLAY)));
+        mods.add(new InbuiltMod(ModIds.CPS_DISPLAY,
+            context.getString(R.string.inbuilt_mod_cps_display),
+            context.getString(R.string.inbuilt_mod_cps_display_desc), false, addedMods.contains(ModIds.CPS_DISPLAY)));
         return mods;
     }
 

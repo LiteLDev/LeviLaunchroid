@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_library(inbuiltmods SHARED
     src/common/transition.cpp
     src/zoom/zoom.cpp
+    src/fps/fps.cpp
 )
 
 target_include_directories(inbuiltmods PRIVATE 
@@ -15,9 +16,11 @@ target_include_directories(inbuiltmods PRIVATE
 )
 
 find_library(log-lib log)
+find_library(egl-lib EGL)
 
 target_link_libraries(inbuiltmods
     PRIVATE
     preloader
     ${log-lib}
+    ${egl-lib}
 )

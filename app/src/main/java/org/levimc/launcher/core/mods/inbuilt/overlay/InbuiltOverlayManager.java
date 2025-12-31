@@ -26,6 +26,8 @@ public class InbuiltOverlayManager {
     private MemoryEditorButton memoryEditorButton;
     private ChickPetOverlay chickPetOverlay;
     private ZoomOverlay zoomOverlay;
+    private FpsDisplayOverlay fpsDisplayOverlay;
+    private CpsDisplayOverlay cpsDisplayOverlay;
     private ModMenuButton modMenuButton;
     private int baseY = 150;
     private static final int SPACING = 70;
@@ -75,12 +77,16 @@ public class InbuiltOverlayManager {
         modActiveStates.put(ModIds.AUTO_SPRINT, false);
         modActiveStates.put(ModIds.CHICK_PET, false);
         modActiveStates.put(ModIds.ZOOM, false);
+        modActiveStates.put(ModIds.FPS_DISPLAY, false);
+        modActiveStates.put(ModIds.CPS_DISPLAY, false);
 
         modPositionMap.put(ModIds.QUICK_DROP, nextY + SPACING);
         modPositionMap.put(ModIds.CAMERA_PERSPECTIVE, nextY + SPACING * 2);
         modPositionMap.put(ModIds.TOGGLE_HUD, nextY + SPACING * 3);
         modPositionMap.put(ModIds.AUTO_SPRINT, nextY + SPACING * 4);
         modPositionMap.put(ModIds.ZOOM, nextY + SPACING * 5);
+        modPositionMap.put(ModIds.FPS_DISPLAY, nextY + SPACING * 6);
+        modPositionMap.put(ModIds.CPS_DISPLAY, nextY + SPACING * 7);
 
         modMenuButton = new ModMenuButton(activity);
         modMenuButton.show(START_X, nextY);
@@ -145,6 +151,18 @@ public class InbuiltOverlayManager {
                     modOverlayMap.put(modId, zoomOverlay);
                 }
                 break;
+            case ModIds.FPS_DISPLAY:
+                if (fpsDisplayOverlay == null) {
+                    fpsDisplayOverlay = new FpsDisplayOverlay(activity);
+                    fpsDisplayOverlay.show(START_X, posY);
+                }
+                break;
+            case ModIds.CPS_DISPLAY:
+                if (cpsDisplayOverlay == null) {
+                    cpsDisplayOverlay = new CpsDisplayOverlay(activity);
+                    cpsDisplayOverlay.show(START_X, posY);
+                }
+                break;
         }
     }
 
@@ -163,6 +181,22 @@ public class InbuiltOverlayManager {
                 overlays.remove(zoomOverlay);
                 modOverlayMap.remove(modId);
                 zoomOverlay = null;
+            }
+            return;
+        }
+
+        if (modId.equals(ModIds.FPS_DISPLAY)) {
+            if (fpsDisplayOverlay != null) {
+                fpsDisplayOverlay.hide();
+                fpsDisplayOverlay = null;
+            }
+            return;
+        }
+
+        if (modId.equals(ModIds.CPS_DISPLAY)) {
+            if (cpsDisplayOverlay != null) {
+                cpsDisplayOverlay.hide();
+                cpsDisplayOverlay = null;
             }
             return;
         }
@@ -216,6 +250,18 @@ public class InbuiltOverlayManager {
             overlays.add(zoomOverlay);
             nextY += SPACING;
         }
+
+        if (manager.isModAdded(ModIds.FPS_DISPLAY)) {
+            fpsDisplayOverlay = new FpsDisplayOverlay(activity);
+            fpsDisplayOverlay.show(START_X, nextY);
+            nextY += SPACING;
+        }
+
+        if (manager.isModAdded(ModIds.CPS_DISPLAY)) {
+            cpsDisplayOverlay = new CpsDisplayOverlay(activity);
+            cpsDisplayOverlay.show(START_X, nextY);
+            nextY += SPACING;
+        }
         return nextY;
     }
 
@@ -266,6 +312,14 @@ public class InbuiltOverlayManager {
             zoomOverlay.hide();
             zoomOverlay = null;
         }
+        if (fpsDisplayOverlay != null) {
+            fpsDisplayOverlay.hide();
+            fpsDisplayOverlay = null;
+        }
+        if (cpsDisplayOverlay != null) {
+            cpsDisplayOverlay.hide();
+            cpsDisplayOverlay = null;
+        }
         if (modMenuButton != null) {
             modMenuButton.hide();
             modMenuButton = null;
@@ -280,7 +334,4 @@ public class InbuiltOverlayManager {
         instance = null;
     }
 
-    public ZoomOverlay getZoomOverlay() {
-        return zoomOverlay;
-    }
 }

@@ -352,6 +352,10 @@
     <string name="inbuilt_mod_chick_pet_desc">A cute pixelated chick that walks around, sleeps, and runs when touched!</string>
     <string name="inbuilt_mod_zoom">Zoom</string>
     <string name="inbuilt_mod_zoom_desc">Hold to zoom in, like OptiFine zoom</string>
+    <string name="inbuilt_mod_fps_display">FPS Display</string>
+    <string name="inbuilt_mod_fps_display_desc">Shows current frames per second</string>
+    <string name="inbuilt_mod_cps_display">CPS Display</string>
+    <string name="inbuilt_mod_cps_display_desc">Shows clicks per second</string>
     <string name="inbuilt_badge">INBUILT</string>
     <string name="autosprint_key_ctrl">Ctrl Left</string>
     <string name="autosprint_key_shift">Shift</string>

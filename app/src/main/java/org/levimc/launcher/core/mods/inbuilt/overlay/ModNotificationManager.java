@@ -173,6 +173,8 @@ public class ModNotificationManager {
             case ModIds.AUTO_SPRINT -> R.drawable.ic_sprint;
             case ModIds.CHICK_PET -> R.drawable.chick_idle_1;
             case ModIds.ZOOM -> R.drawable.ic_zoom;
+            case ModIds.FPS_DISPLAY -> R.drawable.ic_fps;
+            case ModIds.CPS_DISPLAY -> R.drawable.ic_cps;
             default -> R.drawable.ic_settings;
         };
     }
