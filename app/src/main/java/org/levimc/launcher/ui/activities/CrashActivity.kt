@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.TextView
 import org.levimc.launcher.R
 import java.io.File
+import androidx.core.content.FileProvider
 
 class CrashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,6 +16,7 @@ class CrashActivity : BaseActivity() {
         val tvTitle = findViewById<TextView>(R.id.crash_title)
         val tvDetails = findViewById<TextView>(R.id.crash_details)
         val btnBack = findViewById<Button>(R.id.btn_back_to_main)
+        val btnShare = findViewById<Button>(R.id.btn_share_log)
 
         tvTitle.text = getString(R.string.crash_title)
 
@@ -60,6 +62,21 @@ class CrashActivity : BaseActivity() {
                     startActivity(intent)
                     finish()
                 } catch (ignored: Exception) {}
+            }
+        }
+        
+        btnShare.setOnClickListener {
+            // https://developer.android.com/training/sharing/send#send-binary-content
+            // https://stackoverflow.com/a/63781303/30810698
+            val logFile = File(logPath)
+
+            if (logFile.exists()) {
+                val logFileUri = FileProvider.getUriForFile(this, this.getPackageName() + ".fileprovider", logFile)
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "*/*"
+                    putExtra(Intent.EXTRA_STREAM, logFileUri)
+                }
+                startActivity(Intent.createChooser(shareIntent, logFile.name))
             }
         }
     }
