@@ -66,7 +66,7 @@ class LeviDocumentsProvider : DocumentsProvider() {
         row.add(DocumentsContract.Root.COLUMN_FLAGS, getRootFlags())
         row.add(DocumentsContract.Root.COLUMN_ICON, R.mipmap.ic_launcher)
         row.add(DocumentsContract.Root.COLUMN_TITLE, "LeviLauncher")
-        row.add(DocumentsContract.Root.COLUMN_SUMMARY, "Internal Storage")
+        row.add(DocumentsContract.Root.COLUMN_SUMMARY, "External Storage")
         row.add(DocumentsContract.Root.COLUMN_MIME_TYPES, ALL_MIME_TYPES)
         row.add(DocumentsContract.Root.COLUMN_AVAILABLE_BYTES, baseDir.freeSpace)
         return result
