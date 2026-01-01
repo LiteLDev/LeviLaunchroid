@@ -4,6 +4,8 @@ import android.content.Intent
 import android.content.res.AssetManager
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.MotionEvent
 import android.widget.Toast
 import com.mojang.minecraftpe.MainActivity
 import org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager
@@ -89,6 +91,29 @@ class MinecraftActivity : MainActivity() {
         if (overlayManager == null) {
             startInbuiltModServices()
         }
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        overlayManager?.let { manager ->
+            if (manager.handleKeyEvent(event.keyCode, event.action)) {
+                return true
+            }
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_SCROLL) {
+            val vScroll = event.getAxisValue(MotionEvent.AXIS_VSCROLL)
+            if (vScroll != 0f) {
+                overlayManager?.let { manager ->
+                    if (manager.handleScrollEvent(vScroll)) {
+                        return true
+                    }
+                }
+            }
+        }
+        return super.dispatchGenericMotionEvent(event)
     }
 
     override fun onPause() {

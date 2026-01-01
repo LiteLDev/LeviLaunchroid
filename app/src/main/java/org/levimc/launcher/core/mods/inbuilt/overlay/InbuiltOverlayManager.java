@@ -88,6 +88,11 @@ public class InbuiltOverlayManager {
         modPositionMap.put(ModIds.FPS_DISPLAY, nextY + SPACING * 6);
         modPositionMap.put(ModIds.CPS_DISPLAY, nextY + SPACING * 7);
 
+        if (zoomOverlay == null) {
+            zoomOverlay = new ZoomOverlay(activity);
+            zoomOverlay.initializeForKeyboard();
+        }
+
         modMenuButton = new ModMenuButton(activity);
         modMenuButton.show(START_X, nextY);
         return nextY + SPACING;
@@ -146,10 +151,10 @@ public class InbuiltOverlayManager {
             case ModIds.ZOOM:
                 if (zoomOverlay == null) {
                     zoomOverlay = new ZoomOverlay(activity);
-                    zoomOverlay.show(START_X, posY);
-                    overlays.add(zoomOverlay);
-                    modOverlayMap.put(modId, zoomOverlay);
                 }
+                zoomOverlay.show(START_X, posY);
+                overlays.add(zoomOverlay);
+                modOverlayMap.put(modId, zoomOverlay);
                 break;
             case ModIds.FPS_DISPLAY:
                 if (fpsDisplayOverlay == null) {
@@ -180,7 +185,10 @@ public class InbuiltOverlayManager {
                 zoomOverlay.hide();
                 overlays.remove(zoomOverlay);
                 modOverlayMap.remove(modId);
-                zoomOverlay = null;
+
+                if (!isModMenuMode) {
+                    zoomOverlay = null;
+                }
             }
             return;
         }
@@ -248,6 +256,7 @@ public class InbuiltOverlayManager {
             zoomOverlay = new ZoomOverlay(activity);
             zoomOverlay.show(START_X, nextY);
             overlays.add(zoomOverlay);
+            modOverlayMap.put(ModIds.ZOOM, zoomOverlay);
             nextY += SPACING;
         }
 
@@ -332,6 +341,41 @@ public class InbuiltOverlayManager {
             memoryEditorButton = null;
         }
         instance = null;
+    }
+
+    public boolean handleKeyEvent(int keyCode, int action) {
+        boolean zoomEnabled = isModMenuMode 
+            ? modActiveStates.getOrDefault(ModIds.ZOOM, false)
+            : InbuiltModManager.getInstance(activity).isModAdded(ModIds.ZOOM);
+        
+        if (!zoomEnabled) {
+            return false;
+        }
+
+        if (keyCode == android.view.KeyEvent.KEYCODE_C) {
+            if (zoomOverlay != null) {
+                if (action == android.view.KeyEvent.ACTION_DOWN) {
+                    zoomOverlay.onKeyDown();
+                    return true;
+                } else if (action == android.view.KeyEvent.ACTION_UP) {
+                    zoomOverlay.onKeyUp();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean handleScrollEvent(float scrollDelta) {
+        if (zoomOverlay != null && zoomOverlay.isZooming()) {
+            zoomOverlay.onScroll(scrollDelta);
+            return true;
+        }
+        return false;
+    }
+
+    public ZoomOverlay getZoomOverlay() {
+        return zoomOverlay;
     }
 
 }

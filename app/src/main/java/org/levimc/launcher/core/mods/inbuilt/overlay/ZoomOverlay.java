@@ -39,6 +39,12 @@ public class ZoomOverlay extends BaseOverlayButton {
         super.show(startX, startY);
     }
 
+    public void initializeForKeyboard() {
+        if (!initialized) {
+            initializeNative();
+        }
+    }
+
     private void initializeNative() {
         handler.postDelayed(() -> {
             if (ZoomMod.init()) {
@@ -61,6 +67,31 @@ public class ZoomOverlay extends BaseOverlayButton {
 
     @Override
     protected void onButtonClick() {
+        toggleZoom();
+    }
+
+    public void onKeyDown() {
+        if (!initialized) {
+            Log.w(TAG, "Zoom not initialized yet");
+            return;
+        }
+        if (isZooming) return;
+        
+        isZooming = true;
+        applyZoomLevel();
+        ZoomMod.nativeOnKeyDown();
+        updateButtonState(true);
+    }
+
+    public void onKeyUp() {
+        if (!initialized || !isZooming) return;
+        
+        isZooming = false;
+        ZoomMod.nativeOnKeyUp();
+        updateButtonState(false);
+    }
+
+    private void toggleZoom() {
         if (!initialized) {
             Log.w(TAG, "Zoom not initialized yet");
             return;
@@ -81,7 +112,8 @@ public class ZoomOverlay extends BaseOverlayButton {
     private void updateButtonState(boolean active) {
         if (overlayView instanceof ImageButton) {
             ImageButton btn = (ImageButton) overlayView;
-            btn.setAlpha(active ? 1.0f : 0.6f);
+            float userOpacity = getButtonOpacity();
+            btn.setAlpha(userOpacity);
             btn.setBackgroundResource(active ? R.drawable.bg_overlay_button_active : R.drawable.bg_overlay_button);
         }
     }
@@ -103,5 +135,9 @@ public class ZoomOverlay extends BaseOverlayButton {
 
     public boolean isZooming() {
         return isZooming;
+    }
+
+    public boolean isInitialized() {
+        return initialized;
     }
 }

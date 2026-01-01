@@ -235,20 +235,32 @@ Java_org_levimc_launcher_core_mods_inbuilt_nativemod_ZoomMod_nativeOnKeyUp(JNIEn
 JNIEXPORT void JNICALL
 Java_org_levimc_launcher_core_mods_inbuilt_nativemod_ZoomMod_nativeOnScroll(JNIEnv* env, jclass clazz, jfloat delta) {
     if (!g_initialized || !g_zoomKeyDown) return;
+
+    uint64_t scrollAmount = 5000000ULL;
     
     if (delta > 0) {
-        if (g_zoomLevel > 5310000000ULL) {
+        if (g_zoomLevel > 5310000000ULL + scrollAmount) {
             if (g_animated) {
-                g_transition.startTransition(g_zoomLevel, g_zoomLevel - 1000000, 100);
+                g_transition.startTransition(g_zoomLevel, g_zoomLevel - scrollAmount, 100);
             }
-            g_zoomLevel -= 1000000;
+            g_zoomLevel -= scrollAmount;
+        } else if (g_zoomLevel > 5310000000ULL) {
+            if (g_animated) {
+                g_transition.startTransition(g_zoomLevel, 5310000000ULL, 100);
+            }
+            g_zoomLevel = 5310000000ULL;
         }
     } else if (delta < 0) {
-        if (g_zoomLevel < 5360000000ULL) {
+        if (g_zoomLevel < 5360000000ULL - scrollAmount) {
             if (g_animated) {
-                g_transition.startTransition(g_zoomLevel, g_zoomLevel + 1000000, 100);
+                g_transition.startTransition(g_zoomLevel, g_zoomLevel + scrollAmount, 100);
             }
-            g_zoomLevel += 1000000;
+            g_zoomLevel += scrollAmount;
+        } else if (g_zoomLevel < 5360000000ULL) {
+            if (g_animated) {
+                g_transition.startTransition(g_zoomLevel, 5360000000ULL, 100);
+            }
+            g_zoomLevel = 5360000000ULL;
         }
     }
 }

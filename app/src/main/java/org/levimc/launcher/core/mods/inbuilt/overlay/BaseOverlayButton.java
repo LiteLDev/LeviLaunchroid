@@ -393,7 +393,7 @@ public abstract class BaseOverlayButton {
 
         SeekBar opacitySeek = new SeekBar(activity);
         opacitySeek.setMax(100);
-        opacitySeek.setMin(10);
+        opacitySeek.setMin(0);
         opacitySeek.setProgress(manager.getOverlayOpacity(getModId()));
         opacitySeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
