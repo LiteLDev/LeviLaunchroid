@@ -221,6 +221,8 @@ public abstract class BaseOverlayButton {
                 long elapsed = SystemClock.uptimeMillis() - touchDownTime;
                 if (!isDragging && elapsed < TAP_TIMEOUT) {
                     handler.post(this::onButtonClick);
+                } else if (isDragging) {
+                    savePosition(wmParams.x, wmParams.y);
                 }
                 isDragging = false;
                 v.getParent().requestDisallowInterceptTouchEvent(false);
@@ -236,6 +238,10 @@ public abstract class BaseOverlayButton {
                 return false;
         }
         return false;
+    }
+
+    protected void savePosition(int x, int y) {
+        InbuiltModManager.getInstance(activity).setOverlayPosition(getModId(), x, y);
     }
 
     private boolean handleTouchFallback(View v, MotionEvent event) {
@@ -284,6 +290,8 @@ public abstract class BaseOverlayButton {
                 long elapsed = SystemClock.uptimeMillis() - touchDownTime;
                 if (!isDragging && elapsed < TAP_TIMEOUT) {
                     handler.post(this::onButtonClick);
+                } else if (isDragging) {
+                    savePosition(params.leftMargin, params.topMargin);
                 }
                 isDragging = false;
                 v.getParent().requestDisallowInterceptTouchEvent(false);

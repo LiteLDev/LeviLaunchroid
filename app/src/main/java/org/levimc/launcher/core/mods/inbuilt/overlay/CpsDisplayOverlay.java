@@ -202,10 +202,17 @@ public class CpsDisplayOverlay {
                 return true;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
+                if (isDragging) {
+                    savePosition(wmParams.x, wmParams.y);
+                }
                 isDragging = false;
                 return true;
         }
         return false;
+    }
+
+    private void savePosition(int x, int y) {
+        InbuiltModManager.getInstance(activity).setOverlayPosition(ModIds.CPS_DISPLAY, x, y);
     }
 
     private boolean handleTouchFallback(View v, MotionEvent event) {
@@ -233,6 +240,10 @@ public class CpsDisplayOverlay {
                 return true;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
+                if (isDragging) {
+                    savePosition((int) (initialX + (event.getRawX() - initialTouchX)), 
+                                 (int) (initialY + (event.getRawY() - initialTouchY)));
+                }
                 isDragging = false;
                 return true;
         }
