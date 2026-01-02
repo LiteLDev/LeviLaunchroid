@@ -42,7 +42,21 @@
 
         </LinearLayout>
 
-
+        <Button
+            android:id="@+id/pack_transfer_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/secondary"
+            android:fontFamily="@font/misans"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="6dp"
+            android:text="@string/transfer"
+            android:textAllCaps="false"
+            android:textColor="@color/on_secondary"
+            android:textSize="11sp" />
 
         <Button
             android:id="@+id/pack_delete_button"

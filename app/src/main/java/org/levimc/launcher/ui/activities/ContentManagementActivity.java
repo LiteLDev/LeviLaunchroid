@@ -26,7 +26,7 @@ public class ContentManagementActivity extends BaseActivity {
     private ActivityContentManagementBinding binding;
     private ContentManager contentManager;
     private VersionManager versionManager;
-    private FeatureSettings.StorageType currentStorageType = FeatureSettings.StorageType.VERSION_ISOLATION;
+    private FeatureSettings.StorageType currentStorageType = FeatureSettings.StorageType.INTERNAL;
     private SharedPreferences prefs;
 
     @Override
@@ -50,7 +50,7 @@ public class ContentManagementActivity extends BaseActivity {
     }
 
     private void loadStorageType() {
-        String savedType = prefs.getString(KEY_STORAGE_TYPE, "VERSION_ISOLATION");
+        String savedType = prefs.getString(KEY_STORAGE_TYPE, "INTERNAL");
         currentStorageType = FeatureSettings.StorageType.valueOf(savedType);
     }
 
@@ -117,6 +117,7 @@ public class ContentManagementActivity extends BaseActivity {
     private void openContentList(int contentType) {
         Intent intent = new Intent(this, ContentListActivity.class);
         intent.putExtra(ContentListActivity.EXTRA_CONTENT_TYPE, contentType);
+        intent.putExtra(ContentListActivity.EXTRA_CURRENT_STORAGE_TYPE, currentStorageType.name());
         
         if (contentType == ContentListActivity.TYPE_WORLDS) {
             File worldsDir = getWorldsDirectory();

@@ -187,6 +187,12 @@
     <string name="storage_version_isolation">Version Isolation</string>
     <string name="select_storage_label">Select Storage:</string>
     <string name="search_hint">Search…</string>
+    <string name="transfer">Transfer</string>
+    <string name="transfer_content">Transfer Content</string>
+    <string name="transfer_to">Transfer to:</string>
+    <string name="transfer_success">Transfer completed successfully</string>
+    <string name="transfer_failed">Transfer failed</string>
+    <string name="transfer_same_location">Content is already in this location</string>
 
     <!-- World Management -->
     <string name="world_size">Size: %s</string>

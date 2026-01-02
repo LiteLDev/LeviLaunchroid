@@ -22,6 +22,7 @@ public class ResourcePacksAdapter extends RecyclerView.Adapter<ResourcePacksAdap
 
     public interface OnResourcePackActionListener {
         void onResourcePackDelete(ResourcePackItem pack);
+        void onResourcePackTransfer(ResourcePackItem pack);
     }
 
     public ResourcePacksAdapter() {
@@ -57,6 +58,12 @@ public class ResourcePacksAdapter extends RecyclerView.Adapter<ResourcePacksAdap
                 onResourcePackActionListener.onResourcePackDelete(pack);
             }
         });
+
+        holder.transferButton.setOnClickListener(v -> {
+            if (onResourcePackActionListener != null) {
+                onResourcePackActionListener.onResourcePackTransfer(pack);
+            }
+        });
     }
 
     @Override
@@ -69,6 +76,7 @@ public class ResourcePacksAdapter extends RecyclerView.Adapter<ResourcePacksAdap
         TextView packDescription;
         TextView packSize;
         Button deleteButton;
+        Button transferButton;
 
         public ResourcePackViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,6 +84,7 @@ public class ResourcePacksAdapter extends RecyclerView.Adapter<ResourcePacksAdap
             packDescription = itemView.findViewById(R.id.pack_description);
             packSize = itemView.findViewById(R.id.pack_size);
             deleteButton = itemView.findViewById(R.id.pack_delete_button);
+            transferButton = itemView.findViewById(R.id.pack_transfer_button);
         }
     }
 }

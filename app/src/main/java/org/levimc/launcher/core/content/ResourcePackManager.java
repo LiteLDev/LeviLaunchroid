@@ -423,4 +423,46 @@ public class ResourcePackManager {
     public void shutdown() {
         executor.shutdown();
     }
+
+    public void transferPack(ResourcePackItem pack, File targetDirectory, PackOperationCallback callback) {
+        if (executor.isShutdown()) {
+            callback.onError("ResourcePackManager has been shut down");
+            return;
+        }
+        executor.execute(() -> {
+            try {
+                if (targetDirectory == null) {
+                    callback.onError("Target directory not available");
+                    return;
+                }
+
+                if (!targetDirectory.exists()) {
+                    targetDirectory.mkdirs();
+                }
+
+                File sourceDir = pack.getFile();
+                if (sourceDir == null || !sourceDir.exists()) {
+                    callback.onError("Source pack not found");
+                    return;
+                }
+
+                if (sourceDir.getParentFile().equals(targetDirectory)) {
+                    callback.onError("Content is already in this location");
+                    return;
+                }
+
+                String packName = generateUniquePackName(sourceDir.getName(), targetDirectory);
+                File targetDir = new File(targetDirectory, packName);
+
+                copyDirectory(sourceDir, targetDir);
+                deleteFile(sourceDir);
+
+                callback.onSuccess("Pack transferred successfully");
+
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to transfer pack", e);
+                callback.onError("Transfer failed: " + e.getMessage());
+            }
+        });
+    }
 }

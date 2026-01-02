@@ -187,6 +187,12 @@
     <string name="storage_version_isolation">Isolasi Versi</string>
     <string name="select_storage_label">Pilih Penyimpanan:</string>
     <string name="search_hint">Mencari…</string>
+    <string name="transfer">Transfer</string>
+    <string name="transfer_content">Transfer Konten</string>
+    <string name="transfer_to">Transfer ke:</string>
+    <string name="transfer_success">Transfer berhasil diselesaikan</string>
+    <string name="transfer_failed">Transfer gagal</string>
+    <string name="transfer_same_location">Konten sudah berada di lokasi ini</string>
 
     <!-- World Management -->
     <string name="world_size">Ukuran: %s</string>
@@ -306,6 +312,7 @@
 
     <string name="crash_title">Aplikasi mengalami kerusakan.</string>
     <string name="crash_back_to_main">Kembali ke Beranda</string>
+    <string name="crash_share_log">Bagikan Log</string>
     <string name="crash_log_file_label">Berkas log:</string>
     <string name="crash_log_file_missing">Berkas log tidak ditemukan atau tidak dapat dibaca.</string>
     <string name="crash_read_failed">Gagal membaca log: %1$s</string>

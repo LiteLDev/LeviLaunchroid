@@ -111,7 +111,7 @@ public class WorldManager {
                         return;
                     }
 
-                    String worldName = generateUniqueWorldName(worldDir.getName());
+                    String worldName = generateUniqueWorldName(worldDir.getName(), worldsDirectory);
                     File targetDir = new File(worldsDirectory, worldName);
 
                     copyDirectory(worldDir, targetDir);
@@ -246,11 +246,11 @@ public class WorldManager {
         return null;
     }
 
-    private String generateUniqueWorldName(String baseName) {
+    private String generateUniqueWorldName(String baseName, File directory) {
         String worldName = baseName;
         int counter = 1;
         
-        while (new File(worldsDirectory, worldName).exists()) {
+        while (new File(directory, worldName).exists()) {
             worldName = baseName + "_" + counter;
             counter++;
         }
@@ -352,5 +352,47 @@ public class WorldManager {
 
     public void shutdown() {
         executor.shutdown();
+    }
+
+    public void transferWorld(WorldItem world, File targetDirectory, WorldOperationCallback callback) {
+        if (executor.isShutdown()) {
+            callback.onError("WorldManager has been shut down");
+            return;
+        }
+        executor.execute(() -> {
+            try {
+                if (targetDirectory == null) {
+                    callback.onError("Target directory not available");
+                    return;
+                }
+
+                if (!targetDirectory.exists()) {
+                    targetDirectory.mkdirs();
+                }
+
+                File sourceDir = world.getFile();
+                if (sourceDir == null || !sourceDir.exists()) {
+                    callback.onError("Source world not found");
+                    return;
+                }
+
+                if (sourceDir.getParentFile().equals(targetDirectory)) {
+                    callback.onError("Content is already in this location");
+                    return;
+                }
+
+                String worldName = generateUniqueWorldName(sourceDir.getName(), targetDirectory);
+                File targetDir = new File(targetDirectory, worldName);
+
+                copyDirectory(sourceDir, targetDir);
+                deleteDirectory(sourceDir);
+
+                callback.onSuccess("World transferred successfully");
+
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to transfer world", e);
+                callback.onError("Transfer failed: " + e.getMessage());
+            }
+        });
     }
 }

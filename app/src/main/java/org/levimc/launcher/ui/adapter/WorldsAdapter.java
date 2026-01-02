@@ -26,6 +26,7 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
         void onWorldBackup(WorldItem world);
         void onWorldEdit(WorldItem world);
         void onWorldExtractStructures(WorldItem world);
+        void onWorldTransfer(WorldItem world);
     }
 
     public WorldsAdapter() {
@@ -86,6 +87,12 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
                 onWorldActionListener.onWorldExtractStructures(world);
             }
         });
+
+        holder.transferButton.setOnClickListener(v -> {
+            if (onWorldActionListener != null) {
+                onWorldActionListener.onWorldTransfer(world);
+            }
+        });
     }
 
     @Override
@@ -103,6 +110,7 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
         Button backupButton;
         Button deleteButton;
         Button extractStructuresButton;
+        Button transferButton;
 
         public WorldViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -115,6 +123,7 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
             backupButton = itemView.findViewById(R.id.world_backup_button);
             deleteButton = itemView.findViewById(R.id.world_delete_button);
             extractStructuresButton = itemView.findViewById(R.id.world_extract_structures_button);
+            transferButton = itemView.findViewById(R.id.world_transfer_button);
         }
     }
 }
