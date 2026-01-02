@@ -41,16 +41,34 @@
                 android:lineSpacingExtra="4dp" />
         </ScrollView>
 
-        <Button
-            android:id="@+id/btn_back_to_main"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/crash_back_to_main"
-            android:textAllCaps="false"
-            android:fontFamily="@font/misans"
-            android:textColor="@color/on_surface"
-            android:padding="12dp"
-            android:layout_marginTop="12dp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp">
+
+            <Button
+                android:id="@+id/btn_back_to_main"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/crash_back_to_main"
+                android:textAllCaps="false"
+                android:fontFamily="@font/misans"
+                android:textColor="@color/on_surface"
+                android:padding="12dp" />
+
+            <Button
+                android:id="@+id/btn_share_log"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/crash_share_log"
+                android:textAllCaps="false"
+                android:fontFamily="@font/misans"
+                android:textColor="@color/on_surface"
+                android:padding="12dp" />
+        </LinearLayout>
 
     </LinearLayout>
 </FrameLayout>
