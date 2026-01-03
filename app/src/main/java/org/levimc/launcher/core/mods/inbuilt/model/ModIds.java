@@ -9,6 +9,7 @@ public final class ModIds {
     public static final String ZOOM = "zoom";
     public static final String FPS_DISPLAY = "fps_display";
     public static final String CPS_DISPLAY = "cps_display";
+    public static final String SNAPLOOK = "snaplook";
 
     private ModIds() {}
 }

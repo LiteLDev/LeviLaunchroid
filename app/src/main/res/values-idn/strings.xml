@@ -364,6 +364,8 @@
     <string name="inbuilt_mod_fps_display_desc">Menampilkan jumlah bingkai per detik saat ini</string>
     <string name="inbuilt_mod_cps_display">Tampilan CPS</string>
     <string name="inbuilt_mod_cps_display_desc">Menampilkan jumlah klik per detik</string>
+    <string name="inbuilt_mod_snaplook">Snaplook</string>
+    <string name="inbuilt_mod_snaplook_desc">Tahan untuk melihat ke belakang dengan cepat (orang ketiga depan)</string>
     <string name="inbuilt_badge">BAWAAN</string>
     <string name="autosprint_key_ctrl">Ctrl Left</string>
     <string name="autosprint_key_shift">Shift</string>

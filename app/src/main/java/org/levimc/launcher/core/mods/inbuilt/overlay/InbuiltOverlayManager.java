@@ -26,6 +26,7 @@ public class InbuiltOverlayManager {
     private MemoryEditorButton memoryEditorButton;
     private ChickPetOverlay chickPetOverlay;
     private ZoomOverlay zoomOverlay;
+    private SnaplookOverlay snaplookOverlay;
     private FpsDisplayOverlay fpsDisplayOverlay;
     private CpsDisplayOverlay cpsDisplayOverlay;
     private ModMenuButton modMenuButton;
@@ -79,6 +80,7 @@ public class InbuiltOverlayManager {
         modActiveStates.put(ModIds.ZOOM, false);
         modActiveStates.put(ModIds.FPS_DISPLAY, false);
         modActiveStates.put(ModIds.CPS_DISPLAY, false);
+        modActiveStates.put(ModIds.SNAPLOOK, false);
 
         modPositionMap.put(ModIds.QUICK_DROP, nextY + SPACING);
         modPositionMap.put(ModIds.CAMERA_PERSPECTIVE, nextY + SPACING * 2);
@@ -87,10 +89,16 @@ public class InbuiltOverlayManager {
         modPositionMap.put(ModIds.ZOOM, nextY + SPACING * 5);
         modPositionMap.put(ModIds.FPS_DISPLAY, nextY + SPACING * 6);
         modPositionMap.put(ModIds.CPS_DISPLAY, nextY + SPACING * 7);
+        modPositionMap.put(ModIds.SNAPLOOK, nextY + SPACING * 8);
 
         if (zoomOverlay == null) {
             zoomOverlay = new ZoomOverlay(activity);
             zoomOverlay.initializeForKeyboard();
+        }
+
+        if (snaplookOverlay == null) {
+            snaplookOverlay = new SnaplookOverlay(activity);
+            snaplookOverlay.initializeForKeyboard();
         }
 
         modMenuButton = new ModMenuButton(activity);
@@ -168,6 +176,14 @@ public class InbuiltOverlayManager {
                     cpsDisplayOverlay.show(START_X, posY);
                 }
                 break;
+            case ModIds.SNAPLOOK:
+                if (snaplookOverlay == null) {
+                    snaplookOverlay = new SnaplookOverlay(activity);
+                }
+                snaplookOverlay.show(START_X, posY);
+                overlays.add(snaplookOverlay);
+                modOverlayMap.put(modId, snaplookOverlay);
+                break;
         }
     }
 
@@ -205,6 +221,19 @@ public class InbuiltOverlayManager {
             if (cpsDisplayOverlay != null) {
                 cpsDisplayOverlay.hide();
                 cpsDisplayOverlay = null;
+            }
+            return;
+        }
+
+        if (modId.equals(ModIds.SNAPLOOK)) {
+            if (snaplookOverlay != null) {
+                snaplookOverlay.hide();
+                overlays.remove(snaplookOverlay);
+                modOverlayMap.remove(modId);
+
+                if (!isModMenuMode) {
+                    snaplookOverlay = null;
+                }
             }
             return;
         }
@@ -285,6 +314,16 @@ public class InbuiltOverlayManager {
             cpsDisplayOverlay.show(x, y);
             nextY += SPACING;
         }
+
+        if (manager.isModAdded(ModIds.SNAPLOOK)) {
+            int x = manager.getOverlayPositionX(ModIds.SNAPLOOK, START_X);
+            int y = manager.getOverlayPositionY(ModIds.SNAPLOOK, nextY);
+            snaplookOverlay = new SnaplookOverlay(activity);
+            snaplookOverlay.show(x, y);
+            overlays.add(snaplookOverlay);
+            modOverlayMap.put(ModIds.SNAPLOOK, snaplookOverlay);
+            nextY += SPACING;
+        }
         return nextY;
     }
 
@@ -343,6 +382,10 @@ public class InbuiltOverlayManager {
             cpsDisplayOverlay.hide();
             cpsDisplayOverlay = null;
         }
+        if (snaplookOverlay != null) {
+            snaplookOverlay.hide();
+            snaplookOverlay = null;
+        }
         if (modMenuButton != null) {
             modMenuButton.hide();
             modMenuButton = null;
@@ -362,11 +405,7 @@ public class InbuiltOverlayManager {
             ? modActiveStates.getOrDefault(ModIds.ZOOM, false)
             : InbuiltModManager.getInstance(activity).isModAdded(ModIds.ZOOM);
         
-        if (!zoomEnabled) {
-            return false;
-        }
-
-        if (keyCode == android.view.KeyEvent.KEYCODE_C) {
+        if (zoomEnabled && keyCode == android.view.KeyEvent.KEYCODE_C) {
             if (zoomOverlay != null) {
                 if (action == android.view.KeyEvent.ACTION_DOWN) {
                     zoomOverlay.onKeyDown();
@@ -377,6 +416,23 @@ public class InbuiltOverlayManager {
                 }
             }
         }
+
+        boolean snaplookEnabled = isModMenuMode
+            ? modActiveStates.getOrDefault(ModIds.SNAPLOOK, false)
+            : InbuiltModManager.getInstance(activity).isModAdded(ModIds.SNAPLOOK);
+
+        if (snaplookEnabled && keyCode == android.view.KeyEvent.KEYCODE_X) {
+            if (snaplookOverlay != null) {
+                if (action == android.view.KeyEvent.ACTION_DOWN) {
+                    snaplookOverlay.onKeyDown();
+                    return true;
+                } else if (action == android.view.KeyEvent.ACTION_UP) {
+                    snaplookOverlay.onKeyUp();
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
@@ -390,6 +446,10 @@ public class InbuiltOverlayManager {
 
     public ZoomOverlay getZoomOverlay() {
         return zoomOverlay;
+    }
+
+    public SnaplookOverlay getSnaplookOverlay() {
+        return snaplookOverlay;
     }
 
 }

@@ -364,6 +364,8 @@
     <string name="inbuilt_mod_fps_display_desc">Shows current frames per second</string>
     <string name="inbuilt_mod_cps_display">CPS Display</string>
     <string name="inbuilt_mod_cps_display_desc">Shows clicks per second</string>
+    <string name="inbuilt_mod_snaplook">Snaplook</string>
+    <string name="inbuilt_mod_snaplook_desc">Hold to quickly look behind you (third person front)</string>
     <string name="inbuilt_badge">INBUILT</string>
     <string name="autosprint_key_ctrl">Ctrl Left</string>
     <string name="autosprint_key_shift">Shift</string>

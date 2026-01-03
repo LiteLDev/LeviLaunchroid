@@ -123,6 +123,7 @@ public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHold
             case ModIds.ZOOM -> R.drawable.ic_zoom;
             case ModIds.FPS_DISPLAY -> R.drawable.ic_fps;
             case ModIds.CPS_DISPLAY -> R.drawable.ic_cps;
+            case ModIds.SNAPLOOK -> R.drawable.ic_snaplook;
             default -> R.drawable.ic_settings;
         };
     }

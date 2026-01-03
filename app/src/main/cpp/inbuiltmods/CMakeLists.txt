@@ -8,6 +8,7 @@ add_library(inbuiltmods SHARED
     src/common/transition.cpp
     src/zoom/zoom.cpp
     src/fps/fps.cpp
+    src/snaplook/snaplook.cpp
 )
 
 target_include_directories(inbuiltmods PRIVATE 

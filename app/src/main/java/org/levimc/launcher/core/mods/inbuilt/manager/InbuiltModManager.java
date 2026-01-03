@@ -75,6 +75,9 @@ public class InbuiltModManager {
         mods.add(new InbuiltMod(ModIds.CPS_DISPLAY,
             context.getString(R.string.inbuilt_mod_cps_display),
             context.getString(R.string.inbuilt_mod_cps_display_desc), false, addedMods.contains(ModIds.CPS_DISPLAY)));
+        mods.add(new InbuiltMod(ModIds.SNAPLOOK,
+            context.getString(R.string.inbuilt_mod_snaplook),
+            context.getString(R.string.inbuilt_mod_snaplook_desc), false, addedMods.contains(ModIds.SNAPLOOK)));
         return mods;
     }
 

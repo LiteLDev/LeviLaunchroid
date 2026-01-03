@@ -356,6 +356,8 @@
     <string name="inbuilt_mod_fps_display_desc">显示当前每秒帧数</string>
     <string name="inbuilt_mod_cps_display">CPS 显示</string>
     <string name="inbuilt_mod_cps_display_desc">显示每秒点击次数</string>
+    <string name="inbuilt_mod_snaplook">快速回头</string>
+    <string name="inbuilt_mod_snaplook_desc">按住快速查看身后（第三人称正面视角）</string>
     <string name="inbuilt_badge">内置</string>
     <string name="autosprint_key_ctrl">左 Ctrl</string>
     <string name="autosprint_key_shift">Shift</string>
