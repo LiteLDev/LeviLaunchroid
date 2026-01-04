@@ -60,6 +60,15 @@
 
         </LinearLayout>
 
+        <ImageButton
+            android:id="@+id/edit_options_button"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_settings"
+            android:contentDescription="@string/edit_options"
+            app:tint="@color/on_surface" />
+
     </LinearLayout>
 
     <!-- Storage Selection -->

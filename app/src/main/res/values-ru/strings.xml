@@ -432,4 +432,13 @@
     <string name="mod_status_disabled">Выключено</string>
     <string name="mod_notification_enabled">%s включено</string>
 
+    <!-- Options Editor -->
+    <string name="edit_options">Редактировать настройки</string>
+    <string name="options_file_not_found">Файл настроек не найден</string>
+    <string name="no_options_found">Настройки не найдены</string>
+    <string name="search_options_hint">Поиск настроек…</string>
+    <string name="no_matching_options">Совпадающие настройки не найдены</string>
+    <string name="error_loading_options">Ошибка загрузки настроек</string>
+    <string name="options_saved">Настройки успешно сохранены</string>
+
 </resources>

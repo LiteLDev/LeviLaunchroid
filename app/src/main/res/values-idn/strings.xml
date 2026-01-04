@@ -436,4 +436,13 @@
     <string name="mod_status_disabled">Dinonaktifkan</string>
     <string name="mod_notification_enabled">%s diaktifkan</string>
 
+    <!-- Options Editor -->
+    <string name="edit_options">Edit Opsi</string>
+    <string name="options_file_not_found">File opsi tidak ditemukan</string>
+    <string name="no_options_found">Tidak ada opsi ditemukan</string>
+    <string name="search_options_hint">Cari opsi…</string>
+    <string name="no_matching_options">Tidak ada opsi yang cocok</string>
+    <string name="error_loading_options">Gagal memuat opsi</string>
+    <string name="options_saved">Opsi berhasil disimpan</string>
+
 </resources>

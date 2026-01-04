@@ -60,6 +60,7 @@ public class ContentManagementActivity extends BaseActivity {
 
     private void setupUI() {
         binding.backButton.setOnClickListener(v -> finish());
+        binding.editOptionsButton.setOnClickListener(v -> openOptionsEditor());
         
         setupStorageSpinner();
         setupCategoryButtons();
@@ -223,6 +224,49 @@ public class ContentManagementActivity extends BaseActivity {
         }
 
         contentManager.setStorageDirectories(worldsDir, resourcePacksDir, behaviorPacksDir, skinPacksDir);
+    }
+
+    private void openOptionsEditor() {
+        File optionsFile = getOptionsFile();
+        if (optionsFile == null) {
+            Toast.makeText(this, R.string.options_file_not_found, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String storageLabel = switch (currentStorageType) {
+            case INTERNAL -> getString(R.string.storage_internal);
+            case EXTERNAL -> getString(R.string.storage_external);
+            case VERSION_ISOLATION -> getString(R.string.storage_version_isolation);
+        };
+
+        Intent intent = new Intent(this, OptionsEditorActivity.class);
+        intent.putExtra(OptionsEditorActivity.EXTRA_OPTIONS_PATH, optionsFile.getAbsolutePath());
+        intent.putExtra(OptionsEditorActivity.EXTRA_STORAGE_TYPE, storageLabel);
+        startActivity(intent);
+    }
+
+    private File getOptionsFile() {
+        GameVersion currentVersion = versionManager.getSelectedVersion();
+        
+        switch (currentStorageType) {
+            case VERSION_ISOLATION:
+                if (currentVersion != null && currentVersion.versionDir != null) {
+                    File gameDataDir = new File(currentVersion.versionDir, "games/com.mojang");
+                    return new File(gameDataDir, "minecraftpe/options.txt");
+                }
+                break;
+            case EXTERNAL:
+                File externalDir = getExternalFilesDir(null);
+                if (externalDir != null) {
+                    File gameDataDir = new File(externalDir, "games/com.mojang");
+                    return new File(gameDataDir, "minecraftpe/options.txt");
+                }
+                break;
+            case INTERNAL:
+                File internalDir = new File(getDataDir(), "games/com.mojang");
+                return new File(internalDir, "minecraftpe/options.txt");
+        }
+        return null;
     }
 
     @Override

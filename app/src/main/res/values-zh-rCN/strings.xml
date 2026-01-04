@@ -428,4 +428,13 @@
     <string name="mod_status_disabled">已禁用</string>
     <string name="mod_notification_enabled">%s 已启用</string>
 
+    <!-- Options Editor -->
+    <string name="edit_options">编辑选项</string>
+    <string name="options_file_not_found">未找到选项文件</string>
+    <string name="no_options_found">未找到选项</string>
+    <string name="search_options_hint">搜索选项…</string>
+    <string name="no_matching_options">未找到匹配的选项</string>
+    <string name="error_loading_options">加载选项时出错</string>
+    <string name="options_saved">选项保存成功</string>
+
  </resources>

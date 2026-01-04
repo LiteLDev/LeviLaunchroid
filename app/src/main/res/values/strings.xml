@@ -436,4 +436,13 @@
     <string name="mod_status_disabled">Disabled</string>
     <string name="mod_notification_enabled">%s enabled</string>
 
+    <!-- Options Editor -->
+    <string name="edit_options">Edit Options</string>
+    <string name="options_file_not_found">Options file not found</string>
+    <string name="no_options_found">No options found</string>
+    <string name="search_options_hint">Search options…</string>
+    <string name="no_matching_options">No matching options found</string>
+    <string name="error_loading_options">Error loading options</string>
+    <string name="options_saved">Options saved successfully</string>
+
 </resources>
