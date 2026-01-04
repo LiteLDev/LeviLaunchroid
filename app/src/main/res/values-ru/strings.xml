@@ -182,6 +182,8 @@
     <string name="storage_version_isolation">Изоляция версии</string>
     <string name="select_storage_label">Выберите хранилище:</string>
     <string name="search_hint">Поиск…</string>
+    <string name="search_properties_hint">Поиск свойств…</string>
+    <string name="no_matching_properties">Подходящие свойства не найдены</string>
     <string name="transfer">Перенос</string>
     <string name="transfer_content">Перенос контента</string>
     <string name="transfer_to">Перенести в:</string>

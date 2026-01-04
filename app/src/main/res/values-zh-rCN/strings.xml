@@ -180,6 +180,8 @@
     <string name="storage_version_isolation">版本隔离</string>
     <string name="select_storage_label">选择存储：</string>
     <string name="search_hint">搜索…</string>
+    <string name="search_properties_hint">搜索属性…</string>
+    <string name="no_matching_properties">未找到匹配的属性</string>
     <string name="transfer">传输</string>
     <string name="transfer_content">传输内容</string>
     <string name="transfer_to">传输至：</string>

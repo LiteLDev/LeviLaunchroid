@@ -187,6 +187,8 @@
     <string name="storage_version_isolation">Version Isolation</string>
     <string name="select_storage_label">Select Storage:</string>
     <string name="search_hint">Search…</string>
+    <string name="search_properties_hint">Search properties…</string>
+    <string name="no_matching_properties">No matching properties found</string>
     <string name="transfer">Transfer</string>
     <string name="transfer_content">Transfer Content</string>
     <string name="transfer_to">Transfer to:</string>

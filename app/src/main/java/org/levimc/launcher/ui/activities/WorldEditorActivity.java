@@ -1,6 +1,8 @@
 package org.levimc.launcher.ui.activities;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class WorldEditorActivity extends BaseActivity {
 
@@ -81,6 +84,50 @@ public class WorldEditorActivity extends BaseActivity {
 
         binding.propertiesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.propertiesRecyclerView.setAdapter(adapter);
+
+        setupSearchFilter();
+    }
+
+    private void setupSearchFilter() {
+        binding.searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterProperties(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void filterProperties(String query) {
+        String lowerQuery = query.toLowerCase().trim();
+
+        List<WorldProperty> filtered;
+        if (lowerQuery.isEmpty()) {
+            filtered = allProperties;
+        } else {
+            filtered = allProperties.stream()
+                .filter(prop -> prop.getDisplayName().toLowerCase().contains(lowerQuery)
+                        || prop.getPath().toLowerCase().contains(lowerQuery)
+                        || prop.getCategory().toLowerCase().contains(lowerQuery)
+                        || prop.getValueString().toLowerCase().contains(lowerQuery))
+                .collect(Collectors.toList());
+        }
+
+        if (filtered.isEmpty() && !allProperties.isEmpty()) {
+            binding.emptyText.setVisibility(View.VISIBLE);
+            binding.emptyText.setText(R.string.no_matching_properties);
+            binding.propertiesRecyclerView.setVisibility(View.GONE);
+        } else if (!filtered.isEmpty()) {
+            binding.emptyText.setVisibility(View.GONE);
+            binding.propertiesRecyclerView.setVisibility(View.VISIBLE);
+            Map<String, List<WorldProperty>> grouped = groupByCategory(filtered);
+            adapter.setProperties(grouped);
+        }
     }
 
     private void loadWorldData() {
