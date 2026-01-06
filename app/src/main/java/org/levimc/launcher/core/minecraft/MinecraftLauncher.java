@@ -142,6 +142,9 @@ public class MinecraftLauncher {
                         excludeLibs.add("c++_shared");
                         excludeLibs.add("HttpClient.Android");
                     }
+                    if (!shouldLoadPlayFab(version)) {
+                        excludeLibs.add("PlayFabMultiplayer");
+                    }
                     gameManager.loadAllLibraries(excludeLibs);
                 } else {
                     if (!shouldLoadHttpClient(version)) {
@@ -178,6 +181,15 @@ public class MinecraftLauncher {
     }
 
     private boolean shouldLoadHttpClient(GameVersion version) {
+        if (version == null || version.versionCode == null) {
+            return false;
+        }
+        String versionCode = version.versionCode;
+        String targetVersion = versionCode.contains("beta") ? "1.21.130.20" : "1.21.130";
+        return isVersionAtLeast(versionCode, targetVersion);
+    }
+
+    private boolean shouldLoadPlayFab(GameVersion version) {
         if (version == null || version.versionCode == null) {
             return false;
         }
