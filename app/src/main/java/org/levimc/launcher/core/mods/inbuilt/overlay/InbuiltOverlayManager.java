@@ -1,6 +1,7 @@
 package org.levimc.launcher.core.mods.inbuilt.overlay;
 
 import android.app.Activity;
+import android.view.MotionEvent;
 
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
@@ -440,6 +441,20 @@ public class InbuiltOverlayManager {
         if (zoomOverlay != null && zoomOverlay.isZooming()) {
             zoomOverlay.onScroll(scrollDelta);
             return true;
+        }
+        return false;
+    }
+
+    public boolean handleTouchEvent(MotionEvent event) {
+        if (cpsDisplayOverlay != null) {
+            return cpsDisplayOverlay.handleTouchEvent(event);
+        }
+        return false;
+    }
+
+    public boolean handleMouseEvent(MotionEvent event) {
+        if (cpsDisplayOverlay != null) {
+            return cpsDisplayOverlay.handleMouseEvent(event);
         }
         return false;
     }
