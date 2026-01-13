@@ -402,11 +402,14 @@ public class InbuiltOverlayManager {
     }
 
     public boolean handleKeyEvent(int keyCode, int action) {
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        
         boolean zoomEnabled = isModMenuMode 
             ? modActiveStates.getOrDefault(ModIds.ZOOM, false)
-            : InbuiltModManager.getInstance(activity).isModAdded(ModIds.ZOOM);
+            : manager.isModAdded(ModIds.ZOOM);
         
-        if (zoomEnabled && keyCode == android.view.KeyEvent.KEYCODE_C) {
+        int zoomKeybind = manager.getZoomKeybind();
+        if (zoomEnabled && keyCode == zoomKeybind) {
             if (zoomOverlay != null) {
                 if (action == android.view.KeyEvent.ACTION_DOWN) {
                     zoomOverlay.onKeyDown();
@@ -420,7 +423,7 @@ public class InbuiltOverlayManager {
 
         boolean snaplookEnabled = isModMenuMode
             ? modActiveStates.getOrDefault(ModIds.SNAPLOOK, false)
-            : InbuiltModManager.getInstance(activity).isModAdded(ModIds.SNAPLOOK);
+            : manager.isModAdded(ModIds.SNAPLOOK);
 
         if (snaplookEnabled && keyCode == android.view.KeyEvent.KEYCODE_X) {
             if (snaplookOverlay != null) {

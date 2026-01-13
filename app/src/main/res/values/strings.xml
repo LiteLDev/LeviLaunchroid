@@ -362,6 +362,9 @@
     <string name="inbuilt_mod_zoom">Zoom</string>
     <string name="inbuilt_mod_zoom_desc">Hold to zoom in, like OptiFine zoom</string>
     <string name="zoom_level_label">Zoom Level:</string>
+    <string name="zoom_keybind_label">Zoom Keybind:</string>
+    <string name="zoom_keybind_press">Press any key…</string>
+    <string name="zoom_keybind_tap_to_change">Tap to change</string>
     <string name="inbuilt_mod_fps_display">FPS Display</string>
     <string name="inbuilt_mod_fps_display_desc">Shows current frames per second</string>
     <string name="inbuilt_mod_cps_display">CPS Display</string>
