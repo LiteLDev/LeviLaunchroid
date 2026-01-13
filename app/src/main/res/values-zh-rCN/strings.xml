@@ -354,6 +354,9 @@
     <string name="inbuilt_mod_zoom">缩放</string>
     <string name="inbuilt_mod_zoom_desc">按住放大，类似 OptiFine 缩放</string>
     <string name="zoom_level_label">缩放级别：</string>
+    <string name="zoom_keybind_label">缩放按键绑定：</string>
+    <string name="zoom_keybind_press">请按任意键…</string>
+    <string name="zoom_keybind_tap_to_change">点击以更改</string>
     <string name="inbuilt_mod_fps_display">FPS 显示</string>
     <string name="inbuilt_mod_fps_display_desc">显示当前每秒帧数</string>
     <string name="inbuilt_mod_cps_display">CPS 显示</string>
@@ -436,5 +439,64 @@
     <string name="no_matching_options">未找到匹配的选项</string>
     <string name="error_loading_options">加载选项时出错</string>
     <string name="options_saved">选项保存成功</string>
+
+    <!-- Quick Launch -->
+    <string name="quick_launch_title">快速启动</string>
+    <string name="quick_launch_subtitle">使用 URI 协议执行特定操作并启动 Minecraft</string>
+    <string name="quick_launch_how_to_play">玩法说明</string>
+    <string name="quick_launch_how_to_play_desc">打开“玩法说明”屏幕</string>
+    <string name="quick_launch_servers_tab">服务器选项卡</string>
+    <string name="quick_launch_servers_tab_desc">在游戏菜单中打开服务器选项卡</string>
+    <string name="quick_launch_profile">个人资料 / 更衣室</string>
+    <string name="quick_launch_profile_desc">打开您的角色自定义屏幕</string>
+    <string name="quick_launch_store_home">市场首页</string>
+    <string name="quick_launch_store_home_desc">打开市场首页屏幕</string>
+    <string name="quick_launch_minecoins">Minecoins</string>
+    <string name="quick_launch_minecoins_desc">打开 Minecoins 购买屏幕</string>
+    <string name="quick_launch_marketplace_pass">市场通行证</string>
+    <string name="quick_launch_marketplace_pass_desc">打开市场通行证订阅屏幕</string>
+    <string name="quick_launch_connect_server">连接到服务器</string>
+    <string name="quick_launch_connect_server_desc">直接连接到基岩版服务器</string>
+    <string name="quick_launch_add_server">添加外部服务器</string>
+    <string name="quick_launch_add_server_desc">向您的服务器列表添加一个新服务器</string>
+    <string name="quick_launch_realm_invite">加入领域</string>
+    <string name="quick_launch_realm_invite_desc">接受领域邀请码</string>
+    <string name="quick_launch_load_world">加载世界</string>
+    <string name="quick_launch_load_world_desc">按名称加载本地世界</string>
+    <string name="quick_launch_command">执行命令</string>
+    <string name="quick_launch_command_desc">在游戏内执行斜杠命令</string>
+    <string name="quick_launch_custom_uri">自定义 URI</string>
+    <string name="quick_launch_custom_uri_desc">输入自定义 minecraft:// URI</string>
+
+    <!-- Quick Launch Dialogs -->
+    <string name="server_ip_hint">服务器 IP 地址</string>
+    <string name="server_port_hint">端口 (默认: 19132)</string>
+    <string name="server_name_hint">服务器名称</string>
+    <string name="realm_invite_code_hint">领域邀请码</string>
+    <string name="world_name_hint">世界名称</string>
+    <string name="command_hint">命令 (不带 /)</string>
+    <string name="command_warning">注意：如果在本地世界中使用，这将会导致您断开连接</string>
+    <string name="uri_hint">minecraft://…</string>
+    <string name="custom_uri_hint">输入完整的 minecraft:// URI。例如：\nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
+    <string name="select_tab">选择选项卡：</string>
+
+    <!-- Quick Launch Validation -->
+    <string name="server_ip_required">必须填写服务器 IP</string>
+    <string name="server_details_required">必须填写服务器名称和 IP</string>
+    <string name="invalid_port">端口号无效</string>
+    <string name="invite_code_required">必须填写邀请码</string>
+    <string name="world_name_required">必须填写世界名称</string>
+    <string name="command_required">必须填写命令</string>
+    <string name="invalid_minecraft_uri">无效的 minecraft:// URI</string>
+
+    <!-- Quick Launch Actions -->
+    <string name="connect">连接</string>
+    <string name="join">加入</string>
+    <string name="load">加载</string>
+    <string name="execute">执行</string>
+
+    <!-- Quick Actions Menu -->
+    <string name="quick_launch">快速启动</string>
+    <string name="quick_launch_menu_subtitle">通过 URI 操作启动</string>
 
  </resources>

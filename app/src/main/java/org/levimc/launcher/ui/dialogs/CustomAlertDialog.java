@@ -34,6 +34,7 @@ public class CustomAlertDialog extends Dialog {
     private Button mPositiveButton;
     private String[] mItems;
     private DialogInterface.OnClickListener mItemClickListener;
+    private View mCustomView;
 
     public CustomAlertDialog(Context context) {
         super(context);
@@ -73,6 +74,11 @@ public class CustomAlertDialog extends Dialog {
         return this;
     }
 
+    public CustomAlertDialog setCustomView(View view) {
+        this.mCustomView = view;
+        return this;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +99,16 @@ public class CustomAlertDialog extends Dialog {
 
         RecyclerView itemsRecyclerView = findViewById(R.id.items_recycler_view);
         View messageScrollView = findViewById(R.id.message_scroll_view);
-        if (mItems != null && mItems.length > 0) {
+        LinearLayout customViewContainer = findViewById(R.id.custom_view_container);
+        
+        if (mCustomView != null) {
+            messageScrollView.setVisibility(View.GONE);
+            itemsRecyclerView.setVisibility(View.GONE);
+            if (customViewContainer != null) {
+                customViewContainer.setVisibility(View.VISIBLE);
+                customViewContainer.addView(mCustomView);
+            }
+        } else if (mItems != null && mItems.length > 0) {
             messageScrollView.setVisibility(View.GONE);
             itemsRecyclerView.setVisibility(View.VISIBLE);
             itemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -448,4 +448,63 @@
     <string name="error_loading_options">Error loading options</string>
     <string name="options_saved">Options saved successfully</string>
 
+    <!-- Quick Launch -->
+    <string name="quick_launch_title">Quick Launch</string>
+    <string name="quick_launch_subtitle">Launch Minecraft with specific actions using URI protocol</string>
+    <string name="quick_launch_how_to_play">How to Play</string>
+    <string name="quick_launch_how_to_play_desc">Open the How to Play screen</string>
+    <string name="quick_launch_servers_tab">Servers Tab</string>
+    <string name="quick_launch_servers_tab_desc">Open the servers tab in the play menu</string>
+    <string name="quick_launch_profile">Profile / Dressing Room</string>
+    <string name="quick_launch_profile_desc">Open your character customization screen</string>
+    <string name="quick_launch_store_home">Marketplace Home</string>
+    <string name="quick_launch_store_home_desc">Open the Marketplace home screen</string>
+    <string name="quick_launch_minecoins">Minecoins</string>
+    <string name="quick_launch_minecoins_desc">Open the Minecoins purchase screen</string>
+    <string name="quick_launch_marketplace_pass">Marketplace Pass</string>
+    <string name="quick_launch_marketplace_pass_desc">Open the Marketplace Pass subscription screen</string>
+    <string name="quick_launch_connect_server">Connect to Server</string>
+    <string name="quick_launch_connect_server_desc">Connect directly to a Bedrock server</string>
+    <string name="quick_launch_add_server">Add External Server</string>
+    <string name="quick_launch_add_server_desc">Add a new server to your server list</string>
+    <string name="quick_launch_realm_invite">Join Realm</string>
+    <string name="quick_launch_realm_invite_desc">Accept a Realm invite code</string>
+    <string name="quick_launch_load_world">Load World</string>
+    <string name="quick_launch_load_world_desc">Load a local world by name</string>
+    <string name="quick_launch_command">Execute Command</string>
+    <string name="quick_launch_command_desc">Execute a slash command in-game</string>
+    <string name="quick_launch_custom_uri">Custom URI</string>
+    <string name="quick_launch_custom_uri_desc">Enter a custom minecraft:// URI</string>
+
+    <!-- Quick Launch Dialogs -->
+    <string name="server_ip_hint">Server IP Address</string>
+    <string name="server_port_hint">Port (default: 19132)</string>
+    <string name="server_name_hint">Server Name</string>
+    <string name="realm_invite_code_hint">Realm Invite Code</string>
+    <string name="world_name_hint">World Name</string>
+    <string name="command_hint">Command (without /)</string>
+    <string name="command_warning">Note: This will disconnect you if used in a local world</string>
+    <string name="uri_hint">minecraft://…</string>
+    <string name="custom_uri_hint">Enter a full minecraft:// URI. Examples:\nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
+    <string name="select_tab">Select Tab:</string>
+
+    <!-- Quick Launch Validation -->
+    <string name="server_ip_required">Server IP is required</string>
+    <string name="server_details_required">Server name and IP are required</string>
+    <string name="invalid_port">Invalid port number</string>
+    <string name="invite_code_required">Invite code is required</string>
+    <string name="world_name_required">World name is required</string>
+    <string name="command_required">Command is required</string>
+    <string name="invalid_minecraft_uri">Invalid minecraft:// URI</string>
+
+    <!-- Quick Launch Actions -->
+    <string name="connect">Connect</string>
+    <string name="join">Join</string>
+    <string name="load">Load</string>
+    <string name="execute">Execute</string>
+
+    <!-- Quick Actions Menu -->
+    <string name="quick_launch">Quick Launch</string>
+    <string name="quick_launch_menu_subtitle">Launch with URI actions</string>
+
 </resources>

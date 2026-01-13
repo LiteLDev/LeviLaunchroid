@@ -358,6 +358,9 @@
     <string name="inbuilt_mod_zoom">Зум</string>
     <string name="inbuilt_mod_zoom_desc">Удерживайте для приближения, как в OptiFine</string>
     <string name="zoom_level_label">Уровень масштаба:</string>
+    <string name="zoom_keybind_label">Клавиша приближения:</string>
+    <string name="zoom_keybind_press">Нажмите любую клавишу…</string>
+    <string name="zoom_keybind_tap_to_change">Нажмите, чтобы изменить</string>
     <string name="inbuilt_mod_fps_display">Отображение FPS</string>
     <string name="inbuilt_mod_fps_display_desc">Показывает текущую частоту кадров в секунду</string>
     <string name="inbuilt_mod_cps_display">Отображение CPS</string>
@@ -440,5 +443,64 @@
     <string name="no_matching_options">Совпадающие настройки не найдены</string>
     <string name="error_loading_options">Ошибка загрузки настроек</string>
     <string name="options_saved">Настройки успешно сохранены</string>
+
+    <!-- Quick Launch -->
+    <string name="quick_launch_title">Быстрый запуск</string>
+    <string name="quick_launch_subtitle">Запуск Minecraft с определенными действиями через протокол URI</string>
+    <string name="quick_launch_how_to_play">Как играть</string>
+    <string name="quick_launch_how_to_play_desc">Открыть экран «Как играть»</string>
+    <string name="quick_launch_servers_tab">Вкладка серверов</string>
+    <string name="quick_launch_servers_tab_desc">Открыть вкладку серверов в меню игры</string>
+    <string name="quick_launch_profile">Профиль / Гардеробная</string>
+    <string name="quick_launch_profile_desc">Открыть экран настройки персонажа</string>
+    <string name="quick_launch_store_home">Главная Рынка</string>
+    <string name="quick_launch_store_home_desc">Открыть главную страницу Рынка (Marketplace)</string>
+    <string name="quick_launch_minecoins">Minecoins</string>
+    <string name="quick_launch_minecoins_desc">Открыть экран покупки Minecoins</string>
+    <string name="quick_launch_marketplace_pass">Marketplace Pass</string>
+    <string name="quick_launch_marketplace_pass_desc">Открыть экран подписки Marketplace Pass</string>
+    <string name="quick_launch_connect_server">Подключиться к серверу</string>
+    <string name="quick_launch_connect_server_desc">Прямое подключение к серверу Bedrock</string>
+    <string name="quick_launch_add_server">Добавить внешний сервер</string>
+    <string name="quick_launch_add_server_desc">Добавить новый сервер в список серверов</string>
+    <string name="quick_launch_realm_invite">Присоединиться к Realm</string>
+    <string name="quick_launch_realm_invite_desc">Принять код приглашения в Realm</string>
+    <string name="quick_launch_load_world">Загрузить мир</string>
+    <string name="quick_launch_load_world_desc">Загрузить локальный мир по названию</string>
+    <string name="quick_launch_command">Выполнить команду</string>
+    <string name="quick_launch_command_desc">Выполнить команду со слэшем в игре</string>
+    <string name="quick_launch_custom_uri">Пользовательский URI</string>
+    <string name="quick_launch_custom_uri_desc">Введите собственный minecraft:// URI</string>
+
+    <!-- Quick Launch Dialogs -->
+    <string name="server_ip_hint">IP-адрес сервера</string>
+    <string name="server_port_hint">Порт (по умолчанию: 19132)</string>
+    <string name="server_name_hint">Название сервера</string>
+    <string name="realm_invite_code_hint">Код приглашения Realm</string>
+    <string name="world_name_hint">Название мира</string>
+    <string name="command_hint">Команда (без /)</string>
+    <string name="command_warning">Примечание: это приведет к отключению, если используется в локальном мире</string>
+    <string name="uri_hint">minecraft://…</string>
+    <string name="custom_uri_hint">Введите полный minecraft:// URI. Примеры:\nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
+    <string name="select_tab">Выберите вкладку:</string>
+
+    <!-- Quick Launch Validation -->
+    <string name="server_ip_required">Требуется IP сервера</string>
+    <string name="server_details_required">Требуются название и IP сервера</string>
+    <string name="invalid_port">Неверный номер порта</string>
+    <string name="invite_code_required">Требуется код приглашения</string>
+    <string name="world_name_required">Требуется название мира</string>
+    <string name="command_required">Требуется команда</string>
+    <string name="invalid_minecraft_uri">Недопустимый minecraft:// URI</string>
+
+    <!-- Quick Launch Actions -->
+    <string name="connect">Подключиться</string>
+    <string name="join">Войти</string>
+    <string name="load">Загрузить</string>
+    <string name="execute">Выполнить</string>
+
+    <!-- Quick Actions Menu -->
+    <string name="quick_launch">Быстрый запуск</string>
+    <string name="quick_launch_menu_subtitle">Запуск с URI-действиями</string>
 
 </resources>

@@ -362,6 +362,9 @@
     <string name="inbuilt_mod_zoom">Zoom</string>
     <string name="inbuilt_mod_zoom_desc">Tahan untuk memperbesar, seperti zoom OptiFine</string>
     <string name="zoom_level_label">Tingkat Zoom:</string>
+    <string name="zoom_keybind_label">Tombol Zoom:</string>
+    <string name="zoom_keybind_press">Tekan tombol apa saja…</string>
+    <string name="zoom_keybind_tap_to_change">Ketuk untuk mengubah</string>
     <string name="inbuilt_mod_fps_display">Tampilan FPS</string>
     <string name="inbuilt_mod_fps_display_desc">Menampilkan jumlah bingkai per detik saat ini</string>
     <string name="inbuilt_mod_cps_display">Tampilan CPS</string>
@@ -444,5 +447,64 @@
     <string name="no_matching_options">Tidak ada opsi yang cocok</string>
     <string name="error_loading_options">Gagal memuat opsi</string>
     <string name="options_saved">Opsi berhasil disimpan</string>
+
+    <!-- Quick Launch -->
+    <string name="quick_launch_title">Peluncuran Cepat</string>
+    <string name="quick_launch_subtitle">Luncurkan Minecraft dengan tindakan tertentu menggunakan protokol URI</string>
+    <string name="quick_launch_how_to_play">Cara Bermain</string>
+    <string name="quick_launch_how_to_play_desc">Buka layar Cara Bermain</string>
+    <string name="quick_launch_servers_tab">Tab Server</string>
+    <string name="quick_launch_servers_tab_desc">Buka tab server di menu main</string>
+    <string name="quick_launch_profile">Profil / Kamar Ganti</string>
+    <string name="quick_launch_profile_desc">Buka layar kustomisasi karakter</string>
+    <string name="quick_launch_store_home">Beranda Marketplace</string>
+    <string name="quick_launch_store_home_desc">Buka layar beranda Marketplace</string>
+    <string name="quick_launch_minecoins">Minecoins</string>
+    <string name="quick_launch_minecoins_desc">Buka layar pembelian Minecoins</string>
+    <string name="quick_launch_marketplace_pass">Marketplace Pass</string>
+    <string name="quick_launch_marketplace_pass_desc">Buka layar langganan Marketplace Pass</string>
+    <string name="quick_launch_connect_server">Hubungkan ke Server</string>
+    <string name="quick_launch_connect_server_desc">Hubungkan langsung ke server Bedrock</string>
+    <string name="quick_launch_add_server">Tambah Server Eksternal</string>
+    <string name="quick_launch_add_server_desc">Tambah server baru ke daftar server Anda</string>
+    <string name="quick_launch_realm_invite">Gabung Realm</string>
+    <string name="quick_launch_realm_invite_desc">Terima kode undangan Realm</string>
+    <string name="quick_launch_load_world">Muat Dunia</string>
+    <string name="quick_launch_load_world_desc">Muat dunia lokal berdasarkan nama</string>
+    <string name="quick_launch_command">Jalankan Perintah</string>
+    <string name="quick_launch_command_desc">Jalankan perintah slash di dalam game</string>
+    <string name="quick_launch_custom_uri">URI Kustom</string>
+    <string name="quick_launch_custom_uri_desc">Masukkan URI minecraft:// kustom</string>
+
+    <!-- Quick Launch Dialogs -->
+    <string name="server_ip_hint">Alamat IP Server</string>
+    <string name="server_port_hint">Port (default: 19132)</string>
+    <string name="server_name_hint">Nama Server</string>
+    <string name="realm_invite_code_hint">Kode Undangan Realm</string>
+    <string name="world_name_hint">Nama Dunia</string>
+    <string name="command_hint">Perintah (tanpa /)</string>
+    <string name="command_warning">Catatan: Ini akan memutuskan koneksi Anda jika digunakan di dunia lokal</string>
+    <string name="uri_hint">minecraft://…</string>
+    <string name="custom_uri_hint">Masukkan URI minecraft:// lengkap. Contoh:\nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
+    <string name="select_tab">Pilih Tab:</string>
+
+    <!-- Quick Launch Validation -->
+    <string name="server_ip_required">IP Server diperlukan</string>
+    <string name="server_details_required">Nama dan IP server diperlukan</string>
+    <string name="invalid_port">Nomor port tidak valid</string>
+    <string name="invite_code_required">Kode undangan diperlukan</string>
+    <string name="world_name_required">Nama dunia diperlukan</string>
+    <string name="command_required">Perintah diperlukan</string>
+    <string name="invalid_minecraft_uri">URI minecraft:// tidak valid</string>
+
+    <!-- Quick Launch Actions -->
+    <string name="connect">Hubungkan</string>
+    <string name="join">Gabung</string>
+    <string name="load">Muat</string>
+    <string name="execute">Jalankan</string>
+
+    <!-- Quick Actions Menu -->
+    <string name="quick_launch">Peluncuran Cepat</string>
+    <string name="quick_launch_menu_subtitle">Luncurkan dengan tindakan URI</string>
 
 </resources>
