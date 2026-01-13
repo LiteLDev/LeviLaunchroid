@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.levimc.launcher.R;
-import org.levimc.launcher.ui.animation.DynamicAnim;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +85,6 @@ public class QuickLaunchAdapter extends RecyclerView.Adapter<QuickLaunchAdapter.
             super(itemView);
             titleText = itemView.findViewById(R.id.title_text);
             descriptionText = itemView.findViewById(R.id.description_text);
-            
-            DynamicAnim.applyPressScale(itemView);
         }
 
         void bind(QuickLaunchItem item) {

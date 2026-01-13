@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.levimc.launcher.R;
 import org.levimc.launcher.ui.adapter.QuickLaunchAdapter;
-import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.util.MinecraftUriHandler;
 
 import java.util.ArrayList;
@@ -32,8 +31,6 @@ public class QuickLaunchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_launch);
 
-        DynamicAnim.applyPressScaleRecursively(findViewById(android.R.id.content));
-
         setupViews();
         loadQuickActions();
     }
@@ -42,7 +39,6 @@ public class QuickLaunchActivity extends BaseActivity {
         ImageButton backButton = findViewById(R.id.back_button);
         if (backButton != null) {
             backButton.setOnClickListener(v -> finish());
-            DynamicAnim.applyPressScale(backButton);
         }
 
         quickActionsRecycler = findViewById(R.id.quick_actions_recycler);
@@ -129,7 +125,6 @@ public class QuickLaunchActivity extends BaseActivity {
         ));
 
         adapter.updateItems(items);
-        quickActionsRecycler.post(() -> DynamicAnim.staggerRecyclerChildren(quickActionsRecycler));
     }
 
     private void handleQuickAction(QuickLaunchAdapter.ActionType actionType) {
