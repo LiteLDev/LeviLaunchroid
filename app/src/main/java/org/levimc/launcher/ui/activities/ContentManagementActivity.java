@@ -2,13 +2,18 @@ package org.levimc.launcher.ui.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import org.levimc.launcher.R;
+import org.levimc.launcher.core.content.ContentImporter;
 import org.levimc.launcher.core.content.ContentManager;
 import org.levimc.launcher.core.versions.GameVersion;
 import org.levimc.launcher.core.versions.VersionManager;
@@ -25,9 +30,11 @@ public class ContentManagementActivity extends BaseActivity {
     
     private ActivityContentManagementBinding binding;
     private ContentManager contentManager;
+    private ContentImporter contentImporter;
     private VersionManager versionManager;
     private FeatureSettings.StorageType currentStorageType = FeatureSettings.StorageType.INTERNAL;
     private SharedPreferences prefs;
+    private ActivityResultLauncher<Intent> importLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +44,29 @@ public class ContentManagementActivity extends BaseActivity {
 
         DynamicAnim.applyPressScaleRecursively(binding.getRoot());
 
+        setupActivityResultLaunchers();
         initializeManagers();
         setupUI();
         loadCurrentVersion();
     }
 
+    private void setupActivityResultLaunchers() {
+        importLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Uri uri = result.getData().getData();
+                    if (uri != null) {
+                        handleImport(uri);
+                    }
+                }
+            }
+        );
+    }
+
     private void initializeManagers() {
         contentManager = ContentManager.getInstance(this);
+        contentImporter = new ContentImporter(this);
         versionManager = VersionManager.get(this);
         prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         loadStorageType();
@@ -61,9 +84,74 @@ public class ContentManagementActivity extends BaseActivity {
     private void setupUI() {
         binding.backButton.setOnClickListener(v -> finish());
         binding.editOptionsButton.setOnClickListener(v -> openOptionsEditor());
+        binding.importContentButton.setOnClickListener(v -> startImport());
         
         setupStorageSpinner();
         setupCategoryButtons();
+    }
+
+    private void startImport() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"application/zip", "application/octet-stream"});
+        importLauncher.launch(Intent.createChooser(intent, getString(R.string.import_content_title)));
+    }
+
+    private void handleImport(Uri uri) {
+        GameVersion currentVersion = versionManager.getSelectedVersion();
+        if (currentVersion == null) {
+            Toast.makeText(this, R.string.not_found_version, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        File worldsDir = getWorldsDirectory();
+        File resourcePacksDir = getPackDirectory("resource_packs");
+        File behaviorPacksDir = getPackDirectory("behavior_packs");
+        File skinPacksDir = getPackDirectory("skin_packs");
+
+        contentImporter.importContent(uri, resourcePacksDir, behaviorPacksDir, skinPacksDir, worldsDir,
+            new ContentImporter.ImportCallback() {
+                @Override
+                public void onSuccess(String message) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(ContentManagementActivity.this, message, Toast.LENGTH_SHORT).show();
+                        contentManager.refreshContent();
+                    });
+                }
+
+                @Override
+                public void onError(String error) {
+                    runOnUiThread(() -> Toast.makeText(ContentManagementActivity.this, error, Toast.LENGTH_LONG).show());
+                }
+
+                @Override
+                public void onProgress(int progress) {
+                }
+            });
+    }
+
+    private File getPackDirectory(String packType) {
+        GameVersion currentVersion = versionManager.getSelectedVersion();
+
+        switch (currentStorageType) {
+            case VERSION_ISOLATION:
+                if (currentVersion != null && currentVersion.versionDir != null) {
+                    File gameDataDir = new File(currentVersion.versionDir, "games/com.mojang");
+                    return new File(gameDataDir, packType);
+                }
+                break;
+            case EXTERNAL:
+                File externalDir = getExternalFilesDir(null);
+                if (externalDir != null) {
+                    File gameDataDir = new File(externalDir, "games/com.mojang");
+                    return new File(gameDataDir, packType);
+                }
+                break;
+            case INTERNAL:
+                File internalDir = new File(getDataDir(), "games/com.mojang");
+                return new File(internalDir, packType);
+        }
+        return null;
     }
 
     private void setupStorageSpinner() {
@@ -278,5 +366,8 @@ public class ContentManagementActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (contentImporter != null) {
+            contentImporter.shutdown();
+        }
     }
 }

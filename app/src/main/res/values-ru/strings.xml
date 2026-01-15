@@ -190,6 +190,12 @@
     <string name="transfer_success">Перенос успешно завершен</string>
     <string name="transfer_failed">Ошибка переноса</string>
     <string name="transfer_same_location">Контент уже находится в этом месте</string>
+    <string name="import_content">Импорт .mcaddon/.mcworld/.mcpack</string>
+    <string name="import_content_title">Импорт контента</string>
+    <string name="import_content_message">Выберите файл .mcworld, .mcpack или .mcaddon для импорта</string>
+    <string name="import_success">Импорт успешно завершен</string>
+    <string name="import_failed">Ошибка импорта</string>
+    <string name="import_addon_success">Аддон импортирован: наборов ресурсов — %d, наборов параметров — %d</string>
 
     <!-- World Management -->
     <string name="world_size">Размер: %s</string>

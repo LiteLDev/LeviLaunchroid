@@ -195,6 +195,12 @@
     <string name="transfer_success">Transfer berhasil diselesaikan</string>
     <string name="transfer_failed">Transfer gagal</string>
     <string name="transfer_same_location">Konten sudah berada di lokasi ini</string>
+    <string name="import_content">Impor .mcaddon/.mcworld/.mcpack</string>
+    <string name="import_content_title">Impor Konten</string>
+    <string name="import_content_message">Pilih file .mcworld, .mcpack, atau .mcaddon untuk diimpor</string>
+    <string name="import_success">Impor berhasil diselesaikan</string>
+    <string name="import_failed">Impor gagal</string>
+    <string name="import_addon_success">Addon diimpor: %d paket sumber daya, %d paket perilaku</string>
 
     <!-- World Management -->
     <string name="world_size">Ukuran: %s</string>

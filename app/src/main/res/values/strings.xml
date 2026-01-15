@@ -195,6 +195,12 @@
     <string name="transfer_success">Transfer completed successfully</string>
     <string name="transfer_failed">Transfer failed</string>
     <string name="transfer_same_location">Content is already in this location</string>
+    <string name="import_content">Import .mcaddon/.mcworld/.mcpack</string>
+    <string name="import_content_title">Import Content</string>
+    <string name="import_content_message">Select .mcworld, .mcpack, or .mcaddon file to import</string>
+    <string name="import_success">Import completed successfully</string>
+    <string name="import_failed">Import failed</string>
+    <string name="import_addon_success">Addon imported: %d resource pack(s), %d behavior pack(s)</string>
 
     <!-- World Management -->
     <string name="world_size">Size: %s</string>

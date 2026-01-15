@@ -188,6 +188,12 @@
     <string name="transfer_success">传输成功</string>
     <string name="transfer_failed">传输失败</string>
     <string name="transfer_same_location">内容已在此位置</string>
+    <string name="import_content">导入 .mcaddon/.mcworld/.mcpack</string>
+    <string name="import_content_title">导入内容</string>
+    <string name="import_content_message">选择 .mcworld、.mcpack 或 .mcaddon 文件以导入</string>
+    <string name="import_success">导入成功</string>
+    <string name="import_failed">导入失败</string>
+    <string name="import_addon_success">已导入附加包：%d 个资源包，%d 个行为包</string>
 
     <!-- World Management -->
     <string name="world_size">大小：%s</string>
