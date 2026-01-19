@@ -327,7 +327,7 @@
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
-                                android:src="@drawable/ic_mod_menu"
+                                android:src="@drawable/ic_leaf_logo"
                                 android:tint="#888888" />
 
                             <TextView
