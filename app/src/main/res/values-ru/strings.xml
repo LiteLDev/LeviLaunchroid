@@ -432,6 +432,8 @@
     <string name="mod_menu_settings_coming">Настройки скоро появятся</string>
     <string name="mod_menu_notifications">Уведомления</string>
     <string name="mod_menu_notifications_desc">Показывать уведомление при включении модов</string>
+    <string name="mod_menu_opacity">Прозрачность мод-меню</string>
+    <string name="mod_menu_button_opacity">Прозрачность кнопки мод-меню</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">Мод-меню включено</string>
     <string name="mod_menu_disabled">Мод-меню выключено</string>

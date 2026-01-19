@@ -122,9 +122,13 @@ public class ModMenuButton {
     
     private void applyOpacity() {
         if (buttonView != null) {
-            int opacity = InbuiltModManager.getInstance(activity).getOverlayOpacity(MOD_MENU_ID);
+            int opacity = InbuiltModManager.getInstance(activity).getModMenuButtonOpacity();
             buttonView.setAlpha(opacity / 100f);
         }
+    }
+
+    private void applyButtonOpacity() {
+        applyOpacity();
     }
 
     private boolean handleTouch(View v, MotionEvent event) {
@@ -203,14 +207,17 @@ public class ModMenuButton {
     private void onButtonClick() {
         if (menuOverlay == null) {
             menuOverlay = new ModMenuOverlay(activity);
-            menuOverlay.setCallback(new ModMenuOverlay.ModMenuCallback() {
+            menuOverlay.setCallback(new ModMenuOverlay.ModMenuButtonCallback() {
                 @Override
                 public void onModToggled(String modId, boolean enabled) {
-                    // ModMenuOverlay already calls InbuiltOverlayManager directly
                 }
                 @Override
                 public void onModConfigRequested(InbuiltMod mod) {
                     showConfigDialog(mod);
+                }
+                @Override
+                public void onButtonOpacityChanged(int opacity) {
+                    applyButtonOpacity();
                 }
             });
         }

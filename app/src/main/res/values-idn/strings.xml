@@ -436,6 +436,8 @@
     <string name="mod_menu_settings_coming">Pengaturan segera hadir</string>
     <string name="mod_menu_notifications">Notifikasi</string>
     <string name="mod_menu_notifications_desc">Tampilkan notifikasi saat mengaktifkan mod</string>
+    <string name="mod_menu_opacity">Opasitas Menu Mod</string>
+    <string name="mod_menu_button_opacity">Opasitas Tombol Menu Mod</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">Menu Mod diaktifkan</string>
     <string name="mod_menu_disabled">Menu Mod dinonaktifkan</string>

@@ -22,6 +22,8 @@ public class InbuiltModManager {
     private static final String KEY_OVERLAY_OPACITY_PREFIX = "overlay_opacity_";
     private static final String KEY_MOD_MENU_ENABLED = "mod_menu_enabled";
     private static final String KEY_NOTIFICATIONS_ENABLED = "notifications_enabled";
+    private static final String KEY_MOD_MENU_OPACITY = "mod_menu_opacity";
+    private static final String KEY_MOD_MENU_BUTTON_OPACITY = "mod_menu_button_opacity";
     private static final String KEY_ZOOM_LEVEL = "zoom_level";
     private static final String KEY_ZOOM_KEYBIND = "zoom_keybind";
     private static final String KEY_OVERLAY_POSITION_X_PREFIX = "overlay_pos_x_";
@@ -164,6 +166,22 @@ public class InbuiltModManager {
 
     public void setNotificationsEnabled(boolean enabled) {
         prefs.edit().putBoolean(KEY_NOTIFICATIONS_ENABLED, enabled).apply();
+    }
+
+    public int getModMenuOpacity() {
+        return prefs.getInt(KEY_MOD_MENU_OPACITY, DEFAULT_OVERLAY_OPACITY);
+    }
+
+    public void setModMenuOpacity(int opacity) {
+        prefs.edit().putInt(KEY_MOD_MENU_OPACITY, Math.max(0, Math.min(100, opacity))).apply();
+    }
+
+    public int getModMenuButtonOpacity() {
+        return prefs.getInt(KEY_MOD_MENU_BUTTON_OPACITY, DEFAULT_OVERLAY_OPACITY);
+    }
+
+    public void setModMenuButtonOpacity(int opacity) {
+        prefs.edit().putInt(KEY_MOD_MENU_BUTTON_OPACITY, Math.max(0, Math.min(100, opacity))).apply();
     }
 
     public int getZoomLevel() {

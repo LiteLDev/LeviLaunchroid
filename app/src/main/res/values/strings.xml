@@ -436,6 +436,8 @@
     <string name="mod_menu_settings_coming">Settings coming soon</string>
     <string name="mod_menu_notifications">Notifications</string>
     <string name="mod_menu_notifications_desc">Show notification when enabling mods</string>
+    <string name="mod_menu_opacity">Mod Menu Opacity</string>
+    <string name="mod_menu_button_opacity">Mod Menu Button Opacity</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">Mod Menu enabled</string>
     <string name="mod_menu_disabled">Mod Menu disabled</string>

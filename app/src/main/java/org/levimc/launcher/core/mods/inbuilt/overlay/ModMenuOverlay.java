@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -44,6 +45,10 @@ public class ModMenuOverlay {
     private View modulesContainer;
     private View emptyState;
     private Switch notificationsSwitch;
+    private SeekBar modMenuOpacitySeekBar;
+    private TextView modMenuOpacityText;
+    private SeekBar modMenuButtonOpacitySeekBar;
+    private TextView modMenuButtonOpacityText;
     
     private List<InbuiltMod> allMods = new ArrayList<>();
     private List<InbuiltMod> filteredMods = new ArrayList<>();
@@ -54,6 +59,10 @@ public class ModMenuOverlay {
     public interface ModMenuCallback {
         void onModToggled(String modId, boolean enabled);
         void onModConfigRequested(InbuiltMod mod);
+    }
+
+    public interface ModMenuButtonCallback extends ModMenuCallback {
+        void onButtonOpacityChanged(int opacity);
     }
     
     public ModMenuOverlay(Activity activity) {
@@ -166,6 +175,50 @@ public class ModMenuOverlay {
         notificationsSwitch.setOnCheckedChangeListener((btn, checked) -> {
             modManager.setNotificationsEnabled(checked);
         });
+
+        modMenuOpacitySeekBar = overlayView.findViewById(R.id.seekbar_mod_menu_opacity);
+        modMenuOpacityText = overlayView.findViewById(R.id.text_mod_menu_opacity);
+        int currentMenuOpacity = modManager.getModMenuOpacity();
+        modMenuOpacitySeekBar.setProgress(currentMenuOpacity);
+        modMenuOpacityText.setText(currentMenuOpacity + "%");
+        modMenuOpacitySeekBar.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(android.widget.SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    modMenuOpacityText.setText(progress + "%");
+                    modManager.setModMenuOpacity(progress);
+                    applyMenuOpacity();
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(android.widget.SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(android.widget.SeekBar seekBar) {}
+        });
+
+        modMenuButtonOpacitySeekBar = overlayView.findViewById(R.id.seekbar_mod_menu_button_opacity);
+        modMenuButtonOpacityText = overlayView.findViewById(R.id.text_mod_menu_button_opacity);
+        int currentButtonOpacity = modManager.getModMenuButtonOpacity();
+        modMenuButtonOpacitySeekBar.setProgress(currentButtonOpacity);
+        modMenuButtonOpacityText.setText(currentButtonOpacity + "%");
+        modMenuButtonOpacitySeekBar.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(android.widget.SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    modMenuButtonOpacityText.setText(progress + "%");
+                    modManager.setModMenuButtonOpacity(progress);
+                    if (callback != null && callback instanceof ModMenuButtonCallback) {
+                        ((ModMenuButtonCallback) callback).onButtonOpacityChanged(progress);
+                    }
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(android.widget.SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(android.widget.SeekBar seekBar) {}
+        });
+        
+        applyMenuOpacity();
         
         // Setup RecyclerView
         modsRecycler.setLayoutManager(new GridLayoutManager(activity, 3));
@@ -249,6 +302,16 @@ public class ModMenuOverlay {
         String currentQuery = searchInput != null ? searchInput.getText().toString() : "";
         if (!currentQuery.isEmpty()) {
             filterMods(currentQuery);
+        }
+    }
+
+    private void applyMenuOpacity() {
+        if (overlayView != null) {
+            View menuContainer = overlayView.findViewById(R.id.mod_menu_container);
+            if (menuContainer != null) {
+                int opacity = InbuiltModManager.getInstance(activity).getModMenuOpacity();
+                menuContainer.setAlpha(opacity / 100f);
+            }
         }
     }
     

@@ -428,6 +428,8 @@
     <string name="mod_menu_settings_coming">设置即将推出</string>
     <string name="mod_menu_notifications">通知</string>
     <string name="mod_menu_notifications_desc">启用模组时显示通知</string>
+    <string name="mod_menu_opacity">模组菜单不透明度</string>
+    <string name="mod_menu_button_opacity">模组菜单按钮不透明度</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">模组菜单已启用</string>
     <string name="mod_menu_disabled">模组菜单已禁用</string>
