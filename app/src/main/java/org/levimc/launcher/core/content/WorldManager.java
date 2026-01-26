@@ -204,7 +204,7 @@ public class WorldManager {
         while ((entry = zis.getNextEntry()) != null) {
             File entryFile = new File(targetDir, entry.getName());
 
-            if (!entryFile.getCanonicalPath().startsWith(targetDir.getCanonicalPath())) {
+            if (!entryFile.getCanonicalPath().getPath().startsWith(targetDir.getCanonicalPath().getPath())) {
                 continue;
             }
             
