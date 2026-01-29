@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.levimc.launcher.R;
@@ -85,6 +86,7 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
             case ModIds.ZOOM -> R.drawable.ic_zoom;
             case ModIds.FPS_DISPLAY -> R.drawable.ic_fps;
             case ModIds.CPS_DISPLAY -> R.drawable.ic_cps;
+            case ModIds.SNAPLOOK -> R.drawable.ic_snaplook;
             default -> R.drawable.ic_settings;
         };
     }
@@ -96,7 +98,7 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.getWindow().setLayout(
-                (int) (context.getResources().getDisplayMetrics().widthPixels * 0.9),
+                ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             );
         }
@@ -111,10 +113,13 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
         LinearLayout zoomContainer = dialog.findViewById(R.id.config_zoom_container);
         SeekBar seekBarZoom = dialog.findViewById(R.id.seekbar_zoom_level);
         TextView textZoom = dialog.findViewById(R.id.text_zoom_level);
+        Button btnZoomKeybind = dialog.findViewById(R.id.btn_zoom_keybind);
         Button btnCancel = dialog.findViewById(R.id.btn_cancel);
         Button btnSave = dialog.findViewById(R.id.btn_save);
 
         InbuiltModManager manager = InbuiltModManager.getInstance(context);
+        final int[] pendingZoomKeybind = {manager.getZoomKeybind()};
+
         title.setText(mod.getName());
 
         int currentSize = manager.getOverlayButtonSize(mod.getId());
@@ -179,6 +184,9 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+
+            btnZoomKeybind.setText(getKeyName(pendingZoomKeybind[0]));
+            btnZoomKeybind.setOnClickListener(v -> showKeybindCaptureDialog(context, btnZoomKeybind, pendingZoomKeybind));
         } else {
             zoomContainer.setVisibility(View.GONE);
         }
@@ -197,12 +205,45 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
             }
             if (mod.getId().equals(ModIds.ZOOM)) {
                 manager.setZoomLevel(seekBarZoom.getProgress());
+                manager.setZoomKeybind(pendingZoomKeybind[0]);
             }
             dialog.dismiss();
         });
         DynamicAnim.applyPressScale(btnSave);
 
         dialog.show();
+    }
+
+    private void showKeybindCaptureDialog(Context context, Button keybindButton, int[] pendingKeybind) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getString(R.string.zoom_keybind_label));
+        builder.setMessage(context.getString(R.string.zoom_keybind_press));
+        builder.setCancelable(true);
+        builder.setNegativeButton(context.getString(R.string.dialog_negative_cancel), null);
+
+        AlertDialog captureDialog = builder.create();
+        captureDialog.setOnKeyListener((dialogInterface, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    captureDialog.dismiss();
+                    return true;
+                }
+                pendingKeybind[0] = keyCode;
+                keybindButton.setText(getKeyName(keyCode));
+                captureDialog.dismiss();
+                return true;
+            }
+            return false;
+        });
+        captureDialog.show();
+    }
+
+    private String getKeyName(int keyCode) {
+        String keyLabel = KeyEvent.keyCodeToString(keyCode);
+        if (keyLabel.startsWith("KEYCODE_")) {
+            keyLabel = keyLabel.substring(8);
+        }
+        return keyLabel;
     }
 
     @Override

@@ -356,6 +356,28 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         });
     }
 
+    public void setTextBoxSelection(final int i, final int i2) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int i3 = i;
+                int i4 = i2;
+                int length = MainActivity.this.keyboardInput.getText().toString().length();
+                if (i3 < 0 || i3 > length) {
+                    i3 = length;
+                }
+                if (i4 < i3) {
+                    i4 = i3;
+                } else if (i4 > length) {
+                    i4 = length;
+                }
+                MainActivity.this.mPauseTextboxUIUpdates = true;
+                MainActivity.this.keyboardInput.setSelection(i3, i4);
+                MainActivity.this.mPauseTextboxUIUpdates = false;
+            }
+        });
+    }
+
     public void trackPurchaseEvent(String contentId, String contentType, String revenue, String clientId, String userId, String playerSessionId, String currencyCode, String eventName) {
     }
 

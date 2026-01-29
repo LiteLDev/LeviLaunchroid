@@ -19,7 +19,7 @@
 
     <!-- About -->
     <string name="about_title">☕ Tentang</string>
-    <string name="copyright">©2024–2025 LeviMC. All rights reserved.</string>
+    <string name="copyright">©2024–2026 LeviMC. All rights reserved.</string>
     <string name="font_license">Aplikasi ini menggunakan font Misans..</string>
     <string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
     <string name="quick_actions_title">Tindakan Cepat</string>
@@ -187,6 +187,20 @@
     <string name="storage_version_isolation">Isolasi Versi</string>
     <string name="select_storage_label">Pilih Penyimpanan:</string>
     <string name="search_hint">Mencari…</string>
+    <string name="search_properties_hint">Cari properti…</string>
+    <string name="no_matching_properties">Tidak ditemukan properti yang cocok</string>
+    <string name="transfer">Transfer</string>
+    <string name="transfer_content">Transfer Konten</string>
+    <string name="transfer_to">Transfer ke:</string>
+    <string name="transfer_success">Transfer berhasil diselesaikan</string>
+    <string name="transfer_failed">Transfer gagal</string>
+    <string name="transfer_same_location">Konten sudah berada di lokasi ini</string>
+    <string name="import_content">Impor .mcaddon/.mcworld/.mcpack</string>
+    <string name="import_content_title">Impor Konten</string>
+    <string name="import_content_message">Pilih file .mcworld, .mcpack, atau .mcaddon untuk diimpor</string>
+    <string name="import_success">Impor berhasil diselesaikan</string>
+    <string name="import_failed">Impor gagal</string>
+    <string name="import_addon_success">Addon diimpor: %d paket sumber daya, %d paket perilaku</string>
 
     <!-- World Management -->
     <string name="world_size">Ukuran: %s</string>
@@ -306,6 +320,7 @@
 
     <string name="crash_title">Aplikasi mengalami kerusakan.</string>
     <string name="crash_back_to_main">Kembali ke Beranda</string>
+    <string name="crash_share_log">Bagikan Log</string>
     <string name="crash_log_file_label">Berkas log:</string>
     <string name="crash_log_file_missing">Berkas log tidak ditemukan atau tidak dapat dibaca.</string>
     <string name="crash_read_failed">Gagal membaca log: %1$s</string>
@@ -353,10 +368,15 @@
     <string name="inbuilt_mod_zoom">Zoom</string>
     <string name="inbuilt_mod_zoom_desc">Tahan untuk memperbesar, seperti zoom OptiFine</string>
     <string name="zoom_level_label">Tingkat Zoom:</string>
+    <string name="zoom_keybind_label">Tombol Zoom:</string>
+    <string name="zoom_keybind_press">Tekan tombol apa saja…</string>
+    <string name="zoom_keybind_tap_to_change">Ketuk untuk mengubah</string>
     <string name="inbuilt_mod_fps_display">Tampilan FPS</string>
     <string name="inbuilt_mod_fps_display_desc">Menampilkan jumlah bingkai per detik saat ini</string>
     <string name="inbuilt_mod_cps_display">Tampilan CPS</string>
     <string name="inbuilt_mod_cps_display_desc">Menampilkan jumlah klik per detik</string>
+    <string name="inbuilt_mod_snaplook">Snaplook</string>
+    <string name="inbuilt_mod_snaplook_desc">Tahan untuk melihat ke belakang dengan cepat (orang ketiga depan)</string>
     <string name="inbuilt_badge">BAWAAN</string>
     <string name="autosprint_key_ctrl">Ctrl Left</string>
     <string name="autosprint_key_shift">Shift</string>
@@ -416,6 +436,8 @@
     <string name="mod_menu_settings_coming">Pengaturan segera hadir</string>
     <string name="mod_menu_notifications">Notifikasi</string>
     <string name="mod_menu_notifications_desc">Tampilkan notifikasi saat mengaktifkan mod</string>
+    <string name="mod_menu_opacity">Opasitas Menu Mod</string>
+    <string name="mod_menu_button_opacity">Opasitas Tombol Menu Mod</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">Menu Mod diaktifkan</string>
     <string name="mod_menu_disabled">Menu Mod dinonaktifkan</string>
@@ -424,5 +446,73 @@
     <string name="mod_status_enabled">Diaktifkan</string>
     <string name="mod_status_disabled">Dinonaktifkan</string>
     <string name="mod_notification_enabled">%s diaktifkan</string>
+
+    <!-- Options Editor -->
+    <string name="edit_options">Edit Opsi</string>
+    <string name="options_file_not_found">File opsi tidak ditemukan</string>
+    <string name="no_options_found">Tidak ada opsi ditemukan</string>
+    <string name="search_options_hint">Cari opsi…</string>
+    <string name="no_matching_options">Tidak ada opsi yang cocok</string>
+    <string name="error_loading_options">Gagal memuat opsi</string>
+    <string name="options_saved">Opsi berhasil disimpan</string>
+
+    <!-- Quick Launch -->
+    <string name="quick_launch_title">Peluncuran Cepat</string>
+    <string name="quick_launch_subtitle">Luncurkan Minecraft dengan tindakan tertentu menggunakan protokol URI</string>
+    <string name="quick_launch_how_to_play">Cara Bermain</string>
+    <string name="quick_launch_how_to_play_desc">Buka layar Cara Bermain</string>
+    <string name="quick_launch_servers_tab">Tab Server</string>
+    <string name="quick_launch_servers_tab_desc">Buka tab server di menu main</string>
+    <string name="quick_launch_profile">Profil / Kamar Ganti</string>
+    <string name="quick_launch_profile_desc">Buka layar kustomisasi karakter</string>
+    <string name="quick_launch_store_home">Beranda Marketplace</string>
+    <string name="quick_launch_store_home_desc">Buka layar beranda Marketplace</string>
+    <string name="quick_launch_minecoins">Minecoins</string>
+    <string name="quick_launch_minecoins_desc">Buka layar pembelian Minecoins</string>
+    <string name="quick_launch_marketplace_pass">Marketplace Pass</string>
+    <string name="quick_launch_marketplace_pass_desc">Buka layar langganan Marketplace Pass</string>
+    <string name="quick_launch_connect_server">Hubungkan ke Server</string>
+    <string name="quick_launch_connect_server_desc">Hubungkan langsung ke server Bedrock</string>
+    <string name="quick_launch_add_server">Tambah Server Eksternal</string>
+    <string name="quick_launch_add_server_desc">Tambah server baru ke daftar server Anda</string>
+    <string name="quick_launch_realm_invite">Gabung Realm</string>
+    <string name="quick_launch_realm_invite_desc">Terima kode undangan Realm</string>
+    <string name="quick_launch_load_world">Muat Dunia</string>
+    <string name="quick_launch_load_world_desc">Muat dunia lokal berdasarkan nama</string>
+    <string name="quick_launch_command">Jalankan Perintah</string>
+    <string name="quick_launch_command_desc">Jalankan perintah slash di dalam game</string>
+    <string name="quick_launch_custom_uri">URI Kustom</string>
+    <string name="quick_launch_custom_uri_desc">Masukkan URI minecraft:// kustom</string>
+
+    <!-- Quick Launch Dialogs -->
+    <string name="server_ip_hint">Alamat IP Server</string>
+    <string name="server_port_hint">Port (default: 19132)</string>
+    <string name="server_name_hint">Nama Server</string>
+    <string name="realm_invite_code_hint">Kode Undangan Realm</string>
+    <string name="world_name_hint">Nama Dunia</string>
+    <string name="command_hint">Perintah (tanpa /)</string>
+    <string name="command_warning">Catatan: Ini akan memutuskan koneksi Anda jika digunakan di dunia lokal</string>
+    <string name="uri_hint">minecraft://…</string>
+    <string name="custom_uri_hint">Masukkan URI minecraft:// lengkap. Contoh:\nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
+    <string name="select_tab">Pilih Tab:</string>
+
+    <!-- Quick Launch Validation -->
+    <string name="server_ip_required">IP Server diperlukan</string>
+    <string name="server_details_required">Nama dan IP server diperlukan</string>
+    <string name="invalid_port">Nomor port tidak valid</string>
+    <string name="invite_code_required">Kode undangan diperlukan</string>
+    <string name="world_name_required">Nama dunia diperlukan</string>
+    <string name="command_required">Perintah diperlukan</string>
+    <string name="invalid_minecraft_uri">URI minecraft:// tidak valid</string>
+
+    <!-- Quick Launch Actions -->
+    <string name="connect">Hubungkan</string>
+    <string name="join">Gabung</string>
+    <string name="load">Muat</string>
+    <string name="execute">Jalankan</string>
+
+    <!-- Quick Actions Menu -->
+    <string name="quick_launch">Peluncuran Cepat</string>
+    <string name="quick_launch_menu_subtitle">Luncurkan dengan tindakan URI</string>
 
 </resources>

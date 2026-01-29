@@ -36,9 +36,9 @@
 
             <TextView
                 android:id="@+id/title_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginEnd="12dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/misans"
                 android:maxLines="1"
@@ -46,6 +46,23 @@
                 android:textColor="@color/on_surface"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/search_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/bg_search_box"
+                android:fontFamily="@font/misans"
+                android:hint="@string/search_properties_hint"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:textColor="@color/on_surface"
+                android:textColorHint="@color/on_surface"
+                android:textSize="13sp" />
 
             <Button
                 android:id="@+id/save_button"

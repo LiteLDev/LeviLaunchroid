@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_background_small"
+    android:layout_marginVertical="4dp"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/property_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/misans"
+            android:textColor="@color/on_surface"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/property_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/misans"
+            android:textColor="@color/on_surface"
+            android:textSize="11sp"
+            android:alpha="0.6" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/property_value"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_search_box"
+        android:fontFamily="@font/misans"
+        android:padding="8dp"
+        android:textColor="@color/on_surface"
+        android:textSize="13sp"
+        android:maxLines="1"
+        android:inputType="text"
+        android:imeOptions="actionDone" />
+</LinearLayout>

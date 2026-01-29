@@ -19,7 +19,7 @@
 
     <!-- О приложении -->
     <string name="about_title">☕ О приложении</string>
-    <string name="copyright">©2024–2025 LeviMC. Все права защищены.</string>
+    <string name="copyright">©2024–2026 LeviMC. Все права защищены.</string>
     <string name="font_license">Это приложение использует шрифт Misans.</string>
     <string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
     <string name="quick_actions_title">Быстрые действия</string>
@@ -182,7 +182,20 @@
     <string name="storage_version_isolation">Изоляция версии</string>
     <string name="select_storage_label">Выберите хранилище:</string>
     <string name="search_hint">Поиск…</string>
-
+    <string name="search_properties_hint">Поиск свойств…</string>
+    <string name="no_matching_properties">Подходящие свойства не найдены</string>
+    <string name="transfer">Перенос</string>
+    <string name="transfer_content">Перенос контента</string>
+    <string name="transfer_to">Перенести в:</string>
+    <string name="transfer_success">Перенос успешно завершен</string>
+    <string name="transfer_failed">Ошибка переноса</string>
+    <string name="transfer_same_location">Контент уже находится в этом месте</string>
+    <string name="import_content">Импорт .mcaddon/.mcworld/.mcpack</string>
+    <string name="import_content_title">Импорт контента</string>
+    <string name="import_content_message">Выберите файл .mcworld, .mcpack или .mcaddon для импорта</string>
+    <string name="import_success">Импорт успешно завершен</string>
+    <string name="import_failed">Ошибка импорта</string>
+    <string name="import_addon_success">Аддон импортирован: наборов ресурсов — %d, наборов параметров — %d</string>
 
     <!-- World Management -->
     <string name="world_size">Размер: %s</string>
@@ -302,6 +315,7 @@
 
     <string name="crash_title">Приложение аварийно завершило работу</string>
     <string name="crash_back_to_main">Вернуться на главную</string>
+    <string name="crash_share_log">Поделиться логом</string>
     <string name="crash_log_file_label">Файл журнала:</string>
     <string name="crash_log_file_missing">Файл журнала не найден или недоступен для чтения.</string>
     <string name="crash_read_failed">Не удалось прочитать журнал: %1$s</string>
@@ -350,10 +364,15 @@
     <string name="inbuilt_mod_zoom">Зум</string>
     <string name="inbuilt_mod_zoom_desc">Удерживайте для приближения, как в OptiFine</string>
     <string name="zoom_level_label">Уровень масштаба:</string>
+    <string name="zoom_keybind_label">Клавиша приближения:</string>
+    <string name="zoom_keybind_press">Нажмите любую клавишу…</string>
+    <string name="zoom_keybind_tap_to_change">Нажмите, чтобы изменить</string>
     <string name="inbuilt_mod_fps_display">Отображение FPS</string>
     <string name="inbuilt_mod_fps_display_desc">Показывает текущую частоту кадров в секунду</string>
     <string name="inbuilt_mod_cps_display">Отображение CPS</string>
     <string name="inbuilt_mod_cps_display_desc">Показывает количество кликов в секунду</string>
+    <string name="inbuilt_mod_snaplook">Быстрый взгляд назад</string>
+    <string name="inbuilt_mod_snaplook_desc">Удерживайте для быстрого взгляда назад (вид спереди от третьего лица)</string>
     <string name="inbuilt_badge">ВСТРОЕН</string>
     <string name="autosprint_key_ctrl">Левый Ctrl</string>
     <string name="autosprint_key_shift">Shift</string>
@@ -413,6 +432,8 @@
     <string name="mod_menu_settings_coming">Настройки скоро появятся</string>
     <string name="mod_menu_notifications">Уведомления</string>
     <string name="mod_menu_notifications_desc">Показывать уведомление при включении модов</string>
+    <string name="mod_menu_opacity">Прозрачность мод-меню</string>
+    <string name="mod_menu_button_opacity">Прозрачность кнопки мод-меню</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">Мод-меню включено</string>
     <string name="mod_menu_disabled">Мод-меню выключено</string>
@@ -421,5 +442,73 @@
     <string name="mod_status_enabled">Включено</string>
     <string name="mod_status_disabled">Выключено</string>
     <string name="mod_notification_enabled">%s включено</string>
+
+    <!-- Options Editor -->
+    <string name="edit_options">Редактировать настройки</string>
+    <string name="options_file_not_found">Файл настроек не найден</string>
+    <string name="no_options_found">Настройки не найдены</string>
+    <string name="search_options_hint">Поиск настроек…</string>
+    <string name="no_matching_options">Совпадающие настройки не найдены</string>
+    <string name="error_loading_options">Ошибка загрузки настроек</string>
+    <string name="options_saved">Настройки успешно сохранены</string>
+
+    <!-- Quick Launch -->
+    <string name="quick_launch_title">Быстрый запуск</string>
+    <string name="quick_launch_subtitle">Запуск Minecraft с определенными действиями через протокол URI</string>
+    <string name="quick_launch_how_to_play">Как играть</string>
+    <string name="quick_launch_how_to_play_desc">Открыть экран «Как играть»</string>
+    <string name="quick_launch_servers_tab">Вкладка серверов</string>
+    <string name="quick_launch_servers_tab_desc">Открыть вкладку серверов в меню игры</string>
+    <string name="quick_launch_profile">Профиль / Гардеробная</string>
+    <string name="quick_launch_profile_desc">Открыть экран настройки персонажа</string>
+    <string name="quick_launch_store_home">Главная Рынка</string>
+    <string name="quick_launch_store_home_desc">Открыть главную страницу Рынка (Marketplace)</string>
+    <string name="quick_launch_minecoins">Minecoins</string>
+    <string name="quick_launch_minecoins_desc">Открыть экран покупки Minecoins</string>
+    <string name="quick_launch_marketplace_pass">Marketplace Pass</string>
+    <string name="quick_launch_marketplace_pass_desc">Открыть экран подписки Marketplace Pass</string>
+    <string name="quick_launch_connect_server">Подключиться к серверу</string>
+    <string name="quick_launch_connect_server_desc">Прямое подключение к серверу Bedrock</string>
+    <string name="quick_launch_add_server">Добавить внешний сервер</string>
+    <string name="quick_launch_add_server_desc">Добавить новый сервер в список серверов</string>
+    <string name="quick_launch_realm_invite">Присоединиться к Realm</string>
+    <string name="quick_launch_realm_invite_desc">Принять код приглашения в Realm</string>
+    <string name="quick_launch_load_world">Загрузить мир</string>
+    <string name="quick_launch_load_world_desc">Загрузить локальный мир по названию</string>
+    <string name="quick_launch_command">Выполнить команду</string>
+    <string name="quick_launch_command_desc">Выполнить команду со слэшем в игре</string>
+    <string name="quick_launch_custom_uri">Пользовательский URI</string>
+    <string name="quick_launch_custom_uri_desc">Введите собственный minecraft:// URI</string>
+
+    <!-- Quick Launch Dialogs -->
+    <string name="server_ip_hint">IP-адрес сервера</string>
+    <string name="server_port_hint">Порт (по умолчанию: 19132)</string>
+    <string name="server_name_hint">Название сервера</string>
+    <string name="realm_invite_code_hint">Код приглашения Realm</string>
+    <string name="world_name_hint">Название мира</string>
+    <string name="command_hint">Команда (без /)</string>
+    <string name="command_warning">Примечание: это приведет к отключению, если используется в локальном мире</string>
+    <string name="uri_hint">minecraft://…</string>
+    <string name="custom_uri_hint">Введите полный minecraft:// URI. Примеры:\nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
+    <string name="select_tab">Выберите вкладку:</string>
+
+    <!-- Quick Launch Validation -->
+    <string name="server_ip_required">Требуется IP сервера</string>
+    <string name="server_details_required">Требуются название и IP сервера</string>
+    <string name="invalid_port">Неверный номер порта</string>
+    <string name="invite_code_required">Требуется код приглашения</string>
+    <string name="world_name_required">Требуется название мира</string>
+    <string name="command_required">Требуется команда</string>
+    <string name="invalid_minecraft_uri">Недопустимый minecraft:// URI</string>
+
+    <!-- Quick Launch Actions -->
+    <string name="connect">Подключиться</string>
+    <string name="join">Войти</string>
+    <string name="load">Загрузить</string>
+    <string name="execute">Выполнить</string>
+
+    <!-- Quick Actions Menu -->
+    <string name="quick_launch">Быстрый запуск</string>
+    <string name="quick_launch_menu_subtitle">Запуск с URI-действиями</string>
 
 </resources>

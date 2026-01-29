@@ -19,7 +19,7 @@
 
     <!-- About -->
     <string name="about_title">☕ About</string>
-    <string name="copyright">©2024–2025 LeviMC. All rights reserved.</string>
+    <string name="copyright">©2024–2026 LeviMC. All rights reserved.</string>
     <string name="font_license">This app uses the Misans font.</string>
     <string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
     <string name="quick_actions_title">Quick Actions</string>
@@ -187,6 +187,20 @@
     <string name="storage_version_isolation">Version Isolation</string>
     <string name="select_storage_label">Select Storage:</string>
     <string name="search_hint">Search…</string>
+    <string name="search_properties_hint">Search properties…</string>
+    <string name="no_matching_properties">No matching properties found</string>
+    <string name="transfer">Transfer</string>
+    <string name="transfer_content">Transfer Content</string>
+    <string name="transfer_to">Transfer to:</string>
+    <string name="transfer_success">Transfer completed successfully</string>
+    <string name="transfer_failed">Transfer failed</string>
+    <string name="transfer_same_location">Content is already in this location</string>
+    <string name="import_content">Import .mcaddon/.mcworld/.mcpack</string>
+    <string name="import_content_title">Import Content</string>
+    <string name="import_content_message">Select .mcworld, .mcpack, or .mcaddon file to import</string>
+    <string name="import_success">Import completed successfully</string>
+    <string name="import_failed">Import failed</string>
+    <string name="import_addon_success">Addon imported: %d resource pack(s), %d behavior pack(s)</string>
 
     <!-- World Management -->
     <string name="world_size">Size: %s</string>
@@ -306,6 +320,7 @@
 
     <string name="crash_title">Application crashed</string>
     <string name="crash_back_to_main">Back to Home</string>
+    <string name="crash_share_log">Share Log</string>
     <string name="crash_log_file_label">Log file:</string>
     <string name="crash_log_file_missing">Log file not found or unreadable.</string>
     <string name="crash_read_failed">Failed to read log: %1$s</string>
@@ -353,10 +368,15 @@
     <string name="inbuilt_mod_zoom">Zoom</string>
     <string name="inbuilt_mod_zoom_desc">Hold to zoom in, like OptiFine zoom</string>
     <string name="zoom_level_label">Zoom Level:</string>
+    <string name="zoom_keybind_label">Zoom Keybind:</string>
+    <string name="zoom_keybind_press">Press any key…</string>
+    <string name="zoom_keybind_tap_to_change">Tap to change</string>
     <string name="inbuilt_mod_fps_display">FPS Display</string>
     <string name="inbuilt_mod_fps_display_desc">Shows current frames per second</string>
     <string name="inbuilt_mod_cps_display">CPS Display</string>
     <string name="inbuilt_mod_cps_display_desc">Shows clicks per second</string>
+    <string name="inbuilt_mod_snaplook">Snaplook</string>
+    <string name="inbuilt_mod_snaplook_desc">Hold to quickly look behind you (third person front)</string>
     <string name="inbuilt_badge">INBUILT</string>
     <string name="autosprint_key_ctrl">Ctrl Left</string>
     <string name="autosprint_key_shift">Shift</string>
@@ -416,6 +436,8 @@
     <string name="mod_menu_settings_coming">Settings coming soon</string>
     <string name="mod_menu_notifications">Notifications</string>
     <string name="mod_menu_notifications_desc">Show notification when enabling mods</string>
+    <string name="mod_menu_opacity">Mod Menu Opacity</string>
+    <string name="mod_menu_button_opacity">Mod Menu Button Opacity</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">Mod Menu enabled</string>
     <string name="mod_menu_disabled">Mod Menu disabled</string>
@@ -424,5 +446,73 @@
     <string name="mod_status_enabled">Enabled</string>
     <string name="mod_status_disabled">Disabled</string>
     <string name="mod_notification_enabled">%s enabled</string>
+
+    <!-- Options Editor -->
+    <string name="edit_options">Edit Options</string>
+    <string name="options_file_not_found">Options file not found</string>
+    <string name="no_options_found">No options found</string>
+    <string name="search_options_hint">Search options…</string>
+    <string name="no_matching_options">No matching options found</string>
+    <string name="error_loading_options">Error loading options</string>
+    <string name="options_saved">Options saved successfully</string>
+
+    <!-- Quick Launch -->
+    <string name="quick_launch_title">Quick Launch</string>
+    <string name="quick_launch_subtitle">Launch Minecraft with specific actions using URI protocol</string>
+    <string name="quick_launch_how_to_play">How to Play</string>
+    <string name="quick_launch_how_to_play_desc">Open the How to Play screen</string>
+    <string name="quick_launch_servers_tab">Servers Tab</string>
+    <string name="quick_launch_servers_tab_desc">Open the servers tab in the play menu</string>
+    <string name="quick_launch_profile">Profile / Dressing Room</string>
+    <string name="quick_launch_profile_desc">Open your character customization screen</string>
+    <string name="quick_launch_store_home">Marketplace Home</string>
+    <string name="quick_launch_store_home_desc">Open the Marketplace home screen</string>
+    <string name="quick_launch_minecoins">Minecoins</string>
+    <string name="quick_launch_minecoins_desc">Open the Minecoins purchase screen</string>
+    <string name="quick_launch_marketplace_pass">Marketplace Pass</string>
+    <string name="quick_launch_marketplace_pass_desc">Open the Marketplace Pass subscription screen</string>
+    <string name="quick_launch_connect_server">Connect to Server</string>
+    <string name="quick_launch_connect_server_desc">Connect directly to a Bedrock server</string>
+    <string name="quick_launch_add_server">Add External Server</string>
+    <string name="quick_launch_add_server_desc">Add a new server to your server list</string>
+    <string name="quick_launch_realm_invite">Join Realm</string>
+    <string name="quick_launch_realm_invite_desc">Accept a Realm invite code</string>
+    <string name="quick_launch_load_world">Load World</string>
+    <string name="quick_launch_load_world_desc">Load a local world by name</string>
+    <string name="quick_launch_command">Execute Command</string>
+    <string name="quick_launch_command_desc">Execute a slash command in-game</string>
+    <string name="quick_launch_custom_uri">Custom URI</string>
+    <string name="quick_launch_custom_uri_desc">Enter a custom minecraft:// URI</string>
+
+    <!-- Quick Launch Dialogs -->
+    <string name="server_ip_hint">Server IP Address</string>
+    <string name="server_port_hint">Port (default: 19132)</string>
+    <string name="server_name_hint">Server Name</string>
+    <string name="realm_invite_code_hint">Realm Invite Code</string>
+    <string name="world_name_hint">World Name</string>
+    <string name="command_hint">Command (without /)</string>
+    <string name="command_warning">Note: This will disconnect you if used in a local world</string>
+    <string name="uri_hint">minecraft://…</string>
+    <string name="custom_uri_hint">Enter a full minecraft:// URI. Examples:\nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
+    <string name="select_tab">Select Tab:</string>
+
+    <!-- Quick Launch Validation -->
+    <string name="server_ip_required">Server IP is required</string>
+    <string name="server_details_required">Server name and IP are required</string>
+    <string name="invalid_port">Invalid port number</string>
+    <string name="invite_code_required">Invite code is required</string>
+    <string name="world_name_required">World name is required</string>
+    <string name="command_required">Command is required</string>
+    <string name="invalid_minecraft_uri">Invalid minecraft:// URI</string>
+
+    <!-- Quick Launch Actions -->
+    <string name="connect">Connect</string>
+    <string name="join">Join</string>
+    <string name="load">Load</string>
+    <string name="execute">Execute</string>
+
+    <!-- Quick Actions Menu -->
+    <string name="quick_launch">Quick Launch</string>
+    <string name="quick_launch_menu_subtitle">Launch with URI actions</string>
 
 </resources>

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -122,6 +123,7 @@ import okhttp3.OkHttpClient;
         showEulaIfNeeded();
         initModsSection();
         setupOnBackPressedCallback();
+        handleMinecraftUriLaunch();
 
         accountLoginLauncher = registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
@@ -649,6 +651,11 @@ import okhttp3.OkHttpClient;
 
         List<QuickActionsAdapter.QuickActionItem> items = new ArrayList<>();
         items.add(new QuickActionsAdapter.QuickActionItem(
+                R.string.quick_launch,
+                R.string.quick_launch_menu_subtitle,
+                4
+        ));
+        items.add(new QuickActionsAdapter.QuickActionItem(
                 R.string.content_management,
                 R.string.content_management_subtitle,
                 1
@@ -658,7 +665,6 @@ import okhttp3.OkHttpClient;
                 R.string.import_apk_subtitle,
                 2
         ));
-
         items.add(new QuickActionsAdapter.QuickActionItem(
                 R.string.microsoft_accounts,
                 R.string.manage_accounts,
@@ -673,6 +679,10 @@ import okhttp3.OkHttpClient;
                 case 2 -> startApkFilePicker();
                 case 3 -> {
                     Intent intent = new Intent(this, AccountsActivity.class);
+                    startActivity(intent);
+                }
+                case 4 -> {
+                    Intent intent = new Intent(this, QuickLaunchActivity.class);
                     startActivity(intent);
                 }
             }
@@ -855,7 +865,14 @@ import okhttp3.OkHttpClient;
 
     private void handleIncomingFiles() {
         if (fileHandler == null) return;
-        fileHandler.processIncomingFilesWithConfirmation(getIntent(), new FileHandler.FileOperationCallback() {
+        Intent intent = getIntent();
+        if (intent != null && intent.getData() != null) {
+            Uri data = intent.getData();
+            if ("minecraft".equals(data.getScheme())) {
+                return;
+            }
+        }
+        fileHandler.processIncomingFilesWithConfirmation(intent, new FileHandler.FileOperationCallback() {
             @Override
             public void onSuccess(int processedFiles) {
                 if (processedFiles > 0)
@@ -871,6 +888,14 @@ import okhttp3.OkHttpClient;
                 if (binding != null) binding.progressLoader.setProgress(progress);
             }
         }, false);
+    }
+
+    private void handleMinecraftUriLaunch() {
+        Intent intent = getIntent();
+        if (intent == null) return;
+        if (intent.getBooleanExtra("LAUNCH_WITH_URI", false)) {
+            binding.getRoot().post(this::launchGame);
+        }
     }
 
     private void updateModsUI(List<Mod> mods) {

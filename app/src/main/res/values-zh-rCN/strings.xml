@@ -17,7 +17,7 @@
 
     <!-- About -->
     <string name="about_title">☕ 关于</string>
-    <string name="copyright">©2024–2025 LeviMC. 保留所有权利</string>
+    <string name="copyright">©2024–2026 LeviMC. 保留所有权利</string>
     <string name="font_license">本软件使用 Misans 字体</string>
     <string name="quick_actions_title">快捷操作</string>
     <string name="content_management_subtitle">管理世界、资源包和行为包</string>
@@ -180,6 +180,20 @@
     <string name="storage_version_isolation">版本隔离</string>
     <string name="select_storage_label">选择存储：</string>
     <string name="search_hint">搜索…</string>
+    <string name="search_properties_hint">搜索属性…</string>
+    <string name="no_matching_properties">未找到匹配的属性</string>
+    <string name="transfer">传输</string>
+    <string name="transfer_content">传输内容</string>
+    <string name="transfer_to">传输至：</string>
+    <string name="transfer_success">传输成功</string>
+    <string name="transfer_failed">传输失败</string>
+    <string name="transfer_same_location">内容已在此位置</string>
+    <string name="import_content">导入 .mcaddon/.mcworld/.mcpack</string>
+    <string name="import_content_title">导入内容</string>
+    <string name="import_content_message">选择 .mcworld、.mcpack 或 .mcaddon 文件以导入</string>
+    <string name="import_success">导入成功</string>
+    <string name="import_failed">导入失败</string>
+    <string name="import_addon_success">已导入附加包：%d 个资源包，%d 个行为包</string>
 
     <!-- World Management -->
     <string name="world_size">大小：%s</string>
@@ -297,6 +311,7 @@
     <string name="crash_title">应用发生崩溃</string>
     <string name="crash_back_to_main">返回主页面</string>
     <string name="crash_log_file_label">日志文件：</string>
+    <string name="crash_share_log">分享日志</string>
     <string name="crash_log_file_missing">日志文件不存在或不可读。</string>
     <string name="crash_read_failed">读取日志失败：%1$s</string>
     <string name="crash_emergency_label">紧急信息：</string>
@@ -345,10 +360,15 @@
     <string name="inbuilt_mod_zoom">缩放</string>
     <string name="inbuilt_mod_zoom_desc">按住放大，类似 OptiFine 缩放</string>
     <string name="zoom_level_label">缩放级别：</string>
+    <string name="zoom_keybind_label">缩放按键绑定：</string>
+    <string name="zoom_keybind_press">请按任意键…</string>
+    <string name="zoom_keybind_tap_to_change">点击以更改</string>
     <string name="inbuilt_mod_fps_display">FPS 显示</string>
     <string name="inbuilt_mod_fps_display_desc">显示当前每秒帧数</string>
     <string name="inbuilt_mod_cps_display">CPS 显示</string>
     <string name="inbuilt_mod_cps_display_desc">显示每秒点击次数</string>
+    <string name="inbuilt_mod_snaplook">快速回头</string>
+    <string name="inbuilt_mod_snaplook_desc">按住快速查看身后（第三人称正面视角）</string>
     <string name="inbuilt_badge">内置</string>
     <string name="autosprint_key_ctrl">左 Ctrl</string>
     <string name="autosprint_key_shift">Shift</string>
@@ -408,6 +428,8 @@
     <string name="mod_menu_settings_coming">设置即将推出</string>
     <string name="mod_menu_notifications">通知</string>
     <string name="mod_menu_notifications_desc">启用模组时显示通知</string>
+    <string name="mod_menu_opacity">模组菜单不透明度</string>
+    <string name="mod_menu_button_opacity">模组菜单按钮不透明度</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">模组菜单已启用</string>
     <string name="mod_menu_disabled">模组菜单已禁用</string>
@@ -416,5 +438,73 @@
     <string name="mod_status_enabled">已启用</string>
     <string name="mod_status_disabled">已禁用</string>
     <string name="mod_notification_enabled">%s 已启用</string>
+
+    <!-- Options Editor -->
+    <string name="edit_options">编辑选项</string>
+    <string name="options_file_not_found">未找到选项文件</string>
+    <string name="no_options_found">未找到选项</string>
+    <string name="search_options_hint">搜索选项…</string>
+    <string name="no_matching_options">未找到匹配的选项</string>
+    <string name="error_loading_options">加载选项时出错</string>
+    <string name="options_saved">选项保存成功</string>
+
+    <!-- Quick Launch -->
+    <string name="quick_launch_title">快速启动</string>
+    <string name="quick_launch_subtitle">使用 URI 协议执行特定操作并启动 Minecraft</string>
+    <string name="quick_launch_how_to_play">玩法说明</string>
+    <string name="quick_launch_how_to_play_desc">打开“玩法说明”屏幕</string>
+    <string name="quick_launch_servers_tab">服务器选项卡</string>
+    <string name="quick_launch_servers_tab_desc">在游戏菜单中打开服务器选项卡</string>
+    <string name="quick_launch_profile">个人资料 / 更衣室</string>
+    <string name="quick_launch_profile_desc">打开您的角色自定义屏幕</string>
+    <string name="quick_launch_store_home">市场首页</string>
+    <string name="quick_launch_store_home_desc">打开市场首页屏幕</string>
+    <string name="quick_launch_minecoins">Minecoins</string>
+    <string name="quick_launch_minecoins_desc">打开 Minecoins 购买屏幕</string>
+    <string name="quick_launch_marketplace_pass">市场通行证</string>
+    <string name="quick_launch_marketplace_pass_desc">打开市场通行证订阅屏幕</string>
+    <string name="quick_launch_connect_server">连接到服务器</string>
+    <string name="quick_launch_connect_server_desc">直接连接到基岩版服务器</string>
+    <string name="quick_launch_add_server">添加外部服务器</string>
+    <string name="quick_launch_add_server_desc">向您的服务器列表添加一个新服务器</string>
+    <string name="quick_launch_realm_invite">加入领域</string>
+    <string name="quick_launch_realm_invite_desc">接受领域邀请码</string>
+    <string name="quick_launch_load_world">加载世界</string>
+    <string name="quick_launch_load_world_desc">按名称加载本地世界</string>
+    <string name="quick_launch_command">执行命令</string>
+    <string name="quick_launch_command_desc">在游戏内执行斜杠命令</string>
+    <string name="quick_launch_custom_uri">自定义 URI</string>
+    <string name="quick_launch_custom_uri_desc">输入自定义 minecraft:// URI</string>
+
+    <!-- Quick Launch Dialogs -->
+    <string name="server_ip_hint">服务器 IP 地址</string>
+    <string name="server_port_hint">端口 (默认: 19132)</string>
+    <string name="server_name_hint">服务器名称</string>
+    <string name="realm_invite_code_hint">领域邀请码</string>
+    <string name="world_name_hint">世界名称</string>
+    <string name="command_hint">命令 (不带 /)</string>
+    <string name="command_warning">注意：如果在本地世界中使用，这将会导致您断开连接</string>
+    <string name="uri_hint">minecraft://…</string>
+    <string name="custom_uri_hint">输入完整的 minecraft:// URI。例如：\nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
+    <string name="select_tab">选择选项卡：</string>
+
+    <!-- Quick Launch Validation -->
+    <string name="server_ip_required">必须填写服务器 IP</string>
+    <string name="server_details_required">必须填写服务器名称和 IP</string>
+    <string name="invalid_port">端口号无效</string>
+    <string name="invite_code_required">必须填写邀请码</string>
+    <string name="world_name_required">必须填写世界名称</string>
+    <string name="command_required">必须填写命令</string>
+    <string name="invalid_minecraft_uri">无效的 minecraft:// URI</string>
+
+    <!-- Quick Launch Actions -->
+    <string name="connect">连接</string>
+    <string name="join">加入</string>
+    <string name="load">加载</string>
+    <string name="execute">执行</string>
+
+    <!-- Quick Actions Menu -->
+    <string name="quick_launch">快速启动</string>
+    <string name="quick_launch_menu_subtitle">通过 URI 操作启动</string>
 
  </resources>

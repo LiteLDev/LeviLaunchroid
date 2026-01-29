@@ -10,6 +10,7 @@ import android.util.Log;
 
 import org.levimc.launcher.core.minecraft.MinecraftActivity;
 import org.levimc.launcher.core.minecraft.MinecraftActivityState;
+import org.levimc.launcher.util.MinecraftUriHandler;
 
 import java.util.List;
 
@@ -30,6 +31,13 @@ public class IntentHandler extends BaseActivity {
 
     @SuppressLint("IntentReset")
     private void handleDeepLink(Intent originalIntent) {
+        Uri data = originalIntent.getData();
+
+        if (data != null && MinecraftUriHandler.isMinecraftUri(data)) {
+            handleMinecraftUri(originalIntent, data);
+            return;
+        }
+        
         Intent newIntent = new Intent(originalIntent);
         if (isMinecraftActivityRunning()) {
             newIntent.setClass(this, MinecraftActivity.class);
@@ -48,6 +56,31 @@ public class IntentHandler extends BaseActivity {
         }
 
         startActivity(newIntent);
+        finish();
+    }
+
+    private void handleMinecraftUri(Intent originalIntent, Uri uri) {
+        Log.d(TAG, "Handling Minecraft URI: " + uri.toString());
+        
+        MinecraftUriHandler.MinecraftUri parsedUri = MinecraftUriHandler.parse(uri);
+        if (parsedUri != null) {
+            Log.d(TAG, "Parsed Minecraft URI action: " + parsedUri.action);
+        }
+        
+        Intent newIntent = new Intent(originalIntent);
+        newIntent.putExtra("MINECRAFT_URI", uri.toString());
+        newIntent.putExtra("MINECRAFT_URI_ACTION", parsedUri != null ? parsedUri.action : "");
+        
+        if (isMinecraftActivityRunning()) {
+            newIntent.setClass(this, MinecraftActivity.class);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(newIntent);
+        } else {
+            newIntent.setClass(this, MainActivity.class);
+            newIntent.putExtra("LAUNCH_WITH_URI", true);
+            startActivity(newIntent);
+        }
+        
         finish();
     }
 

@@ -43,7 +43,7 @@ public class CpsDisplayOverlay {
     private boolean isDragging = false;
     private long touchDownTime = 0;
 
-    private View.OnTouchListener gameInputListener;
+    private int lastButtonState = 0;
 
     private final Runnable updateRunnable = new Runnable() {
         @Override
@@ -57,26 +57,63 @@ public class CpsDisplayOverlay {
     public CpsDisplayOverlay(Activity activity) {
         this.activity = activity;
         this.windowManager = (WindowManager) activity.getSystemService(Activity.WINDOW_SERVICE);
-        setupGameInputListener();
-    }
-
-    private void setupGameInputListener() {
-        View decorView = activity.getWindow().getDecorView();
-        decorView.setOnTouchListener((v, event) -> {
-            if (isShowing) {
-                int action = event.getActionMasked();
-                if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) {
-                    registerClick();
-                }
-            }
-            return false;
-        });
     }
 
     public void registerClick() {
         synchronized (clickTimes) {
             clickTimes.add(getTime());
         }
+    }
+
+    public boolean handleTouchEvent(MotionEvent event) {
+        if (!isShowing) return false;
+        
+        int action = event.getActionMasked();
+        int buttonState = event.getButtonState();
+        
+        if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) {
+            if (buttonState == 0) {
+                registerClick();
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    public boolean handleMouseEvent(MotionEvent event) {
+        if (!isShowing) return false;
+        
+        int action = event.getActionMasked();
+        
+        if (action == MotionEvent.ACTION_BUTTON_PRESS) {
+            int buttonState = event.getButtonState();
+            if ((buttonState & MotionEvent.BUTTON_PRIMARY) != 0 && 
+                (lastButtonState & MotionEvent.BUTTON_PRIMARY) == 0) {
+                registerClick();
+            }
+            if ((buttonState & MotionEvent.BUTTON_SECONDARY) != 0 && 
+                (lastButtonState & MotionEvent.BUTTON_SECONDARY) == 0) {
+                registerClick();
+            }
+            lastButtonState = buttonState;
+            return true;
+        } else if (action == MotionEvent.ACTION_BUTTON_RELEASE) {
+            lastButtonState = event.getButtonState();
+            return true;
+        }
+        
+        if (action == MotionEvent.ACTION_DOWN && event.getButtonState() != 0) {
+            int buttonState = event.getButtonState();
+            if ((buttonState & MotionEvent.BUTTON_PRIMARY) != 0 && 
+                (lastButtonState & MotionEvent.BUTTON_PRIMARY) == 0) {
+                registerClick();
+                lastButtonState = buttonState;
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     private double getTime() {

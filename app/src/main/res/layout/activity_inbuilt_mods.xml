@@ -136,7 +136,7 @@
                     <ImageView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@drawable/ic_mod_menu"
+                        android:src="@drawable/ic_leaf_logo"
                         android:tint="@color/primary" />
 
                     <TextView

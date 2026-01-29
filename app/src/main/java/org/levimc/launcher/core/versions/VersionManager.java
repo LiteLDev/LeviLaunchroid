@@ -168,7 +168,25 @@ public class VersionManager {
                     return;
                 }
 
-                long totalSize = getLibsTotalSize(apkFile);
+                List<File> apkFiles = new ArrayList<>();
+                apkFiles.add(apkFile);
+
+                if (!isExtractFalse) {
+                    File splitsDir = new File(versionDir, "splits");
+                    if (splitsDir.exists() && splitsDir.isDirectory()) {
+                        File[] splitApks = splitsDir.listFiles((dir, name) -> name.endsWith(".apk.levi"));
+                        if (splitApks != null) {
+                            for (File splitApk : splitApks) {
+                                apkFiles.add(splitApk);
+                            }
+                        }
+                    }
+                }
+
+                long totalSize = 0;
+                for (File apk : apkFiles) {
+                    totalSize += getLibsTotalSize(apk);
+                }
                 if (totalSize == 0) totalSize = 1;
 
                 File libDir = new File(dataDir, "lib");
@@ -178,28 +196,30 @@ public class VersionManager {
                 long[] progress = {0};
                 int[] lastPercent = {-1};
 
-                try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(new FileInputStream(apkFile)))) {
-                    ZipEntry entry;
-                    byte[] buffer = new byte[BUFFER_SIZE];
-                    while ((entry = zis.getNextEntry()) != null) {
-                        if (entry.getName().startsWith("lib/") && !entry.isDirectory()) {
-                            String[] parts = entry.getName().split("/");
-                            if (parts.length >= 3) {
-                                File outFile = new File(libDir, ApkUtils.abiToSystemLibDir(parts[1]) + "/" + parts[2]);
-                                if (!outFile.getParentFile().exists()) outFile.getParentFile().mkdirs();
+                for (File currentApk : apkFiles) {
+                    try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(new FileInputStream(currentApk)))) {
+                        ZipEntry entry;
+                        byte[] buffer = new byte[BUFFER_SIZE];
+                        while ((entry = zis.getNextEntry()) != null) {
+                            if (entry.getName().startsWith("lib/") && !entry.isDirectory()) {
+                                String[] parts = entry.getName().split("/");
+                                if (parts.length >= 3) {
+                                    File outFile = new File(libDir, ApkUtils.abiToSystemLibDir(parts[1]) + "/" + parts[2]);
+                                    if (!outFile.getParentFile().exists()) outFile.getParentFile().mkdirs();
 
-                                try (FileOutputStream fos = new FileOutputStream(outFile)) {
-                                    int len;
-                                    while ((len = zis.read(buffer)) != -1) {
-                                        fos.write(buffer, 0, len);
-                                        progress[0] += len;
+                                    try (FileOutputStream fos = new FileOutputStream(outFile)) {
+                                        int len;
+                                        while ((len = zis.read(buffer)) != -1) {
+                                            fos.write(buffer, 0, len);
+                                            progress[0] += len;
+                                        }
                                     }
-                                }
 
-                                int percent = (int) ((progress[0] * 100) / totalSize);
-                                if (percent != lastPercent[0]) {
-                                    callback.onRepairProgress(percent);
-                                    lastPercent[0] = percent;
+                                    int percent = (int) ((progress[0] * 100) / totalSize);
+                                    if (percent != lastPercent[0]) {
+                                        callback.onRepairProgress(percent);
+                                        lastPercent[0] = percent;
+                                    }
                                 }
                             }
                         }

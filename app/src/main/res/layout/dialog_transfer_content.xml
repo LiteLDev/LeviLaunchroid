@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/misans"
+        android:text="@string/transfer_to"
+        android:textColor="@color/on_surface"
+        android:textSize="14sp" />
+
+    <RadioGroup
+        android:id="@+id/storage_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <RadioButton
+            android:id="@+id/radio_internal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/misans"
+            android:padding="8dp"
+            android:text="@string/storage_internal"
+            android:textColor="@color/on_surface"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/radio_external"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/misans"
+            android:padding="8dp"
+            android:text="@string/storage_external"
+            android:textColor="@color/on_surface"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/radio_version_isolation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/misans"
+            android:padding="8dp"
+            android:text="@string/storage_version_isolation"
+            android:textColor="@color/on_surface"
+            android:textSize="14sp" />
+
+    </RadioGroup>
+
+</LinearLayout>

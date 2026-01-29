@@ -60,6 +60,26 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/import_content_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/misans"
+            android:text="@string/import_content"
+            android:textColor="@color/on_primary"
+            android:textSize="12sp" />
+
+        <ImageButton
+            android:id="@+id/edit_options_button"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_settings"
+            android:contentDescription="@string/edit_options"
+            app:tint="@color/on_surface" />
+
     </LinearLayout>
 
     <!-- Storage Selection -->

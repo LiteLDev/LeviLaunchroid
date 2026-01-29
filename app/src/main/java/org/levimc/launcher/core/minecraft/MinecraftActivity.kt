@@ -102,7 +102,17 @@ class MinecraftActivity : MainActivity() {
         return super.dispatchKeyEvent(event)
     }
 
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        overlayManager?.handleTouchEvent(event)
+        return super.dispatchTouchEvent(event)
+    }
+
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_BUTTON_PRESS || 
+            event.action == MotionEvent.ACTION_BUTTON_RELEASE) {
+            overlayManager?.handleMouseEvent(event)
+        }
+        
         if (event.action == MotionEvent.ACTION_SCROLL) {
             val vScroll = event.getAxisValue(MotionEvent.AXIS_VSCROLL)
             if (vScroll != 0f) {
