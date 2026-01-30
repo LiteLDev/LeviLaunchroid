@@ -54,7 +54,7 @@ class LeviDocumentsProvider : DocumentsProvider() {
 
     override fun onCreate(): Boolean {
         baseDir = context!!.getExternalFilesDir(null)!!
-        if (!baseDir.exists()) baseDir.mkdirs()
+    if (!baseDir.exists()) baseDir.mkdirs()
         return true
     }
 
@@ -141,7 +141,7 @@ class LeviDocumentsProvider : DocumentsProvider() {
 
     override fun deleteDocument(documentId: String) {
         val file = getFileForDocId(documentId)
-        if (!file.delete()) {
+        if (!file.deleteRecursively()) {
             throw FileNotFoundException("Failed to delete ${file.absolutePath}")
         }
     }
@@ -158,6 +158,40 @@ class LeviDocumentsProvider : DocumentsProvider() {
             return getDocIdForFile(target)
         }
         return null
+    }
+
+    override fun copyDocument(sourceDocumentId: String, targetParentDocumentId: String): String? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val source = getFileForDocId(sourceDocumentId)
+            val targetParent = getFileForDocId(targetParentDocumentId)
+            val target = File(targetParent, source.name)
+            
+            source.copyTo(target, overwrite = false)
+            return getDocIdForFile(target)
+        }
+        return super.copyDocument(sourceDocumentId, targetParentDocumentId)
+    }
+
+    override fun moveDocument(sourceDocumentId: String, sourceParentDocumentId: String, targetParentDocumentId: String): String? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val source = getFileForDocId(sourceDocumentId)
+            val targetParent = getFileForDocId(targetParentDocumentId)
+            val target = File(targetParent, source.name)
+            
+            if (source.renameTo(target)) {
+                return getDocIdForFile(target)
+            }
+            throw FileNotFoundException("Failed to move document")
+        }
+        return super.moveDocument(sourceDocumentId, sourceParentDocumentId, targetParentDocumentId)
+    }
+
+    override fun removeDocument(documentId: String, parentDocumentId: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            deleteDocument(documentId)
+        } else {
+            super.removeDocument(documentId, parentDocumentId)
+        }
     }
 
     private fun getRootFlags(): Long {
@@ -227,12 +261,12 @@ class LeviDocumentsProvider : DocumentsProvider() {
     }
 
     private fun getFileIcon(file: File): Int {
-        return when {
-            file.isDirectory -> 0
-            getTypeForFile(file).startsWith("image/") -> android.R.drawable.ic_menu_gallery
-            else -> 0
-        }
+    return when {
+        file.isDirectory -> 0
+        getTypeForFile(file).startsWith("image/") -> android.R.drawable.ic_menu_gallery
+        else -> 0
     }
+}
 
     private fun getDocIdForFile(file: File): String = file.absolutePath
 
