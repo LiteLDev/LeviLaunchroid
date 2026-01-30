@@ -116,6 +116,84 @@ class LeviDocumentsProvider : DocumentsProvider() {
         return AssetFileDescriptor(pfd, 0, file.length())
     }
 
+    override fun createDocument(parentDocumentId: String, mimeType: String, displayName: String): String? {
+        val parent = getFileForDocId(parentDocumentId)
+        if (!parent.isDirectory || !parent.canWrite()) {
+            throw FileNotFoundException("Parent $parentDocumentId is not writable directory")
+        }
+
+        val target = File(parent, displayName)
+        if (mimeType == DocumentsContract.Document.MIME_TYPE_DIR) {
+            if (!target.mkdir()) {
+                throw FileNotFoundException("Failed to create directory ${target.absolutePath}")
+            }
+        } else {
+            try {
+                if (!target.createNewFile()) {
+                    throw FileNotFoundException("Failed to create file ${target.absolutePath}")
+                }
+            } catch (e: Exception) {
+                throw FileNotFoundException("Failed to create file ${target.absolutePath}: ${e.message}")
+            }
+        }
+        return getDocIdForFile(target)
+    }
+
+    override fun deleteDocument(documentId: String) {
+        val file = getFileForDocId(documentId)
+        if (!file.deleteRecursively()) {
+            throw FileNotFoundException("Failed to delete ${file.absolutePath}")
+        }
+    }
+
+    override fun renameDocument(documentId: String, displayName: String): String? {
+        val file = getFileForDocId(documentId)
+        val parent = file.parentFile ?: return null
+        if (!parent.canWrite()) {
+            throw FileNotFoundException("Parent directory not writable")
+        }
+
+        val target = File(parent, displayName)
+        if (file.renameTo(target)) {
+            return getDocIdForFile(target)
+        }
+        return null
+    }
+
+    override fun copyDocument(sourceDocumentId: String, targetParentDocumentId: String): String? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val source = getFileForDocId(sourceDocumentId)
+            val targetParent = getFileForDocId(targetParentDocumentId)
+            val target = File(targetParent, source.name)
+            
+            source.copyTo(target, overwrite = false)
+            return getDocIdForFile(target)
+        }
+        return super.copyDocument(sourceDocumentId, targetParentDocumentId)
+    }
+
+    override fun moveDocument(sourceDocumentId: String, sourceParentDocumentId: String, targetParentDocumentId: String): String? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val source = getFileForDocId(sourceDocumentId)
+            val targetParent = getFileForDocId(targetParentDocumentId)
+            val target = File(targetParent, source.name)
+            
+            if (source.renameTo(target)) {
+                return getDocIdForFile(target)
+            }
+            throw FileNotFoundException("Failed to move document")
+        }
+        return super.moveDocument(sourceDocumentId, sourceParentDocumentId, targetParentDocumentId)
+    }
+
+    override fun removeDocument(documentId: String, parentDocumentId: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            deleteDocument(documentId)
+        } else {
+            super.removeDocument(documentId, parentDocumentId)
+        }
+    }
+
     private fun getRootFlags(): Long {
         var flags: Long = DocumentsContract.Root.FLAG_LOCAL_ONLY.toLong()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
