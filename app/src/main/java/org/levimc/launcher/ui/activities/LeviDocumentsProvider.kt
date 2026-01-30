@@ -54,7 +54,7 @@ class LeviDocumentsProvider : DocumentsProvider() {
 
     override fun onCreate(): Boolean {
         baseDir = context!!.getExternalFilesDir(null)!!
-    if (!baseDir.exists()) baseDir.mkdirs()
+        if (!baseDir.exists()) baseDir.mkdirs()
         return true
     }
 
@@ -114,6 +114,50 @@ class LeviDocumentsProvider : DocumentsProvider() {
         val file = getFileForDocId(documentId)
         val pfd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
         return AssetFileDescriptor(pfd, 0, file.length())
+    }
+
+    override fun createDocument(parentDocumentId: String, mimeType: String, displayName: String): String? {
+        val parent = getFileForDocId(parentDocumentId)
+        if (!parent.isDirectory || !parent.canWrite()) {
+            throw FileNotFoundException("Parent $parentDocumentId is not writable directory")
+        }
+
+        val target = File(parent, displayName)
+        if (mimeType == DocumentsContract.Document.MIME_TYPE_DIR) {
+            if (!target.mkdir()) {
+                throw FileNotFoundException("Failed to create directory ${target.absolutePath}")
+            }
+        } else {
+            try {
+                if (!target.createNewFile()) {
+                    throw FileNotFoundException("Failed to create file ${target.absolutePath}")
+                }
+            } catch (e: Exception) {
+                throw FileNotFoundException("Failed to create file ${target.absolutePath}: ${e.message}")
+            }
+        }
+        return getDocIdForFile(target)
+    }
+
+    override fun deleteDocument(documentId: String) {
+        val file = getFileForDocId(documentId)
+        if (!file.delete()) {
+            throw FileNotFoundException("Failed to delete ${file.absolutePath}")
+        }
+    }
+
+    override fun renameDocument(documentId: String, displayName: String): String? {
+        val file = getFileForDocId(documentId)
+        val parent = file.parentFile ?: return null
+        if (!parent.canWrite()) {
+            throw FileNotFoundException("Parent directory not writable")
+        }
+
+        val target = File(parent, displayName)
+        if (file.renameTo(target)) {
+            return getDocIdForFile(target)
+        }
+        return null
     }
 
     private fun getRootFlags(): Long {
@@ -183,12 +227,12 @@ class LeviDocumentsProvider : DocumentsProvider() {
     }
 
     private fun getFileIcon(file: File): Int {
-    return when {
-        file.isDirectory -> 0
-        getTypeForFile(file).startsWith("image/") -> android.R.drawable.ic_menu_gallery
-        else -> 0
+        return when {
+            file.isDirectory -> 0
+            getTypeForFile(file).startsWith("image/") -> android.R.drawable.ic_menu_gallery
+            else -> 0
+        }
     }
-}
 
     private fun getDocIdForFile(file: File): String = file.absolutePath
 
