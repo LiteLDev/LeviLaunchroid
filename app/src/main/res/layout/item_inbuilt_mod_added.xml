@@ -20,12 +20,12 @@
 
             <ImageView
                 android:id="@+id/inbuilt_mod_icon"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_gravity="center_horizontal"
-                android:padding="6dp"
-                android:background="@drawable/bg_mod_icon_circle"
-                android:tint="@color/primary" />
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent" />
 
             <ImageButton
                 android:id="@+id/inbuilt_mod_settings"

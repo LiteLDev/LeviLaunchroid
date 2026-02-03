@@ -27,7 +27,7 @@ public class SnaplookOverlay extends BaseOverlayButton {
 
     @Override
     protected int getIconResource() {
-        return R.drawable.ic_snaplook;
+        return isActive ? R.drawable.ic_snaplook_enabled : R.drawable.ic_snaplook_disabled;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class SnaplookOverlay extends BaseOverlayButton {
             ImageButton btn = (ImageButton) overlayView;
             float userOpacity = getButtonOpacity();
             btn.setAlpha(userOpacity);
-            btn.setBackgroundResource(active ? R.drawable.bg_overlay_button_active : R.drawable.bg_overlay_button);
+            btn.setImageResource(active ? R.drawable.ic_snaplook_enabled : R.drawable.ic_snaplook_disabled);
         }
     }
 

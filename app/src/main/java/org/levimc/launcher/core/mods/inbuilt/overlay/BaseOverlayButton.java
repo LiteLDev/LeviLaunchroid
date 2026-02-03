@@ -93,8 +93,6 @@ public abstract class BaseOverlayButton {
             btn.setImageResource(getIconResource());
 
             int buttonSize = getButtonSizePx();
-            int padding = (int) (buttonSize * 0.22f);
-            btn.setPadding(padding, padding, padding, padding);
             btn.setScaleType(ImageButton.ScaleType.FIT_CENTER);
             wmParams = new WindowManager.LayoutParams(
                 buttonSize,
@@ -131,8 +129,6 @@ public abstract class BaseOverlayButton {
         btn.setImageResource(getIconResource());
 
         int buttonSize = getButtonSizePx();
-        int padding = (int) (buttonSize * 0.22f);
-        btn.setPadding(padding, padding, padding, padding);
         btn.setScaleType(ImageButton.ScaleType.FIT_CENTER);
         
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
@@ -492,7 +488,6 @@ public abstract class BaseOverlayButton {
         
         float density = activity.getResources().getDisplayMetrics().density;
         int buttonSize = (int) (sizeDp * density);
-        int padding = (int) (buttonSize * 0.22f);
         
         if (wmParams != null) {
             wmParams.width = buttonSize;
@@ -507,11 +502,6 @@ public abstract class BaseOverlayButton {
                 params.height = buttonSize;
                 overlayView.setLayoutParams(params);
             }
-        }
-        
-        if (overlayView instanceof ImageButton) {
-            ImageButton btn = (ImageButton) overlayView;
-            btn.setPadding(padding, padding, padding, padding);
         }
     }
 }
