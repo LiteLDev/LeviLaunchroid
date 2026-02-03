@@ -628,10 +628,10 @@ public class ContentListActivity extends BaseActivity {
             case VERSION_ISOLATION -> radioVersionIsolation.setEnabled(false);
         }
 
-        new MaterialAlertDialogBuilder(this)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this)
             .setTitle(R.string.transfer_content)
             .setView(dialogView)
-            .setPositiveButton(R.string.transfer, (dialog, which) -> {
+            .setPositiveButton(R.string.transfer, (d, which) -> {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 FeatureSettings.StorageType targetType = null;
                 
@@ -649,6 +649,9 @@ public class ContentListActivity extends BaseActivity {
             })
             .setNegativeButton(R.string.cancel, null)
             .show();
+        
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.accent_text, getTheme()));
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.accent_text, getTheme()));
     }
 
     private void showTransferPackDialog(ResourcePackItem pack) {
@@ -664,10 +667,10 @@ public class ContentListActivity extends BaseActivity {
             case VERSION_ISOLATION -> radioVersionIsolation.setEnabled(false);
         }
 
-        new MaterialAlertDialogBuilder(this)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this)
             .setTitle(R.string.transfer_content)
             .setView(dialogView)
-            .setPositiveButton(R.string.transfer, (dialog, which) -> {
+            .setPositiveButton(R.string.transfer, (d, which) -> {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 FeatureSettings.StorageType targetType = null;
                 
@@ -685,6 +688,9 @@ public class ContentListActivity extends BaseActivity {
             })
             .setNegativeButton(R.string.cancel, null)
             .show();
+        
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.accent_text, getTheme()));
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.accent_text, getTheme()));
     }
 
     private void transferWorld(WorldItem world, FeatureSettings.StorageType targetType) {
