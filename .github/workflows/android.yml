@@ -113,3 +113,44 @@ jobs:
           files: LeviLauncher-${{ github.ref_name }}-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify Discord
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          APK_URL: "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/LeviLauncher-${{ github.ref_name }}-release.apk"
+          TAG_NAME: ${{ github.ref_name }}
+          REPO_NAME: ${{ github.repository }}
+        run: |
+          EMBED_TITLE="🚀 LeviLauncher Update!"
+          EMBED_DESC="A new version of **$REPO_NAME** is ready."
+          EMBED_COLOR=5814783
+          THUMB_URL="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+
+          curl -H "Content-Type: application/json" \
+          -d "{
+            \"username\": \"LeviLauncher Bot\",
+            \"avatar_url\": \"$THUMB_URL\",
+            \"embeds\": [{
+              \"title\": \"$EMBED_TITLE\",
+              \"description\": \"$EMBED_DESC\",
+              \"color\": $EMBED_COLOR,
+              \"thumbnail\": { \"url\": \"$THUMB_URL\" },
+              \"fields\": [
+                {
+                  \"name\": \"📦 Version\",
+                  \"value\": \"\`$TAG_NAME\`\",
+                  \"inline\": true
+                },
+                {
+                  \"name\": \"🔗 Download\",
+                  \"value\": \"[**Click here to download APK**]($APK_URL)\",
+                  \"inline\": true
+                }
+              ],
+              \"footer\": {
+                \"text\": \"Hosted on GitHub\"
+              }
+            }]
+          }" \
+          "$DISCORD_WEBHOOK"
