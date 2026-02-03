@@ -25,7 +25,7 @@
                 android:layout_gravity="center_horizontal"
                 android:padding="6dp"
                 android:background="@drawable/bg_mod_icon_circle"
-                android:tint="@color/accent_text" />
+                android:tint="@color/primary" />
 
             <ImageButton
                 android:id="@+id/inbuilt_mod_settings"
@@ -55,7 +55,7 @@
             android:ellipsize="end" />
 
         <TextView
-            android:id="@+id/inbuilt_mod_description"
+            android:id="@+id/inbuilt_mod_desc"
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:layout_marginTop="2dp"
@@ -67,23 +67,17 @@
             android:maxLines="2"
             android:ellipsize="end" />
 
-        <Button
-            android:id="@+id/inbuilt_mod_add_button"
+        <ImageButton
+            android:id="@+id/remove_inbuilt_button"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_marginTop="8dp"
-            android:minHeight="36dp"
-            android:minWidth="0dp"
-            android:backgroundTint="@color/primary"
-            android:text="@string/add"
-            android:textColor="@color/on_primary"
-            android:textSize="12sp"
-            android:fontFamily="@font/misans"
-            android:textAllCaps="false"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp" />
+            android:background="@drawable/bg_remove_button"
+            android:src="@drawable/ic_close"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            android:tint="@color/error"
+            android:contentDescription="@string/remove" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

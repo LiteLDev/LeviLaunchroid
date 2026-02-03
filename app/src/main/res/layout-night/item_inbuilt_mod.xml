@@ -25,7 +25,7 @@
                 android:layout_gravity="center_horizontal"
                 android:padding="6dp"
                 android:background="@drawable/bg_mod_icon_circle"
-                android:tint="@color/accent_text" />
+                android:tint="@color/primary" />
 
             <ImageButton
                 android:id="@+id/inbuilt_mod_settings"
