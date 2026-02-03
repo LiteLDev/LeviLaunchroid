@@ -1,15 +1,15 @@
 <resources>
-    <color name="primary">#C8E6C9</color>
-    <color name="on_primary">#1B5E20</color>
+    <color name="primary">#1B5E20</color>
+    <color name="on_primary">#FFFFFF</color>
 
-    <color name="secondary">#A5D6A7</color>
-    <color name="on_secondary">#1B5E20</color>
+    <color name="secondary">#2E7D32</color>
+    <color name="on_secondary">#FFFFFF</color>
 
     <color name="primary_container">#E8F5E9</color>
     <color name="on_primary_container">#1B5E20</color>
 
-    <color name="tertiary">#81D4FA</color>
-    <color name="on_tertiary">#01579B</color>
+    <color name="tertiary">#01579B</color>
+    <color name="on_tertiary">#FFFFFF</color>
 
     <color name="error">#F44336</color>
     <color name="on_error">#FFFFFF</color>
