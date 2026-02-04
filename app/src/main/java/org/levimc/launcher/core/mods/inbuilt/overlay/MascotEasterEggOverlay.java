@@ -203,6 +203,8 @@ public class MascotEasterEggOverlay {
         FrameLayout.LayoutParams mascotParams = (FrameLayout.LayoutParams) mascotView.getLayoutParams();
         mascotParams.width = size;
         mascotParams.height = size;
+        mascotParams.gravity = Gravity.BOTTOM | Gravity.START;
+        mascotParams.bottomMargin = (mascotSize - size) / 2;
         mascotView.setLayoutParams(mascotParams);
     }
 
@@ -268,9 +270,10 @@ public class MascotEasterEggOverlay {
 
     private void transitionToWalking() {
         currentState = State.WALKING;
-        setMascotSize(walkSize);
         facingRight = random.nextBoolean();
         dirX = facingRight ? (int)(2 * density) : (int)(-2 * density);
+        mascotView.setImageResource(facingRight ? R.drawable.mascot_walk_right_1 : R.drawable.mascot_walk_left_1);
+        setMascotSize(walkSize);
         currentWalkDuration = WALK_DURATION_MIN + random.nextInt(WALK_DURATION_MAX - WALK_DURATION_MIN);
         walkCounter = 0;
     }
