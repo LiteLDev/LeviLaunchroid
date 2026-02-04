@@ -515,4 +515,19 @@
     <string name="quick_launch">Quick Launch</string>
     <string name="quick_launch_menu_subtitle">Launch with URI actions</string>
 
+
+    <!-- Mascot Messages -->
+    <string name="mascot_message_blocking_nope">Nope!</string>
+    <string name="mascot_message_blocking_not_yet">Not yet!</string>
+    <string name="mascot_message_blocking_try_again">Try again~</string>
+    <string name="mascot_message_blocking_hmm_no">Hmm... no!</string>
+    <string name="mascot_message_blocking_maybe_later">Maybe later?</string>
+    <string name="mascot_message_blocking_are_you_sure">Are you sure?</string>
+    <string name="mascot_message_blocking_one_more_time">One more time!</string>
+    <string name="mascot_message_blocking_almost_there">Almost there...</string>
+    <string name="mascot_message_lurk">wha..? did someone need me?</string>
+    <string name="mascot_message_wave">hello there! I\'m going to annoy you a bit~</string>
+    <string name="mascot_message_rejected">you pervert</string>
+    <string name="mascot_message_approve">Fine, go ahead~!</string>
+
 </resources>

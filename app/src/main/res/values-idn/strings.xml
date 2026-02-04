@@ -515,4 +515,19 @@
     <string name="quick_launch">Peluncuran Cepat</string>
     <string name="quick_launch_menu_subtitle">Luncurkan dengan tindakan URI</string>
 
+
+    <!-- Mascot Messages -->
+    <string name="mascot_message_blocking_nope">Enggak!</string>
+    <string name="mascot_message_blocking_not_yet">Belum!</string>
+    <string name="mascot_message_blocking_try_again">Coba lagi~</string>
+    <string name="mascot_message_blocking_hmm_no">Hmm... enggak!</string>
+    <string name="mascot_message_blocking_maybe_later">Mungkin nanti?</string>
+    <string name="mascot_message_blocking_are_you_sure">Kamu yakin?</string>
+    <string name="mascot_message_blocking_one_more_time">Sekali lagi!</string>
+    <string name="mascot_message_blocking_almost_there">Hampir...</string>
+    <string name="mascot_message_lurk">Hah..? Ada yang butuh aku?</string>
+    <string name="mascot_message_wave">Halo! Aku akan mengganggumu sedikit~</string>
+    <string name="mascot_message_rejected">Dasar mesum</string>
+    <string name="mascot_message_approve">Baiklah, silakan~!</string>
+
 </resources>

@@ -511,4 +511,19 @@
     <string name="quick_launch">Быстрый запуск</string>
     <string name="quick_launch_menu_subtitle">Запуск с URI-действиями</string>
 
+
+    <!-- Mascot Messages -->
+    <string name="mascot_message_blocking_nope">Нет!</string>
+    <string name="mascot_message_blocking_not_yet">Ещё нет!</string>
+    <string name="mascot_message_blocking_try_again">Попробуй снова~</string>
+    <string name="mascot_message_blocking_hmm_no">Хмм... нет!</string>
+    <string name="mascot_message_blocking_maybe_later">Может позже?</string>
+    <string name="mascot_message_blocking_are_you_sure">Ты уверен?</string>
+    <string name="mascot_message_blocking_one_more_time">Ещё разок!</string>
+    <string name="mascot_message_blocking_almost_there">Почти...</string>
+    <string name="mascot_message_lurk">А..? Я кому-то нужен?</string>
+    <string name="mascot_message_wave">Приветик! Я буду тебе немножко мешать~</string>
+    <string name="mascot_message_rejected">Извращенец</string>
+    <string name="mascot_message_approve">Ладно, проходи~!</string>
+
 </resources>

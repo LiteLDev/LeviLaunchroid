@@ -85,15 +85,15 @@ public class MascotEasterEggOverlay {
 
     private Runnable pendingLaunchAction;
 
-    private final String[] blockingMessages = {
-        "Nope!",
-        "Not yet!",
-        "Try again~",
-        "Hmm... no!",
-        "Maybe later?",
-        "Are you sure?",
-        "One more time!",
-        "Almost there..."
+    private final int[] blockingMessages = {
+        R.string.mascot_message_blocking_nope,
+        R.string.mascot_message_blocking_not_yet,
+        R.string.mascot_message_blocking_try_again,
+        R.string.mascot_message_blocking_hmm_no,
+        R.string.mascot_message_blocking_maybe_later,
+        R.string.mascot_message_blocking_are_you_sure,
+        R.string.mascot_message_blocking_one_more_time,
+        R.string.mascot_message_blocking_almost_there
     };
 
     private final int[] blockingReactions = {
@@ -231,7 +231,7 @@ public class MascotEasterEggOverlay {
         speechParams.leftMargin = lurkSize - (int)(8 * density);
         speechBubble.setLayoutParams(speechParams);
         
-        showSpeechBubble("wha..? did someone need me?");
+        showSpeechBubble(activity.getString(R.string.mascot_message_lurk));
         handler.postDelayed(this::startEmergingSequence, 2000);
     }
 
@@ -253,7 +253,7 @@ public class MascotEasterEggOverlay {
         speechParams.leftMargin = mascotSize - (int)(16 * density);
         speechBubble.setLayoutParams(speechParams);
         
-        showSpeechBubble("hello there! I'm going to annoy you a bit~");
+        showSpeechBubble(activity.getString(R.string.mascot_message_wave));
 
         handler.postDelayed(() -> {
             if (currentState == State.WAVING) {
@@ -316,7 +316,7 @@ public class MascotEasterEggOverlay {
         speechParams.leftMargin = mascotSize - (int)(16 * density);
         speechBubble.setLayoutParams(speechParams);
         
-        showSpeechBubble("you pervert");
+        showSpeechBubble(activity.getString(R.string.mascot_message_rejected));
 
         handler.postDelayed(() -> {
             hideSpeechBubble();
@@ -469,7 +469,7 @@ public class MascotEasterEggOverlay {
         speechParams.leftMargin = mascotSize - (int)(16 * density);
         speechBubble.setLayoutParams(speechParams);
         
-        String message = blockingMessages[random.nextInt(blockingMessages.length)];
+        String message = activity.getString(blockingMessages[random.nextInt(blockingMessages.length)]);
         showSpeechBubble(message);
 
         handler.postDelayed(() -> {
@@ -491,7 +491,7 @@ public class MascotEasterEggOverlay {
         speechParams.leftMargin = mascotSize - (int)(16 * density);
         speechBubble.setLayoutParams(speechParams);
         
-        showSpeechBubble("Fine, go ahead~!");
+        showSpeechBubble(activity.getString(R.string.mascot_message_approve));
 
         handler.postDelayed(() -> {
             hide();

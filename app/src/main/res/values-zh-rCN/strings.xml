@@ -507,4 +507,19 @@
     <string name="quick_launch">快速启动</string>
     <string name="quick_launch_menu_subtitle">通过 URI 操作启动</string>
 
- </resources>
+
+    <!-- Mascot Messages -->
+    <string name="mascot_message_blocking_nope">不行！</string>
+    <string name="mascot_message_blocking_not_yet">还不行！</string>
+    <string name="mascot_message_blocking_try_again">再试一次~</string>
+    <string name="mascot_message_blocking_hmm_no">嗯... 不行！</string>
+    <string name="mascot_message_blocking_maybe_later">也许待会儿？</string>
+    <string name="mascot_message_blocking_are_you_sure">你确定吗？</string>
+    <string name="mascot_message_blocking_one_more_time">再来一次！</string>
+    <string name="mascot_message_blocking_almost_there">快了...</string>
+    <string name="mascot_message_lurk">啊..? 有人叫我吗？</string>
+    <string name="mascot_message_wave">你好呀！我要稍微打扰你一下咯~</string>
+    <string name="mascot_message_rejected">变态</string>
+    <string name="mascot_message_approve">好吧，让你过去~！</string>
+
+</resources>
