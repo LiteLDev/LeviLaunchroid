@@ -2,6 +2,7 @@ package org.levimc.launcher.core.mods.inbuilt.overlay;
 
 import android.app.Activity;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
@@ -80,6 +81,7 @@ public class MascotEasterEggOverlay {
     private int[] walkRightFrames;
     private int[] runLeftFrames;
     private int[] runRightFrames;
+    private final Rect launchButtonBounds = new Rect();
 
     private Runnable pendingLaunchAction;
 
@@ -124,8 +126,10 @@ public class MascotEasterEggOverlay {
         runRightFrames = new int[] { R.drawable.mascot_run_right_1, R.drawable.mascot_run_right_2, R.drawable.mascot_run_right_3 };
     }
 
-    public void show(View anchorView) {
+    public void show(View anchorView, View launchButton) {
         if (isShowing || activity.isFinishing() || activity.isDestroyed()) return;
+
+        launchButton.getGlobalVisibleRect(launchButtonBounds);
 
         density = activity.getResources().getDisplayMetrics().density;
         lurkSize = (int) (LURK_SIZE_DP * density);
@@ -144,7 +148,18 @@ public class MascotEasterEggOverlay {
 
         requiredAttempts = 3 + random.nextInt(3);
 
-        containerView = new FrameLayout(activity);
+        containerView = new FrameLayout(activity) {
+            @Override
+            public boolean onTouchEvent(MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (launchButtonBounds.contains((int)event.getRawX(), (int)event.getRawY())) {
+                        launchButton.performClick();
+                        return true;
+                    }
+                }
+                return super.onTouchEvent(event);
+            }
+        };
         containerWidth = mascotSize + (int)(180 * density);
         containerHeight = mascotSize + speechHeight;
 
@@ -280,6 +295,9 @@ public class MascotEasterEggOverlay {
 
     private boolean handleTouch(View v, MotionEvent event) {
         if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+            if (isWaitingForNextLaunchTap && launchButtonBounds.contains((int)event.getRawX(), (int)event.getRawY())) {
+                return processNextLaunchAttempt();
+            }
             if (currentState == State.WAVING || currentState == State.WALKING || currentState == State.IDLE) {
                 showRejectedReaction();
                 return true;
@@ -370,22 +388,22 @@ public class MascotEasterEggOverlay {
     }
 
     private int targetX;
+    private boolean isWaitingForNextLaunchTap = false;
 
-    public boolean onLaunchButtonClicked(View launchButton, Runnable launchAction) {
-        if (!isShowing || currentState == State.APPROVED || currentState == State.HIDDEN) {
-            return false;
-        }
-        
-        if (currentState == State.RUNNING_TO_BUTTON || currentState == State.BLOCKING) {
-            return true;
-        }
 
-        this.pendingLaunchAction = launchAction;
+    private void startRunning() {
+        setMascotSize(mascotSize);
+        currentState = State.RUNNING_TO_BUTTON;
+        facingRight = targetX > posX;
+        dirX = facingRight ? (int)(12 * density) : (int)(-12 * density);
 
-        int[] location = new int[2];
-        launchButton.getLocationOnScreen(location);
-        targetX = location[0] - mascotSize / 2;
+        animFrame = 0;
+        int[] frames = facingRight ? runRightFrames : runLeftFrames;
+        mascotView.setImageResource(frames[0]);
+    }
 
+    private boolean processNextLaunchAttempt() {
+        isWaitingForNextLaunchTap = false;
         launchAttempts++;
 
         if (launchAttempts >= requiredAttempts) {
@@ -393,10 +411,31 @@ public class MascotEasterEggOverlay {
             return true;
         }
 
-        setMascotSize(mascotSize);
-        currentState = State.RUNNING_TO_BUTTON;
-        facingRight = targetX > posX;
-        dirX = facingRight ? (int)(12 * density) : (int)(-12 * density);
+        startRunning();
+        return true;
+    }
+
+    public boolean onLaunchButtonClicked(View launchButton, Runnable launchAction) {
+        if (!isShowing || currentState == State.APPROVED || currentState == State.HIDDEN) {
+            return false;
+        }
+
+        if (currentState == State.RUNNING_TO_BUTTON || currentState == State.BLOCKING) {
+            return true;
+        }
+
+        this.pendingLaunchAction = launchAction;
+        launchButton.getGlobalVisibleRect(launchButtonBounds);
+
+        int[] location = new int[2];
+        launchButton.getLocationOnScreen(location);
+        targetX = location[0] - mascotSize / 2;
+
+        if (isWaitingForNextLaunchTap) {
+            return processNextLaunchAttempt();
+        }
+
+        startRunning();
 
         return true;
     }
@@ -435,7 +474,10 @@ public class MascotEasterEggOverlay {
 
         handler.postDelayed(() -> {
             hideSpeechBubble();
-            handler.postDelayed(this::transitionToWalking, 300);
+            handler.postDelayed(() -> {
+                isWaitingForNextLaunchTap = true;
+                transitionToIdle();
+            }, 300);
         }, 1500);
     }
 
@@ -480,5 +522,6 @@ public class MascotEasterEggOverlay {
         speechBubble = null;
         launchAttempts = 0;
         pendingLaunchAction = null;
+        isWaitingForNextLaunchTap = false;
     }
 }

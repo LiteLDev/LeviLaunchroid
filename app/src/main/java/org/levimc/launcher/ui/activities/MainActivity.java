@@ -662,7 +662,7 @@ import okhttp3.OkHttpClient;
                 if (!isTouchOnDrawableIcon(e)) return false;
                 if (mascotOverlay == null || !mascotOverlay.isActive()) {
                     mascotOverlay = new MascotEasterEggOverlay(MainActivity.this);
-                    mascotOverlay.show(binding.textMinecraftVersion);
+                    mascotOverlay.show(binding.textMinecraftVersion, binding.launchButton);
                 }
                 return true;
             }
