@@ -517,15 +517,19 @@
 
 
     <!-- Mascot Messages -->
-    <string name="mascot_message_blocking_nope">Enggak!</string>
-    <string name="mascot_message_blocking_not_yet">Belum!</string>
+    <string name="mascot_message_blocking_nope">Enggak enggak enggak!</string>
+    <string name="mascot_message_blocking_not_yet">Gak bisa!</string>
     <string name="mascot_message_blocking_try_again">Coba lagi~</string>
-    <string name="mascot_message_blocking_hmm_no">Hmm... enggak!</string>
-    <string name="mascot_message_blocking_maybe_later">Mungkin nanti?</string>
-    <string name="mascot_message_blocking_are_you_sure">Kamu yakin?</string>
+    <string name="mascot_message_blocking_hmm_no">Hmm... ditolak!</string>
+    <string name="mascot_message_blocking_maybe_later">Nanti aja, senpai!</string>
+    <string name="mascot_message_blocking_are_you_sure">Keras kepala ya...</string>
     <string name="mascot_message_blocking_one_more_time">Sekali lagi!</string>
-    <string name="mascot_message_blocking_almost_there">Hampir...</string>
-    <string name="mascot_message_lurk">Hah..? Ada yang butuh aku?</string>
+    <string name="mascot_message_blocking_almost_there">Hampir~</string>
+    <string name="mascot_message_blocking_ora_ora">Ora ora ora!</string>
+    <string name="mascot_message_blocking_muda_muda">Muda muda muda!</string>
+    <string name="mascot_message_blocking_nice_try">Bagus, tapi enggak!</string>
+    <string name="mascot_message_blocking_believe_it">Percaya deh... ENGGAK!</string>
+    <string name="mascot_message_lurk">hah? ada yang manggil?</string>
     <string name="mascot_message_wave">Halo! Aku akan mengganggumu sedikit~</string>
     <string name="mascot_message_rejected">Dasar mesum</string>
     <string name="mascot_message_approve">Baiklah, silakan~!</string>

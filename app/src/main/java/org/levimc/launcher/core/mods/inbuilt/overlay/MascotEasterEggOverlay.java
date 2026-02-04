@@ -24,7 +24,7 @@ public class MascotEasterEggOverlay {
     private static final int IDLE_SIZE_DP = 80;
     private static final int MASCOT_SIZE_DP = 88;
     private static final int SPEECH_PADDING_DP = 10;
-    private static final int SPEECH_HEIGHT_DP = 44;
+    private static final int SPEECH_HEIGHT_DP = 16;
 
     private enum State {
         LURKING,
@@ -93,7 +93,11 @@ public class MascotEasterEggOverlay {
         R.string.mascot_message_blocking_maybe_later,
         R.string.mascot_message_blocking_are_you_sure,
         R.string.mascot_message_blocking_one_more_time,
-        R.string.mascot_message_blocking_almost_there
+        R.string.mascot_message_blocking_almost_there,
+        R.string.mascot_message_blocking_ora_ora,
+        R.string.mascot_message_blocking_muda_muda,
+        R.string.mascot_message_blocking_nice_try,
+        R.string.mascot_message_blocking_believe_it
     };
 
     private final int[] blockingReactions = {
@@ -182,7 +186,7 @@ public class MascotEasterEggOverlay {
         FrameLayout.LayoutParams speechParams = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         speechParams.gravity = Gravity.TOP | Gravity.START;
-        speechParams.leftMargin = lurkSize - (int)(8 * density);
+        speechParams.leftMargin = lurkSize - (int)(32 * density);
         containerView.addView(speechBubble, speechParams);
 
         posX = anchorX + anchorIconSize - (int)(48 * density);
@@ -228,7 +232,7 @@ public class MascotEasterEggOverlay {
         mascotView.setImageResource(R.drawable.mascot_lurk);
         
         FrameLayout.LayoutParams speechParams = (FrameLayout.LayoutParams) speechBubble.getLayoutParams();
-        speechParams.leftMargin = lurkSize - (int)(8 * density);
+        speechParams.leftMargin = lurkSize - (int)(32 * density);
         speechBubble.setLayoutParams(speechParams);
         
         showSpeechBubble(activity.getString(R.string.mascot_message_lurk));
@@ -250,7 +254,7 @@ public class MascotEasterEggOverlay {
         mascotView.setImageResource(R.drawable.mascot_wave);
         
         FrameLayout.LayoutParams speechParams = (FrameLayout.LayoutParams) speechBubble.getLayoutParams();
-        speechParams.leftMargin = mascotSize - (int)(16 * density);
+        speechParams.leftMargin = mascotSize - (int)(48 * density);
         speechBubble.setLayoutParams(speechParams);
         
         showSpeechBubble(activity.getString(R.string.mascot_message_wave));
@@ -313,7 +317,7 @@ public class MascotEasterEggOverlay {
         mascotView.setImageResource(R.drawable.mascot_reject);
         
         FrameLayout.LayoutParams speechParams = (FrameLayout.LayoutParams) speechBubble.getLayoutParams();
-        speechParams.leftMargin = mascotSize - (int)(16 * density);
+        speechParams.leftMargin = mascotSize - (int)(48 * density);
         speechBubble.setLayoutParams(speechParams);
         
         showSpeechBubble(activity.getString(R.string.mascot_message_rejected));
@@ -466,7 +470,7 @@ public class MascotEasterEggOverlay {
         mascotView.setImageResource(blockingReactions[reactionIndex]);
 
         FrameLayout.LayoutParams speechParams = (FrameLayout.LayoutParams) speechBubble.getLayoutParams();
-        speechParams.leftMargin = mascotSize - (int)(16 * density);
+        speechParams.leftMargin = mascotSize - (int)(48 * density);
         speechBubble.setLayoutParams(speechParams);
         
         String message = activity.getString(blockingMessages[random.nextInt(blockingMessages.length)]);
@@ -488,7 +492,7 @@ public class MascotEasterEggOverlay {
         mascotView.setImageResource(R.drawable.mascot_approve);
         
         FrameLayout.LayoutParams speechParams = (FrameLayout.LayoutParams) speechBubble.getLayoutParams();
-        speechParams.leftMargin = mascotSize - (int)(16 * density);
+        speechParams.leftMargin = mascotSize - (int)(48 * density);
         speechBubble.setLayoutParams(speechParams);
         
         showSpeechBubble(activity.getString(R.string.mascot_message_approve));

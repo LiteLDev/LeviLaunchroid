@@ -517,15 +517,19 @@
 
 
     <!-- Mascot Messages -->
-    <string name="mascot_message_blocking_nope">Nope!</string>
-    <string name="mascot_message_blocking_not_yet">Not yet!</string>
+    <string name="mascot_message_blocking_nope">Nope nope nope!</string>
+    <string name="mascot_message_blocking_not_yet">Not happening!</string>
     <string name="mascot_message_blocking_try_again">Try again~</string>
-    <string name="mascot_message_blocking_hmm_no">Hmm... no!</string>
-    <string name="mascot_message_blocking_maybe_later">Maybe later?</string>
-    <string name="mascot_message_blocking_are_you_sure">Are you sure?</string>
+    <string name="mascot_message_blocking_hmm_no">Hmm... denied!</string>
+    <string name="mascot_message_blocking_maybe_later">Maybe later, senpai!</string>
+    <string name="mascot_message_blocking_are_you_sure">So persistent...</string>
     <string name="mascot_message_blocking_one_more_time">One more time!</string>
-    <string name="mascot_message_blocking_almost_there">Almost there...</string>
-    <string name="mascot_message_lurk">wha..? did someone need me?</string>
+    <string name="mascot_message_blocking_almost_there">Almost there~</string>
+    <string name="mascot_message_blocking_ora_ora">Ora ora ora!</string>
+    <string name="mascot_message_blocking_muda_muda">Muda muda muda!</string>
+    <string name="mascot_message_blocking_nice_try">Nice try, but no!</string>
+    <string name="mascot_message_blocking_believe_it">Believe it... NOT!</string>
+    <string name="mascot_message_lurk">huh? did someone call me?</string>
     <string name="mascot_message_wave">hello there! I\'m going to annoy you a bit~</string>
     <string name="mascot_message_rejected">you pervert</string>
     <string name="mascot_message_approve">Fine, go ahead~!</string>

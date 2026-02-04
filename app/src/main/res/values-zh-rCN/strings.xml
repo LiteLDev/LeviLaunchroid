@@ -509,15 +509,19 @@
 
 
     <!-- Mascot Messages -->
-    <string name="mascot_message_blocking_nope">不行！</string>
-    <string name="mascot_message_blocking_not_yet">还不行！</string>
+    <string name="mascot_message_blocking_nope">不行不行不行！</string>
+    <string name="mascot_message_blocking_not_yet">不可能！</string>
     <string name="mascot_message_blocking_try_again">再试一次~</string>
-    <string name="mascot_message_blocking_hmm_no">嗯... 不行！</string>
-    <string name="mascot_message_blocking_maybe_later">也许待会儿？</string>
-    <string name="mascot_message_blocking_are_you_sure">你确定吗？</string>
+    <string name="mascot_message_blocking_hmm_no">嗯... 拒绝！</string>
+    <string name="mascot_message_blocking_maybe_later">待会儿吧，前辈！</string>
+    <string name="mascot_message_blocking_are_you_sure">真执着呢...</string>
     <string name="mascot_message_blocking_one_more_time">再来一次！</string>
-    <string name="mascot_message_blocking_almost_there">快了...</string>
-    <string name="mascot_message_lurk">啊..? 有人叫我吗？</string>
+    <string name="mascot_message_blocking_almost_there">快了~</string>
+    <string name="mascot_message_blocking_ora_ora">欧拉欧拉欧拉！</string>
+    <string name="mascot_message_blocking_muda_muda">木大木大木大！</string>
+    <string name="mascot_message_blocking_nice_try">不错的尝试，但不行！</string>
+    <string name="mascot_message_blocking_believe_it">相信我... 不行！</string>
+    <string name="mascot_message_lurk">嗯？有人叫我？</string>
     <string name="mascot_message_wave">你好呀！我要稍微打扰你一下咯~</string>
     <string name="mascot_message_rejected">变态</string>
     <string name="mascot_message_approve">好吧，让你过去~！</string>

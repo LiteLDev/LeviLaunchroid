@@ -513,15 +513,19 @@
 
 
     <!-- Mascot Messages -->
-    <string name="mascot_message_blocking_nope">Нет!</string>
-    <string name="mascot_message_blocking_not_yet">Ещё нет!</string>
+    <string name="mascot_message_blocking_nope">Нет нет нет!</string>
+    <string name="mascot_message_blocking_not_yet">Не получится!</string>
     <string name="mascot_message_blocking_try_again">Попробуй снова~</string>
-    <string name="mascot_message_blocking_hmm_no">Хмм... нет!</string>
-    <string name="mascot_message_blocking_maybe_later">Может позже?</string>
-    <string name="mascot_message_blocking_are_you_sure">Ты уверен?</string>
+    <string name="mascot_message_blocking_hmm_no">Хмм... отказано!</string>
+    <string name="mascot_message_blocking_maybe_later">Может позже, сенпай!</string>
+    <string name="mascot_message_blocking_are_you_sure">Такой настойчивый...</string>
     <string name="mascot_message_blocking_one_more_time">Ещё разок!</string>
-    <string name="mascot_message_blocking_almost_there">Почти...</string>
-    <string name="mascot_message_lurk">А..? Я кому-то нужен?</string>
+    <string name="mascot_message_blocking_almost_there">Почти~</string>
+    <string name="mascot_message_blocking_ora_ora">Ора ора ора!</string>
+    <string name="mascot_message_blocking_muda_muda">Муда муда муда!</string>
+    <string name="mascot_message_blocking_nice_try">Хорошая попытка, но нет!</string>
+    <string name="mascot_message_blocking_believe_it">Поверь... НЕТ!</string>
+    <string name="mascot_message_lurk">а? кто-то меня звал?</string>
     <string name="mascot_message_wave">Приветик! Я буду тебе немножко мешать~</string>
     <string name="mascot_message_rejected">Извращенец</string>
     <string name="mascot_message_approve">Ладно, проходи~!</string>
