@@ -9,6 +9,7 @@ import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import org.levimc.launcher.core.minecraft.MinecraftLauncher;
 import org.levimc.launcher.core.mods.FileHandler;
 import org.levimc.launcher.core.mods.Mod;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
+import org.levimc.launcher.core.mods.inbuilt.overlay.MascotEasterEggOverlay;
 import org.levimc.launcher.core.versions.GameVersion;
 import org.levimc.launcher.core.versions.VersionManager;
 import org.levimc.launcher.databinding.ActivityMainBinding;
@@ -101,6 +103,8 @@ import okhttp3.OkHttpClient;
     private LoadingDialog accountLoadingDialog;
     private ActivityResultLauncher<Intent> accountLoginLauncher;
     private OnBackPressedCallback onBackPressedCallback;
+    private MascotEasterEggOverlay mascotOverlay;
+    private GestureDetector mascotGestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -641,6 +645,49 @@ import okhttp3.OkHttpClient;
         initQuickActionsRecycler();
 
         FeatureSettings.init(getApplicationContext());
+
+        setupMascotEasterEgg();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setupMascotEasterEgg() {
+        mascotGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return isTouchOnDrawableIcon(e);
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                if (!isTouchOnDrawableIcon(e)) return false;
+                if (mascotOverlay == null || !mascotOverlay.isActive()) {
+                    mascotOverlay = new MascotEasterEggOverlay(MainActivity.this);
+                    mascotOverlay.show(binding.textMinecraftVersion);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                return false;
+            }
+
+            private boolean isTouchOnDrawableIcon(MotionEvent e) {
+                android.graphics.drawable.Drawable[] drawables = binding.textMinecraftVersion.getCompoundDrawables();
+                android.graphics.drawable.Drawable leftDrawable = drawables[0];
+                if (leftDrawable == null) return false;
+                int drawableWidth = leftDrawable.getBounds().width();
+                int drawablePadding = binding.textMinecraftVersion.getCompoundDrawablePadding();
+                int paddingStart = binding.textMinecraftVersion.getPaddingStart();
+                float touchX = e.getX();
+                return touchX <= paddingStart + drawableWidth + drawablePadding;
+            }
+        });
+
+        binding.textMinecraftVersion.setClickable(true);
+        binding.textMinecraftVersion.setOnTouchListener((v, event) -> {
+            return mascotGestureDetector.onTouchEvent(event);
+        });
     }
 
     private void initQuickActionsRecycler() {
@@ -695,6 +742,16 @@ import okhttp3.OkHttpClient;
     }
 
     private void launchGame() {
+        if (mascotOverlay != null && mascotOverlay.isActive()) {
+            boolean blocked = mascotOverlay.onLaunchButtonClicked(binding.launchButton, this::performActualLaunch);
+            if (blocked) {
+                return;
+            }
+        }
+        performActualLaunch();
+    }
+
+    private void performActualLaunch() {
         binding.launchButton.setEnabled(false);
 
         GameVersion version = versionManager != null ? versionManager.getSelectedVersion() : null;
@@ -933,6 +990,10 @@ import okhttp3.OkHttpClient;
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mascotOverlay != null) {
+            mascotOverlay.hide();
+            mascotOverlay = null;
+        }
     }
 
  }
