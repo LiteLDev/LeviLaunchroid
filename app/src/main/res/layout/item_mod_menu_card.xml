@@ -17,13 +17,12 @@
 
         <FrameLayout
             android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:background="@drawable/bg_mod_icon_circle">
+            android:layout_height="44dp">
 
             <ImageView
                 android:id="@+id/mod_card_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center" />
 
         </FrameLayout>

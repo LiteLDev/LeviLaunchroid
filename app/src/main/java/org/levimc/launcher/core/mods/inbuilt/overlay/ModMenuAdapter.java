@@ -64,6 +64,8 @@ public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHold
 
         holder.name.setText(mod.getName());
         holder.icon.setImageResource(getModIcon(mod.getId()));
+        holder.icon.setImageTintList(null);
+        holder.icon.setColorFilter(null);
 
         boolean isEnabled = toggleStates.getOrDefault(mod.getId(), false);
         updateStatusView(holder, isEnabled);
@@ -106,11 +108,6 @@ public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHold
     private void updateCardState(ViewHolder holder, boolean enabled) {
         holder.itemView.setAlpha(enabled ? 1f : 0.6f);
         holder.icon.setAlpha(enabled ? 1f : 0.5f);
-        if (enabled) {
-            holder.icon.setColorFilter(0xFF4AE0A0);
-        } else {
-            holder.icon.setColorFilter(0xFF888888);
-        }
     }
 
     private int getModIcon(String modId) {

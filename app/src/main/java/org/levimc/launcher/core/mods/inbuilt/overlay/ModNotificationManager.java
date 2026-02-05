@@ -123,6 +123,8 @@ public class ModNotificationManager {
         TextView message = notificationView.findViewById(R.id.notification_message);
 
         icon.setImageResource(getModIcon(modId));
+        icon.setImageTintList(null);
+        icon.setColorFilter(null);
         title.setText(modName);
         message.setText(activity.getString(R.string.mod_status_enabled));
     }

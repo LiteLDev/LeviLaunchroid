@@ -20,8 +20,8 @@
 
             <ImageView
                 android:id="@+id/inbuilt_mod_icon"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
