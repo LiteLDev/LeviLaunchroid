@@ -44,6 +44,10 @@ import androidx.core.content.FileProvider;
 import androidx.core.math.MathUtils;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.preference.PreferenceManager;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.androidgamesdk.GameActivity;
 import com.google.firebase.FirebaseApp;
@@ -150,6 +154,7 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
     Debug.MemoryInfo mCachedDebugMemoryInfo = new Debug.MemoryInfo();
     long mCachedDebugMemoryUpdateTime = 0;
     private long mCallback = 0;
+    private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
 
     enum MessageConnectionStatus {
         NOTSET,
@@ -515,6 +520,24 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         });
 
         mWorldRecovery = new WorldRecovery(getApplicationContext(), getApplicationContext().getContentResolver());
+
+        pickMedia =
+                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                    if (uri != null) {
+                        String[] projection = {MediaStore.Images.Media.DATA};
+                        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+                        if (cursor != null && cursor.moveToFirst()) {
+                            String filePath = cursor.getString(cursor.getColumnIndexOrThrow(projection[0]));
+                            nativeOnPickImageSuccess(mCallback, filePath);
+                            cursor.close();
+                        } else {
+                            nativeOnPickImageCanceled(mCallback);    
+                        }
+                    } else {
+                        nativeOnPickImageCanceled(mCallback);
+                    }
+                });
+
     }
 
 
@@ -1679,8 +1702,10 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
     void pickImage(long callback) {
         mCallback = callback;
         try {
-            startActivityForResult(new Intent("android.intent.action.PICK", MediaStore.Images.Media.EXTERNAL_CONTENT_URI), RESULT_PICK_IMAGE);
-        } catch (ActivityNotFoundException e) {
+            pickMedia.launch(new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                    .build());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1737,20 +1762,10 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
                 if (requestCode == OPEN_FILE_RESULT_CODE || requestCode == SAVE_FILE_RESULT_CODE) {
                     mPickedFileDescriptor = getContentResolver().openFileDescriptor(data, requestCode == OPEN_FILE_RESULT_CODE ? "r" : "w");
                     onPickFileSuccess(requestCode == OPEN_FILE_RESULT_CODE);
-                } else if (requestCode == RESULT_PICK_IMAGE) {
-                    String[] projection = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getContentResolver().query(data, projection, null, null, null);
-                    if (cursor != null && cursor.moveToFirst()) {
-                        String filePath = cursor.getString(cursor.getColumnIndexOrThrow(projection[0]));
-                        nativeOnPickImageSuccess(mCallback, filePath);
-                        cursor.close();
-                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (requestCode == RESULT_PICK_IMAGE) {
-            nativeOnPickImageCanceled(mCallback);
         }
     }
 
