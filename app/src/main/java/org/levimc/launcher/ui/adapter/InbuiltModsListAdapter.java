@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -110,6 +111,8 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
         TextView textSize = dialog.findViewById(R.id.text_button_size);
         SeekBar seekBarOpacity = dialog.findViewById(R.id.seekbar_button_opacity);
         TextView textOpacity = dialog.findViewById(R.id.text_button_opacity);
+        LinearLayout lockContainer = dialog.findViewById(R.id.config_lock_container);
+        Switch lockSwitch = dialog.findViewById(R.id.switch_lock_position);
         LinearLayout autoSprintContainer = dialog.findViewById(R.id.config_autosprint_container);
         Spinner spinnerAutoSprint = dialog.findViewById(R.id.spinner_autosprint_key);
         LinearLayout zoomContainer = dialog.findViewById(R.id.config_zoom_container);
@@ -131,6 +134,12 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
         int currentOpacity = manager.getOverlayOpacity(mod.getId());
         seekBarOpacity.setProgress(currentOpacity);
         textOpacity.setText(currentOpacity + "%");
+
+        lockSwitch.setChecked(manager.isOverlayLocked(mod.getId()));
+
+        if (mod.getId().equals(ModIds.CHICK_PET)) {
+            lockContainer.setVisibility(View.GONE);
+        }
 
         seekBarSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -199,6 +208,7 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
         btnSave.setOnClickListener(v -> {
             manager.setOverlayButtonSize(mod.getId(), seekBarSize.getProgress());
             manager.setOverlayOpacity(mod.getId(), seekBarOpacity.getProgress());
+            manager.setOverlayLocked(mod.getId(), lockSwitch.isChecked());
             if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
                 int key = spinnerAutoSprint.getSelectedItemPosition() == 1 
                     ? KeyEvent.KEYCODE_SHIFT_LEFT 

@@ -384,6 +384,8 @@
     <string name="configure">Configure</string>
     <string name="overlay_button_size">Overlay Button Size</string>
     <string name="overlay_button_opacity">Overlay Button Opacity</string>
+    <string name="overlay_button_lock">Lock Position</string>
+    <string name="overlay_button_lock_desc">Prevent dragging and accidental activation</string>
     <string name="settings">Settings</string>
 
     <!-- Memory Editor -->

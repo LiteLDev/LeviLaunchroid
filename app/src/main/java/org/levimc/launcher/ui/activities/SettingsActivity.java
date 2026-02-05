@@ -2,8 +2,10 @@ package org.levimc.launcher.ui.activities;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,6 +39,10 @@ public class SettingsActivity extends BaseActivity {
     private RecyclerView settingsRecyclerView;
     private PermissionsHandler permissionsHandler;
     private ActivityResultLauncher<Intent> permissionResultLauncher;
+    private int updateButtonTapCount = 0;
+    private long lastUpdateButtonTapTime = 0;
+    private static final int EASTER_EGG_TAP_COUNT = 3;
+    private static final long TAP_TIMEOUT_MS = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +92,43 @@ public class SettingsActivity extends BaseActivity {
                 addActionButton(
                         getString(R.string.version_prefix) + localVersion,
                         getString(R.string.check_update),
-                        v -> new GithubReleaseUpdater(this, "LiteLDev", "LeviLaunchroid", permissionResultLauncher).checkUpdate()
+                        v -> handleUpdateButtonClick()
                 );
             } catch (PackageManager.NameNotFoundException ignored) {
             }
         }));
 
         settingsRecyclerView.post(() -> DynamicAnim.staggerRecyclerChildren(settingsRecyclerView));
+    }
+
+    private void handleUpdateButtonClick() {
+        long currentTime = System.currentTimeMillis();
+        
+        if (currentTime - lastUpdateButtonTapTime > TAP_TIMEOUT_MS) {
+            updateButtonTapCount = 0;
+        }
+        
+        updateButtonTapCount++;
+        lastUpdateButtonTapTime = currentTime;
+        
+        if (updateButtonTapCount >= EASTER_EGG_TAP_COUNT) {
+            updateButtonTapCount = 0;
+            triggerEasterEgg();
+        } else {
+            new GithubReleaseUpdater(this, "LiteLDev", "LeviLaunchroid", permissionResultLauncher).checkUpdate();
+        }
+    }
+
+    private void triggerEasterEgg() {
+        try {
+            // Base64 encoded: https://youtu.be/FtutLA63Cp8?si=BHLDXvK96OgP45B8
+            String encoded = "aHR0cHM6Ly95b3V0dS5iZS9GdHV0TEE2M0NwOD9zaT1CSExEWHZLOTZPZ1A0NUI4";
+            String url = new String(Base64.decode(encoded, Base64.DEFAULT));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addSwitchItem(String label, boolean defChecked, Switch.OnCheckedChangeListener listener) {

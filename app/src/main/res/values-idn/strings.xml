@@ -384,6 +384,8 @@
     <string name="configure">Konfigurasi</string>
     <string name="overlay_button_size">Ukuran Tombol Overlay</string>
     <string name="overlay_button_opacity">Opasitas Tombol Overlay</string>
+    <string name="overlay_button_lock">Kunci Posisi</string>
+    <string name="overlay_button_lock_desc">Mencegah penyeretan dan aktivasi tidak sengaja</string>
     <string name="settings">Pengaturan</string>
 
     <!-- Memory Editor -->

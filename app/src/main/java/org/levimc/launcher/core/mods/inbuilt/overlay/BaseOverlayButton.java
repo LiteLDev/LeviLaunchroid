@@ -33,6 +33,7 @@ public abstract class BaseOverlayButton {
     private float initialX, initialY;
     private float initialTouchX, initialTouchY;
     private boolean isDragging = false;
+    private boolean isLocked = false;
     private long touchDownTime = 0;
     private static final long TAP_TIMEOUT = 200;
     private static final long LONG_PRESS_TIMEOUT = 500;
@@ -70,6 +71,10 @@ public abstract class BaseOverlayButton {
         if (overlayView != null) {
             overlayView.setAlpha(getButtonOpacity());
         }
+    }
+
+    protected void updateLockState() {
+        isLocked = InbuiltModManager.getInstance(activity).isOverlayLocked(getModId());
     }
 
     protected abstract String getModId();
@@ -113,6 +118,7 @@ public abstract class BaseOverlayButton {
             windowManager.addView(overlayView, wmParams);
             isShowing = true;
             applyOpacity();
+            updateLockState();
         } catch (Exception e) {
             showFallback(startX, startY);
         }
@@ -144,6 +150,7 @@ public abstract class BaseOverlayButton {
         isShowing = true;
         wmParams = null;
         applyOpacity();
+        updateLockState();
     }
 
     public void hide() {
@@ -181,7 +188,7 @@ public abstract class BaseOverlayButton {
                 initialTouchY = event.getRawY();
                 isDragging = false;
                 touchDownTime = SystemClock.uptimeMillis();
-                v.getParent().requestDisallowInterceptTouchEvent(true);
+                v.getParent().requestDisallowInterceptTouchEvent(!isLocked);
                 
                 if (longPressRunnable != null) {
                     handler.removeCallbacks(longPressRunnable);
@@ -198,26 +205,32 @@ public abstract class BaseOverlayButton {
                 float dx = event.getRawX() - initialTouchX;
                 float dy = event.getRawY() - initialTouchY;
                 if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-                    isDragging = true;
+                    if (!isLocked) {
+                        isDragging = true;
+                    }
                     if (longPressRunnable != null) {
                         handler.removeCallbacks(longPressRunnable);
                     }
                 }
-                if (isDragging && windowManager != null && overlayView != null) {
+                if (isDragging && !isLocked && windowManager != null && overlayView != null) {
                     wmParams.x = (int) (initialX + dx);
                     wmParams.y = (int) (initialY + dy);
                     windowManager.updateViewLayout(overlayView, wmParams);
                 }
-                return true;
+                return !isLocked || !isDragging;
 
             case MotionEvent.ACTION_UP:
                 if (longPressRunnable != null) {
                     handler.removeCallbacks(longPressRunnable);
                 }
                 long elapsed = SystemClock.uptimeMillis() - touchDownTime;
-                if (!isDragging && elapsed < TAP_TIMEOUT) {
+                float totalDx = event.getRawX() - initialTouchX;
+                float totalDy = event.getRawY() - initialTouchY;
+                boolean wasDragging = Math.abs(totalDx) > DRAG_THRESHOLD || Math.abs(totalDy) > DRAG_THRESHOLD;
+
+                if (!wasDragging && elapsed < TAP_TIMEOUT) {
                     handler.post(this::onButtonClick);
-                } else if (isDragging) {
+                } else if (isDragging && !isLocked) {
                     savePosition(wmParams.x, wmParams.y);
                 }
                 isDragging = false;
@@ -250,7 +263,7 @@ public abstract class BaseOverlayButton {
                 initialTouchY = event.getRawY();
                 isDragging = false;
                 touchDownTime = SystemClock.uptimeMillis();
-                v.getParent().requestDisallowInterceptTouchEvent(true);
+                v.getParent().requestDisallowInterceptTouchEvent(!isLocked);
                 
                 if (longPressRunnable != null) {
                     handler.removeCallbacks(longPressRunnable);
@@ -267,26 +280,32 @@ public abstract class BaseOverlayButton {
                 float dx = event.getRawX() - initialTouchX;
                 float dy = event.getRawY() - initialTouchY;
                 if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-                    isDragging = true;
+                    if (!isLocked) {
+                        isDragging = true;
+                    }
                     if (longPressRunnable != null) {
                         handler.removeCallbacks(longPressRunnable);
                     }
                 }
-                if (isDragging) {
+                if (isDragging && !isLocked) {
                     params.leftMargin = (int) (initialX + dx);
                     params.topMargin = (int) (initialY + dy);
                     overlayView.setLayoutParams(params);
                 }
-                return true;
+                return !isLocked || !isDragging;
 
             case MotionEvent.ACTION_UP:
                 if (longPressRunnable != null) {
                     handler.removeCallbacks(longPressRunnable);
                 }
                 long elapsed = SystemClock.uptimeMillis() - touchDownTime;
-                if (!isDragging && elapsed < TAP_TIMEOUT) {
+                float totalDx = event.getRawX() - initialTouchX;
+                float totalDy = event.getRawY() - initialTouchY;
+                boolean wasDragging = Math.abs(totalDx) > DRAG_THRESHOLD || Math.abs(totalDy) > DRAG_THRESHOLD;
+
+                if (!wasDragging && elapsed < TAP_TIMEOUT) {
                     handler.post(this::onButtonClick);
-                } else if (isDragging) {
+                } else if (isDragging && !isLocked) {
                     savePosition(params.leftMargin, params.topMargin);
                 }
                 isDragging = false;
@@ -333,6 +352,30 @@ public abstract class BaseOverlayButton {
     protected abstract int getIconResource();
     protected abstract void onButtonClick();
 
+    public void applyConfigurationChanges() {
+        if (!isShowing || overlayView == null) return;
+
+        int newSize = getButtonSizePx();
+        if (wmParams != null) {
+            wmParams.width = newSize;
+            wmParams.height = newSize;
+            try {
+                windowManager.updateViewLayout(overlayView, wmParams);
+            } catch (Exception ignored) {}
+        } else {
+            ViewGroup.LayoutParams params = overlayView.getLayoutParams();
+            if (params != null) {
+                params.width = newSize;
+                params.height = newSize;
+                overlayView.setLayoutParams(params);
+            }
+        }
+
+        applyOpacity();
+
+        updateLockState();
+    }
+
     private void showSliderOverlay() {
         if (isSliderShowing || activity.isFinishing() || activity.isDestroyed()) return;
         
@@ -342,7 +385,10 @@ public abstract class BaseOverlayButton {
 
         float density = activity.getResources().getDisplayMetrics().density;
         int width = (int) (220 * density);
-        int height = (int) (120 * density);
+
+        android.widget.ScrollView scrollView = new android.widget.ScrollView(activity);
+        scrollView.setFillViewport(true);
+        scrollView.setVerticalScrollBarEnabled(true);
 
         LinearLayout container = new LinearLayout(activity);
         container.setOrientation(LinearLayout.VERTICAL);
@@ -351,7 +397,7 @@ public abstract class BaseOverlayButton {
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(Color.parseColor("#E0222222"));
         bg.setCornerRadius(12 * density);
-        container.setBackground(bg);
+        scrollView.setBackground(bg);
 
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
         
@@ -422,7 +468,52 @@ public abstract class BaseOverlayButton {
         });
         container.addView(opacitySeek);
 
-        sliderOverlay = container;
+        TextView lockLabel = new TextView(activity);
+        lockLabel.setText(activity.getString(R.string.overlay_button_lock));
+        lockLabel.setTextColor(Color.WHITE);
+        lockLabel.setTextSize(12);
+        LinearLayout.LayoutParams lockLabelParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lockLabelParams.topMargin = (int)(8 * density);
+        container.addView(lockLabel, lockLabelParams);
+
+        LinearLayout lockRow = new LinearLayout(activity);
+        lockRow.setOrientation(LinearLayout.HORIZONTAL);
+        lockRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        LinearLayout.LayoutParams lockRowParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lockRowParams.topMargin = (int)(4 * density);
+
+        TextView lockDesc = new TextView(activity);
+        lockDesc.setText(activity.getString(R.string.overlay_button_lock_desc));
+        lockDesc.setTextColor(Color.WHITE);
+        lockDesc.setTextSize(10);
+        lockDesc.setAlpha(0.7f);
+        LinearLayout.LayoutParams lockDescParams = new LinearLayout.LayoutParams(
+            0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        lockRow.addView(lockDesc, lockDescParams);
+
+        android.widget.Switch lockSwitch = new android.widget.Switch(activity);
+        lockSwitch.setChecked(manager.isOverlayLocked(getModId()));
+        lockSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            manager.setOverlayLocked(getModId(), isChecked);
+            isLocked = isChecked;
+            resetSliderHideTimer();
+        });
+        lockRow.addView(lockSwitch);
+
+        container.addView(lockRow, lockRowParams);
+
+        scrollView.addView(container);
+        sliderOverlay = scrollView;
+
+        container.measure(
+            View.MeasureSpec.makeMeasureSpec(width - (int)(24*density), View.MeasureSpec.AT_MOST),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        );
+        int contentHeight = container.getMeasuredHeight() + (int)(24*density);
+        int maxHeight = (int) (280 * density);
+        int height = Math.min(contentHeight, maxHeight);
 
         sliderParams = new WindowManager.LayoutParams(
             width,

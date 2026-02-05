@@ -118,4 +118,9 @@ public class SnaplookOverlay extends BaseOverlayButton {
     public boolean isInitialized() {
         return initialized;
     }
+
+    @Override
+    public void applyConfigurationChanges() {
+        super.applyConfigurationChanges();
+    }
 }

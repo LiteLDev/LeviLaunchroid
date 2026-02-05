@@ -658,18 +658,13 @@ import okhttp3.OkHttpClient;
             }
 
             @Override
-            public boolean onDoubleTap(MotionEvent e) {
+            public boolean onSingleTapConfirmed(MotionEvent e) {
                 if (!isTouchOnDrawableIcon(e)) return false;
                 if (mascotOverlay == null || !mascotOverlay.isActive()) {
                     mascotOverlay = new MascotEasterEggOverlay(MainActivity.this);
                     mascotOverlay.show(binding.textMinecraftVersion, binding.launchButton);
                 }
                 return true;
-            }
-
-            @Override
-            public boolean onSingleTapConfirmed(MotionEvent e) {
-                return false;
             }
 
             private boolean isTouchOnDrawableIcon(MotionEvent e) {
@@ -698,11 +693,6 @@ import okhttp3.OkHttpClient;
 
         List<QuickActionsAdapter.QuickActionItem> items = new ArrayList<>();
         items.add(new QuickActionsAdapter.QuickActionItem(
-                R.string.quick_launch,
-                R.string.quick_launch_menu_subtitle,
-                4
-        ));
-        items.add(new QuickActionsAdapter.QuickActionItem(
                 R.string.content_management,
                 R.string.content_management_subtitle,
                 1
@@ -716,6 +706,11 @@ import okhttp3.OkHttpClient;
                 R.string.microsoft_accounts,
                 R.string.manage_accounts,
                 3
+        ));
+        items.add(new QuickActionsAdapter.QuickActionItem(
+                R.string.quick_launch,
+                R.string.quick_launch_menu_subtitle,
+                4
         ));
         adapter.updateItems(items);
         DynamicAnim.staggerRecyclerChildren(binding.quickActionsRecycler);

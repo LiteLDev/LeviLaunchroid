@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -109,6 +110,8 @@ public class AddedInbuiltModsAdapter extends RecyclerView.Adapter<AddedInbuiltMo
         TextView title = dialog.findViewById(R.id.config_title);
         SeekBar seekBarSize = dialog.findViewById(R.id.seekbar_button_size);
         TextView textSize = dialog.findViewById(R.id.text_button_size);
+        LinearLayout lockContainer = dialog.findViewById(R.id.config_lock_container);
+        Switch lockSwitch = dialog.findViewById(R.id.switch_lock_position);
         LinearLayout autoSprintContainer = dialog.findViewById(R.id.config_autosprint_container);
         Spinner spinnerAutoSprint = dialog.findViewById(R.id.spinner_autosprint_key);
         LinearLayout zoomContainer = dialog.findViewById(R.id.config_zoom_container);
@@ -126,6 +129,12 @@ public class AddedInbuiltModsAdapter extends RecyclerView.Adapter<AddedInbuiltMo
         int currentSize = manager.getOverlayButtonSize(mod.getId());
         seekBarSize.setProgress(currentSize);
         textSize.setText(currentSize + "dp");
+
+        lockSwitch.setChecked(manager.isOverlayLocked(mod.getId()));
+
+        if (mod.getId().equals(ModIds.CHICK_PET)) {
+            lockContainer.setVisibility(View.GONE);
+        }
 
         seekBarSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -182,6 +191,7 @@ public class AddedInbuiltModsAdapter extends RecyclerView.Adapter<AddedInbuiltMo
 
         btnSave.setOnClickListener(v -> {
             manager.setOverlayButtonSize(mod.getId(), seekBarSize.getProgress());
+            manager.setOverlayLocked(mod.getId(), lockSwitch.isChecked());
             if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
                 int key = spinnerAutoSprint.getSelectedItemPosition() == 1 
                     ? KeyEvent.KEYCODE_SHIFT_LEFT 

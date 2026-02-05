@@ -41,6 +41,7 @@ public class CpsDisplayOverlay {
     private float initialX, initialY;
     private float initialTouchX, initialTouchY;
     private boolean isDragging = false;
+    private boolean isLocked = false;
     private long touchDownTime = 0;
 
     private int lastButtonState = 0;
@@ -171,6 +172,7 @@ public class CpsDisplayOverlay {
 
             handler.post(updateRunnable);
             applyOpacity();
+            updateLockState();
         } catch (Exception e) {
             showFallback(startX, startY);
         }
@@ -200,6 +202,7 @@ public class CpsDisplayOverlay {
 
         handler.post(updateRunnable);
         applyOpacity();
+        updateLockState();
     }
 
     private void updateDisplay() {
@@ -215,6 +218,10 @@ public class CpsDisplayOverlay {
         }
     }
 
+    private void updateLockState() {
+        isLocked = InbuiltModManager.getInstance(activity).isOverlayLocked(ModIds.CPS_DISPLAY);
+    }
+
     private boolean handleTouch(View v, MotionEvent event) {
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
@@ -224,25 +231,29 @@ public class CpsDisplayOverlay {
                 initialTouchY = event.getRawY();
                 isDragging = false;
                 touchDownTime = SystemClock.uptimeMillis();
+                v.getParent().requestDisallowInterceptTouchEvent(!isLocked);
                 return true;
             case MotionEvent.ACTION_MOVE:
                 float dx = event.getRawX() - initialTouchX;
                 float dy = event.getRawY() - initialTouchY;
                 if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-                    isDragging = true;
+                    if (!isLocked) {
+                        isDragging = true;
+                    }
                 }
-                if (isDragging && windowManager != null && overlayView != null) {
+                if (isDragging && !isLocked && windowManager != null && overlayView != null) {
                     wmParams.x = (int) (initialX + dx);
                     wmParams.y = (int) (initialY + dy);
                     windowManager.updateViewLayout(overlayView, wmParams);
                 }
-                return true;
+                return !isLocked || !isDragging;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (isDragging) {
+                if (isDragging && !isLocked) {
                     savePosition(wmParams.x, wmParams.y);
                 }
                 isDragging = false;
+                v.getParent().requestDisallowInterceptTouchEvent(false);
                 return true;
         }
         return false;
@@ -262,26 +273,30 @@ public class CpsDisplayOverlay {
                 initialTouchY = event.getRawY();
                 isDragging = false;
                 touchDownTime = SystemClock.uptimeMillis();
+                v.getParent().requestDisallowInterceptTouchEvent(!isLocked);
                 return true;
             case MotionEvent.ACTION_MOVE:
                 float dx = event.getRawX() - initialTouchX;
                 float dy = event.getRawY() - initialTouchY;
                 if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-                    isDragging = true;
+                    if (!isLocked) {
+                        isDragging = true;
+                    }
                 }
-                if (isDragging) {
+                if (isDragging && !isLocked) {
                     params.leftMargin = (int) (initialX + dx);
                     params.topMargin = (int) (initialY + dy);
                     overlayView.setLayoutParams(params);
                 }
-                return true;
+                return !isLocked || !isDragging;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (isDragging) {
+                if (isDragging && !isLocked) {
                     savePosition((int) (initialX + (event.getRawX() - initialTouchX)), 
                                  (int) (initialY + (event.getRawY() - initialTouchY)));
                 }
                 isDragging = false;
+                v.getParent().requestDisallowInterceptTouchEvent(false);
                 return true;
         }
         return false;
@@ -310,5 +325,11 @@ public class CpsDisplayOverlay {
         synchronized (clickTimes) {
             clickTimes.clear();
         }
+    }
+
+    public void applyConfigurationChanges() {
+        if (!isShowing || overlayView == null) return;
+        applyOpacity();
+        updateLockState();
     }
 }

@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import org.levimc.launcher.R;
@@ -246,6 +247,8 @@ public class ModMenuButton {
         TextView textSize = dialog.findViewById(R.id.text_button_size);
         SeekBar seekBarOpacity = dialog.findViewById(R.id.seekbar_button_opacity);
         TextView textOpacity = dialog.findViewById(R.id.text_button_opacity);
+        LinearLayout lockContainer = dialog.findViewById(R.id.config_lock_container);
+        Switch lockSwitch = dialog.findViewById(R.id.switch_lock_position);
         LinearLayout autoSprintContainer = dialog.findViewById(R.id.config_autosprint_container);
         Spinner spinnerAutoSprint = dialog.findViewById(R.id.spinner_autosprint_key);
         LinearLayout zoomContainer = dialog.findViewById(R.id.config_zoom_container);
@@ -265,10 +268,25 @@ public class ModMenuButton {
         seekBarOpacity.setProgress(currentOpacity);
         textOpacity.setText(currentOpacity + "%");
         
+        lockSwitch.setChecked(manager.isOverlayLocked(mod.getId()));
+
+        if (mod.getId().equals(ModIds.CHICK_PET)) {
+            lockContainer.setVisibility(View.GONE);
+        }
+        
+        lockSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            manager.setOverlayLocked(mod.getId(), isChecked);
+            applyConfigurationChanges(mod.getId());
+        });
+        
         seekBarSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 textSize.setText(progress + "dp");
+                if (fromUser) {
+                    manager.setOverlayButtonSize(mod.getId(), progress);
+                    applyConfigurationChanges(mod.getId());
+                }
             }
             @Override public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
@@ -278,6 +296,10 @@ public class ModMenuButton {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 textOpacity.setText(progress + "%");
+                if (fromUser) {
+                    manager.setOverlayOpacity(mod.getId(), progress);
+                    applyConfigurationChanges(mod.getId());
+                }
             }
             @Override public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
@@ -308,6 +330,10 @@ public class ModMenuButton {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     textZoom.setText(progress + "%");
+                    if (fromUser) {
+                        manager.setZoomLevel(progress);
+                        applyConfigurationChanges(mod.getId());
+                    }
                 }
                 @Override public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override public void onStopTrackingTouch(SeekBar seekBar) {}
@@ -320,6 +346,7 @@ public class ModMenuButton {
         btnSave.setOnClickListener(v -> {
             manager.setOverlayButtonSize(mod.getId(), seekBarSize.getProgress());
             manager.setOverlayOpacity(mod.getId(), seekBarOpacity.getProgress());
+            manager.setOverlayLocked(mod.getId(), lockSwitch.isChecked());
             if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
                 int key = spinnerAutoSprint.getSelectedItemPosition() == 1 
                     ? KeyEvent.KEYCODE_SHIFT_LEFT : KeyEvent.KEYCODE_CTRL_LEFT;
@@ -332,6 +359,13 @@ public class ModMenuButton {
         });
         
         dialog.show();
+    }
+    
+    private void applyConfigurationChanges(String modId) {
+        InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
+        if (overlayManager != null) {
+            overlayManager.applyConfigurationChanges(modId);
+        }
     }
     
     public void hide() {

@@ -376,6 +376,8 @@
     <string name="configure">配置</string>
     <string name="overlay_button_size">悬浮按钮大小</string>
     <string name="overlay_button_opacity">悬浮按钮透明度</string>
+    <string name="overlay_button_lock">锁定位置</string>
+    <string name="overlay_button_lock_desc">防止拖动和误触</string>
     <string name="settings">设置</string>
 
     <!-- Memory Editor -->

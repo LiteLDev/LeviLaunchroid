@@ -380,6 +380,8 @@
     <string name="configure">Настроить</string>
     <string name="overlay_button_size">Размер кнопки наложения</string>
     <string name="overlay_button_opacity">Прозрачность кнопки</string>
+    <string name="overlay_button_lock">Заблокировать положение</string>
+    <string name="overlay_button_lock_desc">Запретить перетаскивание и случайные нажатия</string>
     <string name="settings">Настройки</string>
 
     <!-- Memory Editor -->

@@ -123,31 +123,34 @@ public class InbuiltOverlayManager {
             return;
         }
 
-        int posY = modPositionMap.getOrDefault(modId, baseY + SPACING);
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        int posY = modPositionMap.getOrDefault(modId, baseY + SPACING);
+
+        int savedX = manager.getOverlayPositionX(modId, START_X);
+        int savedY = manager.getOverlayPositionY(modId, posY);
 
         switch (modId) {
             case ModIds.QUICK_DROP:
                 QuickDropOverlay quickDrop = new QuickDropOverlay(activity);
-                quickDrop.show(START_X, posY);
+                quickDrop.show(savedX, savedY);
                 overlays.add(quickDrop);
                 modOverlayMap.put(modId, quickDrop);
                 break;
             case ModIds.CAMERA_PERSPECTIVE:
                 CameraPerspectiveOverlay camera = new CameraPerspectiveOverlay(activity);
-                camera.show(START_X, posY);
+                camera.show(savedX, savedY);
                 overlays.add(camera);
                 modOverlayMap.put(modId, camera);
                 break;
             case ModIds.TOGGLE_HUD:
                 ToggleHudOverlay hud = new ToggleHudOverlay(activity);
-                hud.show(START_X, posY);
+                hud.show(savedX, savedY);
                 overlays.add(hud);
                 modOverlayMap.put(modId, hud);
                 break;
             case ModIds.AUTO_SPRINT:
                 AutoSprintOverlay sprint = new AutoSprintOverlay(activity, manager.getAutoSprintKey());
-                sprint.show(START_X, posY);
+                sprint.show(savedX, savedY);
                 overlays.add(sprint);
                 modOverlayMap.put(modId, sprint);
                 break;
@@ -161,27 +164,27 @@ public class InbuiltOverlayManager {
                 if (zoomOverlay == null) {
                     zoomOverlay = new ZoomOverlay(activity);
                 }
-                zoomOverlay.show(START_X, posY);
+                zoomOverlay.show(savedX, savedY);
                 overlays.add(zoomOverlay);
                 modOverlayMap.put(modId, zoomOverlay);
                 break;
             case ModIds.FPS_DISPLAY:
                 if (fpsDisplayOverlay == null) {
                     fpsDisplayOverlay = new FpsDisplayOverlay(activity);
-                    fpsDisplayOverlay.show(START_X, posY);
+                    fpsDisplayOverlay.show(savedX, savedY);
                 }
                 break;
             case ModIds.CPS_DISPLAY:
                 if (cpsDisplayOverlay == null) {
                     cpsDisplayOverlay = new CpsDisplayOverlay(activity);
-                    cpsDisplayOverlay.show(START_X, posY);
+                    cpsDisplayOverlay.show(savedX, savedY);
                 }
                 break;
             case ModIds.SNAPLOOK:
                 if (snaplookOverlay == null) {
                     snaplookOverlay = new SnaplookOverlay(activity);
                 }
-                snaplookOverlay.show(START_X, posY);
+                snaplookOverlay.show(savedX, savedY);
                 overlays.add(snaplookOverlay);
                 modOverlayMap.put(modId, snaplookOverlay);
                 break;
@@ -462,12 +465,24 @@ public class InbuiltOverlayManager {
         return false;
     }
 
-    public ZoomOverlay getZoomOverlay() {
-        return zoomOverlay;
-    }
+    public void applyConfigurationChanges(String modId) {
+        BaseOverlayButton overlay = modOverlayMap.get(modId);
+        if (overlay != null) {
+            overlay.applyConfigurationChanges();
+        }
 
-    public SnaplookOverlay getSnaplookOverlay() {
-        return snaplookOverlay;
+        if (modId.equals(ModIds.ZOOM) && zoomOverlay != null) {
+            zoomOverlay.applyConfigurationChanges();
+        }
+        if (modId.equals(ModIds.SNAPLOOK) && snaplookOverlay != null) {
+            snaplookOverlay.applyConfigurationChanges();
+        }
+        if (modId.equals(ModIds.FPS_DISPLAY) && fpsDisplayOverlay != null) {
+            fpsDisplayOverlay.applyConfigurationChanges();
+        }
+        if (modId.equals(ModIds.CPS_DISPLAY) && cpsDisplayOverlay != null) {
+            cpsDisplayOverlay.applyConfigurationChanges();
+        }
     }
 
 }
