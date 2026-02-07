@@ -687,35 +687,35 @@ import okhttp3.OkHttpClient;
 
     private void initQuickActionsRecycler() {
         QuickActionsAdapter adapter = new QuickActionsAdapter(new ArrayList<>());
-        binding.quickActionsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        binding.quickActionsRecycler.setLayoutManager(new androidx.recyclerview.widget.GridLayoutManager(this, 5));
         binding.quickActionsRecycler.setAdapter(adapter);
         DynamicAnim.staggerRecyclerChildren(binding.quickActionsRecycler);
 
         List<QuickActionsAdapter.QuickActionItem> items = new ArrayList<>();
         items.add(new QuickActionsAdapter.QuickActionItem(
+                R.string.curseforge_title,
+                R.drawable.ic_qa_curseforge,
+                5
+        ));
+        items.add(new QuickActionsAdapter.QuickActionItem(
                 R.string.content_management,
-                R.string.content_management_subtitle,
+                R.drawable.ic_qa_content_mgmt,
                 1
         ));
         items.add(new QuickActionsAdapter.QuickActionItem(
                 R.string.import_apk,
-                R.string.import_apk_subtitle,
+                R.drawable.ic_qa_import,
                 2
         ));
         items.add(new QuickActionsAdapter.QuickActionItem(
                 R.string.microsoft_accounts,
-                R.string.manage_accounts,
+                R.drawable.ic_qa_account,
                 3
         ));
         items.add(new QuickActionsAdapter.QuickActionItem(
                 R.string.quick_launch,
-                R.string.quick_launch_menu_subtitle,
+                R.drawable.ic_qa_launch,
                 4
-        ));
-        items.add(new QuickActionsAdapter.QuickActionItem(
-                R.string.curseforge_title,
-                R.string.curseforge_subtitle,
-                5
         ));
         adapter.updateItems(items);
         DynamicAnim.staggerRecyclerChildren(binding.quickActionsRecycler);

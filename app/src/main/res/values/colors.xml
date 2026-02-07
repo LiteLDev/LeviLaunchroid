@@ -35,6 +35,8 @@
 
     <color name="text_primary">#212121</color>
     <color name="text_secondary">#757575</color>
-    
+
+    <color name="qa_icon_color">#000000</color>
+  
     <color name="ic_launcher_adaptive_back">#F6F3EA</color>
 </resources>
