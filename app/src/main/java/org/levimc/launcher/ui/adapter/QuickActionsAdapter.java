@@ -21,12 +21,12 @@ public class QuickActionsAdapter extends RecyclerView.Adapter<QuickActionsAdapte
 
     public static class QuickActionItem {
         public final int titleRes;
-        public final int subtitleRes;
+        public final int iconRes;
         public final int actionId;
 
-        public QuickActionItem(int titleRes, int subtitleRes, int actionId) {
+        public QuickActionItem(int titleRes, int iconRes, int actionId) {
             this.titleRes = titleRes;
-            this.subtitleRes = subtitleRes;
+            this.iconRes = iconRes;
             this.actionId = actionId;
         }
     }
@@ -53,13 +53,7 @@ public class QuickActionsAdapter extends RecyclerView.Adapter<QuickActionsAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         QuickActionItem item = items.get(position);
         holder.title.setText(item.titleRes);
-        holder.subtitle.setText(item.subtitleRes);
-        // 增加顶部外边距以匹配原第二项的间距
-        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
-        if (lp != null) {
-            lp.topMargin = (position == 0) ? 0 : dpToPx(holder.itemView, 6);
-            holder.itemView.setLayoutParams(lp);
-        }
+        holder.icon.setImageResource(item.iconRes);
 
         holder.itemView.setOnClickListener(v -> {
             if (onActionClickListener != null) {
@@ -81,12 +75,12 @@ public class QuickActionsAdapter extends RecyclerView.Adapter<QuickActionsAdapte
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
-        TextView subtitle;
+        android.widget.ImageView icon;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.qa_title);
-            subtitle = itemView.findViewById(R.id.qa_subtitle);
+            icon = itemView.findViewById(R.id.qa_icon);
         }
     }
 

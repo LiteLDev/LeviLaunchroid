@@ -35,4 +35,5 @@
 
     <color name="text_primary">#FFFFFF</color>
     <color name="text_secondary">#AAAAAA</color>
+    <color name="qa_icon_color">#FFFFFF</color>
 </resources>
