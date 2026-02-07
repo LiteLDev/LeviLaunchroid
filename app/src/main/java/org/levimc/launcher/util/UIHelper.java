@@ -33,4 +33,14 @@ public class UIHelper {
             ).post(action);
         }
     }
+
+    public static void hideKeyboard(android.app.Activity activity) {
+        android.view.View view = activity.getCurrentFocus();
+        if (view != null) {
+            android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }
+    }
 }

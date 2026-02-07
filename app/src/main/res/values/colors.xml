@@ -19,6 +19,7 @@
     <color name="surface_variant">#E8F5E9</color>
     <color name="on_background">#212121</color>
     <color name="on_surface">#212121</color>
+    <color name="on_surface_variant">#1B5E20</color>
 
     <color name="outline">#BDBDBD</color>
     <color name="white">#FFFFFF</color>

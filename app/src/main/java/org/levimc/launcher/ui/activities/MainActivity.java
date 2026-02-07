@@ -712,6 +712,11 @@ import okhttp3.OkHttpClient;
                 R.string.quick_launch_menu_subtitle,
                 4
         ));
+        items.add(new QuickActionsAdapter.QuickActionItem(
+                R.string.curseforge_title,
+                R.string.curseforge_subtitle,
+                5
+        ));
         adapter.updateItems(items);
         DynamicAnim.staggerRecyclerChildren(binding.quickActionsRecycler);
 
@@ -725,6 +730,10 @@ import okhttp3.OkHttpClient;
                 }
                 case 4 -> {
                     Intent intent = new Intent(this, QuickLaunchActivity.class);
+                    startActivity(intent);
+                }
+                case 5 -> {
+                    Intent intent = new Intent(this, CurseForgeActivity.class);
                     startActivity(intent);
                 }
             }

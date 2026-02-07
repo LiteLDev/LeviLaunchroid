@@ -16,6 +16,7 @@ firebase-iid = "21.1.0"
 firebase-messaging = "25.0.1"
 fragmentKtx = "1.8.9"
 gamesActivity = "4.0.0"
+glide = "5.0.5"
 gson = "2.13.2"
 guava = "33.5.0-jre"
 httpclient = "4.5.14"
@@ -62,6 +63,7 @@ espresso-core = { group = "androidx.test.espresso", name = "espresso-core", vers
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 firebase-iid = { module = "com.google.firebase:firebase-iid", version.ref = "firebase-iid" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging", version.ref = "firebase-messaging" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 httpclient = { module = "org.apache.httpcomponents:httpclient", version.ref = "httpclient" }
