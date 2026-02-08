@@ -1,7 +1,5 @@
 package org.levimc.launcher.core.curseforge;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.levimc.launcher.core.curseforge.models.ContentSearchResponse;
@@ -24,13 +22,11 @@ public class CurseForgeClient {
     private static final String API_KEY = "";
 
     public static final int GAME_ID_MINECRAFT = 78022;
-    
-    public static final String SORT_FEATURED = "1";
+
     public static final String SORT_POPULARITY = "2";
     public static final String SORT_LAST_UPDATED = "3";
     public static final String SORT_NAME = "4";
-    public static final String SORT_TOTAL_DOWNLOADS = "5";
-    public static final String SORT_RELEVANCY = "6";
+    public static final String SORT_TOTAL_DOWNLOADS = "6";
     
     private final OkHttpClient client;
     private final Gson gson;
