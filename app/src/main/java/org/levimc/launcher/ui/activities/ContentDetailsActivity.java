@@ -1,15 +1,20 @@
 package org.levimc.launcher.ui.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,7 +32,7 @@ import org.levimc.launcher.core.curseforge.models.ContentFile;
 import org.levimc.launcher.core.versions.GameVersion;
 import org.levimc.launcher.core.versions.VersionManager;
 import org.levimc.launcher.ui.adapter.ContentFilesAdapter;
-import org.levimc.launcher.util.GlideImageGetter;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,8 +53,10 @@ public class ContentDetailsActivity extends BaseActivity {
     private ImageView icon;
     private TextView title;
     private TextView author;
-    private TextView summary;
+
+    private WebView summary;
     private RecyclerView filesRecycler;
+
     private ContentFilesAdapter filesAdapter;
     private MaterialButton btnInstall;
     private MaterialButton btnBrowser;
@@ -80,6 +87,50 @@ public class ContentDetailsActivity extends BaseActivity {
         loadDescription();
     }
 
+    private void initWebView() {
+        summary.setBackgroundColor(0);
+        summary.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        WebSettings settings = summary.getSettings();
+
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
+        settings.setTextZoom(100); 
+        settings.setMediaPlaybackRequiresUserGesture(false);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        settings.setUserAgentString("Mozilla/5.0 (Linux; Android 10; Mobile; rv:125.0) Gecko/125.0 Firefox/125.0");
+        
+        summary.setWebChromeClient(new WebChromeClient());
+
+
+        
+        summary.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return handleUrl(request.getUrl());
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return handleUrl(Uri.parse(url));
+            }
+
+            private boolean handleUrl(Uri uri) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(ContentDetailsActivity.this, "Cannot open link: " + uri.toString(), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }
+        });
+    }
+
     private void initViews() {
         View backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
@@ -93,7 +144,9 @@ public class ContentDetailsActivity extends BaseActivity {
         btnBrowser = findViewById(R.id.btn_browser);
         progressBar = findViewById(R.id.download_progress);
         
-        summary.setMovementMethod(LinkMovementMethod.getInstance());
+
+        
+        initWebView();
         
         filesAdapter = new ContentFilesAdapter(this::downloadAndImport);
         filesRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -111,8 +164,6 @@ public class ContentDetailsActivity extends BaseActivity {
         } else {
             author.setText("");
         }
-
-        summary.setText(content.summary);
         
         if (content.logo != null && content.logo.thumbnailUrl != null) {
             Glide.with(this)
@@ -132,8 +183,21 @@ public class ContentDetailsActivity extends BaseActivity {
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
                     if (result != null && !result.isEmpty()) {
-                        summary.setText(Html.fromHtml(result, Html.FROM_HTML_MODE_COMPACT, new GlideImageGetter(ContentDetailsActivity.this, summary), null));
+
+                        String htmlData = "<html><head>" +
+                                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=0.9, maximum-scale=1.0, user-scalable=yes\">" +
+                                "<style>" +
+                                "body { color: #dddddd; background-color: transparent; font-family: sans-serif; font-size: 14px; word-wrap: break-word; margin: 0; padding: 0; }" +
+                                "a { color: #4da6ff; text-decoration: none; }" +
+                                "img { max-width: 80% !important; width: auto !important; height: auto !important; display: block; margin: 8px auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }" +
+                                "iframe { width: 80% !important; max-width: 80% !important; aspect-ratio: 16/9; display: block; margin: 8px auto; border: none; border-radius: 8px; }" +
+                                "p { margin: 8px 0; }" +
+                                "</style></head><body>" +
+                                result +
+                                "</body></html>";
+                        summary.loadDataWithBaseURL("https://www.curseforge.com", htmlData, "text/html", "utf-8", null);
                     }
+
                 });
             }
 

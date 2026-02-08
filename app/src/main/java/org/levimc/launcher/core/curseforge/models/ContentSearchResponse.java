@@ -6,6 +6,4 @@ import java.util.List;
 public class ContentSearchResponse {
     @SerializedName("data")
     public List<Content> data;
-    @SerializedName("pagination")
-    public Pagination pagination;
 }

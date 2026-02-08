@@ -1,12 +1,11 @@
 package org.levimc.launcher.core.curseforge;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
 import org.levimc.launcher.core.curseforge.models.ContentSearchResponse;
 import org.levimc.launcher.core.curseforge.models.StringResponse;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -85,7 +84,7 @@ public class CurseForgeClient {
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, Response response) {
                 if (!response.isSuccessful()) {
                     callback.onError(new IOException("Unexpected code " + response));
                     return;
@@ -132,51 +131,5 @@ public class CurseForgeClient {
                 }
             }
         });
-    }
-
-    public void getGameVersions(CurseForgeCallback<List<GameVersionType>> callback) {
-        String url = BASE_URL + "/v1/games/" + GAME_ID_MINECRAFT + "/versions";
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader("x-api-key", API_KEY)
-                .addHeader("Accept", "application/json")
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                callback.onError(e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    callback.onError(new IOException("Unexpected code " + response));
-                    return;
-                }
-
-                try {
-                    String json = response.body().string();
-                    List<GameVersionType> versions = new java.util.ArrayList<>();
-                    
-                    if (json.trim().startsWith("[")) {
-                        versions = gson.fromJson(json, new TypeToken<List<GameVersionType>>(){}.getType());
-                    } else {
-                        GameVersionType singleVersion = gson.fromJson(json, GameVersionType.class);
-                        if (singleVersion != null) {
-                            versions.add(singleVersion);
-                        }
-                    }
-                    callback.onSuccess(versions);
-                } catch (Exception e) {
-                    callback.onError(e);
-                }
-            }
-        });
-    }
-
-    public static class GameVersionType {
-        public int type;
-        public List<String> versions;
     }
 }

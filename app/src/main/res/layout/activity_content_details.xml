@@ -165,15 +165,11 @@
                 android:textColor="@color/on_surface"
                 android:layout_marginBottom="8dp"/>
 
-            <TextView
+            <WebView
                 android:id="@+id/detail_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/misans"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp"
-                android:linksClickable="true"
-                tools:text="Detailed summary of the mod..." />
+                android:background="@android:color/transparent" />
 
         </LinearLayout>
 
