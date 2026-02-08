@@ -517,6 +517,7 @@
     <string name="curseforge_downloading">下载中…</string>
     <string name="curseforge_importing">导入中…</string>
     <string name="curseforge_download_failed">下载失败</string>
+    <string name="curseforge_available_files">可用文件</string>
 
     <!-- Mascot Messages -->
     <string name="mascot_message_blocking_nope">不行不行不行！</string>

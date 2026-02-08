@@ -12,8 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/misans"
-        android:textColor="@color/on_surface"
-        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:ellipsize="middle"
         android:singleLine="true"
@@ -29,6 +29,7 @@
         android:fontFamily="@font/misans"
         android:textColor="@color/text_secondary"
         android:textSize="12sp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="@id/file_name"
         app:layout_constraintTop_toBottomOf="@id/file_name"
         tools:text="Oct 24, 2023" />
@@ -42,15 +43,18 @@
         android:textSize="12sp"
         android:layout_marginStart="8dp"
         app:layout_constraintStart_toEndOf="@id/file_date"
-        app:layout_constraintTop_toBottomOf="@id/file_name"
+        app:layout_constraintTop_toTopOf="@id/file_date"
         tools:text="1.20.40" />
+
+
 
     <ImageButton
         android:id="@+id/btn_download"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:src="@drawable/ic_download"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:tint="@color/primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

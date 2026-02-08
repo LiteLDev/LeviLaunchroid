@@ -3,6 +3,7 @@ package org.levimc.launcher.core.curseforge;
 import com.google.gson.Gson;
 
 import org.levimc.launcher.core.curseforge.models.ContentSearchResponse;
+import org.levimc.launcher.core.curseforge.models.ModFilesResponse;
 import org.levimc.launcher.core.curseforge.models.StringResponse;
 
 import java.io.IOException;
@@ -126,6 +127,41 @@ public class CurseForgeClient {
                     String json = response.body().string();
                     StringResponse stringResponse = gson.fromJson(json, StringResponse.class);
                     callback.onSuccess(stringResponse.data);
+                } catch (Exception e) {
+                    callback.onError(e);
+                }
+            }
+        });
+    }
+
+    public void getModFiles(int modId, int index, int pageSize, CurseForgeCallback<ModFilesResponse> callback) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL + "/v1/mods/" + modId + "/files").newBuilder();
+        urlBuilder.addQueryParameter("index", String.valueOf(index));
+        urlBuilder.addQueryParameter("pageSize", String.valueOf(pageSize));
+
+        Request request = new Request.Builder()
+                .url(urlBuilder.build())
+                .addHeader("x-api-key", API_KEY)
+                .addHeader("Accept", "application/json")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onError(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (!response.isSuccessful()) {
+                    callback.onError(new IOException("Unexpected code " + response));
+                    return;
+                }
+
+                try {
+                    String json = response.body().string();
+                    ModFilesResponse filesResponse = gson.fromJson(json, ModFilesResponse.class);
+                    callback.onSuccess(filesResponse);
                 } catch (Exception e) {
                     callback.onError(e);
                 }

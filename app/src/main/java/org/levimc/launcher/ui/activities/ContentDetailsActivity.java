@@ -10,6 +10,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -31,7 +32,7 @@ import org.levimc.launcher.core.curseforge.models.Content;
 import org.levimc.launcher.core.curseforge.models.ContentFile;
 import org.levimc.launcher.core.versions.GameVersion;
 import org.levimc.launcher.core.versions.VersionManager;
-import org.levimc.launcher.ui.adapter.ContentFilesAdapter;
+
 
 
 import java.io.File;
@@ -55,9 +56,7 @@ public class ContentDetailsActivity extends BaseActivity {
     private TextView author;
 
     private WebView summary;
-    private RecyclerView filesRecycler;
-
-    private ContentFilesAdapter filesAdapter;
+    
     private MaterialButton btnInstall;
     private MaterialButton btnBrowser;
     private ProgressBar progressBar;
@@ -166,18 +165,11 @@ public class ContentDetailsActivity extends BaseActivity {
         title = findViewById(R.id.detail_title);
         author = findViewById(R.id.detail_author);
         summary = findViewById(R.id.detail_summary);
-        filesRecycler = findViewById(R.id.recycler_files);
         btnInstall = findViewById(R.id.btn_install_header);
         btnBrowser = findViewById(R.id.btn_browser);
         progressBar = findViewById(R.id.download_progress);
         
-
-        
         initWebView();
-        
-        filesAdapter = new ContentFilesAdapter(this::downloadAndImport);
-        filesRecycler.setLayoutManager(new LinearLayoutManager(this));
-        filesRecycler.setAdapter(filesAdapter);
         
         btnInstall.setOnClickListener(v -> onInstallClick());
         btnBrowser.setOnClickListener(v -> onBrowserClick());
@@ -197,10 +189,6 @@ public class ContentDetailsActivity extends BaseActivity {
                     .load(content.logo.thumbnailUrl)
                     .transform(new RoundedCorners(16))
                     .into(icon);
-        }
-        
-        if (content.latestFiles != null) {
-            filesAdapter.setFiles(content.latestFiles);
         }
     }
     
@@ -251,11 +239,63 @@ public class ContentDetailsActivity extends BaseActivity {
     }
 
     private void onInstallClick() {
-        if (content.latestFiles != null && !content.latestFiles.isEmpty()) {
-            downloadAndImport(content.latestFiles.get(0));
-        } else {
-            Toast.makeText(this, "No files available for installation", Toast.LENGTH_SHORT).show();
-        }
+        loadAllFiles();
+    }
+
+    private void loadAllFiles() {
+        progressBar.setVisibility(View.VISIBLE);
+        btnInstall.setEnabled(false);
+
+        client.getModFiles(content.id, 0, 50, new CurseForgeClient.CurseForgeCallback<>() {
+            @Override
+            public void onSuccess(org.levimc.launcher.core.curseforge.models.ModFilesResponse result) {
+                runOnUiThread(() -> {
+                    progressBar.setVisibility(View.GONE);
+                    btnInstall.setEnabled(true);
+                    if (result != null && result.data != null) {
+                        showFilesDialog(result.data);
+                    } else {
+                        Toast.makeText(ContentDetailsActivity.this, "No files found", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                runOnUiThread(() -> {
+                    progressBar.setVisibility(View.GONE);
+                    btnInstall.setEnabled(true);
+                    Toast.makeText(ContentDetailsActivity.this, "Failed to load files: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
+    }
+
+    private void showFilesDialog(java.util.List<ContentFile> files) {
+        android.app.Dialog dialog = new android.app.Dialog(this);
+        dialog.setContentView(R.layout.dialog_file_list);
+        dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+        
+        android.util.DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int width = (int)(metrics.widthPixels * 0.90);
+        int height = (int)(metrics.heightPixels * 0.80);
+        dialog.getWindow().setLayout(width, height);
+
+        RecyclerView recycler = dialog.findViewById(R.id.recycler_files);
+        View btnClose = dialog.findViewById(R.id.btn_close);
+
+        org.levimc.launcher.ui.adapter.FileListAdapter adapter = new org.levimc.launcher.ui.adapter.FileListAdapter(file -> {
+            dialog.dismiss();
+            downloadAndImport(file);
+        });
+
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        recycler.setAdapter(adapter);
+        adapter.setFiles(files);
+
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     private void onBrowserClick() {

@@ -15,7 +15,7 @@ import org.levimc.launcher.core.curseforge.models.ContentFile;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContentFilesAdapter extends RecyclerView.Adapter<ContentFilesAdapter.ViewHolder> {
+public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.ViewHolder> {
 
     private List<ContentFile> files = new ArrayList<>();
     private final OnFileClickListener listener;
@@ -24,7 +24,7 @@ public class ContentFilesAdapter extends RecyclerView.Adapter<ContentFilesAdapte
         void onDownloadClick(ContentFile file);
     }
 
-    public ContentFilesAdapter(OnFileClickListener listener) {
+    public FileListAdapter(OnFileClickListener listener) {
         this.listener = listener;
     }
 
@@ -36,7 +36,7 @@ public class ContentFilesAdapter extends RecyclerView.Adapter<ContentFilesAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_file_simple, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_file_detail, parent, false);
         return new ViewHolder(view);
     }
 
@@ -67,16 +67,15 @@ public class ContentFilesAdapter extends RecyclerView.Adapter<ContentFilesAdapte
 
         void bind(final ContentFile file, final OnFileClickListener listener) {
             name.setText(file.displayName != null ? file.displayName : file.fileName);
-            date.setText(file.fileDate != null ? file.fileDate.substring(0, Math.min(10, file.fileDate.length())) : "");
+            date.setText(file.fileDate != null && file.fileDate.length() >= 10 ? file.fileDate.substring(0, 10) : "");
             
             if (file.gameVersions != null && !file.gameVersions.isEmpty()) {
-                // Find a version that looks like a version number if possible
                 String v = file.gameVersions.get(0);
                 for (String ver : file.gameVersions) {
-                   if (ver.matches(".*\\d+\\.\\d+.*")) {
-                       v = ver;
-                       break;
-                   }
+                    if (ver.matches(".*\\d+\\.\\d+.*")) {
+                        v = ver;
+                        break;
+                    }
                 }
                 version.setText(v);
             } else {

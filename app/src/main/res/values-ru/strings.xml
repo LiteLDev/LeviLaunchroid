@@ -521,6 +521,7 @@
     <string name="curseforge_downloading">Скачивание…</string>
     <string name="curseforge_importing">Импорт…</string>
     <string name="curseforge_download_failed">Ошибка скачивания</string>
+    <string name="curseforge_available_files">Доступные файлы</string>
 
     <!-- Mascot Messages -->
     <string name="mascot_message_blocking_nope">Нет нет нет!</string>

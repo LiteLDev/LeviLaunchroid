@@ -525,6 +525,7 @@
     <string name="curseforge_downloading">Mengunduh…</string>
     <string name="curseforge_importing">engimpor…</string>
     <string name="curseforge_download_failed">Gagal mengunduh</string>
+    <string name="curseforge_available_files">File yang Tersedia</string>
 
     <!-- Mascot Messages -->
     <string name="mascot_message_blocking_nope">Enggak enggak enggak!</string>

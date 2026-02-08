@@ -525,6 +525,7 @@
     <string name="curseforge_downloading">Downloading…</string>
     <string name="curseforge_importing">Importing…</string>
     <string name="curseforge_download_failed">Download failed</string>
+    <string name="curseforge_available_files">Available Files</string>
 
     <!-- Mascot Messages -->
     <string name="mascot_message_blocking_nope">Nope nope nope!</string>
