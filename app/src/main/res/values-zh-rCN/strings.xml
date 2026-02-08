@@ -509,6 +509,14 @@
     <string name="quick_launch">快速启动</string>
     <string name="quick_launch_menu_subtitle">通过 URI 操作启动</string>
 
+    <!-- CurseForge -->
+    <string name="curseforge_title">CurseForge</string>
+    <string name="curseforge_subtitle">浏览并下载内容</string>
+    <string name="curseforge_search_hint">搜索内容…</string>
+    <string name="curseforge_download">下载</string>
+    <string name="curseforge_downloading">下载中…</string>
+    <string name="curseforge_importing">导入中…</string>
+    <string name="curseforge_download_failed">下载失败</string>
 
     <!-- Mascot Messages -->
     <string name="mascot_message_blocking_nope">不行不行不行！</string>

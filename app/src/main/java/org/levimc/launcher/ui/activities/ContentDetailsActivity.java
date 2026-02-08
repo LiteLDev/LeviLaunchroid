@@ -212,14 +212,30 @@ public class ContentDetailsActivity extends BaseActivity {
                     if (result != null && !result.isEmpty()) {
 
                         String htmlData = "<html><head>" +
-                                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=0.9, maximum-scale=1.0, user-scalable=yes\">" +
+                                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes\">" +
                                 "<style>" +
-                                "body { color: #dddddd; background-color: transparent; font-family: sans-serif; font-size: 14px; word-wrap: break-word; margin: 0; padding: 0; }" +
+                                "body { color: " + getHexColor(R.color.on_surface) + "; background-color: transparent; font-family: sans-serif; font-size: 14px; word-wrap: break-word; margin: 0; padding: 0; }" +
                                 "a { color: #4da6ff; text-decoration: none; }" +
-                                "img { max-width: 80% !important; width: auto !important; height: auto !important; display: block; margin: 8px auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }" +
-                                "iframe { width: 80% !important; max-width: 80% !important; aspect-ratio: 16/9; display: block; margin: 8px auto; border: none; border-radius: 8px; }" +
+                                "img { max-width: 100% !important; width: auto !important; height: auto !important; display: block; margin: 8px auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); min-height: 50px; transform: translateZ(0); }" + // Force GPU layer and min-height
+                                "iframe { width: 100% !important; max-width: 100% !important; aspect-ratio: 16/9; display: block; margin: 8px auto; border: none; border-radius: 8px; transform: translateZ(0); }" +
                                 "p { margin: 8px 0; }" +
-                                "</style></head><body>" +
+                                "</style>" +
+                                "<script>" +
+                                "window.onload = function() {" +
+                                "  var imgs = document.getElementsByTagName('img');" +
+                                "  for (var i = 0; i < imgs.length; i++) {" +
+                                "    imgs[i].onerror = function() {" + 
+                                "      this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiMzMzMiIHJ4PSI4IiByeT0iOCIvPjwvc3ZnPg==';" + // Dark grey rounded square
+                                "      this.style.width='50px';" +
+                                "      this.style.height='50px';" +
+                                "      this.style.objectFit='cover';" +
+                                "      this.style.boxShadow='none';" +
+                                "    };" +
+                                "    imgs[i].onload = function() { this.style.opacity='1'; };" +
+                                "  }" +
+                                "};" +
+                                "</script>" +
+                                "</head><body>" +
                                 result +
                                 "</body></html>";
                         summary.loadDataWithBaseURL("https://www.curseforge.com", htmlData, "text/html", "utf-8", null);
@@ -337,5 +353,9 @@ public class ContentDetailsActivity extends BaseActivity {
                 public void onProgress(int progress) {
                 }
             });
+    }
+    private String getHexColor(int colorResId) {
+        int color = getResources().getColor(colorResId, getTheme());
+        return String.format("#%06X", (0xFFFFFF & color));
     }
 }

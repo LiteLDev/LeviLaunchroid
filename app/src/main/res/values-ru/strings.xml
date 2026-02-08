@@ -513,6 +513,14 @@
     <string name="quick_launch">Быстрый запуск</string>
     <string name="quick_launch_menu_subtitle">Запуск с URI-действиями</string>
 
+    <!-- CurseForge -->
+    <string name="curseforge_title">CurseForge</string>
+    <string name="curseforge_subtitle">Просмотр и загрузка контента</string>
+    <string name="curseforge_search_hint">Поиск контента…</string>
+    <string name="curseforge_download">Скачать</string>
+    <string name="curseforge_downloading">Скачивание…</string>
+    <string name="curseforge_importing">Импорт…</string>
+    <string name="curseforge_download_failed">Ошибка скачивания</string>
 
     <!-- Mascot Messages -->
     <string name="mascot_message_blocking_nope">Нет нет нет!</string>

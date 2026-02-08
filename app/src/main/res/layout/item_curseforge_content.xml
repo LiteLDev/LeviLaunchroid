@@ -23,7 +23,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/misans"
         android:maxLines="1"
-        android:textColor="@color/white"
+        android:textColor="@color/on_surface"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

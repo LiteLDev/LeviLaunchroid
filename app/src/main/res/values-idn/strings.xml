@@ -517,6 +517,14 @@
     <string name="quick_launch">Peluncuran Cepat</string>
     <string name="quick_launch_menu_subtitle">Luncurkan dengan tindakan URI</string>
 
+    <!-- CurseForge -->
+    <string name="curseforge_title">CurseForge</string>
+    <string name="curseforge_subtitle">Jelajahi dan unduh konten</string>
+    <string name="curseforge_search_hint">Cari konten…</string>
+    <string name="curseforge_download">Unduh</string>
+    <string name="curseforge_downloading">Mengunduh…</string>
+    <string name="curseforge_importing">engimpor…</string>
+    <string name="curseforge_download_failed">Gagal mengunduh</string>
 
     <!-- Mascot Messages -->
     <string name="mascot_message_blocking_nope">Enggak enggak enggak!</string>
