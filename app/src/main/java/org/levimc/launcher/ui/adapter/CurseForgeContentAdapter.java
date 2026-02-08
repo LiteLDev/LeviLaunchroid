@@ -1,4 +1,4 @@
-package org.levimc.launcher.ui.adapter;
+ package org.levimc.launcher.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +18,7 @@ import org.levimc.launcher.core.curseforge.models.Content;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CurseForgeContentAdapter extends RecyclerView.Adapter<CurseForgeContentAdapter.ViewHolder> {
+public class CurseForgeContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Content> contents = new ArrayList<>();
     private final OnContentClickListener listener;
@@ -27,32 +27,66 @@ public class CurseForgeContentAdapter extends RecyclerView.Adapter<CurseForgeCon
         void onContentClick(Content content);
     }
 
-    public CurseForgeContentAdapter(OnContentClickListener listener) {
-        this.listener = listener;
+    public interface OnPageChangeListener {
+        void onNextPage();
+        void onPrevPage();
     }
 
-    public void setContents(List<Content> contents) {
+    private static final int VIEW_TYPE_ITEM = 0;
+    private static final int VIEW_TYPE_FOOTER = 1;
+
+    private OnPageChangeListener pageChangeListener;
+    private int currentPage = 1;
+    private int totalPages = 1;
+
+
+    public CurseForgeContentAdapter(OnContentClickListener listener, OnPageChangeListener pageChangeListener) {
+        this.listener = listener;
+        this.pageChangeListener = pageChangeListener;
+    }
+
+
+    public void setContents(List<Content> contents, int currentPage, int totalPages) {
         this.contents = contents;
+        this.currentPage = currentPage;
+        this.totalPages = totalPages;
         notifyDataSetChanged();
     }
 
+
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_FOOTER) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_curseforge_footer, parent, false);
+            return new FooterViewHolder(view);
+        }
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_curseforge_content, parent, false);
         return new ViewHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Content content = contents.get(position);
-        holder.bind(content, listener);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ViewHolder) {
+            Content content = contents.get(position);
+            ((ViewHolder) holder).bind(content, listener);
+        } else if (holder instanceof FooterViewHolder) {
+            ((FooterViewHolder) holder).bind(currentPage, totalPages, pageChangeListener);
+        }
     }
 
     @Override
-    public int getItemCount() {
-        return contents.size();
+    public int getItemViewType(int position) {
+        return (position == contents.size()) ? VIEW_TYPE_FOOTER : VIEW_TYPE_ITEM;
     }
+
+
+    @Override
+    public int getItemCount() {
+        return contents.isEmpty() ? 0 : contents.size() + 1; // +1 for footer
+    }
+
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView icon;
@@ -118,6 +152,37 @@ public class CurseForgeContentAdapter extends RecyclerView.Adapter<CurseForgeCon
             }
 
             itemView.setOnClickListener(v -> listener.onContentClick(content));
+        }
+    }
+
+    static class FooterViewHolder extends RecyclerView.ViewHolder {
+        android.widget.Button btnPrev;
+        android.widget.Button btnNext;
+        TextView tvPageInfo;
+
+        FooterViewHolder(@NonNull View itemView) {
+            super(itemView);
+            btnPrev = itemView.findViewById(R.id.btn_prev_page);
+            btnNext = itemView.findViewById(R.id.btn_next_page);
+            tvPageInfo = itemView.findViewById(R.id.tv_page_info);
+        }
+
+        void bind(int currentPage, int totalPages, final OnPageChangeListener listener) {
+            tvPageInfo.setText("Page " + currentPage + " of " + (totalPages > 0 ? totalPages : "?"));
+            
+            btnPrev.setEnabled(currentPage > 1);
+            btnPrev.setAlpha(currentPage > 1 ? 1.0f : 0.5f);
+            
+            btnNext.setEnabled(totalPages == 0 || currentPage < totalPages);
+            btnNext.setAlpha((totalPages == 0 || currentPage < totalPages) ? 1.0f : 0.5f);
+            
+            btnPrev.setOnClickListener(v -> {
+                if (listener != null) listener.onPrevPage();
+            });
+            
+            btnNext.setOnClickListener(v -> {
+                if (listener != null) listener.onNextPage();
+            });
         }
     }
 }
