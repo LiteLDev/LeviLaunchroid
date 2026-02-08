@@ -362,11 +362,10 @@ public class ContentDetailsActivity extends BaseActivity {
             return;
         }
         
-        File internalDir = new File(getDataDir(), "games/com.mojang");
-        File worldsDir = new File(internalDir, "minecraftWorlds");
-        File resourcePacksDir = new File(internalDir, "resource_packs");
-        File behaviorPacksDir = new File(internalDir, "behavior_packs");
-        File skinPacksDir = new File(internalDir, "skin_packs");
+        File worldsDir = getWorldsDirectory();
+        File resourcePacksDir = getPackDirectory("resource_packs");
+        File behaviorPacksDir = getPackDirectory("behavior_packs");
+        File skinPacksDir = getPackDirectory("skin_packs");
 
         contentImporter.importContent(uri, resourcePacksDir, behaviorPacksDir, skinPacksDir, worldsDir,
             new ContentImporter.ImportCallback() {
@@ -394,6 +393,63 @@ public class ContentDetailsActivity extends BaseActivity {
                 }
             });
     }
+    private File getPackDirectory(String packType) {
+        android.content.SharedPreferences prefs = getSharedPreferences("content_management", MODE_PRIVATE);
+        String savedType = prefs.getString("storage_type", "INTERNAL");
+        org.levimc.launcher.settings.FeatureSettings.StorageType currentStorageType = org.levimc.launcher.settings.FeatureSettings.StorageType.valueOf(savedType);
+        
+        GameVersion currentVersion = versionManager.getSelectedVersion();
+
+        switch (currentStorageType) {
+            case VERSION_ISOLATION:
+                if (currentVersion != null && currentVersion.versionDir != null) {
+                    File gameDataDir = new File(currentVersion.versionDir, "games/com.mojang");
+                    return new File(gameDataDir, packType);
+                }
+                break;
+            case EXTERNAL:
+                File externalDir = getExternalFilesDir(null);
+                if (externalDir != null) {
+                    File gameDataDir = new File(externalDir, "games/com.mojang");
+                    return new File(gameDataDir, packType);
+                }
+                break;
+            case INTERNAL:
+                File internalDir = new File(getDataDir(), "games/com.mojang");
+                return new File(internalDir, packType);
+        }
+        return null;
+    }
+
+    private File getWorldsDirectory() {
+        android.content.SharedPreferences prefs = getSharedPreferences("content_management", MODE_PRIVATE);
+        String savedType = prefs.getString("storage_type", "INTERNAL");
+        org.levimc.launcher.settings.FeatureSettings.StorageType currentStorageType = org.levimc.launcher.settings.FeatureSettings.StorageType.valueOf(savedType);
+
+        GameVersion currentVersion = versionManager.getSelectedVersion();
+        if (currentVersion == null) return null;
+
+        switch (currentStorageType) {
+            case VERSION_ISOLATION:
+                if (currentVersion.versionDir != null) {
+                    File gameDataDir = new File(currentVersion.versionDir, "games/com.mojang");
+                    return new File(gameDataDir, "minecraftWorlds");
+                }
+                break;
+            case EXTERNAL:
+                File externalDir = getExternalFilesDir(null);
+                if (externalDir != null) {
+                    File gameDataDir = new File(externalDir, "games/com.mojang");
+                    return new File(gameDataDir, "minecraftWorlds");
+                }
+                break;
+            case INTERNAL:
+                File internalDir = new File(getDataDir(), "games/com.mojang");
+                return new File(internalDir, "minecraftWorlds");
+        }
+        return null;
+    }
+
     private String getHexColor(int colorResId) {
         int color = getResources().getColor(colorResId, getTheme());
         return String.format("#%06X", (0xFFFFFF & color));
