@@ -335,7 +335,7 @@
                             android:text="@string/mods_section_title"
                             android:fontFamily="@font/misans"
                             android:textColor="@color/on_surface"
-                            android:textSize="15sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <Space
@@ -353,9 +353,10 @@
                             android:paddingVertical="0dp"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
-                            android:backgroundTint="@color/primary"
+                            android:background="@drawable/bg_mod_menu_toggle"
+                            app:backgroundTint="@null"
                             android:text="@string/manage_mods"
-                            android:textColor="@color/on_primary"
+                            android:textColor="@color/primary"
                             android:textSize="11sp"
                             android:textStyle="bold"
                             android:textAllCaps="false"
@@ -364,64 +365,70 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="12dp">
+                        android:gravity="center"
+                        android:baselineAligned="false">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/external_mods_label"
-                            android:fontFamily="@font/misans"
-                            android:textColor="@color/on_surface"
-                            android:textSize="14sp" />
-
-                        <Space
+                        <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1" />
-
-                        <TextView
-                            android:id="@+id/external_mods_count"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
-                            android:fontFamily="@font/misans"
-                            android:textColor="@color/accent_text"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="8dp">
+                            <TextView
+                                android:id="@+id/external_mods_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/primary"
+                                android:textSize="36sp"
+                                android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/inbuilt_mods_label"
-                            android:fontFamily="@font/misans"
-                            android:textColor="@color/on_surface"
-                            android:textSize="14sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/external_mods_label"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/on_surface"
+                                android:textSize="13sp"
+                                android:gravity="center"/>
+                        </LinearLayout>
 
-                        <Space
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="40dp"
+                            android:background="#33888888" />
+
+                        <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1" />
-
-                        <TextView
-                            android:id="@+id/inbuilt_mods_count"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
-                            android:fontFamily="@font/misans"
-                            android:textColor="@color/accent_text"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/inbuilt_mods_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:fontFamily="@font/misans"
+                                android:textColor="#888888"
+                                android:textSize="36sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/inbuilt_mods_label"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/on_surface"
+                                android:textSize="13sp"
+                                android:gravity="center"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
