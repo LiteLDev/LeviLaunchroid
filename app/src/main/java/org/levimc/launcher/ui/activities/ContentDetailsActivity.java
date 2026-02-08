@@ -82,14 +82,38 @@ public class ContentDetailsActivity extends BaseActivity {
         versionManager = VersionManager.get(this);
         client = CurseForgeClient.getInstance();
         
-        initViews();
+    initViews();
+        initWebView();
         bindData();
         loadDescription();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (summary != null) {
+            summary.onResume();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (summary != null) {
+            summary.onPause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (summary != null) {
+            summary.destroy();
+        }
+        super.onDestroy();
+    }
+
     private void initWebView() {
         summary.setBackgroundColor(0);
-        summary.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         WebSettings settings = summary.getSettings();
 
         settings.setJavaScriptEnabled(true);
@@ -100,6 +124,9 @@ public class ContentDetailsActivity extends BaseActivity {
         settings.setTextZoom(100); 
         settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        settings.setBlockNetworkImage(false);
+        settings.setLoadsImagesAutomatically(true);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setUserAgentString("Mozilla/5.0 (Linux; Android 10; Mobile; rv:125.0) Gecko/125.0 Firefox/125.0");
         
         summary.setWebChromeClient(new WebChromeClient());
