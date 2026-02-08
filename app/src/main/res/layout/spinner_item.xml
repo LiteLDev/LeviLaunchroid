@@ -3,7 +3,8 @@
     android:id="@android:id/text1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    android:paddingVertical="4dp"
     android:textColor="@color/on_surface"
-    android:textSize="13sp" />
+    android:textSize="11sp" />

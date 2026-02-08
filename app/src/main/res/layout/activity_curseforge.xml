@@ -43,7 +43,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="4dp"
         android:paddingBottom="8dp">
 
         <EditText
@@ -53,7 +53,7 @@
             android:background="@drawable/bg_search_box"
             android:padding="12dp"
             android:hint="@string/curseforge_search_hint"
-            android:textColorHint="@color/on_surface_variant"
+            android:textColorHint="@color/on_surface"
             android:textColor="@color/on_surface"
             android:fontFamily="@font/misans"
             android:imeOptions="actionSearch"
@@ -65,8 +65,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         android:paddingBottom="4dp"
         app:layout_constraintTop_toBottomOf="@id/search_box"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,8 @@
         <Spinner
             android:id="@+id/spinner_category"
             android:layout_width="0dp"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
             android:background="@drawable/bg_spinner"
@@ -84,7 +85,8 @@
         <Spinner
             android:id="@+id/spinner_sort"
             android:layout_width="0dp"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:layout_weight="1"
             android:background="@drawable/bg_spinner"
             tools:listitem="@layout/spinner_item" />

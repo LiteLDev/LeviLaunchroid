@@ -520,7 +520,7 @@
     <!-- CurseForge -->
     <string name="curseforge_title">CurseForge</string>
     <string name="curseforge_subtitle">Browse and download contents</string>
-    <string name="curseforge_search_hint">Search mods…</string>
+    <string name="curseforge_search_hint">Search contents…</string>
     <string name="curseforge_download">Download</string>
     <string name="curseforge_downloading">Downloading…</string>
     <string name="curseforge_importing">Importing…</string>
