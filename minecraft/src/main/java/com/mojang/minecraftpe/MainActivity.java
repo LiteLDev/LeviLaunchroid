@@ -71,6 +71,8 @@ import java.util.*;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SuppressWarnings("JavaJniMissingFunction")
 public class MainActivity extends GameActivity implements View.OnKeyListener, FilePickerManagerHandler {
@@ -119,6 +121,7 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
     private WifiManager.MulticastLock mMulticastLock = null;
     private AppExitInfoHelper mAppExitInfoHelper = null;
     private BrazeManager mBrazeManager = null;
+    private final ExecutorService inputExecutor = Executors.newSingleThreadExecutor();
     Platform platform;
 
     Messenger mService = null;
@@ -830,7 +833,7 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
                         String newText = keyboardInput.getText().toString();
                         if (!newText.equals(cachedText)) {
                             cachedText = newText;
-                            nativeSetTextboxText(newText);
+                            inputExecutor.execute(() -> nativeSetTextboxText(newText));
                         }
                     }
 
@@ -1557,6 +1560,7 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         }
         removeListener(mFilePickerManager);
         mInstance = null;
+        inputExecutor.shutdown();
         nativeOnDestroy();
         super.onDestroy();
     }
@@ -1577,7 +1581,8 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
                 JSONObject jSONObject = new JSONObject(stringExtra);
                 String string = jSONObject.getString("Command");
                 if (string.equals("keyboardResult")) {
-                    nativeSetTextboxText(jSONObject.getString("Text"));
+                    String text = jSONObject.getString("Text");
+                    inputExecutor.execute(() -> nativeSetTextboxText(text));
                     return;
                 } else if (!string.equals("fileDialogResult") || mFileDialogCallback == 0) {
                     return;
