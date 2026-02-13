@@ -167,6 +167,11 @@ class MinecraftActivity : MainActivity() {
         }
     }
 
+    override fun tick() {
+        super.tick()
+        overlayManager?.tick()
+    }
+
     override fun getDataDir(): File {
         val mcPath = intent.getStringExtra("MC_PATH")
         val isVersionIsolationEnabled = FeatureSettings.getInstance().isVersionIsolationEnabled()

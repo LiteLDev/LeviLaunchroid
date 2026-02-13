@@ -79,6 +79,8 @@ public abstract class BaseOverlayButton {
 
     protected abstract String getModId();
 
+    public void tick() {}
+
     public void show(int startX, int startY) {
         if (isShowing || isHiding) return;
         if (pendingShowRunnable != null) {

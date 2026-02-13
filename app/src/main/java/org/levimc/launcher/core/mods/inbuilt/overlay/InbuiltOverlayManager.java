@@ -485,4 +485,9 @@ public class InbuiltOverlayManager {
         }
     }
 
+    public void tick() {
+        for (BaseOverlayButton overlay : overlays) {
+            overlay.tick();
+        }
+    }
 }

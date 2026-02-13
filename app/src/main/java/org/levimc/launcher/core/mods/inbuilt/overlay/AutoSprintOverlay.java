@@ -57,4 +57,17 @@ public class AutoSprintOverlay extends BaseOverlayButton {
         }
         super.hide();
     }
+
+    private int tickCount = 0;
+    
+    @Override
+    public void tick() {
+        if (!isActive) return;
+        
+        tickCount++;
+        if (tickCount >= 20) { 
+            tickCount = 0;
+            sendKeyDown(sprintKey);
+        }
+    }
 }
