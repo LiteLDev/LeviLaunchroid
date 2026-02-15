@@ -101,6 +101,19 @@ public class SplashActivity extends BaseActivity {
             .setInterpolator(new LinearOutSlowInInterpolator())
             .start();
 
+        binding.orbitRing.post(() -> {
+            float centerX = binding.orbitRing.getX() + binding.orbitRing.getWidth() / 2f;
+            float centerY = binding.orbitRing.getY() + binding.orbitRing.getHeight() / 2f;
+            float radius = binding.orbitRing.getWidth() / 2f - binding.orbitDot.getWidth() / 2f;
+            
+            double radians = Math.toRadians(-90);
+            float x = (float) (centerX + radius * Math.cos(radians) - binding.orbitDot.getWidth() / 2f);
+            float y = (float) (centerY + radius * Math.sin(radians) - binding.orbitDot.getHeight() / 2f);
+            
+            binding.orbitDot.setX(x);
+            binding.orbitDot.setY(y);
+        });
+
         binding.orbitRing.animate()
             .alpha(1f)
             .setDuration(400)
