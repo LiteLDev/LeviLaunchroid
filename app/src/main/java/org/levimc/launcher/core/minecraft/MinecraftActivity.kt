@@ -103,6 +103,16 @@ class MinecraftActivity : MainActivity() {
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        val actionIndex = event.actionIndex
+        if (org.levimc.launcher.preloader.PreloaderInput.onTouch(
+            event.actionMasked,
+            event.getPointerId(actionIndex),
+            event.getX(actionIndex),
+            event.getY(actionIndex)
+        )) {
+            return true
+        }
+        
         overlayManager?.handleTouchEvent(event)
         return super.dispatchTouchEvent(event)
     }
