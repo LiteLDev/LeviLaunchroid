@@ -260,7 +260,7 @@ public class ModMenuButton {
         LinearLayout lockContainer = dialog.findViewById(R.id.config_lock_container);
         Switch lockSwitch = dialog.findViewById(R.id.switch_lock_position);
         LinearLayout autoSprintContainer = dialog.findViewById(R.id.config_autosprint_container);
-        Spinner spinnerAutoSprint = dialog.findViewById(R.id.spinner_autosprint_key);
+        Button btnAutoSprintKeybind = dialog.findViewById(R.id.btn_autosprint_keybind);
         LinearLayout zoomContainer = dialog.findViewById(R.id.config_zoom_container);
         SeekBar seekBarZoom = dialog.findViewById(R.id.seekbar_zoom_level);
         TextView textZoom = dialog.findViewById(R.id.text_zoom_level);
@@ -268,6 +268,8 @@ public class ModMenuButton {
         Button btnSave = dialog.findViewById(R.id.btn_save);
         
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        final int[] pendingAutoSprintKeybind = {manager.getAutoSprintKeybind()};
+        
         title.setText(mod.getName());
         
         int currentSize = manager.getOverlayButtonSize(mod.getId());
@@ -317,15 +319,8 @@ public class ModMenuButton {
         
         if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
             autoSprintContainer.setVisibility(View.VISIBLE);
-            String[] options = {
-                activity.getString(R.string.autosprint_key_ctrl),
-                activity.getString(R.string.autosprint_key_shift)
-            };
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, R.layout.spinner_item_inbuilt, options);
-            adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_inbuilt);
-            spinnerAutoSprint.setAdapter(adapter);
-            int currentKey = manager.getAutoSprintKey();
-            spinnerAutoSprint.setSelection(currentKey == KeyEvent.KEYCODE_SHIFT_LEFT ? 1 : 0);
+            btnAutoSprintKeybind.setText(getKeyName(pendingAutoSprintKeybind[0]));
+            btnAutoSprintKeybind.setOnClickListener(v -> showKeybindCaptureDialog(activity, btnAutoSprintKeybind, pendingAutoSprintKeybind));
         } else {
             autoSprintContainer.setVisibility(View.GONE);
         }
@@ -358,9 +353,7 @@ public class ModMenuButton {
             manager.setOverlayOpacity(mod.getId(), seekBarOpacity.getProgress());
             manager.setOverlayLocked(mod.getId(), lockSwitch.isChecked());
             if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
-                int key = spinnerAutoSprint.getSelectedItemPosition() == 1 
-                    ? KeyEvent.KEYCODE_SHIFT_LEFT : KeyEvent.KEYCODE_CTRL_LEFT;
-                manager.setAutoSprintKey(key);
+                manager.setAutoSprintKeybind(pendingAutoSprintKeybind[0]);
             }
             if (mod.getId().equals(ModIds.ZOOM)) {
                 manager.setZoomLevel(seekBarZoom.getProgress());
@@ -369,6 +362,38 @@ public class ModMenuButton {
         });
         
         dialog.show();
+    }
+    
+    private void showKeybindCaptureDialog(Context context, Button keybindButton, int[] pendingKeybind) {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
+        builder.setTitle(context.getString(R.string.autosprint_keybind_label));
+        builder.setMessage(context.getString(R.string.autosprint_keybind_press));
+        builder.setCancelable(true);
+        builder.setNegativeButton(context.getString(R.string.dialog_negative_cancel), null);
+
+        androidx.appcompat.app.AlertDialog captureDialog = builder.create();
+        captureDialog.setOnKeyListener((dialogInterface, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    captureDialog.dismiss();
+                    return true;
+                }
+                pendingKeybind[0] = keyCode;
+                keybindButton.setText(getKeyName(keyCode));
+                captureDialog.dismiss();
+                return true;
+            }
+            return false;
+        });
+        captureDialog.show();
+    }
+
+    private String getKeyName(int keyCode) {
+        String keyLabel = KeyEvent.keyCodeToString(keyCode);
+        if (keyLabel.startsWith("KEYCODE_")) {
+            keyLabel = keyLabel.substring(8);
+        }
+        return keyLabel;
     }
     
     private void applyConfigurationChanges(String modId) {

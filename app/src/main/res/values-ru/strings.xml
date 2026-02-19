@@ -378,9 +378,8 @@
     <string name="inbuilt_mod_snaplook">Быстрый взгляд назад</string>
     <string name="inbuilt_mod_snaplook_desc">Удерживайте для быстрого взгляда назад (вид спереди от третьего лица)</string>
     <string name="inbuilt_badge">ВСТРОЕН</string>
-    <string name="autosprint_key_ctrl">Левый Ctrl</string>
-    <string name="autosprint_key_shift">Shift</string>
-    <string name="autosprint_key_label">Кнопка спринта:</string>
+    <string name="autosprint_keybind_label">Клавиша авто-спринта:</string>
+    <string name="autosprint_keybind_press">Нажмите любую клавишу…</string>
     <string name="configure">Настроить</string>
     <string name="overlay_button_size">Размер кнопки наложения</string>
     <string name="overlay_button_opacity">Прозрачность кнопки</string>

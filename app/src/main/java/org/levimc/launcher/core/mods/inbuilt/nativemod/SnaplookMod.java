@@ -12,6 +12,4 @@ public class SnaplookMod {
     public static native boolean nativeInit();
     public static native void nativeOnKeyDown();
     public static native void nativeOnKeyUp();
-    public static native boolean nativeIsActive();
-    public static native boolean nativeIsInitialized();
 }

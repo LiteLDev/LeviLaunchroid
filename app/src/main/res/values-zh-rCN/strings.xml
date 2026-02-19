@@ -374,9 +374,8 @@
     <string name="inbuilt_mod_snaplook">快速回头</string>
     <string name="inbuilt_mod_snaplook_desc">按住快速查看身后（第三人称正面视角）</string>
     <string name="inbuilt_badge">内置</string>
-    <string name="autosprint_key_ctrl">左 Ctrl</string>
-    <string name="autosprint_key_shift">Shift</string>
-    <string name="autosprint_key_label">疾跑按键：</string>
+    <string name="autosprint_keybind_label">自动疾跑按键绑定：</string>
+    <string name="autosprint_keybind_press">请按任意键…</string>
     <string name="configure">配置</string>
     <string name="overlay_button_size">悬浮按钮大小</string>
     <string name="overlay_button_opacity">悬浮按钮透明度</string>

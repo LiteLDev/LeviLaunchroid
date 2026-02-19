@@ -121,20 +121,12 @@ public class InbuiltModManager {
         return addedMods.contains(modId);
     }
 
-    public int getAutoSprintKey() {
+    public int getAutoSprintKeybind() {
         return prefs.getInt(KEY_AUTOSPRINT_KEY, KeyEvent.KEYCODE_CTRL_LEFT);
     }
 
-    public void setAutoSprintKey(int keyCode) {
+    public void setAutoSprintKeybind(int keyCode) {
         prefs.edit().putInt(KEY_AUTOSPRINT_KEY, keyCode).apply();
-    }
-
-    public int getOverlayButtonSize() {
-        return prefs.getInt(KEY_OVERLAY_BUTTON_SIZE_GLOBAL, DEFAULT_OVERLAY_BUTTON_SIZE);
-    }
-
-    public void setOverlayButtonSize(int sizeDp) {
-        prefs.edit().putInt(KEY_OVERLAY_BUTTON_SIZE_GLOBAL, sizeDp).apply();
     }
 
     public int getOverlayButtonSize(String modId) {

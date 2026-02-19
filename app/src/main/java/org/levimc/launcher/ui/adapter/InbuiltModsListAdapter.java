@@ -114,7 +114,7 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
         LinearLayout lockContainer = dialog.findViewById(R.id.config_lock_container);
         Switch lockSwitch = dialog.findViewById(R.id.switch_lock_position);
         LinearLayout autoSprintContainer = dialog.findViewById(R.id.config_autosprint_container);
-        Spinner spinnerAutoSprint = dialog.findViewById(R.id.spinner_autosprint_key);
+        Button btnAutoSprintKeybind = dialog.findViewById(R.id.btn_autosprint_keybind);
         LinearLayout zoomContainer = dialog.findViewById(R.id.config_zoom_container);
         SeekBar seekBarZoom = dialog.findViewById(R.id.seekbar_zoom_level);
         TextView textZoom = dialog.findViewById(R.id.text_zoom_level);
@@ -124,6 +124,7 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
 
         InbuiltModManager manager = InbuiltModManager.getInstance(context);
         final int[] pendingZoomKeybind = {manager.getZoomKeybind()};
+        final int[] pendingAutoSprintKeybind = {manager.getAutoSprintKeybind()};
 
         title.setText(mod.getName());
 
@@ -165,16 +166,8 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
 
         if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
             autoSprintContainer.setVisibility(View.VISIBLE);
-            String[] options = {
-                context.getString(R.string.autosprint_key_ctrl),
-                context.getString(R.string.autosprint_key_shift)
-            };
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item_inbuilt, options);
-            adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_inbuilt);
-            spinnerAutoSprint.setAdapter(adapter);
-
-            int currentKey = manager.getAutoSprintKey();
-            spinnerAutoSprint.setSelection(currentKey == KeyEvent.KEYCODE_SHIFT_LEFT ? 1 : 0);
+            btnAutoSprintKeybind.setText(getKeyName(pendingAutoSprintKeybind[0]));
+            btnAutoSprintKeybind.setOnClickListener(v -> showKeybindCaptureDialog(context, btnAutoSprintKeybind, pendingAutoSprintKeybind));
         } else {
             autoSprintContainer.setVisibility(View.GONE);
         }
@@ -210,10 +203,7 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
             manager.setOverlayOpacity(mod.getId(), seekBarOpacity.getProgress());
             manager.setOverlayLocked(mod.getId(), lockSwitch.isChecked());
             if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
-                int key = spinnerAutoSprint.getSelectedItemPosition() == 1 
-                    ? KeyEvent.KEYCODE_SHIFT_LEFT 
-                    : KeyEvent.KEYCODE_CTRL_LEFT;
-                manager.setAutoSprintKey(key);
+                manager.setAutoSprintKeybind(pendingAutoSprintKeybind[0]);
             }
             if (mod.getId().equals(ModIds.ZOOM)) {
                 manager.setZoomLevel(seekBarZoom.getProgress());

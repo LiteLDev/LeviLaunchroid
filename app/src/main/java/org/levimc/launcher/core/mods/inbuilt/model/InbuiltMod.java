@@ -22,7 +22,6 @@ public class InbuiltMod {
     public String getId() { return id; }
     public String getName() { return name; }
     public String getDescription() { return description; }
-    public boolean hasConfig() { return hasConfig; }
     public boolean isAdded() { return added; }
     public void setAdded(boolean added) { this.added = added; }
 }

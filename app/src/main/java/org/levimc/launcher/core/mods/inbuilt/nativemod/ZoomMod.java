@@ -13,8 +13,6 @@ public class ZoomMod {
     public static native void nativeOnKeyDown();
     public static native void nativeOnKeyUp();
     public static native void nativeOnScroll(float delta);
-    public static native void nativeSetAnimated(boolean animated);
-    public static native boolean nativeIsZooming();
+
     public static native void nativeSetZoomLevel(long level);
-    public static native long nativeGetZoomLevel();
 }

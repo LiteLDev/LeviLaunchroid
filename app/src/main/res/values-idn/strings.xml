@@ -382,9 +382,8 @@
     <string name="inbuilt_mod_snaplook">Snaplook</string>
     <string name="inbuilt_mod_snaplook_desc">Tahan untuk melihat ke belakang dengan cepat (orang ketiga depan)</string>
     <string name="inbuilt_badge">BAWAAN</string>
-    <string name="autosprint_key_ctrl">Ctrl Left</string>
-    <string name="autosprint_key_shift">Shift</string>
-    <string name="autosprint_key_label">Sprint Key:</string>
+    <string name="autosprint_keybind_label">Tombol Auto Sprint:</string>
+    <string name="autosprint_keybind_press">Tekan tombol apa saja…</string>
     <string name="configure">Konfigurasi</string>
     <string name="overlay_button_size">Ukuran Tombol Overlay</string>
     <string name="overlay_button_opacity">Opasitas Tombol Overlay</string>

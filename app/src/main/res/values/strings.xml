@@ -382,9 +382,8 @@
     <string name="inbuilt_mod_snaplook">Snaplook</string>
     <string name="inbuilt_mod_snaplook_desc">Hold to quickly look behind you (third person front)</string>
     <string name="inbuilt_badge">INBUILT</string>
-    <string name="autosprint_key_ctrl">Ctrl Left</string>
-    <string name="autosprint_key_shift">Shift</string>
-    <string name="autosprint_key_label">Sprint Key:</string>
+    <string name="autosprint_keybind_label">Auto Sprint Keybind:</string>
+    <string name="autosprint_keybind_press">Press any key…</string>
     <string name="configure">Configure</string>
     <string name="overlay_button_size">Overlay Button Size</string>
     <string name="overlay_button_opacity">Overlay Button Opacity</string>

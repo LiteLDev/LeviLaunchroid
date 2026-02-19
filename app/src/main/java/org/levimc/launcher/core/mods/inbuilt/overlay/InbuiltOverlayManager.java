@@ -149,7 +149,7 @@ public class InbuiltOverlayManager {
                 modOverlayMap.put(modId, hud);
                 break;
             case ModIds.AUTO_SPRINT:
-                AutoSprintOverlay sprint = new AutoSprintOverlay(activity, manager.getAutoSprintKey());
+                AutoSprintOverlay sprint = new AutoSprintOverlay(activity, manager.getAutoSprintKeybind());
                 sprint.show(savedX, savedY);
                 overlays.add(sprint);
                 modOverlayMap.put(modId, sprint);
@@ -282,7 +282,7 @@ public class InbuiltOverlayManager {
         if (manager.isModAdded(ModIds.AUTO_SPRINT)) {
             int x = manager.getOverlayPositionX(ModIds.AUTO_SPRINT, START_X);
             int y = manager.getOverlayPositionY(ModIds.AUTO_SPRINT, nextY);
-            AutoSprintOverlay overlay = new AutoSprintOverlay(activity, manager.getAutoSprintKey());
+            AutoSprintOverlay overlay = new AutoSprintOverlay(activity, manager.getAutoSprintKeybind());
             overlay.show(x, y);
             overlays.add(overlay);
             nextY += SPACING;
