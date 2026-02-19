@@ -183,6 +183,8 @@
     <string name="resource_packs_category">Resource Packs</string>
     <string name="behavior_packs_category">Behavior Packs</string>
     <string name="skin_packs_category">Skin Packs</string>
+    <string name="screenshots_category">Screenshots</string>
+    <string name="servers_category">Servers</string>
     <string name="storage_internal">Internal</string>
     <string name="storage_external">External</string>
     <string name="storage_version_isolation">Version Isolation</string>

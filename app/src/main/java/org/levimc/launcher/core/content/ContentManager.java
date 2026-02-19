@@ -18,6 +18,8 @@ public class ContentManager {
     private final Context context;
     private final WorldManager worldManager;
     private final ResourcePackManager resourcePackManager;
+    private final ScreenshotManager screenshotManager;
+    private final ServerManager serverManager;
     private final ExecutorService refreshExecutor;
     
     private GameVersion currentVersion;
@@ -25,12 +27,16 @@ public class ContentManager {
     private final MutableLiveData<List<ResourcePackItem>> resourcePacksLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<ResourcePackItem>> behaviorPacksLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<ResourcePackItem>> skinPacksLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<ScreenshotItem>> screenshotsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<ServerItem>> serversLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> statusLiveData = new MutableLiveData<>();
 
     private ContentManager(Context context) {
         this.context = context.getApplicationContext();
         this.worldManager = new WorldManager(this.context);
         this.resourcePackManager = new ResourcePackManager(this.context);
+        this.screenshotManager = new ScreenshotManager();
+        this.serverManager = new ServerManager();
         this.refreshExecutor = Executors.newSingleThreadExecutor();
     }
 
@@ -48,9 +54,11 @@ public class ContentManager {
         refreshContent();
     }
 
-    public void setStorageDirectories(File worldsDir, File resourcePacksDir, File behaviorPacksDir, File skinPacksDir) {
+    public void setStorageDirectories(File worldsDir, File resourcePacksDir, File behaviorPacksDir, File skinPacksDir, File screenshotsDir, File minecraftPeDir) {
         worldManager.setWorldsDirectory(worldsDir);
         resourcePackManager.setPackDirectories(resourcePacksDir, behaviorPacksDir, skinPacksDir);
+        screenshotManager.setScreenshotsDirectory(screenshotsDir);
+        serverManager.setMinecraftPeDirectory(minecraftPeDir);
         refreshContent();
     }
 
@@ -59,6 +67,8 @@ public class ContentManager {
         refreshResourcePacks();
         refreshBehaviorPacks();
         refreshSkinPacks();
+        refreshScreenshots();
+        refreshServers();
     }
 
     public void refreshWorlds() {
@@ -89,6 +99,20 @@ public class ContentManager {
         });
     }
 
+    public void refreshScreenshots() {
+        refreshExecutor.execute(() -> {
+            List<ScreenshotItem> screenshots = screenshotManager.getScreenshots();
+            screenshotsLiveData.postValue(screenshots);
+        });
+    }
+
+    public void refreshServers() {
+        refreshExecutor.execute(() -> {
+            List<ServerItem> servers = serverManager.getServers();
+            serversLiveData.postValue(servers);
+        });
+    }
+
     public LiveData<List<WorldItem>> getWorldsLiveData() {
         return worldsLiveData;
     }
@@ -105,12 +129,70 @@ public class ContentManager {
         return skinPacksLiveData;
     }
 
+    public LiveData<List<ScreenshotItem>> getScreenshotsLiveData() {
+        return screenshotsLiveData;
+    }
+
+    public LiveData<List<ServerItem>> getServersLiveData() {
+        return serversLiveData;
+    }
+
     public LiveData<String> getStatusLiveData() {
         return statusLiveData;
     }
 
     public void setStatus(String status) {
         statusLiveData.postValue(status);
+    }
+
+    public interface ContentOperationCallback {
+        void onSuccess(String message);
+        void onError(String error);
+    }
+
+    public void deleteScreenshot(ScreenshotItem screenshot, ContentOperationCallback callback) {
+        setStatus("Deleting screenshot...");
+        refreshExecutor.execute(() -> {
+            boolean success = screenshotManager.deleteScreenshot(screenshot);
+            if (success) {
+                refreshScreenshots();
+                setStatus("Screenshot deleted");
+                if (callback != null) callback.onSuccess("Screenshot deleted");
+            } else {
+                setStatus("Failed to delete screenshot");
+                if (callback != null) callback.onError("Failed to delete screenshot");
+            }
+        });
+    }
+
+    public void deleteServer(ServerItem server, ContentOperationCallback callback) {
+        setStatus("Deleting server...");
+        refreshExecutor.execute(() -> {
+            boolean success = serverManager.deleteServer(server);
+            if (success) {
+                refreshServers();
+                setStatus("Server deleted");
+                if (callback != null) callback.onSuccess("Server deleted");
+            } else {
+                setStatus("Failed to delete server");
+                if (callback != null) callback.onError("Failed to delete server");
+            }
+        });
+    }
+
+    public void addServer(ServerItem server, ContentOperationCallback callback) {
+        setStatus("Adding server...");
+        refreshExecutor.execute(() -> {
+            boolean success = serverManager.addServer(server);
+            if (success) {
+                refreshServers();
+                setStatus("Server added");
+                if (callback != null) callback.onSuccess("Server added");
+            } else {
+                setStatus("Failed to add server");
+                if (callback != null) callback.onError("Failed to add server");
+            }
+        });
     }
 
     public void shutdown() {

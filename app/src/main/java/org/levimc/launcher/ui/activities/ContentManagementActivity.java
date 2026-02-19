@@ -201,6 +201,8 @@ public class ContentManagementActivity extends BaseActivity {
         binding.skinPacksButton.setOnClickListener(v -> openContentList(ContentListActivity.TYPE_SKIN_PACKS));
         binding.resourcePacksButton.setOnClickListener(v -> openContentList(ContentListActivity.TYPE_RESOURCE_PACKS));
         binding.behaviorPacksButton.setOnClickListener(v -> openContentList(ContentListActivity.TYPE_BEHAVIOR_PACKS));
+        binding.screenshotsButton.setOnClickListener(v -> openContentList(ContentListActivity.TYPE_SCREENSHOTS));
+        binding.serversButton.setOnClickListener(v -> openContentList(ContentListActivity.TYPE_SERVERS));
     }
 
     private void openContentList(int contentType) {
@@ -262,6 +264,8 @@ public class ContentManagementActivity extends BaseActivity {
         File resourcePacksDir;
         File behaviorPacksDir;
         File skinPacksDir;
+        File screenshotsDir;
+        File minecraftPeDir;
 
         switch (currentStorageType) {
             case VERSION_ISOLATION:
@@ -271,11 +275,15 @@ public class ContentManagementActivity extends BaseActivity {
                     resourcePacksDir = new File(gameDataDir, "resource_packs");
                     behaviorPacksDir = new File(gameDataDir, "behavior_packs");
                     skinPacksDir = new File(gameDataDir, "skin_packs");
+                    screenshotsDir = new File(gameDataDir, "Screenshots");
+                    minecraftPeDir = new File(gameDataDir, "minecraftpe");
                 } else {
                     worldsDir = null;
                     resourcePacksDir = null;
                     behaviorPacksDir = null;
                     skinPacksDir = null;
+                    screenshotsDir = null;
+                    minecraftPeDir = null;
                 }
                 break;
 
@@ -287,11 +295,15 @@ public class ContentManagementActivity extends BaseActivity {
                     resourcePacksDir = new File(gameDataDir, "resource_packs");
                     behaviorPacksDir = new File(gameDataDir, "behavior_packs");
                     skinPacksDir = new File(gameDataDir, "skin_packs");
+                    screenshotsDir = new File(gameDataDir, "Screenshots");
+                    minecraftPeDir = new File(gameDataDir, "minecraftpe");
                 } else {
                     worldsDir = null;
                     resourcePacksDir = null;
                     behaviorPacksDir = null;
                     skinPacksDir = null;
+                    screenshotsDir = null;
+                    minecraftPeDir = null;
                 }
                 break;
 
@@ -301,6 +313,8 @@ public class ContentManagementActivity extends BaseActivity {
                 resourcePacksDir = new File(internalDir, "resource_packs");
                 behaviorPacksDir = new File(internalDir, "behavior_packs");
                 skinPacksDir = new File(internalDir, "skin_packs");
+                screenshotsDir = new File(internalDir, "Screenshots");
+                minecraftPeDir = new File(internalDir, "minecraftpe");
                 break;
 
             default:
@@ -308,10 +322,12 @@ public class ContentManagementActivity extends BaseActivity {
                 resourcePacksDir = null;
                 behaviorPacksDir = null;
                 skinPacksDir = null;
+                screenshotsDir = null;
+                minecraftPeDir = null;
                 break;
         }
 
-        contentManager.setStorageDirectories(worldsDir, resourcePacksDir, behaviorPacksDir, skinPacksDir);
+        contentManager.setStorageDirectories(worldsDir, resourcePacksDir, behaviorPacksDir, skinPacksDir, screenshotsDir, minecraftPeDir);
     }
 
     private void openOptionsEditor() {

@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/misans"
                     android:text="🌍"
-                    android:textSize="32sp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -149,13 +149,44 @@
                     android:fontFamily="@font/misans"
                     android:text="@string/worlds_category"
                     android:textColor="@color/on_surface"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/skin_packs_button"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="3dp"
+                android:background="@drawable/card_background_small"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/misans"
+                    android:text="👤"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/misans"
+                    android:text="@string/skin_packs_category"
+                    android:textColor="@color/on_surface"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/screenshots_button"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_weight="1"
@@ -170,17 +201,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/misans"
-                    android:text="👤"
-                    android:textSize="32sp" />
+                    android:text="📸"
+                    android:textSize="24sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/misans"
-                    android:text="@string/skin_packs_category"
+                    android:text="@string/screenshots_category"
                     android:textColor="@color/on_surface"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -210,7 +241,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/misans"
                     android:text="📦"
-                    android:textSize="32sp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -219,13 +250,44 @@
                     android:fontFamily="@font/misans"
                     android:text="@string/resource_packs_category"
                     android:textColor="@color/on_surface"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/behavior_packs_button"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="3dp"
+                android:background="@drawable/card_background_small"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/misans"
+                    android:text="⚙️"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/misans"
+                    android:text="@string/behavior_packs_category"
+                    android:textColor="@color/on_surface"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/servers_button"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_weight="1"
@@ -240,17 +302,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/misans"
-                    android:text="⚙️"
-                    android:textSize="32sp" />
+                    android:text="🌐"
+                    android:textSize="24sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/misans"
-                    android:text="@string/behavior_packs_category"
+                    android:text="@string/servers_category"
                     android:textColor="@color/on_surface"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
             </LinearLayout>

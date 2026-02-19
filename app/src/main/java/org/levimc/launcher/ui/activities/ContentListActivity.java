@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -37,6 +39,11 @@ import org.levimc.launcher.ui.adapter.WorldsAdapter;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
 
+import android.provider.MediaStore;
+import android.content.ContentValues;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import java.io.OutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +58,8 @@ public class ContentListActivity extends BaseActivity {
     public static final int TYPE_SKIN_PACKS = 1;
     public static final int TYPE_RESOURCE_PACKS = 2;
     public static final int TYPE_BEHAVIOR_PACKS = 3;
+    public static final int TYPE_SCREENSHOTS = 4;
+    public static final int TYPE_SERVERS = 5;
 
     private ActivityContentListBinding binding;
     private ContentManager contentManager;
@@ -61,6 +70,8 @@ public class ContentListActivity extends BaseActivity {
 
     private WorldsAdapter worldsAdapter;
     private ResourcePacksAdapter packsAdapter;
+    private org.levimc.launcher.ui.adapter.ScreenshotsAdapter screenshotsAdapter;
+    private org.levimc.launcher.ui.adapter.ServersAdapter serversAdapter;
 
     private ActivityResultLauncher<Intent> importLauncher;
     private ActivityResultLauncher<Intent> exportLauncher;
@@ -183,9 +194,28 @@ public class ContentListActivity extends BaseActivity {
                 binding.importButton.setText(getString(R.string.import_behavior_pack));
                 setupPacksRecyclerView();
                 break;
+            case TYPE_SCREENSHOTS:
+                binding.titleText.setText(getString(R.string.screenshots_category));
+                binding.importButton.setVisibility(View.GONE);
+                binding.searchEditText.setVisibility(View.GONE);
+                setupScreenshotsRecyclerView();
+                break;
+            case TYPE_SERVERS:
+                binding.titleText.setText(getString(R.string.servers_category));
+                binding.importButton.setText(getString(R.string.quick_launch_add_server));
+                binding.importButton.setVisibility(View.VISIBLE);
+                binding.searchEditText.setVisibility(View.GONE);
+                setupServersRecyclerView();
+                break;
         }
 
-        binding.importButton.setOnClickListener(v -> startImport());
+        binding.importButton.setOnClickListener(v -> {
+            if (contentType == TYPE_SERVERS) {
+                showAddServerDialog();
+            } else {
+                startImport();
+            }
+        });
         binding.customFlatButton.setOnClickListener(v -> openCustomFlatWorld());
 
         setupSearchFilter();
@@ -301,6 +331,30 @@ public class ContentListActivity extends BaseActivity {
         binding.contentRecyclerView.post(() -> DynamicAnim.staggerRecyclerChildren(binding.contentRecyclerView));
     }
 
+    private void setupScreenshotsRecyclerView() {
+        screenshotsAdapter = new org.levimc.launcher.ui.adapter.ScreenshotsAdapter(new ArrayList(), new org.levimc.launcher.ui.adapter.ScreenshotsAdapter.OnScreenshotClickListener() {
+            @Override
+            public void onDeleteClick(org.levimc.launcher.core.content.ScreenshotItem screenshot) {
+                showDeleteScreenshotDialog(screenshot);
+            }
+
+            @Override
+            public void onSaveClick(org.levimc.launcher.core.content.ScreenshotItem screenshot) {
+                saveScreenshotToGallery(screenshot);
+            }
+        });
+        binding.contentRecyclerView.setLayoutManager(new androidx.recyclerview.widget.GridLayoutManager(this, 2));
+        binding.contentRecyclerView.setAdapter(screenshotsAdapter);
+        binding.contentRecyclerView.post(() -> DynamicAnim.staggerRecyclerChildren(binding.contentRecyclerView));
+    }
+
+    private void setupServersRecyclerView() {
+        serversAdapter = new org.levimc.launcher.ui.adapter.ServersAdapter(new ArrayList<>(), server -> showDeleteServerDialog(server));
+        binding.contentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.contentRecyclerView.setAdapter(serversAdapter);
+        binding.contentRecyclerView.post(() -> DynamicAnim.staggerRecyclerChildren(binding.contentRecyclerView));
+    }
+
     private void setupObservers() {
         switch (contentType) {
             case TYPE_WORLDS:
@@ -339,6 +393,22 @@ public class ContentListActivity extends BaseActivity {
                     showLoading(false);
                 });
                 break;
+            case TYPE_SCREENSHOTS:
+                contentManager.getScreenshotsLiveData().observe(this, screenshots -> {
+                    if (screenshotsAdapter != null) {
+                        screenshotsAdapter.updateData(screenshots != null ? screenshots : new ArrayList<>());
+                    }
+                    showLoading(false);
+                });
+                break;
+            case TYPE_SERVERS:
+                contentManager.getServersLiveData().observe(this, servers -> {
+                    if (serversAdapter != null) {
+                        serversAdapter.updateData(servers != null ? servers : new ArrayList<>());
+                    }
+                    showLoading(false);
+                });
+                break;
         }
     }
 
@@ -356,6 +426,12 @@ public class ContentListActivity extends BaseActivity {
                 break;
             case TYPE_BEHAVIOR_PACKS:
                 contentManager.refreshBehaviorPacks();
+                break;
+            case TYPE_SCREENSHOTS:
+                contentManager.refreshScreenshots();
+                break;
+            case TYPE_SERVERS:
+                contentManager.refreshServers();
                 break;
         }
     }
@@ -511,6 +587,135 @@ public class ContentListActivity extends BaseActivity {
 
             @Override
             public void onProgress(int progress) {}
+        });
+    }
+
+    private void saveScreenshotToGallery(org.levimc.launcher.core.content.ScreenshotItem screenshot) {
+        showLoading(true);
+        new Thread(() -> {
+            try {
+                Bitmap bitmap = BitmapFactory.decodeFile(screenshot.file.getAbsolutePath());
+                if (bitmap != null) {
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.DISPLAY_NAME, screenshot.name + "_" + System.currentTimeMillis() + ".jpg");
+                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                    values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000);
+
+                    Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    if (uri != null) {
+                        try (OutputStream out = getContentResolver().openOutputStream(uri)) {
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                        }
+                        runOnUiThread(() -> {
+                            showLoading(false);
+                            Toast.makeText(ContentListActivity.this, R.string.save, Toast.LENGTH_SHORT).show();
+                        });
+                        return;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            runOnUiThread(() -> {
+                showLoading(false);
+                Toast.makeText(ContentListActivity.this, "Save failed", Toast.LENGTH_SHORT).show();
+            });
+        }).start();
+    }
+
+    private void showDeleteScreenshotDialog(org.levimc.launcher.core.content.ScreenshotItem screenshot) {
+        new CustomAlertDialog(this)
+            .setTitleText(getString(R.string.delete))
+            .setMessage("Are you sure you want to delete this screenshot?")
+            .setPositiveButton(getString(R.string.dialog_positive_delete), v -> deleteScreenshot(screenshot))
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show();
+    }
+
+    private void showAddServerDialog() {
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_server, null);
+        EditText serverNameEdit = dialogView.findViewById(R.id.server_name_edit);
+        EditText serverIpEdit = dialogView.findViewById(R.id.server_ip_edit);
+        EditText serverPortEdit = dialogView.findViewById(R.id.server_port_edit);
+        serverPortEdit.setText("19132");
+
+        new CustomAlertDialog(this)
+                .setTitleText(getString(R.string.quick_launch_add_server))
+                .setCustomView(dialogView)
+                .setPositiveButton(getString(R.string.add), v -> {
+                    String name = serverNameEdit.getText().toString().trim();
+                    String ip = serverIpEdit.getText().toString().trim();
+                    String portStr = serverPortEdit.getText().toString().trim();
+
+                    if (TextUtils.isEmpty(name) || TextUtils.isEmpty(ip)) {
+                        Toast.makeText(this, R.string.server_details_required, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    int port = 19132;
+                    if (!TextUtils.isEmpty(portStr)) {
+                        try {
+                            port = Integer.parseInt(portStr);
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(this, R.string.invalid_port, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+
+                    addServer(new org.levimc.launcher.core.content.ServerItem(name, ip, port));
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
+    }
+
+    private void addServer(org.levimc.launcher.core.content.ServerItem server) {
+        contentManager.addServer(server, new ContentManager.ContentOperationCallback() {
+            @Override
+            public void onSuccess(String message) {
+                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show());
+            }
+        });
+    }
+
+    private void deleteScreenshot(org.levimc.launcher.core.content.ScreenshotItem screenshot) {
+        contentManager.deleteScreenshot(screenshot, new ContentManager.ContentOperationCallback() {
+            @Override
+            public void onSuccess(String message) {
+                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show());
+            }
+        });
+    }
+
+    private void showDeleteServerDialog(org.levimc.launcher.core.content.ServerItem server) {
+        new CustomAlertDialog(this)
+            .setTitleText(getString(R.string.delete))
+            .setMessage("Are you sure you want to delete this server?")
+            .setPositiveButton(getString(R.string.dialog_positive_delete), v -> deleteServer(server))
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show();
+    }
+
+    private void deleteServer(org.levimc.launcher.core.content.ServerItem server) {
+        contentManager.deleteServer(server, new ContentManager.ContentOperationCallback() {
+            @Override
+            public void onSuccess(String message) {
+                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show());
+            }
         });
     }
 
