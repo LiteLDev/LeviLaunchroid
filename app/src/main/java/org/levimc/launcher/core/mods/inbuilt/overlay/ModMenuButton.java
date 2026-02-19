@@ -264,11 +264,13 @@ public class ModMenuButton {
         LinearLayout zoomContainer = dialog.findViewById(R.id.config_zoom_container);
         SeekBar seekBarZoom = dialog.findViewById(R.id.seekbar_zoom_level);
         TextView textZoom = dialog.findViewById(R.id.text_zoom_level);
+        Button btnZoomKeybind = dialog.findViewById(R.id.btn_zoom_keybind);
         Button btnCancel = dialog.findViewById(R.id.btn_cancel);
         Button btnSave = dialog.findViewById(R.id.btn_save);
         
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
         final int[] pendingAutoSprintKeybind = {manager.getAutoSprintKeybind()};
+        final int[] pendingZoomKeybind = {manager.getZoomKeybind()};
         
         title.setText(mod.getName());
         
@@ -320,7 +322,7 @@ public class ModMenuButton {
         if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
             autoSprintContainer.setVisibility(View.VISIBLE);
             btnAutoSprintKeybind.setText(getKeyName(pendingAutoSprintKeybind[0]));
-            btnAutoSprintKeybind.setOnClickListener(v -> showKeybindCaptureDialog(activity, btnAutoSprintKeybind, pendingAutoSprintKeybind));
+            btnAutoSprintKeybind.setOnClickListener(v -> showKeybindCaptureDialog(activity, btnAutoSprintKeybind, pendingAutoSprintKeybind, false));
         } else {
             autoSprintContainer.setVisibility(View.GONE);
         }
@@ -343,6 +345,9 @@ public class ModMenuButton {
                 @Override public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override public void onStopTrackingTouch(SeekBar seekBar) {}
             });
+
+            btnZoomKeybind.setText(getKeyName(pendingZoomKeybind[0]));
+            btnZoomKeybind.setOnClickListener(v -> showKeybindCaptureDialog(activity, btnZoomKeybind, pendingZoomKeybind, true));
         } else {
             zoomContainer.setVisibility(View.GONE);
         }
@@ -357,6 +362,7 @@ public class ModMenuButton {
             }
             if (mod.getId().equals(ModIds.ZOOM)) {
                 manager.setZoomLevel(seekBarZoom.getProgress());
+                manager.setZoomKeybind(pendingZoomKeybind[0]);
             }
             dialog.dismiss();
         });
@@ -364,10 +370,10 @@ public class ModMenuButton {
         dialog.show();
     }
     
-    private void showKeybindCaptureDialog(Context context, Button keybindButton, int[] pendingKeybind) {
+    private void showKeybindCaptureDialog(Context context, Button keybindButton, int[] pendingKeybind, boolean isZoom) {
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
-        builder.setTitle(context.getString(R.string.autosprint_keybind_label));
-        builder.setMessage(context.getString(R.string.autosprint_keybind_press));
+        builder.setTitle(context.getString(isZoom ? R.string.zoom_keybind_label : R.string.autosprint_keybind_label));
+        builder.setMessage(context.getString(isZoom ? R.string.zoom_keybind_press : R.string.autosprint_keybind_press));
         builder.setCancelable(true);
         builder.setNegativeButton(context.getString(R.string.dialog_negative_cancel), null);
 
