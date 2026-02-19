@@ -56,6 +56,7 @@
 
         <Button
             android:id="@+id/btn_negative"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -63,6 +64,7 @@
             android:textSize="14sp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:paddingStart="12dp"
             android:paddingEnd="12dp" />
 
@@ -73,6 +75,7 @@
 
         <Button
             android:id="@+id/btn_neutral"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -80,6 +83,7 @@
             android:textSize="14sp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:visibility="gone" />
@@ -98,6 +102,8 @@
             android:textSize="14sp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
             android:paddingStart="12dp"
             android:paddingEnd="12dp" />
     </LinearLayout>

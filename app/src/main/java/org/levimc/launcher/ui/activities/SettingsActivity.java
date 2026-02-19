@@ -163,6 +163,8 @@ public class SettingsActivity extends BaseActivity {
         
         dialog.setTitleText(getString(R.string.memory_editor_warning_title))
               .setMessage(getString(R.string.memory_editor_warning_message))
+              .setUseBorderedBackground(true)
+              .setBlurBackground(true)
               .setPositiveButton(confirmText + " (" + countdown[0] + ")", null)
               .setNegativeButton(getString(R.string.cancel), null);
         

@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:background="@drawable/bg_rounded_card"
+        android:background="@drawable/dialog_background_black_border"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,36 +18,32 @@
             android:paddingEnd="16dp"
             android:paddingTop="14dp"
             android:paddingBottom="6dp"
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageButton
-                android:id="@+id/back_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_arrow_back"
-                android:contentDescription="@string/back"
-                android:tint="@color/on_surface"/>
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_leaf_logo" />
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:layout_marginStart="8dp"
                 android:text="@string/game_version_select_title"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="@color/on_surface"
+                android:textColor="?attr/colorPrimary"
                 android:fontFamily="@font/misans"/>
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="8dp"/>
+            android:layout_height="1dp"
+            android:background="#1A888888"
+            android:layout_marginHorizontal="16dp"/>
             
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_versions"

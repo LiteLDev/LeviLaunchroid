@@ -100,13 +100,6 @@ public class InbuiltModsAdapter extends RecyclerView.Adapter<InbuiltModsAdapter.
         Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_inbuilt_mod_config);
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().setLayout(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-        }
 
         TextView title = dialog.findViewById(R.id.config_title);
         SeekBar seekBarSize = dialog.findViewById(R.id.seekbar_button_size);
@@ -128,6 +121,23 @@ public class InbuiltModsAdapter extends RecyclerView.Adapter<InbuiltModsAdapter.
         final int[] pendingZoomKeybind = {manager.getZoomKeybind()};
 
         title.setText(mod.getName());
+
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            window.addFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            android.view.WindowManager.LayoutParams params = window.getAttributes();
+            params.dimAmount = 0.6f;
+
+            float density = context.getResources().getDisplayMetrics().density;
+            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            int maxWidth = (int) (380 * density);
+            params.width = Math.min((int) (screenWidth * 0.9), maxWidth);
+            window.setAttributes(params);
+        }
+
+        DynamicAnim.animateDialogShow(dialog.findViewById(android.R.id.content));
 
         int currentSize = manager.getOverlayButtonSize(mod.getId());
         seekBarSize.setProgress(currentSize);

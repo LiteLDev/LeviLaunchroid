@@ -148,7 +148,8 @@
     <string name="toast_delete_success">Deleted successfully</string>
     <string name="toast_delete_failed">Delete failed: %1$s</string>
     <string name="error_delete_builtin_version">Cannot delete built-in version</string>
-    <string name="invalid_mod_file">You selected an invalid mod file!</string>
+    <string name="invalid_mod_file">Failed</string>
+    <string name="invalid_mod_file_reason">Only files with .so extension are allowed (e.g. 4dskins.so). The selected file is not a valid native shared library.</string>
     <string name="error_versions">Error Versions</string>
 
     <string name="dialog_title_delete_mod">Delete Mod</string>

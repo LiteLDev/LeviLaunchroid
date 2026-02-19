@@ -275,11 +275,16 @@ public class ContentDetailsActivity extends BaseActivity {
         android.app.Dialog dialog = new android.app.Dialog(this);
         dialog.setContentView(R.layout.dialog_file_list);
         dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        android.view.WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.dimAmount = 0.6f;
         
         android.util.DisplayMetrics metrics = getResources().getDisplayMetrics();
         int width = (int)(metrics.widthPixels * 0.90);
         int height = (int)(metrics.heightPixels * 0.80);
-        dialog.getWindow().setLayout(width, height);
+        params.width = width;
+        params.height = height;
+        dialog.getWindow().setAttributes(params);
 
         RecyclerView recycler = dialog.findViewById(R.id.recycler_files);
         View btnClose = dialog.findViewById(R.id.btn_close);

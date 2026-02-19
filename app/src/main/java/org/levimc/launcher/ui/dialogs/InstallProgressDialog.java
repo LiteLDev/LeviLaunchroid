@@ -32,7 +32,7 @@ public class InstallProgressDialog extends Dialog {
             WindowManager.LayoutParams params = window.getAttributes();
             params.width = WindowManager.LayoutParams.WRAP_CONTENT;
             params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-            params.dimAmount = 0.5f;
+            params.dimAmount = 0.6f;
             window.setAttributes(params);
             window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         }

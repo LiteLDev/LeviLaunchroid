@@ -552,6 +552,8 @@ import okhttp3.OkHttpClient;
         CustomAlertDialog dia = new CustomAlertDialog(this)
                 .setTitleText(getString(R.string.eula_title))
                 .setMessage(getString(R.string.eula_message))
+                .setUseBorderedBackground(true)
+                .setBlurBackground(true)
                 .setPositiveButton(getString(R.string.eula_agree), v -> {
                     getSharedPreferences("LauncherPrefs", MODE_PRIVATE)
                             .edit().putBoolean("eula_accepted", true).apply();
@@ -897,6 +899,8 @@ import okhttp3.OkHttpClient;
         new CustomAlertDialog(this)
                 .setTitleText(getString(R.string.dialog_title_delete_version))
                 .setMessage(getString(R.string.dialog_message_delete_version))
+                .setUseBorderedBackground(true)
+                .setBlurBackground(true)
                 .setPositiveButton(getString(R.string.dialog_positive_delete), v2 -> {
                     VersionManager.get(this).deleteCustomVersion(versionManager.getSelectedVersion(), new VersionManager.OnDeleteVersionCallback() {
                         @Override

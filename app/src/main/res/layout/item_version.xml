@@ -13,20 +13,33 @@
         android:layout_marginStart="52dp"
         android:background="@drawable/bg_third_level_item"
         android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:orientation="vertical"
+        android:paddingEnd="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true">
 
         <TextView
             android:id="@+id/tv_version_name_item"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="15sp"
             android:textColor="@color/on_surface"
             android:fontFamily="@font/misans"/>
+
+        <ImageButton
+            android:id="@+id/btn_rename"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_edit"
+            android:tint="@color/primary"
+            android:padding="6dp"
+            android:scaleType="fitCenter"
+            android:visibility="gone"/>
     </LinearLayout>
 </FrameLayout>

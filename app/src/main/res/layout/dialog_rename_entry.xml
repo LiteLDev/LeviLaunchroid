@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="2dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/rename_version_message"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="14sp"
+        android:layout_marginBottom="12dp"/>
+
+    <EditText
+        android:id="@+id/edit_version_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="16sp"
+        android:singleLine="true"
+        android:inputType="text"
+        android:background="@drawable/bg_edit_text"
+        android:hint="@string/new_version_name"
+        android:textColorHint="?attr/colorOnSurfaceVariant"/>
+
+    <TextView
+        android:id="@+id/text_version_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/name_invalid"
+        android:textColor="#FF5252"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>

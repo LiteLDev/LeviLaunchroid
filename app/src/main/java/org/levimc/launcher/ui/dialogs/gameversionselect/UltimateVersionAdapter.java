@@ -118,11 +118,13 @@ public class UltimateVersionAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     static class ItemVH extends RecyclerView.ViewHolder {
         TextView tv;
         LinearLayout parentLayout;
+        View btnRename;
 
         ItemVH(View v) {
             super(v);
             tv = v.findViewById(R.id.tv_version_name_item);
             parentLayout = v.findViewById(R.id.linear_parent);
+            btnRename = v.findViewById(R.id.btn_rename);
         }
 
         public void bind(GameVersion v, OnVersionSelectListener listener, OnVersionLongClickListener longClickListener) {
@@ -136,12 +138,20 @@ public class UltimateVersionAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 if (listener != null) listener.onVersionSelected(v);
             });
 
-            if (!v.isInstalled && longClickListener != null) {
+            if (!v.isInstalled) {
+                if (btnRename != null) {
+                    btnRename.setVisibility(View.VISIBLE);
+                    btnRename.setOnClickListener(_v -> {
+                        if (longClickListener != null) longClickListener.onVersionLongClicked(v);
+                    });
+                    org.levimc.launcher.ui.animation.DynamicAnim.applyPressScale(btnRename);
+                }
                 parentLayout.setOnLongClickListener(_v -> {
-                    longClickListener.onVersionLongClicked(v);
+                    if (longClickListener != null) longClickListener.onVersionLongClicked(v);
                     return true;
                 });
             } else {
+                if (btnRename != null) btnRename.setVisibility(View.GONE);
                 parentLayout.setOnLongClickListener(null);
             }
         }

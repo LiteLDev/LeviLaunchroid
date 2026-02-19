@@ -148,7 +148,8 @@
     <string name="toast_delete_success">Успешно удалено</string>
     <string name="toast_delete_failed">Ошибка удаления: %1$s</string>
     <string name="error_delete_builtin_version">Нельзя удалить встроенную версию</string>
-    <string name="invalid_mod_file">Вы выбрали недопустимый мод-файл!</string>
+    <string name="invalid_mod_file">Ошибка</string>
+    <string name="invalid_mod_file_reason">Допускаются только файлы с расширением .so (например, 4dskins.so). Выбранный файл не является допустимой нативной библиотекой.</string>
     <string name="error_versions">Ошибочные версии</string>
 
     <string name="dialog_title_delete_mod">Удалить мод</string>

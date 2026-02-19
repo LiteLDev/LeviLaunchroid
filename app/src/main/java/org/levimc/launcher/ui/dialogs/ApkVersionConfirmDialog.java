@@ -101,15 +101,7 @@ public class ApkVersionConfirmDialog extends DialogFragment {
             String versionName = editVersionName.getText().toString();
             if (isValidVersionName(versionName) && !isVersionExist(versionName)) {
                 if (callback != null) callback.onInstallClicked(versionName);
-                Window w = dialog.getWindow();
-                if (w != null) {
-                    w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-                    WindowManager.LayoutParams p = w.getAttributes();
-                    p.dimAmount = 0f;
-                    w.setAttributes(p);
-                }
-                View content = dialog.findViewById(android.R.id.content);
-                DynamicAnim.animateDialogDismiss(content, dialog::dismiss);
+                dismiss();
             } else {
                 textError.setVisibility(View.VISIBLE);
             }
@@ -118,8 +110,17 @@ public class ApkVersionConfirmDialog extends DialogFragment {
         Window window = dialog.getWindow();
         if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.dimAmount = 0.6f;
+            
+            float density = context.getResources().getDisplayMetrics().density;
+            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            int maxWidth = (int) (400 * density);
+            params.width = Math.min((int) (screenWidth * 0.9), maxWidth);
+            window.setAttributes(params);
         }
-
 
         DynamicAnim.animateDialogShow(dialog.findViewById(android.R.id.content));
         DynamicAnim.applyPressScale(btnInstall);
@@ -133,11 +134,9 @@ public class ApkVersionConfirmDialog extends DialogFragment {
         if (valid) {
             textError.setVisibility(View.GONE);
             btnInstall.setEnabled(true);
-            editVersionName.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
         } else {
             textError.setVisibility(View.VISIBLE);
             btnInstall.setEnabled(false);
-            editVersionName.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
         }
     }
 

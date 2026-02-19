@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,9 @@ public class CustomAlertDialog extends Dialog {
     private String[] mItems;
     private DialogInterface.OnClickListener mItemClickListener;
     private View mCustomView;
+    private boolean mBlurBackground;
+    private int mTitleColor = 0;
+    private boolean mUseBorderedBackground;
 
     public CustomAlertDialog(Context context) {
         super(context);
@@ -79,11 +83,36 @@ public class CustomAlertDialog extends Dialog {
         return this;
     }
 
+    public CustomAlertDialog setBlurBackground(boolean blur) {
+        this.mBlurBackground = blur;
+        return this;
+    }
+
+    public CustomAlertDialog setTitleColor(int color) {
+        this.mTitleColor = color;
+        return this;
+    }
+
+    public CustomAlertDialog setUseBorderedBackground(boolean bordered) {
+        this.mUseBorderedBackground = bordered;
+        return this;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alert_dialog_custom);
         setCanceledOnTouchOutside(false);
+
+        if (mUseBorderedBackground) {
+            View root = findViewById(android.R.id.content);
+            if (root != null) {
+                View dialogRoot = ((ViewGroup) root).getChildAt(0);
+                if (dialogRoot != null) {
+                    dialogRoot.setBackgroundResource(R.drawable.dialog_background_black_border);
+                }
+            }
+        }
 
         TextView tvTitle = findViewById(R.id.tv_title);
         TextView tvMessage = findViewById(R.id.tv_message);
@@ -95,6 +124,9 @@ public class CustomAlertDialog extends Dialog {
         View spacingNeuPos = findViewById(R.id.btn_spacing_neu_pos);
 
         tvTitle.setText(mTitle != null ? mTitle : "");
+        if (mTitleColor != 0) {
+            tvTitle.setTextColor(mTitleColor);
+        }
         tvMessage.setText(mMessage != null ? mMessage : "");
 
         RecyclerView itemsRecyclerView = findViewById(R.id.items_recycler_view);
@@ -198,6 +230,13 @@ public class CustomAlertDialog extends Dialog {
             int maxWidth = (int) (400 * density);
             int dialogWidth = Math.min((int) (screenWidth * 0.9), maxWidth);
             window.setLayout(dialogWidth, WindowManager.LayoutParams.WRAP_CONTENT);
+
+            if (mBlurBackground) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                WindowManager.LayoutParams params = window.getAttributes();
+                params.dimAmount = 0.6f;
+                window.setAttributes(params);
+            }
         }
 
         View content = findViewById(android.R.id.content);
@@ -221,6 +260,11 @@ public class CustomAlertDialog extends Dialog {
                     super.dismiss();
                 } catch (Exception ignored) {}
                 return;
+            }
+            if (mBlurBackground) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+                }
             }
             window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             WindowManager.LayoutParams params = window.getAttributes();

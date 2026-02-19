@@ -3,36 +3,41 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_rounded_card"
+    android:background="@drawable/dialog_background_black_border"
     android:orientation="vertical"
     android:minWidth="360dp"
-    android:padding="20dp">
+    android:padding="24dp">
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/version_name"
-        android:textColor="#4CAF50"
+        android:textColor="?attr/colorPrimary"
         android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:fontFamily="@font/misans"/>
 
     <EditText
         android:id="@+id/edit_version_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:padding="10dp"
-        android:textColor="#4CAF50"
+        android:layout_marginTop="16dp"
+        android:padding="12dp"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="16sp"
         android:singleLine="true"
-        android:inputType="text" />
+        android:inputType="text"
+        android:background="@drawable/bg_edit_text"
+        android:hint="@string/version_name"
+        android:textColorHint="?attr/colorOnSurfaceVariant"/>
 
     <TextView
         android:id="@+id/text_version_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/name_invalid"
-        android:textColor="#F44336"
+        android:textColor="#FF5252"
         android:textSize="12sp"
         android:visibility="gone"
         android:layout_marginTop="4dp" />
@@ -42,13 +47,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="end"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="24dp">
 
         <Button
             android:id="@+id/btn_cancel"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel" />
+            android:text="@string/cancel"
+            android:textColor="?attr/colorOnSurfaceVariant" />
 
         <Button
             android:id="@+id/btn_install"
@@ -56,7 +63,9 @@
             android:layout_height="wrap_content"
             android:text="@string/install"
             android:enabled="false"
-            android:layout_marginStart="20dp" />
+            android:layout_marginStart="12dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary" />
     </LinearLayout>
 
 </LinearLayout>

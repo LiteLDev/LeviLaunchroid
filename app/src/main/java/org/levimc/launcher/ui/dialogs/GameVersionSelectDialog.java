@@ -45,11 +45,6 @@ public class GameVersionSelectDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_game_version_select);
-        android.widget.ImageButton backBtn = findViewById(R.id.back_button);
-        if (backBtn != null) {
-            backBtn.setOnClickListener(v -> dismiss());
-            DynamicAnim.applyPressScale(backBtn);
-        }
         RecyclerView recyclerView = findViewById(R.id.recycler_versions);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         UltimateVersionAdapter adapter = new UltimateVersionAdapter(getContext(), bigGroups);
@@ -63,6 +58,15 @@ public class GameVersionSelectDialog extends Dialog {
         Window window = getWindow();
         if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            android.view.WindowManager.LayoutParams params = window.getAttributes();
+            params.dimAmount = 0.6f;
+            
+            float density = getContext().getResources().getDisplayMetrics().density;
+            int screenWidth = getContext().getResources().getDisplayMetrics().widthPixels;
+            int maxWidth = (int) (420 * density);
+            params.width = Math.min((int) (screenWidth * 0.95), maxWidth);
+            window.setAttributes(params);
         }
         recyclerView.setAdapter(adapter);
 
@@ -84,36 +88,72 @@ public class GameVersionSelectDialog extends Dialog {
             return;
         }
 
-        VersionRenameDialog renameDialog = new VersionRenameDialog(getContext())
-                .setVersion(version)
-                .setCallback(new VersionRenameDialog.Callback() {
-                    @Override
-                    public void onRenameClicked(String newName) {
-                        VersionManager versionManager = VersionManager.get(getContext());
-                        versionManager.renameCustomVersion(version, newName, new VersionManager.OnRenameVersionCallback() {
-                            @Override
-                            public void onRenameCompleted(boolean success) {
-                                new Handler(Looper.getMainLooper()).post(() -> {
-                                    if (success) {
-                                        Toast.makeText(getContext(), getContext().getString(R.string.rename_success), Toast.LENGTH_SHORT).show();
-                                        dismiss();
-                                    }
-                                });
-                            }
+        View customView = getLayoutInflater().inflate(R.layout.dialog_rename_entry, null);
+        android.widget.EditText editName = customView.findViewById(R.id.edit_version_name);
+        View errorText = customView.findViewById(R.id.text_version_error);
 
-                            @Override
-                            public void onRenameFailed(Exception e) {
-                                new Handler(Looper.getMainLooper()).post(() -> {
-                                    Toast.makeText(getContext(), getContext().getString(R.string.rename_failed, e.getMessage()), Toast.LENGTH_LONG).show();
-                                });
-                            }
-                        });
+        String currentName = extractDisplayName(version);
+        editName.setText(currentName);
+        if (currentName != null) editName.setSelection(currentName.length());
+
+        CustomAlertDialog renameDialog = new CustomAlertDialog(getContext())
+                .setTitleText(getContext().getString(R.string.rename_version_title))
+                .setCustomView(customView)
+                .setUseBorderedBackground(true)
+                .setBlurBackground(true)
+                .setPositiveButton(getContext().getString(R.string.rename), v -> {
+                    String newName = editName.getText().toString().trim();
+                    if (isValidName(newName)) {
+                        performRename(version, newName);
                     }
+                })
+                .setNegativeButton(getContext().getString(R.string.cancel), null);
+        
+        renameDialog.show();
 
-                    @Override
-                    public void onCancelled() {
+        editName.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                boolean valid = isValidName(s.toString().trim());
+                errorText.setVisibility(valid ? View.GONE : View.VISIBLE);
+                renameDialog.getPositiveButton().setEnabled(valid);
+            }
+            @Override public void afterTextChanged(android.text.Editable s) {}
+        });
+    }
+
+    private String extractDisplayName(GameVersion version) {
+        if (version == null) return "";
+        String displayName = version.displayName;
+        if (displayName == null) return version.directoryName;
+        int lastParenIndex = displayName.lastIndexOf(" (");
+        if (lastParenIndex > 0) return displayName.substring(0, lastParenIndex);
+        return version.directoryName;
+    }
+
+    private boolean isValidName(String name) {
+        if (name == null || name.isEmpty() || name.length() > 40) return false;
+        return java.util.regex.Pattern.compile("^[a-zA-Z0-9._-]+$").matcher(name).matches();
+    }
+
+    private void performRename(GameVersion version, String newName) {
+        VersionManager.get(getContext()).renameCustomVersion(version, newName, new VersionManager.OnRenameVersionCallback() {
+            @Override
+            public void onRenameCompleted(boolean success) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    if (success) {
+                        Toast.makeText(getContext(), getContext().getString(R.string.rename_success), Toast.LENGTH_SHORT).show();
+                        dismiss();
                     }
                 });
-        renameDialog.show();
+            }
+
+            @Override
+            public void onRenameFailed(Exception e) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    Toast.makeText(getContext(), getContext().getString(R.string.rename_failed, e.getMessage()), Toast.LENGTH_LONG).show();
+                });
+            }
+        });
     }
 }

@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.graphics.Color;
 import android.provider.OpenableColumns;
 import android.util.Log;
 
@@ -65,7 +66,11 @@ public class FileHandler {
             if (isButtonClick) {
                 new CustomAlertDialog(context)
                         .setTitleText(context.getString(R.string.invalid_mod_file))
-                        .setPositiveButton((context.getString(R.string.confirm)), (d) -> handleFilesWithOverwriteCheck(soUris, callback))
+                        .setTitleColor(Color.RED)
+                        .setMessage(context.getString(R.string.invalid_mod_file_reason))
+                        .setUseBorderedBackground(true)
+                        .setBlurBackground(true)
+                        .setPositiveButton((context.getString(R.string.confirm)), (d) -> {})
                         .show();
             }
             return;

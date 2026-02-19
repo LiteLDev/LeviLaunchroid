@@ -1,30 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:background="@drawable/bg_rounded_card"
+    android:padding="26dp"
+    android:background="@drawable/dialog_background_black_border"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minWidth="280dp">
+    android:minWidth="300dp">
 
     <TextView
-    android:id="@+id/tv_title"
-    android:text="@string/installing_title"
-    android:textSize="18sp"
-    android:textStyle="bold"
-    android:textColor="?attr/colorOnSurface"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
+        android:id="@+id/tv_title"
+        android:text="@string/installing_title"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        android:fontFamily="@font/misans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-<TextView
-    android:id="@+id/tv_message"
-    android:text="@string/installing_message"
-    android:layout_marginTop="12dp"
-    android:textSize="16sp"
-    android:textColor="?attr/colorOnSurfaceVariant"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_message"
+        android:text="@string/installing_message"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

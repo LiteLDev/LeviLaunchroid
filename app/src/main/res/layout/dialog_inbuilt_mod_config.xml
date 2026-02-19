@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="320dp"
+    android:layout_width="340dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/bg_dialog_config">
+    android:background="@drawable/dialog_background_black_border"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/config_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:paddingBottom="0dp"
-        android:textColor="@color/on_surface"
+        android:paddingBottom="4dp"
+        android:textColor="?attr/colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
         android:fontFamily="@font/misans" />
@@ -21,15 +21,15 @@
         android:layout_height="1dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="12dp"
-        android:background="@color/outline"
-        android:alpha="0.3" />
+        android:layout_marginTop="8dp"
+        android:background="?attr/colorOutline"
+        android:alpha="0.2" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:maxHeight="280dp"
+        android:maxHeight="320dp"
         android:fillViewport="true">
 
         <LinearLayout
@@ -43,14 +43,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/overlay_button_size"
-                    android:textColor="@color/on_surface"
-                    android:textSize="13sp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp"
                     android:fontFamily="@font/misans" />
 
                 <LinearLayout
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginTop="4dp">
+                    android:layout_marginTop="8dp">
 
                     <SeekBar
                         android:id="@+id/seekbar_button_size"
@@ -68,17 +68,17 @@
                         android:min="32"
                         android:max="120"
                         android:progress="48"
-                        android:progressTint="@color/primary"
-                        android:thumbTint="@color/primary" />
+                        android:progressTint="?attr/colorPrimary"
+                        android:thumbTint="?attr/colorPrimary" />
 
                     <TextView
                         android:id="@+id/text_button_size"
-                        android:layout_width="44dp"
+                        android:layout_width="48dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginStart="8dp"
                         android:gravity="center"
                         android:text="48dp"
-                        android:textColor="@color/on_surface"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="12sp"
                         android:fontFamily="@font/misans" />
 
@@ -90,14 +90,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/overlay_button_opacity"
-                    android:textColor="@color/on_surface"
-                    android:textSize="13sp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp"
                     android:fontFamily="@font/misans" />
 
                 <LinearLayout
@@ -105,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginTop="4dp">
+                    android:layout_marginTop="8dp">
 
                     <SeekBar
                         android:id="@+id/seekbar_button_opacity"
@@ -115,17 +115,17 @@
                         android:min="0"
                         android:max="100"
                         android:progress="100"
-                        android:progressTint="@color/primary"
-                        android:thumbTint="@color/primary" />
+                        android:progressTint="?attr/colorPrimary"
+                        android:thumbTint="?attr/colorPrimary" />
 
                     <TextView
                         android:id="@+id/text_button_opacity"
-                        android:layout_width="44dp"
+                        android:layout_width="48dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginStart="8dp"
                         android:gravity="center"
                         android:text="100%"
-                        android:textColor="@color/on_surface"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="12sp"
                         android:fontFamily="@font/misans" />
 
@@ -138,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -150,18 +150,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/overlay_button_lock"
-                        android:textColor="@color/on_surface"
-                        android:textSize="13sp"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="14sp"
                         android:fontFamily="@font/misans" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/overlay_button_lock_desc"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="11sp"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="12sp"
                         android:fontFamily="@font/misans"
-                        android:alpha="0.7" />
+                        android:alpha="0.8" />
 
                 </LinearLayout>
 
@@ -169,7 +169,10 @@
                     android:id="@+id/switch_lock_position"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp" />
+                    android:layout_marginStart="12dp"
+                    android:thumbTint="?attr/colorPrimary"
+                    android:trackTint="?attr/colorPrimary"
+                    android:alpha="0.8" />
 
             </LinearLayout>
 
@@ -178,23 +181,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="16dp"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/autosprint_key_label"
-                    android:textColor="@color/on_surface"
-                    android:textSize="13sp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp"
                     android:fontFamily="@font/misans" />
 
                 <Spinner
                     android:id="@+id/spinner_autosprint_key"
                     android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/bg_inbuilt_badge"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_spinner_dark"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp" />
 
@@ -206,15 +209,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="16dp"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/zoom_level_label"
-                    android:textColor="@color/on_surface"
-                    android:textSize="13sp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp"
                     android:fontFamily="@font/misans" />
 
                 <LinearLayout
@@ -222,7 +225,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginTop="4dp">
+                    android:layout_marginTop="8dp">
 
                     <SeekBar
                         android:id="@+id/seekbar_zoom_level"
@@ -232,17 +235,17 @@
                         android:min="0"
                         android:max="100"
                         android:progress="50"
-                        android:progressTint="@color/primary"
-                        android:thumbTint="@color/primary" />
+                        android:progressTint="?attr/colorPrimary"
+                        android:thumbTint="?attr/colorPrimary" />
 
                     <TextView
                         android:id="@+id/text_zoom_level"
-                        android:layout_width="44dp"
+                        android:layout_width="48dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginStart="8dp"
                         android:gravity="center"
                         android:text="50%"
-                        android:textColor="@color/on_surface"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="12sp"
                         android:fontFamily="@font/misans" />
 
@@ -251,21 +254,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/zoom_keybind_label"
-                    android:textColor="@color/on_surface"
-                    android:textSize="13sp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp"
                     android:fontFamily="@font/misans" />
 
                 <Button
                     android:id="@+id/btn_zoom_keybind"
                     android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/bg_inbuilt_badge"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_spinner_dark"
                     android:text="C"
-                    android:textColor="@color/on_surface"
-                    android:textSize="13sp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp"
                     android:fontFamily="@font/misans"
                     android:textAllCaps="true" />
 
@@ -279,40 +282,36 @@
         android:layout_height="1dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/outline"
-        android:alpha="0.3" />
+        android:background="?attr/colorOutline"
+        android:alpha="0.2" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="end"
-        android:padding="12dp">
+        android:padding="16dp">
 
         <Button
             android:id="@+id/btn_cancel"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:minWidth="72dp"
-            android:minHeight="0dp"
-            android:backgroundTint="@color/surface"
+            android:layout_height="wrap_content"
             android:text="@string/dialog_negative_cancel"
-            android:textColor="@color/on_surface"
-            android:textSize="12sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="14sp"
             android:fontFamily="@font/misans"
             android:textAllCaps="false"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="12dp" />
 
         <Button
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:minWidth="72dp"
-            android:minHeight="0dp"
-            android:backgroundTint="@color/primary"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/colorPrimary"
             android:text="@string/save"
-            android:textColor="@color/on_primary"
-            android:textSize="12sp"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="14sp"
             android:fontFamily="@font/misans"
             android:textAllCaps="false" />
 

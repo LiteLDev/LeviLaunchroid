@@ -148,7 +148,8 @@
     <string name="toast_delete_success">Penghapusan berhasil</string>
     <string name="toast_delete_failed">Penghapusan gagal: %1$s</string>
     <string name="error_delete_builtin_version">Tidak dapat menghapus versi bawaan</string>
-    <string name="invalid_mod_file">Anda memilih file mod yang tidak valid!</string>
+    <string name="invalid_mod_file">Gagal</string>
+    <string name="invalid_mod_file_reason">Hanya file dengan ekstensi .so yang diizinkan (contoh: 4dskins.so). File yang dipilih bukan pustaka native yang valid.</string>
     <string name="error_versions">Versi Yang Rusak</string>
 
     <string name="dialog_title_delete_mod">Hapus Mod</string>
