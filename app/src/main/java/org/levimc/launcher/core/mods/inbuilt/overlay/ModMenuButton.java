@@ -231,15 +231,25 @@ public class ModMenuButton {
     }
     
     private void showConfigDialog(InbuiltMod mod) {
-        Dialog dialog = new Dialog(activity);
+        Context themedContext = new android.view.ContextThemeWrapper(activity, R.style.Base_Theme_FullScreen);
+        Dialog dialog = new Dialog(themedContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_inbuilt_mod_config);
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().setLayout(
-                (int) (activity.getResources().getDisplayMetrics().widthPixels * 0.85),
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            );
+        
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            window.addFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            android.view.WindowManager.LayoutParams params = window.getAttributes();
+            params.dimAmount = 0.6f;
+
+            float density = activity.getResources().getDisplayMetrics().density;
+            int screenWidth = activity.getResources().getDisplayMetrics().widthPixels;
+            int maxWidth = (int) (380 * density);
+            params.width = Math.min((int) (screenWidth * 0.9), maxWidth);
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            window.setAttributes(params);
         }
         
         TextView title = dialog.findViewById(R.id.config_title);
