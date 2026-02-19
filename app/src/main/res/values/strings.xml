@@ -175,10 +175,10 @@
 
     <!-- Content Management -->
     <string name="content_management">Content Management</string>
-    <string name="worlds_title">🌍 Worlds</string>
-    <string name="resource_packs_title">📦 Resource Packs</string>
-    <string name="behavior_packs_title">⚙️ Behavior Packs</string>
-    <string name="skin_packs_title">👤 Skin Packs</string>
+    <string name="worlds_title">Worlds</string>
+    <string name="resource_packs_title">Resource Packs</string>
+    <string name="behavior_packs_title">Behavior Packs</string>
+    <string name="skin_packs_title">Skin Packs</string>
     <string name="worlds_category">Worlds</string>
     <string name="resource_packs_category">Resource Packs</string>
     <string name="behavior_packs_category">Behavior Packs</string>
@@ -235,6 +235,7 @@
     <string name="edit_world">Edit World</string>
     <string name="edit">Edit</string>
     <string name="save">Save</string>
+    <string name="saved_to_gallery">Saved to gallery</string>
     <string name="level_dat_not_found">level.dat not found</string>
     <string name="no_editable_properties">No editable properties found</string>
     <string name="no_data">No data</string>

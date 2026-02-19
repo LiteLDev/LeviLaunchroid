@@ -175,9 +175,9 @@
 
     <!-- Content Management -->
     <string name="content_management">Управление контентом</string>
-    <string name="worlds_title">🌍 Миры</string>
-    <string name="resource_packs_title">📦 Наборы ресурсов</string>
-    <string name="behavior_packs_title">⚙️ Наборы поведения</string>
+    <string name="worlds_title">Миры</string>
+    <string name="resource_packs_title">Наборы ресурсов</string>
+    <string name="behavior_packs_title">Наборы поведения</string>
     <string name="storage_internal">Внутренняя</string>
     <string name="storage_external">Внешняя</string>
     <string name="storage_version_isolation">Изоляция версии</string>

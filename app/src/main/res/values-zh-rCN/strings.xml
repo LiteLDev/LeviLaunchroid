@@ -173,9 +173,9 @@
 
     <!-- Content Management -->
     <string name="content_management">内容管理</string>
-    <string name="worlds_title">🌍 世界</string>
-    <string name="resource_packs_title">📦 资源包</string>
-    <string name="behavior_packs_title">⚙️ 行为包</string>
+    <string name="worlds_title">世界</string>
+    <string name="resource_packs_title">资源包</string>
+    <string name="behavior_packs_title">行为包</string>
     <string name="storage_internal">内部</string>
     <string name="storage_external">外部</string>
     <string name="storage_version_isolation">版本隔离</string>

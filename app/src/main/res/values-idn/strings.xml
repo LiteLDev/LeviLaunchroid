@@ -175,10 +175,10 @@
 
     <!-- Content Management -->
     <string name="content_management">Manajemen Konten</string>
-    <string name="worlds_title">🌍 Dunia</string>
-    <string name="resource_packs_title">📦 Paket Sumber Daya</string>
-    <string name="behavior_packs_title">⚙️ Paket Perilaku</string>
-    <string name="skin_packs_title">👤 Paket Kulit(skin)</string>
+    <string name="worlds_title">Dunia</string>
+    <string name="resource_packs_title">Paket Sumber Daya</string>
+    <string name="behavior_packs_title">Paket Perilaku</string>
+    <string name="skin_packs_title">Paket Kulit(skin)</string>
     <string name="worlds_category">Dunia</string>
     <string name="resource_packs_category">Paket Sumber Daya</string>
     <string name="behavior_packs_category">Paket Perilaku</string>

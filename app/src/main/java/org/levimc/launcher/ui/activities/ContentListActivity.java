@@ -26,6 +26,7 @@ import org.levimc.launcher.R;
 import org.levimc.launcher.core.content.ContentManager;
 import org.levimc.launcher.core.content.ResourcePackItem;
 import org.levimc.launcher.core.content.ResourcePackManager;
+import org.levimc.launcher.core.content.ServerItem;
 import org.levimc.launcher.core.content.StructureExtractor;
 import org.levimc.launcher.core.content.WorldItem;
 import org.levimc.launcher.core.content.WorldManager;
@@ -84,6 +85,7 @@ public class ContentListActivity extends BaseActivity {
 
     private List<WorldItem> allWorlds = new ArrayList<>();
     private List<ResourcePackItem> allPacks = new ArrayList<>();
+    private List<ServerItem> allServers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,7 +206,7 @@ public class ContentListActivity extends BaseActivity {
                 binding.titleText.setText(getString(R.string.servers_category));
                 binding.importButton.setText(getString(R.string.quick_launch_add_server));
                 binding.importButton.setVisibility(View.VISIBLE);
-                binding.searchEditText.setVisibility(View.GONE);
+                binding.searchEditText.setVisibility(View.VISIBLE);
                 setupServersRecyclerView();
                 break;
         }
@@ -247,6 +249,16 @@ public class ContentListActivity extends BaseActivity {
                     .filter(world -> world.getWorldName().toLowerCase().contains(lowerQuery))
                     .collect(Collectors.toList());
                 worldsAdapter.updateWorlds(filtered);
+            }
+        } else if (contentType == TYPE_SERVERS) {
+            if (lowerQuery.isEmpty()) {
+                serversAdapter.updateData(allServers);
+            } else {
+                List<org.levimc.launcher.core.content.ServerItem> filtered = allServers.stream()
+                    .filter(server -> server.name.toLowerCase().contains(lowerQuery) || 
+                                     server.ip.toLowerCase().contains(lowerQuery))
+                    .collect(Collectors.toList());
+                serversAdapter.updateData(filtered);
             }
         } else {
             if (lowerQuery.isEmpty()) {
@@ -403,8 +415,9 @@ public class ContentListActivity extends BaseActivity {
                 break;
             case TYPE_SERVERS:
                 contentManager.getServersLiveData().observe(this, servers -> {
+                    allServers = servers != null ? servers : new ArrayList<>();
                     if (serversAdapter != null) {
-                        serversAdapter.updateData(servers != null ? servers : new ArrayList<>());
+                        filterContent(binding.searchEditText.getText().toString());
                     }
                     showLoading(false);
                 });
@@ -608,7 +621,7 @@ public class ContentListActivity extends BaseActivity {
                         }
                         runOnUiThread(() -> {
                             showLoading(false);
-                            Toast.makeText(ContentListActivity.this, R.string.save, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ContentListActivity.this, R.string.saved_to_gallery, Toast.LENGTH_SHORT).show();
                         });
                         return;
                     }
