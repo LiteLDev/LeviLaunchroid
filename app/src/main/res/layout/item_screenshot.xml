@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/screenshot_image"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="200dp"
         android:scaleType="centerCrop"
         android:contentDescription="@null"
         android:background="#1E1E1E" />
