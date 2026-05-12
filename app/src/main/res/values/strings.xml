@@ -531,11 +531,9 @@
     <string name="instances_label">Instances</string>
     <string name="select_instance_title">Select Instance</string>
     <string name="filter_all">All</string>
-    <string name="filter_release">Release</string>
-    <string name="filter_preview">Preview</string>
+    <string name="filter_custom">Custom</string>
     <string name="sort_version_newest">Version (Newest)</string>
-    <string name="tag_release">Release</string>
-    <string name="tag_preview">Preview</string>
+    <string name="tag_installed">Installed</string>
     <string name="tag_custom">Custom</string>
     <string name="vanilla_prefix">Vanilla %s</string>
 

@@ -54,28 +54,13 @@
                     android:focusable="true" />
 
                 <TextView
-                    android:id="@+id/filter_release"
+                    android:id="@+id/filter_custom"
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:layout_marginStart="8dp"
                     android:paddingHorizontal="16dp"
                     android:gravity="center"
-                    android:text="@string/filter_release"
-                    android:fontFamily="@font/misans"
-                    android:textSize="12sp"
-                    android:textColor="@color/on_surface"
-                    android:background="@drawable/bg_filter_chip"
-                    android:clickable="true"
-                    android:focusable="true" />
-
-                <TextView
-                    android:id="@+id/filter_preview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="8dp"
-                    android:paddingHorizontal="16dp"
-                    android:gravity="center"
-                    android:text="@string/filter_preview"
+                    android:text="@string/filter_custom"
                     android:fontFamily="@font/misans"
                     android:textSize="12sp"
                     android:textColor="@color/on_surface"
@@ -158,6 +143,22 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:background="@drawable/bg_count_badge" />
+
+            <TextView
+                android:id="@+id/btn_import_apk"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="12dp"
+                android:paddingHorizontal="14dp"
+                android:gravity="center"
+                android:text="@string/import_apk"
+                android:fontFamily="@font/misans"
+                android:textColor="@color/on_primary"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_filter_chip"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

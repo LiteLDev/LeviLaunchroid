@@ -66,18 +66,6 @@
                     android:background="?attr/selectableItemBackground" />
 
                 <TextView
-                    android:id="@+id/nav_tab_import"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingHorizontal="12dp"
-                    android:fontFamily="@font/misans"
-                    android:text="@string/nav_import"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp"
-                    android:background="?attr/selectableItemBackground" />
-
-                <TextView
                     android:id="@+id/nav_tab_instances"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

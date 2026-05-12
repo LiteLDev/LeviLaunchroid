@@ -1,5 +1,8 @@
 package org.levimc.launcher.ui.activities;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +23,7 @@ import org.levimc.launcher.R;
 import org.levimc.launcher.core.versions.GameVersion;
 import org.levimc.launcher.core.versions.VersionManager;
 import org.levimc.launcher.ui.animation.DynamicAnim;
+import org.levimc.launcher.util.ApkImportManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,17 +32,19 @@ import java.util.List;
 public class InstancesActivity extends BaseActivity {
 
     private static final int FILTER_ALL = 0;
-    private static final int FILTER_RELEASE = 1;
-    private static final int FILTER_PREVIEW = 2;
+    private static final int FILTER_CUSTOM = 1;
 
     private VersionManager versionManager;
     private RecyclerView recyclerView;
     private InstanceCardAdapter adapter;
-    private TextView filterAll, filterRelease, filterPreview;
+    private TextView filterAll, filterCustom;
     private TextView instanceCountBadge;
     private EditText searchInput;
     private int currentFilter = FILTER_ALL;
     private List<GameVersion> allVersions = new ArrayList<>();
+
+    private ApkImportManager apkImportManager;
+    private ActivityResultLauncher<Intent> apkImportResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +55,27 @@ public class InstancesActivity extends BaseActivity {
         versionManager = VersionManager.get(this);
         versionManager.loadAllVersions();
 
+        apkImportManager = new ApkImportManager(this, null);
+        apkImportResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (apkImportManager != null)
+                        apkImportManager.handleActivityResult(result.getResultCode(), result.getData());
+                }
+        );
+
         recyclerView = findViewById(R.id.instances_recycler);
         filterAll = findViewById(R.id.filter_all);
-        filterRelease = findViewById(R.id.filter_release);
-        filterPreview = findViewById(R.id.filter_preview);
+        filterCustom = findViewById(R.id.filter_custom);
         instanceCountBadge = findViewById(R.id.instance_count_badge);
         searchInput = findViewById(R.id.search_input);
 
         int spanCount = calculateSpanCount();
         GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount);
         recyclerView.setLayoutManager(layoutManager);
+
+        int spacing = (int) (10 * getResources().getDisplayMetrics().density);
+        recyclerView.addItemDecoration(new GridSpacingDecoration(spanCount, spacing));
 
         loadVersions();
 
@@ -72,9 +91,10 @@ public class InstancesActivity extends BaseActivity {
 
         setupFilterTabs();
         setupSearch();
-
+        setupImportButton();
         updateCount();
 
+        DynamicAnim.applyPressScaleRecursively(findViewById(android.R.id.content));
         recyclerView.post(() -> DynamicAnim.staggerRecyclerChildren(recyclerView));
     }
 
@@ -108,20 +128,15 @@ public class InstancesActivity extends BaseActivity {
             updateFilterUI();
             applyFilters();
         });
-        filterRelease.setOnClickListener(v -> {
-            currentFilter = FILTER_RELEASE;
-            updateFilterUI();
-            applyFilters();
-        });
-        filterPreview.setOnClickListener(v -> {
-            currentFilter = FILTER_PREVIEW;
+        filterCustom.setOnClickListener(v -> {
+            currentFilter = FILTER_CUSTOM;
             updateFilterUI();
             applyFilters();
         });
     }
 
     private void updateFilterUI() {
-        TextView[] tabs = {filterAll, filterRelease, filterPreview};
+        TextView[] tabs = {filterAll, filterCustom};
         for (int i = 0; i < tabs.length; i++) {
             boolean selected = (i == currentFilter);
             tabs[i].setSelected(selected);
@@ -150,13 +165,28 @@ public class InstancesActivity extends BaseActivity {
         });
     }
 
+    private void setupImportButton() {
+        TextView btnImport = findViewById(R.id.btn_import_apk);
+        if (btnImport == null) return;
+        btnImport.setSelected(true);
+        btnImport.setOnClickListener(v -> startApkFilePicker());
+    }
+
+    private void startApkFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        String[] mimeTypes = {"application/vnd.android.package-archive", "application/octet-stream", "application/zip"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        apkImportResultLauncher.launch(intent);
+    }
+
     private void applyFilters() {
         String query = searchInput.getText().toString().trim().toLowerCase();
         List<GameVersion> filtered = new ArrayList<>();
 
         for (GameVersion v : allVersions) {
-            if (currentFilter == FILTER_RELEASE && !v.isInstalled) continue;
-            if (currentFilter == FILTER_PREVIEW && v.isInstalled) continue;
+            if (currentFilter == FILTER_CUSTOM && v.isInstalled) continue;
 
             if (!query.isEmpty()) {
                 String name = v.displayName != null ? v.displayName.toLowerCase() : "";
@@ -191,6 +221,28 @@ public class InstancesActivity extends BaseActivity {
         versionManager.loadAllVersions();
         loadVersions();
         applyFilters();
+    }
+
+    private static class GridSpacingDecoration extends RecyclerView.ItemDecoration {
+        private final int spanCount;
+        private final int spacing;
+
+        GridSpacingDecoration(int spanCount, int spacing) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+        }
+
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
+                                   @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view);
+            int column = position % spanCount;
+            outRect.left = spacing - column * spacing / spanCount;
+            outRect.right = (column + 1) * spacing / spanCount;
+            if (position >= spanCount) {
+                outRect.top = spacing;
+            }
+        }
     }
 
     private static class InstanceCardAdapter extends RecyclerView.Adapter<InstanceCardAdapter.VH> {
@@ -239,7 +291,7 @@ public class InstancesActivity extends BaseActivity {
             holder.versionCode.setText(v.versionCode != null ? v.versionCode : v.directoryName);
 
             if (v.isInstalled) {
-                holder.typeTag.setText(R.string.tag_release);
+                holder.typeTag.setText(R.string.tag_installed);
                 holder.typeTag.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.primary, holder.itemView.getContext().getTheme()));
                 holder.typeTag.setBackgroundResource(R.drawable.bg_release_tag);
             } else {

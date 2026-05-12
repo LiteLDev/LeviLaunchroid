@@ -988,11 +988,6 @@ import okhttp3.OkHttpClient;
     private void setupNavBar() {
         setActiveNavTab(R.id.nav_tab_launch);
         findViewById(R.id.nav_tab_launch).setOnClickListener(v -> {});
-        findViewById(R.id.nav_tab_import).setOnClickListener(v -> startApkFilePicker());
-        findViewById(R.id.nav_tab_instances).setOnClickListener(v -> {
-            startActivity(new Intent(this, InstancesActivity.class));
-            finish();
-        });
     }
 
     @Override

@@ -96,7 +96,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private void setupBaseNavBar() {
         int[] tabIds = {
-            R.id.nav_tab_launch, R.id.nav_tab_import, R.id.nav_tab_instances,
+            R.id.nav_tab_launch, R.id.nav_tab_instances,
             R.id.nav_tab_about, R.id.nav_tab_settings
         };
         for (int id : tabIds) {
@@ -107,12 +107,13 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         findViewById(R.id.nav_tab_launch).setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            finish();
+            if (!(this instanceof MainActivity)) {
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+            }
         });
-        findViewById(R.id.nav_tab_import).setOnClickListener(v -> {});
         findViewById(R.id.nav_tab_instances).setOnClickListener(v -> {
             if (!(this instanceof InstancesActivity)) {
                 startActivity(new Intent(this, InstancesActivity.class));
@@ -154,7 +155,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void setActiveNavTab(int activeTabId) {
         if (!navBarInjected) return;
         int[] tabIds = {
-            R.id.nav_tab_launch, R.id.nav_tab_import, R.id.nav_tab_instances,
+            R.id.nav_tab_launch, R.id.nav_tab_instances,
             R.id.nav_tab_about, R.id.nav_tab_settings
         };
         for (int id : tabIds) {
@@ -205,24 +206,24 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(0, 0);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        overridePendingTransition(0, 0);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override
     public void startActivity(Intent intent, @Nullable Bundle options) {
         super.startActivity(intent, options);
-        overridePendingTransition(0, 0);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override
     public void finishAfterTransition() {
         super.finishAfterTransition();
-        overridePendingTransition(0, 0);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }
