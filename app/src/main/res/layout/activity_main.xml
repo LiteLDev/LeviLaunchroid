@@ -22,101 +22,122 @@
             android:layout_height="wrap_content"
             android:background="@drawable/card_background"
             android:orientation="vertical"
-            android:padding="15dp"
-            android:paddingEnd="16dp">
+            android:padding="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingEnd="8dp">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/minecraft"
-                    android:fontFamily="@font/misans"
-                    android:textColor="@color/on_surface"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/abi_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:gravity="center"
-                    android:text="Vanilla"
-                    android:textStyle="bold"
-                    android:textColor="@color/abi_label_text"
-                    android:textSize="16sp"
-                    android:background="@drawable/bg_abi_default"/>
-
-                <TextView
-                    android:id="@+id/genuine_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="8dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:gravity="center"
-                    android:text="@string/genuine_badge_label"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:background="@drawable/bg_genuine_unverified"
-                    android:visibility="gone"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:id="@+id/delete_version_button"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="4dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_delete"
-                    android:tint="@color/error"
-                    android:visibility="visible" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingEnd="8dp">
-
-                <TextView
-                    android:id="@+id/text_minecraft_version"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_minecraft_cube"
-                    android:drawablePadding="7dp"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/on_surface"
-                    android:textSize="24dp"
-                    android:lineHeight="24dp"
-                    android:includeFontPadding="false"
-                    android:fontFamily="@font/misans" />
+                    android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/select_version_button"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="8dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_arrow_down"
-                    android:tint="@color/on_surface" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/minecraft"
+                        android:fontFamily="@font/misans"
+                        android:textColor="@color/on_surface"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/bedrock_edition"
+                        android:fontFamily="@font/misans"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/select_version_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:background="@drawable/card_background"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_minecraft"
+                            android:scaleType="centerCrop" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/current_instance"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/text_minecraft_version"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/on_surface"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/ic_arrow_down"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/instance_settings_button"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="6dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_settings"
+                        app:tint="@color/text_secondary" />
+
+                    <Button
+                        android:id="@+id/launch_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:paddingHorizontal="20dp"
+                        android:layout_marginStart="10dp"
+                        android:backgroundTint="@color/primary"
+                        android:text="@string/launch"
+                        android:textColor="@color/on_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textAllCaps="false"
+                        android:fontFamily="@font/misans"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp" />
+                </LinearLayout>
 
                 <ProgressBar
                     android:id="@+id/progress_loader"
@@ -125,20 +146,29 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:visibility="gone" />
+            </LinearLayout>
 
-                <Button
-                    android:id="@+id/launch_button"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:backgroundTint="@color/primary"
-                    android:drawablePadding="4dp"
-                    android:minWidth="80dp"
-                    android:paddingHorizontal="12dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="4dp"
-                    android:text="@string/launch"
-                    android:textColor="@color/on_primary" />
+                    android:text="💡"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tip_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/misans"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout

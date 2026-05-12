@@ -6,6 +6,8 @@
     <string name="beta_badge">Beta</string>
     <string name="debug_badge">Debug</string>
     <string name="cursor">Cursor</string>
+    <string name="bedrock_edition">Bedrock Edition</string>
+    <string name="current_instance">Current Instance</string>
 
     <!-- Mods -->
     <string name="mods_title">🧩 Mods (%d)</string>
@@ -515,30 +517,24 @@
     <string name="curseforge_importing">Importing…</string>
     <string name="curseforge_download_failed">Download failed</string>
     <string name="curseforge_available_files">Available Files</string>
-
-    <!-- Mascot Messages -->
-    <string name="mascot_message_blocking_nope">Nope nope nope!</string>
-    <string name="mascot_message_blocking_not_yet">Not happening!</string>
-    <string name="mascot_message_blocking_try_again">Try again~</string>
-    <string name="mascot_message_blocking_hmm_no">Hmm... denied!</string>
-    <string name="mascot_message_blocking_maybe_later">Maybe later, senpai!</string>
-    <string name="mascot_message_blocking_are_you_sure">So persistent...</string>
-    <string name="mascot_message_blocking_one_more_time">One more time!</string>
-    <string name="mascot_message_blocking_almost_there">Almost there~</string>
-    <string name="mascot_message_blocking_ora_ora">Ora ora ora!</string>
-    <string name="mascot_message_blocking_muda_muda">Muda muda muda!</string>
-    <string name="mascot_message_blocking_nice_try">Nice try, but no!</string>
-    <string name="mascot_message_blocking_believe_it">Believe it... NOT!</string>
-    <string name="mascot_message_lurk">huh? did someone call me?</string>
-    <string name="mascot_message_wave">hello there! I\'m going to annoy you a bit~</string>
-    <string name="mascot_message_rejected">you pervert</string>
-    <string name="mascot_message_approve">Fine, go ahead~!</string>
-
     <!-- Navigation Bar -->
     <string name="nav_launch">Launch</string>
     <string name="nav_import">Import</string>
     <string name="nav_instances">Instances</string>
     <string name="nav_about">About</string>
     <string name="nav_settings">Settings</string>
+
+    <string-array name="launcher_tips">
+        <item>If incompatible resource packs are detected, click the warning row to review them directly.</item>
+        <item>You can drag mods to reorder their load priority.</item>
+        <item>Enable version isolation to keep different game versions separate.</item>
+        <item>Use Quick Launch to connect directly to a server without opening the game first.</item>
+        <item>You can import .mcworld, .mcpack, and .mcaddon files from the Content Management page.</item>
+        <item>Sign in with your Microsoft account to access Realms and online play.</item>
+        <item>Tap the version selector to switch between installed Minecraft versions.</item>
+        <item>CurseForge lets you browse and download community content directly.</item>
+        <item>Inbuilt mods like FPS Display and Auto Sprint work without native libraries.</item>
+        <item>Long press a mod to see more options like reordering or deletion.</item>
+    </string-array>
 
 </resources>

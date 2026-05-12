@@ -3,13 +3,9 @@ package org.levimc.launcher.ui.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -28,7 +24,6 @@ import org.levimc.launcher.core.minecraft.MinecraftLauncher;
 import org.levimc.launcher.core.mods.FileHandler;
 import org.levimc.launcher.core.mods.Mod;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
-import org.levimc.launcher.core.mods.inbuilt.overlay.MascotEasterEggOverlay;
 import org.levimc.launcher.core.versions.GameVersion;
 import org.levimc.launcher.core.versions.VersionManager;
 import org.levimc.launcher.databinding.ActivityMainBinding;
@@ -103,8 +98,6 @@ import okhttp3.OkHttpClient;
     private LoadingDialog accountLoadingDialog;
     private ActivityResultLauncher<Intent> accountLoginLauncher;
     private OnBackPressedCallback onBackPressedCallback;
-    private MascotEasterEggOverlay mascotOverlay;
-    private GestureDetector mascotGestureDetector;
 
 
     @Override
@@ -564,38 +557,12 @@ import okhttp3.OkHttpClient;
     protected void onResume() {
         super.onResume();
         setTextMinecraftVersion();
-        updateAbiLabel();
-        updateGenuineBadge();
         refreshAccountHeaderUI();
-
         viewModel.refreshMods();
     }
 
 
-    private void updateAbiLabel() {
-        if (binding == null) return;
-        TextView abiLabel = binding.abiLabel;
-        String abiList = (versionManager.getSelectedVersion() != null) ? versionManager.getSelectedVersion().abiList : null;
-        String abiToShow = "unknown";
-        if (!TextUtils.isEmpty(abiList) && !"unknown".equals(abiList)) {
-            abiToShow = abiList.split("\\n")[0].trim();
-        }
-        abiLabel.setText(abiToShow);
-        int bgRes = switch (abiToShow) {
-            case "arm64-v8a" -> R.drawable.bg_abi_arm64_v8a;
-            case "armeabi-v7a" -> R.drawable.bg_abi_armeabi_v7a;
-            case "x86" -> R.drawable.bg_abi_x86;
-            case "x86_64" -> R.drawable.bg_abi_x86_64;
-            default -> R.drawable.bg_abi_default;
-        };
-        abiLabel.setBackgroundResource(bgRes);
-    }
 
-    private void updateGenuineBadge() {
-        if (binding == null) return;
-        boolean verified = PlayStoreValidator.isMinecraftFromPlayStore(this);
-        binding.genuineLabel.setVisibility(verified ? View.GONE : View.VISIBLE);
-    }
 
 
 
@@ -614,56 +581,29 @@ import okhttp3.OkHttpClient;
         binding.selectVersionButton.setOnClickListener(v -> showVersionSelectDialog());
         DynamicAnim.applyPressScale(binding.selectVersionButton);
 
-
-        binding.deleteVersionButton.setOnClickListener(v -> showDeleteVersionDialog());
-        DynamicAnim.applyPressScale(binding.deleteVersionButton);
-
-        binding.genuineLabel.setOnClickListener(v -> {
-            PlayStoreValidationDialog.showNotFromPlayStoreDialog(this);
-        });
-        DynamicAnim.applyPressScale(binding.genuineLabel);
-
         initQuickActionsRecycler();
-
         FeatureSettings.init(getApplicationContext());
-
-        setupMascotEasterEgg();
+        showRandomTip();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private void setupMascotEasterEgg() {
-        mascotGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+    private void showRandomTip() {
+        String[] tips = getResources().getStringArray(R.array.launcher_tips);
+        if (tips.length == 0 || binding.tipText == null) return;
+        binding.tipText.setText(tips[new java.util.Random().nextInt(tips.length)]);
+        android.os.Handler handler = new android.os.Handler(getMainLooper());
+        Runnable rotateTip = new Runnable() {
             @Override
-            public boolean onDown(MotionEvent e) {
-                return isTouchOnDrawableIcon(e);
+            public void run() {
+                if (binding == null || binding.tipText == null) return;
+                binding.tipText.animate().alpha(0f).setDuration(300).withEndAction(() -> {
+                    if (binding == null || binding.tipText == null) return;
+                    binding.tipText.setText(tips[new java.util.Random().nextInt(tips.length)]);
+                    binding.tipText.animate().alpha(1f).setDuration(300).start();
+                }).start();
+                handler.postDelayed(this, 8000);
             }
-
-            @Override
-            public boolean onSingleTapConfirmed(MotionEvent e) {
-                if (!isTouchOnDrawableIcon(e)) return false;
-                if (mascotOverlay == null || !mascotOverlay.isActive()) {
-                    mascotOverlay = new MascotEasterEggOverlay(MainActivity.this);
-                    mascotOverlay.show(binding.textMinecraftVersion, binding.launchButton);
-                }
-                return true;
-            }
-
-            private boolean isTouchOnDrawableIcon(MotionEvent e) {
-                android.graphics.drawable.Drawable[] drawables = binding.textMinecraftVersion.getCompoundDrawables();
-                android.graphics.drawable.Drawable leftDrawable = drawables[0];
-                if (leftDrawable == null) return false;
-                int drawableWidth = leftDrawable.getBounds().width();
-                int drawablePadding = binding.textMinecraftVersion.getCompoundDrawablePadding();
-                int paddingStart = binding.textMinecraftVersion.getPaddingStart();
-                float touchX = e.getX();
-                return touchX <= paddingStart + drawableWidth + drawablePadding;
-            }
-        });
-
-        binding.textMinecraftVersion.setClickable(true);
-        binding.textMinecraftVersion.setOnTouchListener((v, event) -> {
-            return mascotGestureDetector.onTouchEvent(event);
-        });
+        };
+        handler.postDelayed(rotateTip, 8000);
     }
 
     private void initQuickActionsRecycler() {
@@ -721,12 +661,6 @@ import okhttp3.OkHttpClient;
     }
 
     private void launchGame() {
-        if (mascotOverlay != null && mascotOverlay.isActive()) {
-            boolean blocked = mascotOverlay.onLaunchButtonClicked(binding.launchButton, this::performActualLaunch);
-            if (blocked) {
-                return;
-            }
-        }
         performActualLaunch();
     }
 
@@ -896,9 +830,8 @@ import okhttp3.OkHttpClient;
     }
     public void setTextMinecraftVersion() {
         if (binding == null) return;
-        String display = versionManager.getSelectedVersion() != null ? versionManager.getSelectedVersion().displayName : getString(R.string.not_found_version);
-        binding.textMinecraftVersion.setText(TextUtils.isEmpty(display) ? getString(R.string.not_found_version) : display);
-        updateAbiLabel();
+        String version = versionManager.getSelectedVersion() != null ? versionManager.getSelectedVersion().versionCode : null;
+        binding.textMinecraftVersion.setText(TextUtils.isEmpty(version) ? getString(R.string.not_found_version) : version);
     }
 
     private void handleIncomingFiles() {
@@ -963,10 +896,6 @@ import okhttp3.OkHttpClient;
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mascotOverlay != null) {
-            mascotOverlay.hide();
-            mascotOverlay = null;
-        }
     }
 
  }
