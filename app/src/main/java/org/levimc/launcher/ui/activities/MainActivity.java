@@ -13,6 +13,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -27,7 +28,6 @@ import org.levimc.launcher.core.versions.GameVersion;
 import org.levimc.launcher.core.versions.VersionManager;
 import org.levimc.launcher.databinding.ActivityMainBinding;
 import org.levimc.launcher.settings.FeatureSettings;
-import org.levimc.launcher.ui.adapter.QuickActionsAdapter;
 
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
@@ -41,6 +41,7 @@ import org.levimc.launcher.util.PermissionsHandler;
 import org.levimc.launcher.util.PlayStoreValidator;
 import org.levimc.launcher.util.ResourcepackHandler;
 import org.levimc.launcher.util.UIHelper;
+import org.levimc.launcher.core.content.ContentManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -81,8 +82,11 @@ import okhttp3.OkHttpClient;
     private ActivityResultLauncher<Intent> permissionResultLauncher;
     private ActivityResultLauncher<Intent> apkImportResultLauncher;
 
-    private TextView externalModsCount;
-    private TextView inbuiltModsCount;
+    private LinearLayout modsListContainer;
+    private ContentManager contentManager;
+    private TextView worldsCountText;
+    private TextView resourcePacksCountText;
+    private TextView behaviorPacksCountText;
 
     private com.microsoft.xbox.idp.toolkit.CircleImageView accountAvatar;
     private View accountAvatarContainer;
@@ -476,13 +480,11 @@ import okhttp3.OkHttpClient;
     }
 
     private void initModsSection() {
-        externalModsCount = binding.externalModsCount;
-        inbuiltModsCount = binding.inbuiltModsCount;
-        
-        binding.modCard.setOnClickListener(v -> openModsFullscreen());
+        modsListContainer = binding.modsListContainer;
+
         binding.manageModsButton.setOnClickListener(v -> openModsFullscreen());
         DynamicAnim.applyPressScale(binding.manageModsButton);
-        
+
         viewModel.getModsLiveData().observe(this, this::updateModsUI);
     }
 
@@ -555,6 +557,7 @@ import okhttp3.OkHttpClient;
         setTextMinecraftVersion();
         refreshAccountHeaderUI();
         viewModel.refreshMods();
+        refreshContentCounts();
     }
 
 
@@ -577,8 +580,9 @@ import okhttp3.OkHttpClient;
         binding.selectVersionButton.setOnClickListener(v -> showVersionSelectDialog());
         DynamicAnim.applyPressScale(binding.selectVersionButton);
 
-        initQuickActionsRecycler();
         FeatureSettings.init(getApplicationContext());
+        initContentManagementSection();
+        initMiscellaneousSection();
         showRandomTip();
     }
 
@@ -602,53 +606,72 @@ import okhttp3.OkHttpClient;
         handler.postDelayed(rotateTip, 8000);
     }
 
-    private void initQuickActionsRecycler() {
-        QuickActionsAdapter adapter = new QuickActionsAdapter(new ArrayList<>());
-        binding.quickActionsRecycler.setLayoutManager(new androidx.recyclerview.widget.GridLayoutManager(this, 5));
-        binding.quickActionsRecycler.setAdapter(adapter);
-        DynamicAnim.staggerRecyclerChildren(binding.quickActionsRecycler);
+    private void initContentManagementSection() {
+        worldsCountText = binding.contentWorldsCount;
+        resourcePacksCountText = binding.contentResourcePacksCount;
+        behaviorPacksCountText = binding.contentBehaviorPacksCount;
 
-        List<QuickActionsAdapter.QuickActionItem> items = new ArrayList<>();
-        items.add(new QuickActionsAdapter.QuickActionItem(
-                R.string.curseforge_title,
-                R.drawable.ic_qa_curseforge,
-                5
-        ));
-        items.add(new QuickActionsAdapter.QuickActionItem(
-                R.string.content_management,
-                R.drawable.ic_qa_content_mgmt,
-                1
-        ));
-        items.add(new QuickActionsAdapter.QuickActionItem(
-                R.string.microsoft_accounts,
-                R.drawable.ic_qa_account,
-                3
-        ));
-        items.add(new QuickActionsAdapter.QuickActionItem(
-                R.string.quick_launch,
-                R.drawable.ic_qa_launch,
-                4
-        ));
-        adapter.updateItems(items);
-        DynamicAnim.staggerRecyclerChildren(binding.quickActionsRecycler);
-
-        adapter.setOnActionClickListener(actionId -> {
-            switch (actionId) {
-                case 1 -> openContentManagement();
-                case 3 -> {
-                    Intent intent = new Intent(this, AccountsActivity.class);
-                    startActivity(intent);
-                }
-                case 4 -> {
-                    Intent intent = new Intent(this, QuickLaunchActivity.class);
-                    startActivity(intent);
-                }
-                case 5 -> {
-                    Intent intent = new Intent(this, CurseForgeActivity.class);
-                    startActivity(intent);
-                }
-            }
+        contentManager = ContentManager.getInstance(this);
+        contentManager.getWorldsLiveData().observe(this, worlds -> {
+            if (worldsCountText != null)
+                worldsCountText.setText(String.valueOf(worlds != null ? worlds.size() : 0));
         });
+        contentManager.getResourcePacksLiveData().observe(this, packs -> {
+            if (resourcePacksCountText != null)
+                resourcePacksCountText.setText(String.valueOf(packs != null ? packs.size() : 0));
+        });
+        contentManager.getBehaviorPacksLiveData().observe(this, packs -> {
+            if (behaviorPacksCountText != null)
+                behaviorPacksCountText.setText(String.valueOf(packs != null ? packs.size() : 0));
+        });
+
+        binding.contentViewAll.setOnClickListener(v -> openContentManagement());
+        DynamicAnim.applyPressScale(binding.contentViewAll);
+
+        binding.contentWorldsRow.setOnClickListener(v -> openContentList(ContentListActivity.TYPE_WORLDS));
+        binding.contentResourcePacksRow.setOnClickListener(v -> openContentList(ContentListActivity.TYPE_RESOURCE_PACKS));
+        binding.contentBehaviorPacksRow.setOnClickListener(v -> openContentList(ContentListActivity.TYPE_BEHAVIOR_PACKS));
+
+        refreshContentCounts();
+    }
+
+    private void refreshContentCounts() {
+        if (versionManager == null || contentManager == null) return;
+        GameVersion currentVersion = versionManager.getSelectedVersion();
+        if (currentVersion == null) return;
+
+        java.io.File baseDir;
+        if (FeatureSettings.getInstance().isVersionIsolationEnabled()
+                && currentVersion.versionDir != null) {
+            baseDir = new java.io.File(currentVersion.versionDir, "games/com.mojang");
+        } else {
+            baseDir = new java.io.File(getDataDir(), "games/com.mojang");
+        }
+
+        contentManager.setStorageDirectories(
+                new java.io.File(baseDir, "minecraftWorlds"),
+                new java.io.File(baseDir, "resource_packs"),
+                new java.io.File(baseDir, "behavior_packs"),
+                new java.io.File(baseDir, "skin_packs"),
+                new java.io.File(baseDir, "Screenshots"),
+                new java.io.File(baseDir, "minecraftpe"));
+    }
+
+    private void openContentList(int contentType) {
+        GameVersion currentVersion = versionManager != null ? versionManager.getSelectedVersion() : null;
+        if (currentVersion == null) {
+            Toast.makeText(this, getString(R.string.not_found_version), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent intent = new Intent(this, ContentListActivity.class);
+        intent.putExtra(ContentListActivity.EXTRA_CONTENT_TYPE, contentType);
+        startActivity(intent);
+    }
+
+    private void initMiscellaneousSection() {
+        binding.miscCurseforgeRow.setOnClickListener(v -> startActivity(new Intent(this, CurseForgeActivity.class)));
+        binding.miscAccountsRow.setOnClickListener(v -> startActivity(new Intent(this, AccountsActivity.class)));
+        binding.miscQuickLaunchRow.setOnClickListener(v -> startActivity(new Intent(this, QuickLaunchActivity.class)));
     }
 
     private void openModsFullscreen() {
@@ -928,17 +951,38 @@ import okhttp3.OkHttpClient;
     }
 
     private void updateModsUI(List<Mod> mods) {
-        if (binding == null) return;
-        int externalCount = (mods != null) ? mods.size() : 0;
+        if (binding == null || modsListContainer == null) return;
+        modsListContainer.removeAllViews();
+
+        // Add enabled external mods
+        if (mods != null) {
+            for (Mod mod : mods) {
+                if (mod.isEnabled()) {
+                    addModNameEntry(mod.getDisplayName());
+                }
+            }
+        }
+
+        // Add enabled inbuilt mods
         InbuiltModManager manager = InbuiltModManager.getInstance(this);
-        int internalCount = manager.isModMenuEnabled() ? 0 : manager.getAddedMods(this).size();
-        
-        if (externalModsCount != null) {
-            externalModsCount.setText(String.valueOf(externalCount));
+        if (!manager.isModMenuEnabled()) {
+            for (org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod inbuilt : manager.getAddedMods(this)) {
+                addModNameEntry(inbuilt.getName());
+            }
         }
-        if (inbuiltModsCount != null) {
-            inbuiltModsCount.setText(String.valueOf(internalCount));
-        }
+    }
+
+    private void addModNameEntry(String name) {
+        TextView tv = new TextView(this);
+        tv.setText(name);
+        tv.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12);
+        tv.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.on_surface));
+        tv.setFontFeatureSettings(null);
+        tv.setTypeface(getResources().getFont(R.font.misans));
+        tv.setPadding(0, (int)(3 * getResources().getDisplayMetrics().density), 0, (int)(3 * getResources().getDisplayMetrics().density));
+        tv.setMaxLines(1);
+        tv.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        modsListContainer.addView(tv);
     }
 
     private void setupNavBar() {

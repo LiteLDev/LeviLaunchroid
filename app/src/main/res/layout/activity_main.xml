@@ -176,20 +176,18 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginTop="12dp"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="horizontal">
+
+            <!-- Mods Section -->
             <LinearLayout
                 android:id="@+id/mod_card"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="6dp"
-                android:layout_weight="0.7"
+                android:layout_weight="1"
                 android:background="@drawable/card_background"
                 android:orientation="vertical"
-                android:padding="15dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                android:padding="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -199,26 +197,22 @@
 
                     <TextView
                         android:id="@+id/mods_title_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="@string/mods_section_title"
                         android:fontFamily="@font/misans"
                         android:textColor="@color/on_surface"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1" />
 
                     <Button
                         android:id="@+id/manage_mods_button"
                         android:layout_width="wrap_content"
-                        android:layout_height="28dp"
+                        android:layout_height="26dp"
                         android:minWidth="0dp"
                         android:minHeight="0dp"
-                        android:paddingHorizontal="12dp"
+                        android:paddingHorizontal="10dp"
                         android:paddingVertical="0dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
@@ -226,107 +220,373 @@
                         app:backgroundTint="@null"
                         android:text="@string/manage_mods"
                         android:textColor="@color/primary"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:textStyle="bold"
                         android:textAllCaps="false"
                         android:fontFamily="@font/misans" />
                 </LinearLayout>
 
-                <LinearLayout
+                <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:baselineAligned="false">
+                    android:layout_marginTop="10dp"
+                    android:fadingEdge="vertical"
+                    android:fadingEdgeLength="16dp"
+                    android:requiresFadingEdge="vertical"
+                    android:scrollbars="none">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:id="@+id/mods_list_container"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/external_mods_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:fontFamily="@font/misans"
-                            android:textColor="@color/primary"
-                            android:textSize="36sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/external_mods_label"
-                            android:fontFamily="@font/misans"
-                            android:textColor="@color/on_surface"
-                            android:textSize="13sp"
-                            android:gravity="center"/>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="40dp"
-                        android:background="#33888888" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/inbuilt_mods_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:fontFamily="@font/misans"
-                            android:textColor="#888888"
-                            android:textSize="36sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/inbuilt_mods_label"
-                            android:fontFamily="@font/misans"
-                            android:textColor="@color/on_surface"
-                            android:textSize="13sp"
-                            android:gravity="center"/>
-                    </LinearLayout>
-                </LinearLayout>
+                        android:orientation="vertical" />
+                </ScrollView>
             </LinearLayout>
 
+            <!-- Content Management Section -->
             <LinearLayout
-                android:id="@+id/tools_card"
+                android:id="@+id/content_mgmt_card"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="6dp"
+                android:layout_marginHorizontal="6dp"
                 android:layout_weight="1.3"
                 android:background="@drawable/card_background"
                 android:orientation="vertical"
                 android:padding="15dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/content_mgmt_section_title"
+                        android:fontFamily="@font/misans"
+                        android:textColor="@color/on_surface"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/content_view_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/view_all"
+                        android:fontFamily="@font/misans"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground" />
+                </LinearLayout>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="8dp"
+                    android:fadingEdge="vertical"
+                    android:fadingEdgeLength="16dp"
+                    android:requiresFadingEdge="vertical"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- Worlds Row -->
+                        <LinearLayout
+                            android:id="@+id/content_worlds_row"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🌍"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="8dp"
+                                android:text="@string/worlds_category"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/on_surface"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/content_worlds_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="›"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <!-- Resource Packs Row -->
+                        <LinearLayout
+                            android:id="@+id/content_resource_packs_row"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="📦"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="8dp"
+                                android:text="@string/resource_packs_category"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/on_surface"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/content_resource_packs_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="›"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <!-- Behavior Packs Row -->
+                        <LinearLayout
+                            android:id="@+id/content_behavior_packs_row"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="⚙️"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="8dp"
+                                android:text="@string/behavior_packs_category"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/on_surface"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/content_behavior_packs_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="›"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </ScrollView>
+            </LinearLayout>
+
+            <!-- Miscellaneous Section -->
+            <LinearLayout
+                android:id="@+id/misc_card"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/card_background"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/misc_section_title"
                     android:fontFamily="@font/misans"
-                    android:text="@string/quick_actions_title"
                     android:textColor="@color/on_surface"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/quick_actions_recycler"
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:paddingTop="8dp"
-                    android:layoutAnimation="@anim/qa_layout_animation" />
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="8dp"
+                    android:fadingEdge="vertical"
+                    android:fadingEdgeLength="16dp"
+                    android:requiresFadingEdge="vertical"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- CurseForge Row -->
+                        <LinearLayout
+                            android:id="@+id/misc_curseforge_row"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:src="@drawable/ic_qa_curseforge"
+                                android:scaleType="fitCenter" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="8dp"
+                                android:text="@string/curseforge_title"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/on_surface"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="›"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <!-- Microsoft Accounts Row -->
+                        <LinearLayout
+                            android:id="@+id/misc_accounts_row"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:src="@drawable/ic_qa_account"
+                                android:scaleType="fitCenter" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="8dp"
+                                android:text="@string/microsoft_accounts"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/on_surface"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="›"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <!-- Quick Launch Row -->
+                        <LinearLayout
+                            android:id="@+id/misc_quick_launch_row"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:src="@drawable/ic_qa_launch"
+                                android:scaleType="fitCenter" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="8dp"
+                                android:text="@string/quick_launch"
+                                android:fontFamily="@font/misans"
+                                android:textColor="@color/on_surface"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="›"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </ScrollView>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

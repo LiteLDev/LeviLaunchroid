@@ -26,6 +26,9 @@
     <string name="font_license">This app uses the Misans font.</string>
     <string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
     <string name="quick_actions_title">Quick Actions</string>
+    <string name="content_mgmt_section_title">📦 Content Management</string>
+    <string name="misc_section_title">🔧 Miscellaneous</string>
+    <string name="view_all">View All →</string>
     <string name="content_management_subtitle">Manage worlds, resource packs and behavior packs</string>
     <string name="import_apk_subtitle">Install Minecraft from APK or APKS file</string>
     <string name="ms_add_account">Add Account</string>
