@@ -955,34 +955,9 @@ import okhttp3.OkHttpClient;
 
     private void setupNavBar() {
         setActiveNavTab(R.id.nav_tab_launch);
-
         findViewById(R.id.nav_tab_launch).setOnClickListener(v -> {});
         findViewById(R.id.nav_tab_import).setOnClickListener(v -> startApkFilePicker());
         findViewById(R.id.nav_tab_instances).setOnClickListener(v -> showVersionSelectDialog());
-        findViewById(R.id.nav_tab_about).setOnClickListener(v -> {});
-        findViewById(R.id.nav_tab_settings).setOnClickListener(v -> {
-            startActivity(new Intent(this, SettingsActivity.class));
-        });
-    }
-
-
-
-    private void setActiveNavTab(int activeTabId) {
-        int[] tabIds = {
-            R.id.nav_tab_launch, R.id.nav_tab_import, R.id.nav_tab_instances,
-            R.id.nav_tab_about, R.id.nav_tab_settings
-        };
-        for (int id : tabIds) {
-            TextView tab = findViewById(id);
-            if (tab == null) continue;
-            if (id == activeTabId) {
-                tab.setTextColor(getResources().getColor(R.color.on_surface, getTheme()));
-                tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.BOLD);
-            } else {
-                tab.setTextColor(getResources().getColor(R.color.text_secondary, getTheme()));
-                tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.NORMAL);
-            }
-        }
     }
 
     @Override

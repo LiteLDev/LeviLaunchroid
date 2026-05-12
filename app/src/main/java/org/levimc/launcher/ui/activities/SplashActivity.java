@@ -25,6 +25,9 @@ import java.util.Locale;
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends BaseActivity {
 
+    @Override
+    protected boolean shouldSkipNavBar() { return true; }
+
     private ActivitySplashBinding binding;
     private boolean navigated = false;
     private ValueAnimator orbitAnimator;

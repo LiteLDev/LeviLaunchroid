@@ -98,11 +98,7 @@ public class SettingsActivity extends BaseActivity {
         settingsRecyclerView.post(() -> DynamicAnim.staggerRecyclerChildren(settingsRecyclerView));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        refreshNavAccountUI();
-    }
+
 
     private void handleUpdateButtonClick() {
         long currentTime = System.currentTimeMillis();
@@ -221,44 +217,10 @@ public class SettingsActivity extends BaseActivity {
         });
     }
 
-    private void refreshNavAccountUI() {
-        java.util.List<MsftAccountStore.MsftAccount> list = MsftAccountStore.list(this);
-        MsftAccountStore.MsftAccount active = null;
-        for (MsftAccountStore.MsftAccount a : list) if (a.active) { active = a; break; }
-        View signIn = findViewById(R.id.nav_sign_in_button);
-        View avatarContainer = findViewById(R.id.nav_account_avatar_container);
-        if (active == null) {
-            if (signIn != null) signIn.setVisibility(View.VISIBLE);
-            if (avatarContainer != null) avatarContainer.setVisibility(View.GONE);
-        } else {
-            if (signIn != null) signIn.setVisibility(View.GONE);
-            if (avatarContainer != null) avatarContainer.setVisibility(View.VISIBLE);
-        }
-    }
+
 
     private void setupNavBar() {
-        refreshNavAccountUI();
-
-        int[] tabIds = {
-            R.id.nav_tab_launch, R.id.nav_tab_import, R.id.nav_tab_instances,
-            R.id.nav_tab_about, R.id.nav_tab_settings
-        };
-        for (int id : tabIds) {
-            TextView tab = findViewById(id);
-            if (tab == null) continue;
-            if (id == R.id.nav_tab_settings) {
-                tab.setTextColor(getResources().getColor(R.color.on_surface, getTheme()));
-                tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.BOLD);
-            } else {
-                tab.setTextColor(getResources().getColor(R.color.text_secondary, getTheme()));
-                tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.NORMAL);
-            }
-        }
-
-        findViewById(R.id.nav_tab_launch).setOnClickListener(v -> finish());
-        findViewById(R.id.nav_tab_import).setOnClickListener(v -> {});
-        findViewById(R.id.nav_tab_instances).setOnClickListener(v -> {});
-        findViewById(R.id.nav_tab_about).setOnClickListener(v -> {});
+        setActiveNavTab(R.id.nav_tab_settings);
         findViewById(R.id.nav_tab_settings).setOnClickListener(v -> {});
     }
 }
