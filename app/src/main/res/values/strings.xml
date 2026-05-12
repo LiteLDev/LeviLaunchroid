@@ -534,4 +534,11 @@
     <string name="mascot_message_rejected">you pervert</string>
     <string name="mascot_message_approve">Fine, go ahead~!</string>
 
+    <!-- Navigation Bar -->
+    <string name="nav_launch">Launch</string>
+    <string name="nav_import">Import</string>
+    <string name="nav_instances">Instances</string>
+    <string name="nav_about">About</string>
+    <string name="nav_settings">Settings</string>
+
 </resources>

@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -31,6 +30,7 @@ import org.levimc.launcher.util.GithubReleaseUpdater;
 import org.levimc.launcher.util.LanguageManager;
 import org.levimc.launcher.util.PermissionsHandler;
 import org.levimc.launcher.util.ThemeManager;
+import org.levimc.launcher.core.auth.MsftAccountStore;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -50,8 +50,7 @@ public class SettingsActivity extends BaseActivity {
 
         DynamicAnim.applyPressScaleRecursively(findViewById(android.R.id.content));
 
-        ImageButton backButton = findViewById(R.id.back_button);
-        if (backButton != null) backButton.setOnClickListener(v -> finish());
+        setupNavBar();
 
         settingsRecyclerView = findViewById(R.id.settings_recycler);
         settingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -97,6 +96,12 @@ public class SettingsActivity extends BaseActivity {
         }));
 
         settingsRecyclerView.post(() -> DynamicAnim.staggerRecyclerChildren(settingsRecyclerView));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshNavAccountUI();
     }
 
     private void handleUpdateButtonClick() {
@@ -214,5 +219,51 @@ public class SettingsActivity extends BaseActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    private void refreshNavAccountUI() {
+        java.util.List<MsftAccountStore.MsftAccount> list = MsftAccountStore.list(this);
+        MsftAccountStore.MsftAccount active = null;
+        for (MsftAccountStore.MsftAccount a : list) if (a.active) { active = a; break; }
+        View signIn = findViewById(R.id.nav_sign_in_button);
+        View avatarContainer = findViewById(R.id.nav_account_avatar_container);
+        if (active == null) {
+            if (signIn != null) signIn.setVisibility(View.VISIBLE);
+            if (avatarContainer != null) avatarContainer.setVisibility(View.GONE);
+        } else {
+            if (signIn != null) signIn.setVisibility(View.GONE);
+            if (avatarContainer != null) avatarContainer.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setupNavBar() {
+        refreshNavAccountUI();
+        View backButton = findViewById(R.id.nav_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> finish());
+            DynamicAnim.applyPressScale(backButton);
+        }
+
+        int[] tabIds = {
+            R.id.nav_tab_launch, R.id.nav_tab_import, R.id.nav_tab_instances,
+            R.id.nav_tab_about, R.id.nav_tab_settings
+        };
+        for (int id : tabIds) {
+            TextView tab = findViewById(id);
+            if (tab == null) continue;
+            if (id == R.id.nav_tab_settings) {
+                tab.setTextColor(getResources().getColor(R.color.on_surface, getTheme()));
+                tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.BOLD);
+            } else {
+                tab.setTextColor(getResources().getColor(R.color.text_secondary, getTheme()));
+                tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.NORMAL);
+            }
+        }
+
+        findViewById(R.id.nav_tab_launch).setOnClickListener(v -> finish());
+        findViewById(R.id.nav_tab_import).setOnClickListener(v -> {});
+        findViewById(R.id.nav_tab_instances).setOnClickListener(v -> {});
+        findViewById(R.id.nav_tab_about).setOnClickListener(v -> {});
+        findViewById(R.id.nav_tab_settings).setOnClickListener(v -> {});
     }
 }

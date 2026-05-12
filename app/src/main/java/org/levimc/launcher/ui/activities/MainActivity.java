@@ -34,7 +34,7 @@ import org.levimc.launcher.core.versions.VersionManager;
 import org.levimc.launcher.databinding.ActivityMainBinding;
 import org.levimc.launcher.settings.FeatureSettings;
 import org.levimc.launcher.ui.adapter.QuickActionsAdapter;
-import org.levimc.launcher.ui.animation.AnimationHelper;
+
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
 import org.levimc.launcher.ui.dialogs.GameVersionSelectDialog;
@@ -105,18 +105,15 @@ import okhttp3.OkHttpClient;
     private OnBackPressedCallback onBackPressedCallback;
     private MascotEasterEggOverlay mascotOverlay;
     private GestureDetector mascotGestureDetector;
+    private Class<?> lastNavigatedActivity = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        applyHeaderAppNameGradient();
-        updateBetaBadge();
-        updateDebugBadge();
+        setupNavBar();
         setupManagersAndHandlers();
-        AnimationHelper.prepareInitialStates(binding);
-        AnimationHelper.runInitializationSequence(binding);
         setTextMinecraftVersion();
         updateViewModelVersion();
         checkResourcepack();
@@ -175,10 +172,10 @@ import okhttp3.OkHttpClient;
 
 
     private void initAccountHeader() {
-        signInButton = binding.signInButton;
-        accountAvatar = binding.accountAvatar;
-        accountAvatarContainer = binding.accountAvatarContainer;
-        avatarProgress = binding.avatarProgress;
+        signInButton = findViewById(R.id.nav_sign_in_button);
+        accountAvatar = findViewById(R.id.nav_account_avatar);
+        accountAvatarContainer = findViewById(R.id.nav_account_avatar_container);
+        avatarProgress = findViewById(R.id.nav_avatar_progress);
 
         if (signInButton != null) {
             signInButton.setOnClickListener(v -> {
@@ -570,8 +567,7 @@ import okhttp3.OkHttpClient;
         updateAbiLabel();
         updateGenuineBadge();
         refreshAccountHeaderUI();
-        updateBetaBadge();
-        updateDebugBadge();
+        updateNavBackButton();
         viewModel.refreshMods();
     }
 
@@ -601,21 +597,7 @@ import okhttp3.OkHttpClient;
         binding.genuineLabel.setVisibility(verified ? View.GONE : View.VISIBLE);
     }
 
-    private void updateBetaBadge() {
-        if (binding == null) return;
-        View beta = binding.betaLabel;
-        if (beta != null) {
-            beta.setVisibility(org.levimc.launcher.BuildConfig.IS_BETA ? View.VISIBLE : View.GONE);
-        }
-    }
 
-    private void updateDebugBadge() {
-        if (binding == null) return;
-        View debug = binding.debugLabel;
-        if (debug != null) {
-            debug.setVisibility(org.levimc.launcher.BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -632,11 +614,7 @@ import okhttp3.OkHttpClient;
         binding.selectVersionButton.setOnClickListener(v -> showVersionSelectDialog());
         DynamicAnim.applyPressScale(binding.selectVersionButton);
 
-        binding.settingsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-        });
-        DynamicAnim.applyPressScale(binding.settingsButton);
+
         binding.deleteVersionButton.setOnClickListener(v -> showDeleteVersionDialog());
         DynamicAnim.applyPressScale(binding.deleteVersionButton);
 
@@ -706,11 +684,6 @@ import okhttp3.OkHttpClient;
                 1
         ));
         items.add(new QuickActionsAdapter.QuickActionItem(
-                R.string.import_apk,
-                R.drawable.ic_qa_import,
-                2
-        ));
-        items.add(new QuickActionsAdapter.QuickActionItem(
                 R.string.microsoft_accounts,
                 R.drawable.ic_qa_account,
                 3
@@ -726,7 +699,6 @@ import okhttp3.OkHttpClient;
         adapter.setOnActionClickListener(actionId -> {
             switch (actionId) {
                 case 1 -> openContentManagement();
-                case 2 -> startApkFilePicker();
                 case 3 -> {
                     Intent intent = new Intent(this, AccountsActivity.class);
                     startActivity(intent);
@@ -981,23 +953,50 @@ import okhttp3.OkHttpClient;
         }
     }
 
-    private void applyHeaderAppNameGradient() {
-        TextView appNameView = binding.headerAppName;
-        if (appNameView == null) return;
-        appNameView.post(() -> {
-            String text = appNameView.getText().toString();
-            float textWidth = appNameView.getPaint().measureText(text);
-            int green = Color.parseColor("#2ECC71");
-            int cyan = Color.parseColor("#00D9FF");
-            Shader shader = new LinearGradient(
-                0, 0, Math.max(1f, textWidth), 0,
-                new int[]{green, cyan},
-                new float[]{0f, 1f},
-                Shader.TileMode.CLAMP
-            );
-            appNameView.getPaint().setShader(shader);
-            appNameView.invalidate();
+    private void setupNavBar() {
+        View backButton = findViewById(R.id.nav_back_button);
+        if (backButton != null) {
+            DynamicAnim.applyPressScale(backButton);
+        }
+
+        setActiveNavTab(R.id.nav_tab_launch);
+
+        findViewById(R.id.nav_tab_launch).setOnClickListener(v -> {});
+        findViewById(R.id.nav_tab_import).setOnClickListener(v -> startApkFilePicker());
+        findViewById(R.id.nav_tab_instances).setOnClickListener(v -> showVersionSelectDialog());
+        findViewById(R.id.nav_tab_about).setOnClickListener(v -> {});
+        findViewById(R.id.nav_tab_settings).setOnClickListener(v -> {
+            lastNavigatedActivity = SettingsActivity.class;
+            startActivity(new Intent(this, SettingsActivity.class));
         });
+    }
+
+    private void updateNavBackButton() {
+        View backButton = findViewById(R.id.nav_back_button);
+        if (backButton == null) return;
+        if (lastNavigatedActivity != null) {
+            backButton.setOnClickListener(v -> startActivity(new Intent(this, lastNavigatedActivity)));
+        } else {
+            backButton.setOnClickListener(v -> {});
+        }
+    }
+
+    private void setActiveNavTab(int activeTabId) {
+        int[] tabIds = {
+            R.id.nav_tab_launch, R.id.nav_tab_import, R.id.nav_tab_instances,
+            R.id.nav_tab_about, R.id.nav_tab_settings
+        };
+        for (int id : tabIds) {
+            TextView tab = findViewById(id);
+            if (tab == null) continue;
+            if (id == activeTabId) {
+                tab.setTextColor(getResources().getColor(R.color.on_surface, getTheme()));
+                tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.BOLD);
+            } else {
+                tab.setTextColor(getResources().getColor(R.color.text_secondary, getTheme()));
+                tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.NORMAL);
+            }
+        }
     }
 
     @Override
