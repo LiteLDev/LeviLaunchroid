@@ -6,19 +6,18 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.lifecycle.ViewModelProvider;
 
-import androidx.dynamicanimation.animation.SpringAnimation;
-import androidx.dynamicanimation.animation.SpringForce;
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.minecraft.MinecraftLauncher;
 import org.levimc.launcher.core.mods.FileHandler;
@@ -32,10 +31,7 @@ import org.levimc.launcher.ui.adapter.QuickActionsAdapter;
 
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
-import org.levimc.launcher.ui.dialogs.GameVersionSelectDialog;
 import org.levimc.launcher.ui.dialogs.PlayStoreValidationDialog;
-import org.levimc.launcher.ui.dialogs.gameversionselect.BigGroup;
-import org.levimc.launcher.ui.dialogs.gameversionselect.VersionUtil;
 import org.levimc.launcher.ui.views.MainViewModel;
 import org.levimc.launcher.ui.views.MainViewModelFactory;
 import org.levimc.launcher.util.ApkImportManager;
@@ -660,10 +656,10 @@ import okhttp3.OkHttpClient;
         startActivity(intent);
     }
 
+
     private void launchGame() {
         performActualLaunch();
     }
-
     private void performActualLaunch() {
         binding.launchButton.setEnabled(false);
 
@@ -703,7 +699,7 @@ import okhttp3.OkHttpClient;
                     .setMessage(getString(R.string.dialog_message_version_isolation))
                     .setPositiveButton(getString(R.string.dialog_positive_enable), v -> {
                         FeatureSettings.getInstance().setVersionIsolationEnabled(true);
-                        launchGame();
+                        performActualLaunch();
                     })
                     .setNegativeButton(getString(R.string.dialog_negative_cancel), null)
                     .show();
@@ -735,45 +731,129 @@ import okhttp3.OkHttpClient;
         }).start();
     }
 
-    private boolean animateLaunchButton(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            SpringAnimation sx = new SpringAnimation(v, SpringAnimation.SCALE_X, 0.95f);
-            SpringAnimation sy = new SpringAnimation(v, SpringAnimation.SCALE_Y, 0.95f);
-            SpringForce spring = new SpringForce(0.95f)
-                    .setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
-                    .setStiffness(SpringForce.STIFFNESS_MEDIUM);
-            sx.setSpring(spring);
-            sy.setSpring(spring);
-            sx.start();
-            sy.start();
-        } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-            SpringAnimation sx = new SpringAnimation(v, SpringAnimation.SCALE_X, 1f);
-            SpringAnimation sy = new SpringAnimation(v, SpringAnimation.SCALE_Y, 1f);
-            SpringForce spring = new SpringForce(1f)
-                    .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
-                    .setStiffness(SpringForce.STIFFNESS_LOW);
-            sx.setSpring(spring);
-            sy.setSpring(spring);
-            sx.start();
-            sy.start();
-        }
-        return false;
-    }
-
-    private void showVersionSelectDialog() {
+     private void showVersionSelectDialog() {
         if (versionManager == null) return;
         versionManager.loadAllVersions();
-        List<BigGroup> bigGroups = VersionUtil.buildBigGroups(
-                versionManager.getInstalledVersions(),
-                versionManager.getCustomVersions()
-        );
-        GameVersionSelectDialog dialog = new GameVersionSelectDialog(this, bigGroups);
-        dialog.setOnVersionSelectListener(version -> {
+
+        List<GameVersion> allVersions = new ArrayList<>();
+        List<GameVersion> installed = versionManager.getInstalledVersions();
+        List<GameVersion> custom = versionManager.getCustomVersions();
+        if (installed != null) allVersions.addAll(installed);
+        if (custom != null) allVersions.addAll(custom);
+
+        View popupView = LayoutInflater.from(this).inflate(R.layout.popup_instance_selector, null);
+        PopupWindow popup = new PopupWindow(popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true);
+        popup.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        popup.setElevation(16f);
+        popup.setOutsideTouchable(true);
+
+        RecyclerView recycler = popupView.findViewById(R.id.recycler_instances);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+
+        GameVersion selectedVersion = versionManager.getSelectedVersion();
+        InstancePopupAdapter adapter = new InstancePopupAdapter(allVersions, selectedVersion);
+        recycler.setAdapter(adapter);
+
+        android.widget.EditText searchInput = popupView.findViewById(R.id.search_input);
+        searchInput.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.filter(s.toString());
+            }
+            @Override public void afterTextChanged(android.text.Editable s) {}
+        });
+
+        adapter.setOnItemClickListener(version -> {
             versionManager.selectVersion(version);
             viewModel.setCurrentVersion(version);
             setTextMinecraftVersion();
+            popup.dismiss();
         });
-        dialog.show();
+
+        popupView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        int popupWidth = popupView.getMeasuredWidth();
+        int anchorWidth = binding.selectVersionButton.getWidth();
+        int xOffset = anchorWidth - popupWidth;
+        popup.showAsDropDown(binding.selectVersionButton, xOffset, 4);
+    }
+
+    private static class InstancePopupAdapter extends RecyclerView.Adapter<InstancePopupAdapter.VH> {
+        private final List<GameVersion> allVersions;
+        private List<GameVersion> filteredVersions;
+        private final GameVersion selectedVersion;
+        private OnItemClickListener listener;
+
+        interface OnItemClickListener {
+            void onClick(GameVersion version);
+        }
+
+        void setOnItemClickListener(OnItemClickListener l) { this.listener = l; }
+
+        InstancePopupAdapter(List<GameVersion> versions, GameVersion selected) {
+            this.allVersions = versions;
+            this.filteredVersions = new ArrayList<>(versions);
+            this.selectedVersion = selected;
+        }
+
+        void filter(String query) {
+            if (query == null || query.isEmpty()) {
+                filteredVersions = new ArrayList<>(allVersions);
+            } else {
+                String q = query.toLowerCase();
+                filteredVersions = new ArrayList<>();
+                for (GameVersion v : allVersions) {
+                    String name = v.displayName != null ? v.displayName.toLowerCase() : "";
+                    String code = v.versionCode != null ? v.versionCode.toLowerCase() : "";
+                    String dir = v.directoryName != null ? v.directoryName.toLowerCase() : "";
+                    if (name.contains(q) || code.contains(q) || dir.contains(q)) {
+                        filteredVersions.add(v);
+                    }
+                }
+            }
+            notifyDataSetChanged();
+        }
+
+        @NonNull @Override
+        public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_instance_popup, parent, false);
+            return new VH(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull VH holder, int position) {
+            GameVersion v = filteredVersions.get(position);
+            boolean isSelected = selectedVersion != null
+                    && selectedVersion.directoryName != null
+                    && selectedVersion.directoryName.equals(v.directoryName);
+
+            holder.name.setText(v.versionCode != null ? v.versionCode : v.directoryName);
+            holder.version.setText(v.versionCode != null ? v.versionCode : "");
+            holder.itemView.setActivated(isSelected);
+            holder.check.setVisibility(isSelected ? View.VISIBLE : View.GONE);
+            holder.tag.setVisibility(View.GONE);
+
+            holder.itemView.setOnClickListener(_v -> {
+                if (listener != null) listener.onClick(v);
+            });
+        }
+
+        @Override public int getItemCount() { return filteredVersions.size(); }
+
+        static class VH extends RecyclerView.ViewHolder {
+            TextView name, version, tag;
+            View check;
+            VH(View v) {
+                super(v);
+                name = v.findViewById(R.id.instance_name);
+                version = v.findViewById(R.id.instance_version);
+                tag = v.findViewById(R.id.instance_tag);
+                check = v.findViewById(R.id.instance_check);
+            }
+        }
     }
 
     private void startFilePicker(String type, ActivityResultLauncher<Intent> launcher) {
@@ -802,33 +882,8 @@ import okhttp3.OkHttpClient;
         startActivity(intent);
     }
 
-    private void showDeleteVersionDialog() {
-        new CustomAlertDialog(this)
-                .setTitleText(getString(R.string.dialog_title_delete_version))
-                .setMessage(getString(R.string.dialog_message_delete_version))
-                .setUseBorderedBackground(true)
-                .setBlurBackground(true)
-                .setPositiveButton(getString(R.string.dialog_positive_delete), v2 -> {
-                    VersionManager.get(this).deleteCustomVersion(versionManager.getSelectedVersion(), new VersionManager.OnDeleteVersionCallback() {
-                        @Override
-                        public void onDeleteCompleted(boolean success) {
-                            runOnUiThread(() -> {
-                                Toast.makeText(MainActivity.this, getString(R.string.toast_delete_success), Toast.LENGTH_SHORT).show();
-                                viewModel.setCurrentVersion(versionManager.getSelectedVersion());
-                                setTextMinecraftVersion();
-                            });
-                        }
 
-                        @Override
-                        public void onDeleteFailed(Exception e) {
-                            runOnUiThread(() -> Toast.makeText(MainActivity.this, getString(R.string.toast_delete_failed, e.getMessage()), Toast.LENGTH_SHORT).show());
-                        }
-                    });
-                })
-                .setNegativeButton(getString(R.string.dialog_negative_cancel), null)
-                .show();
-    }
-    public void setTextMinecraftVersion() {
+     public void setTextMinecraftVersion() {
         if (binding == null) return;
         String version = versionManager.getSelectedVersion() != null ? versionManager.getSelectedVersion().versionCode : null;
         binding.textMinecraftVersion.setText(TextUtils.isEmpty(version) ? getString(R.string.not_found_version) : version);
