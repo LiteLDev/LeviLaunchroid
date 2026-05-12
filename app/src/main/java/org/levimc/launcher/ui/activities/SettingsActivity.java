@@ -238,11 +238,6 @@ public class SettingsActivity extends BaseActivity {
 
     private void setupNavBar() {
         refreshNavAccountUI();
-        View backButton = findViewById(R.id.nav_back_button);
-        if (backButton != null) {
-            backButton.setOnClickListener(v -> finish());
-            DynamicAnim.applyPressScale(backButton);
-        }
 
         int[] tabIds = {
             R.id.nav_tab_launch, R.id.nav_tab_import, R.id.nav_tab_instances,

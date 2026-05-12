@@ -105,7 +105,7 @@ import okhttp3.OkHttpClient;
     private OnBackPressedCallback onBackPressedCallback;
     private MascotEasterEggOverlay mascotOverlay;
     private GestureDetector mascotGestureDetector;
-    private Class<?> lastNavigatedActivity = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -567,7 +567,7 @@ import okhttp3.OkHttpClient;
         updateAbiLabel();
         updateGenuineBadge();
         refreshAccountHeaderUI();
-        updateNavBackButton();
+
         viewModel.refreshMods();
     }
 
@@ -954,11 +954,6 @@ import okhttp3.OkHttpClient;
     }
 
     private void setupNavBar() {
-        View backButton = findViewById(R.id.nav_back_button);
-        if (backButton != null) {
-            DynamicAnim.applyPressScale(backButton);
-        }
-
         setActiveNavTab(R.id.nav_tab_launch);
 
         findViewById(R.id.nav_tab_launch).setOnClickListener(v -> {});
@@ -966,20 +961,11 @@ import okhttp3.OkHttpClient;
         findViewById(R.id.nav_tab_instances).setOnClickListener(v -> showVersionSelectDialog());
         findViewById(R.id.nav_tab_about).setOnClickListener(v -> {});
         findViewById(R.id.nav_tab_settings).setOnClickListener(v -> {
-            lastNavigatedActivity = SettingsActivity.class;
             startActivity(new Intent(this, SettingsActivity.class));
         });
     }
 
-    private void updateNavBackButton() {
-        View backButton = findViewById(R.id.nav_back_button);
-        if (backButton == null) return;
-        if (lastNavigatedActivity != null) {
-            backButton.setOnClickListener(v -> startActivity(new Intent(this, lastNavigatedActivity)));
-        } else {
-            backButton.setOnClickListener(v -> {});
-        }
-    }
+
 
     private void setActiveNavTab(int activeTabId) {
         int[] tabIds = {
