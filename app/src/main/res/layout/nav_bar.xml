@@ -63,6 +63,8 @@
                     android:textColor="@color/on_surface"
                     android:textSize="13sp"
                     android:textStyle="bold"
+                    android:drawableStart="@drawable/ic_nav_launch"
+                    android:drawablePadding="5dp"
                     android:background="?attr/selectableItemBackground" />
 
                 <TextView
@@ -75,6 +77,8 @@
                     android:text="@string/nav_instances"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp"
+                    android:drawableStart="@drawable/ic_nav_instances"
+                    android:drawablePadding="5dp"
                     android:background="?attr/selectableItemBackground" />
 
                 <TextView
@@ -87,6 +91,8 @@
                     android:text="@string/nav_about"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp"
+                    android:drawableStart="@drawable/ic_nav_about"
+                    android:drawablePadding="5dp"
                     android:background="?attr/selectableItemBackground" />
 
                 <TextView
@@ -99,6 +105,8 @@
                     android:text="@string/nav_settings"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp"
+                    android:drawableStart="@drawable/ic_nav_settings"
+                    android:drawablePadding="5dp"
                     android:background="?attr/selectableItemBackground" />
 
             </LinearLayout>

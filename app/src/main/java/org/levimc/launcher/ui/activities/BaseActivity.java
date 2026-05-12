@@ -3,6 +3,7 @@ package org.levimc.launcher.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.TextViewCompat;
 
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.auth.MsftAccountStore;
@@ -85,9 +87,17 @@ public class BaseActivity extends AppCompatActivity {
         contentView.setLayoutParams(contentParams);
         wrapper.addView(contentView);
 
+        contentView.setAlpha(0f);
+        contentView.setTranslationY(8f * getResources().getDisplayMetrics().density);
+
         super.setContentView(wrapper);
         navBarInjected = true;
         setupBaseNavBar();
+
+        contentView.post(() -> {
+            DynamicAnim.springAlphaTo(contentView, 1f).start();
+            DynamicAnim.springTranslationYTo(contentView, 0f).start();
+        });
     }
 
     protected boolean shouldSkipNavBar() {
@@ -102,8 +112,10 @@ public class BaseActivity extends AppCompatActivity {
         for (int id : tabIds) {
             TextView tab = findViewById(id);
             if (tab == null) continue;
-            tab.setTextColor(getResources().getColor(R.color.text_secondary, getTheme()));
+            int color = getResources().getColor(R.color.text_secondary, getTheme());
+            tab.setTextColor(color);
             tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.NORMAL);
+            TextViewCompat.setCompoundDrawableTintList(tab, ColorStateList.valueOf(color));
         }
 
         findViewById(R.id.nav_tab_launch).setOnClickListener(v -> {
@@ -161,13 +173,17 @@ public class BaseActivity extends AppCompatActivity {
         for (int id : tabIds) {
             TextView tab = findViewById(id);
             if (tab == null) continue;
+            int color;
             if (id == activeTabId) {
-                tab.setTextColor(getResources().getColor(R.color.on_surface, getTheme()));
+                color = getResources().getColor(R.color.on_surface, getTheme());
+                tab.setTextColor(color);
                 tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.BOLD);
             } else {
-                tab.setTextColor(getResources().getColor(R.color.text_secondary, getTheme()));
+                color = getResources().getColor(R.color.text_secondary, getTheme());
+                tab.setTextColor(color);
                 tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.NORMAL);
             }
+            TextViewCompat.setCompoundDrawableTintList(tab, ColorStateList.valueOf(color));
         }
     }
 
