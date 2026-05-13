@@ -2,15 +2,26 @@ package org.levimc.launcher.ui.activities;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.GridLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -24,12 +35,14 @@ import org.levimc.launcher.ui.dialogs.LogcatOverlayManager;
 import org.levimc.launcher.util.GithubReleaseUpdater;
 import org.levimc.launcher.util.LanguageManager;
 import org.levimc.launcher.util.PermissionsHandler;
+import org.levimc.launcher.util.PersonalizationManager;
 import org.levimc.launcher.util.ThemeManager;
 
 public class SettingsActivity extends BaseActivity {
 
     private PermissionsHandler permissionsHandler;
     private ActivityResultLauncher<Intent> permissionResultLauncher;
+    private ActivityResultLauncher<Intent> bgImagePickerLauncher;
     private int updateButtonTapCount = 0;
     private long lastUpdateButtonTapTime = 0;
     private static final int EASTER_EGG_TAP_COUNT = 3;
@@ -45,6 +58,12 @@ public class SettingsActivity extends BaseActivity {
     private View sectionUpdates;
     private View sectionAbout;
 
+    private PersonalizationManager personalizationManager;
+    private LinearLayout colorGridContainer;
+    private LinearLayout moreColorsContainer;
+    private TextView bgImageStatus;
+    private ImageView bgImagePreview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +72,8 @@ public class SettingsActivity extends BaseActivity {
         DynamicAnim.applyPressScaleRecursively(findViewById(android.R.id.content));
 
         setupNavBar();
+
+        personalizationManager = new PersonalizationManager(this);
 
         permissionsHandler = PermissionsHandler.getInstance();
         permissionResultLauncher = registerForActivityResult(
@@ -64,6 +85,20 @@ public class SettingsActivity extends BaseActivity {
                 }
         );
         permissionsHandler.setActivity(this, permissionResultLauncher);
+
+        bgImagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri uri = result.getData().getData();
+                        if (uri != null) {
+                            personalizationManager.setBackgroundImage(uri, this);
+                            updateBgImageUI();
+                            recreate();
+                        }
+                    }
+                }
+        );
 
         initTabs();
         setupBasicSection();
@@ -95,11 +130,27 @@ public class SettingsActivity extends BaseActivity {
         TextView[] tabs = {tabBasic, tabPersonalize, tabUpdates, tabAbout};
         View[] sections = {sectionBasic, sectionPersonalize, sectionUpdates, sectionAbout};
 
+        int accent = personalizationManager.getAccentColor();
+
         for (int i = 0; i < tabs.length; i++) {
             boolean isSelected = tabs[i] == selectedTab;
-            tabs[i].setBackgroundResource(isSelected ? R.drawable.bg_tab_selected : R.drawable.bg_tab_unselected);
-            tabs[i].setTextColor(getColor(isSelected ? R.color.on_primary : R.color.text_secondary));
-            if (isSelected) tabs[i].setTextSize(13);
+
+            if (isSelected) {
+                if (accent != 0) {
+                    android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+                    gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+                    gd.setColor(accent);
+                    gd.setCornerRadius(16 * getResources().getDisplayMetrics().density);
+                    tabs[i].setBackground(gd);
+                } else {
+                    tabs[i].setBackgroundResource(R.drawable.bg_tab_selected);
+                }
+                tabs[i].setTextColor(Color.WHITE);
+                tabs[i].setTextSize(13);
+            } else {
+                tabs[i].setBackgroundResource(R.drawable.bg_tab_unselected);
+                tabs[i].setTextColor(getColor(R.color.text_secondary));
+            }
 
             if (isSelected) {
                 sections[i].setVisibility(View.VISIBLE);
@@ -199,6 +250,241 @@ public class SettingsActivity extends BaseActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        setupColorPicker();
+        setupBackgroundImagePicker();
+        setupBaseMode();
+    }
+
+    private void setupColorPicker() {
+        colorGridContainer = findViewById(R.id.color_preset_grid);
+        moreColorsContainer = findViewById(R.id.color_more_grid);
+
+        if (colorGridContainer == null || moreColorsContainer == null) return;
+
+        int currentAccent = personalizationManager.getAccentColor();
+
+        buildColorGrid(colorGridContainer, PersonalizationManager.PRESET_COLORS, currentAccent);
+        buildColorGrid(moreColorsContainer, PersonalizationManager.MORE_COLORS, currentAccent);
+    }
+
+    private void buildColorGrid(LinearLayout container, int[] colors, int selectedColor) {
+        container.removeAllViews();
+
+        float density = getResources().getDisplayMetrics().density;
+        int circleSize = (int) (32 * density);
+        int margin = (int) (4 * density);
+        int checkSize = (int) (14 * density);
+
+        int columns = 15;
+        int index = 0;
+        while (index < colors.length) {
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            row.setLayoutParams(new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            for (int col = 0; col < columns && index < colors.length; col++, index++) {
+                int color = colors[index];
+
+                FrameLayout wrapper = new FrameLayout(this);
+                LinearLayout.LayoutParams wrapParams = new LinearLayout.LayoutParams(circleSize, circleSize);
+                wrapParams.setMargins(margin, margin, margin, margin);
+                wrapper.setLayoutParams(wrapParams);
+
+                View circle = new View(this);
+                circle.setLayoutParams(new FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+                GradientDrawable circleDrawable = new GradientDrawable();
+                circleDrawable.setShape(GradientDrawable.OVAL);
+                circleDrawable.setColor(color);
+                if (color == selectedColor) {
+                    circleDrawable.setStroke((int) (2 * density), Color.WHITE);
+                }
+                circle.setBackground(circleDrawable);
+                wrapper.addView(circle);
+
+                if (color == selectedColor) {
+                    ImageView check = new ImageView(this);
+                    FrameLayout.LayoutParams checkParams = new FrameLayout.LayoutParams(checkSize, checkSize);
+                    checkParams.gravity = Gravity.CENTER;
+                    check.setLayoutParams(checkParams);
+                    check.setImageResource(R.drawable.ic_check);
+                    check.setColorFilter(Color.WHITE);
+                    wrapper.addView(check);
+                }
+
+                wrapper.setClickable(true);
+                wrapper.setFocusable(true);
+                final int finalColor = color;
+                wrapper.setOnClickListener(v -> {
+                    personalizationManager.setAccentColor(finalColor);
+                    recreate();
+                });
+                DynamicAnim.applyPressScale(wrapper);
+
+                row.addView(wrapper);
+            }
+
+            container.addView(row);
+        }
+
+        if (selectedColor != 0) {
+            LinearLayout resetRow = new LinearLayout(this);
+            resetRow.setOrientation(LinearLayout.HORIZONTAL);
+            resetRow.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+            LinearLayout.LayoutParams resetRowParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            resetRowParams.topMargin = (int) (8 * density);
+            resetRow.setLayoutParams(resetRowParams);
+
+            boolean alreadyHasReset = container.getTag() != null && container.getTag().equals("has_reset");
+            if (!alreadyHasReset && container == moreColorsContainer) {
+                FrameLayout resetWrapper = new FrameLayout(this);
+                LinearLayout.LayoutParams rwParams = new LinearLayout.LayoutParams(circleSize, circleSize);
+                rwParams.setMargins(margin, margin, margin, margin);
+                resetWrapper.setLayoutParams(rwParams);
+
+                View resetCircle = new View(this);
+                resetCircle.setLayoutParams(new FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+                GradientDrawable resetDrawable = new GradientDrawable();
+                resetDrawable.setShape(GradientDrawable.OVAL);
+                boolean isDark = (getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
+                        == android.content.res.Configuration.UI_MODE_NIGHT_YES;
+                resetDrawable.setColor(isDark ? Color.argb(80, 255, 255, 255) : Color.argb(80, 0, 0, 0));
+                resetDrawable.setStroke((int) (1 * density), isDark ? Color.argb(100, 255, 255, 255) : Color.argb(100, 0, 0, 0));
+                resetCircle.setBackground(resetDrawable);
+                resetWrapper.addView(resetCircle);
+
+                ImageView resetIcon = new ImageView(this);
+                FrameLayout.LayoutParams riParams = new FrameLayout.LayoutParams(checkSize, checkSize);
+                riParams.gravity = Gravity.CENTER;
+                resetIcon.setLayoutParams(riParams);
+                resetIcon.setImageResource(R.drawable.ic_close);
+                resetIcon.setColorFilter(isDark ? Color.WHITE : Color.BLACK);
+                resetWrapper.addView(resetIcon);
+
+                resetWrapper.setClickable(true);
+                resetWrapper.setFocusable(true);
+                resetWrapper.setOnClickListener(v -> {
+                    personalizationManager.clearAccentColor();
+                    recreate();
+                });
+                DynamicAnim.applyPressScale(resetWrapper);
+
+                resetRow.addView(resetWrapper);
+                container.addView(resetRow);
+                container.setTag("has_reset");
+            }
+        }
+    }
+
+    private void setupBackgroundImagePicker() {
+        bgImageStatus = findViewById(R.id.bg_image_status);
+        bgImagePreview = findViewById(R.id.bg_image_preview);
+        Button btnSelectImage = findViewById(R.id.btn_select_bg_image);
+        Button btnClearImage = findViewById(R.id.btn_clear_bg_image);
+
+        if (btnSelectImage == null) return;
+
+        updateBgImageUI();
+
+        btnSelectImage.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            bgImagePickerLauncher.launch(intent);
+        });
+
+        if (btnClearImage != null) {
+            btnClearImage.setOnClickListener(v -> {
+                personalizationManager.clearBackgroundImage();
+                updateBgImageUI();
+                recreate();
+            });
+        }
+    }
+
+    private void updateBgImageUI() {
+        if (bgImageStatus == null) return;
+        if (personalizationManager.hasBackgroundImage()) {
+            bgImageStatus.setText(R.string.bg_image_selected);
+            if (bgImagePreview != null) {
+                android.graphics.Bitmap bmp = personalizationManager.loadBackgroundBitmap();
+                if (bmp != null) {
+                    bgImagePreview.setImageBitmap(bmp);
+                    bgImagePreview.setVisibility(View.VISIBLE);
+                }
+            }
+            View btnClear = findViewById(R.id.btn_clear_bg_image);
+            if (btnClear != null) btnClear.setVisibility(View.VISIBLE);
+        } else {
+            bgImageStatus.setText(R.string.bg_image_none);
+            if (bgImagePreview != null) {
+                bgImagePreview.setImageDrawable(null);
+                bgImagePreview.setVisibility(View.GONE);
+            }
+            View btnClear = findViewById(R.id.btn_clear_bg_image);
+            if (btnClear != null) btnClear.setVisibility(View.GONE);
+        }
+    }
+
+    private void setupBaseMode() {
+        LinearLayout baseModeContainer = findViewById(R.id.base_mode_container);
+        if (baseModeContainer == null) return;
+
+        TextView btnNone = findViewById(R.id.base_mode_none);
+        TextView btnFollow = findViewById(R.id.base_mode_follow);
+        TextView btnCustom = findViewById(R.id.base_mode_custom);
+
+        if (btnNone == null || btnFollow == null || btnCustom == null) return;
+
+        int currentMode = personalizationManager.getBaseMode();
+        updateBaseModeButtons(btnNone, btnFollow, btnCustom, currentMode);
+
+        btnNone.setOnClickListener(v -> {
+            personalizationManager.setBaseMode(PersonalizationManager.BASE_MODE_NONE);
+            updateBaseModeButtons(btnNone, btnFollow, btnCustom, PersonalizationManager.BASE_MODE_NONE);
+        });
+        btnFollow.setOnClickListener(v -> {
+            personalizationManager.setBaseMode(PersonalizationManager.BASE_MODE_FOLLOW_THEME);
+            updateBaseModeButtons(btnNone, btnFollow, btnCustom, PersonalizationManager.BASE_MODE_FOLLOW_THEME);
+        });
+        btnCustom.setOnClickListener(v -> {
+            personalizationManager.setBaseMode(PersonalizationManager.BASE_MODE_CUSTOM);
+            updateBaseModeButtons(btnNone, btnFollow, btnCustom, PersonalizationManager.BASE_MODE_CUSTOM);
+        });
+    }
+
+    private void updateBaseModeButtons(TextView btnNone, TextView btnFollow, TextView btnCustom, int selectedMode) {
+        TextView[] buttons = {btnNone, btnFollow, btnCustom};
+        int[] modes = {PersonalizationManager.BASE_MODE_NONE, PersonalizationManager.BASE_MODE_FOLLOW_THEME, PersonalizationManager.BASE_MODE_CUSTOM};
+
+        int accent = personalizationManager.getAccentColor();
+
+        for (int i = 0; i < buttons.length; i++) {
+            boolean isSelected = modes[i] == selectedMode;
+
+            if (isSelected) {
+                if (accent != 0) {
+                    GradientDrawable gd = new GradientDrawable();
+                    gd.setShape(GradientDrawable.RECTANGLE);
+                    gd.setColor(accent);
+                    gd.setCornerRadius(16 * getResources().getDisplayMetrics().density);
+                    buttons[i].setBackground(gd);
+                } else {
+                    buttons[i].setBackgroundResource(R.drawable.bg_tab_selected);
+                }
+                buttons[i].setTextColor(Color.WHITE);
+            } else {
+                buttons[i].setBackgroundResource(R.drawable.bg_tab_unselected);
+                buttons[i].setTextColor(getColor(R.color.text_secondary));
+            }
+        }
     }
 
     private void setupUpdatesSection() {

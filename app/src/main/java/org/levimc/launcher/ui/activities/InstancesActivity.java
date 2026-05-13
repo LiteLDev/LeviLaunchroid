@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.versions.GameVersion;
+import org.levimc.launcher.util.PersonalizationManager;
 import org.levimc.launcher.core.versions.VersionManager;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.util.ApkImportManager;
@@ -154,16 +155,27 @@ public class InstancesActivity extends BaseActivity {
     }
 
     private void updateFilterUI() {
+        PersonalizationManager pm = new PersonalizationManager(this);
+        int accent = pm.getAccentColor();
         TextView[] tabs = {filterAll, filterCustom};
         for (int i = 0; i < tabs.length; i++) {
             boolean selected = (i == currentFilter);
             tabs[i].setSelected(selected);
             if (selected) {
-                tabs[i].setTextColor(getResources().getColor(R.color.on_primary, getTheme()));
+                tabs[i].setTextColor(android.graphics.Color.WHITE);
                 tabs[i].setTypeface(tabs[i].getTypeface(), android.graphics.Typeface.BOLD);
+                if (accent != 0) {
+                    android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+                    gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+                    gd.setColor(accent);
+                    gd.setCornerRadius(20 * getResources().getDisplayMetrics().density);
+                    tabs[i].setBackground(gd);
+                }
             } else {
                 tabs[i].setTextColor(getResources().getColor(R.color.on_surface, getTheme()));
                 tabs[i].setTypeface(tabs[i].getTypeface(), android.graphics.Typeface.NORMAL);
+                tabs[i].setBackgroundResource(R.drawable.bg_filter_chip);
+                tabs[i].setSelected(false);
             }
         }
     }
@@ -187,6 +199,16 @@ public class InstancesActivity extends BaseActivity {
         TextView btnImport = findViewById(R.id.btn_import_apk);
         if (btnImport == null) return;
         btnImport.setSelected(true);
+        PersonalizationManager pm = new PersonalizationManager(this);
+        int accent = pm.getAccentColor();
+        if (accent != 0) {
+            android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+            gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+            gd.setColor(accent);
+            gd.setCornerRadius(20 * getResources().getDisplayMetrics().density);
+            btnImport.setBackground(gd);
+            btnImport.setTextColor(android.graphics.Color.WHITE);
+        }
         btnImport.setOnClickListener(v -> startApkFilePicker());
     }
 
@@ -314,12 +336,29 @@ public class InstancesActivity extends BaseActivity {
                     && selectedVersion.directoryName.equals(v.directoryName);
 
             holder.itemView.setActivated(isSelected);
+            holder.itemView.setBackgroundResource(R.drawable.bg_instance_card);
+
+            PersonalizationManager pm = new PersonalizationManager(holder.itemView.getContext());
+            int accent = pm.getAccentColor();
+            if (isSelected && accent != 0) {
+                android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+                gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+                gd.setCornerRadius(12 * holder.itemView.getContext().getResources().getDisplayMetrics().density);
+                gd.setStroke((int)(2 * holder.itemView.getContext().getResources().getDisplayMetrics().density), accent);
+                boolean isDark = (holder.itemView.getContext().getResources().getConfiguration().uiMode
+                        & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
+                        == android.content.res.Configuration.UI_MODE_NIGHT_YES;
+                int surfColor = holder.itemView.getContext().getResources().getColor(R.color.surface, holder.itemView.getContext().getTheme());
+                gd.setColor(surfColor);
+                holder.itemView.setBackground(gd);
+            }
 
             holder.versionCode.setText(v.versionCode != null ? v.versionCode : v.directoryName);
 
             if (v.isInstalled) {
                 holder.typeTag.setText(R.string.tag_installed);
-                holder.typeTag.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.primary, holder.itemView.getContext().getTheme()));
+                int tagColor = accent != 0 ? accent : holder.itemView.getContext().getResources().getColor(R.color.primary, holder.itemView.getContext().getTheme());
+                holder.typeTag.setTextColor(tagColor);
                 holder.typeTag.setBackgroundResource(R.drawable.bg_release_tag);
             } else {
                 holder.typeTag.setText(R.string.tag_custom);

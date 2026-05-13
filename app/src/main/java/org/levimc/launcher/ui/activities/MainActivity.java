@@ -485,6 +485,23 @@ import okhttp3.OkHttpClient;
         binding.manageModsButton.setOnClickListener(v -> openModsFullscreen());
         DynamicAnim.applyPressScale(binding.manageModsButton);
 
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(this);
+        int accent = pm.getAccentColor();
+        if (accent != 0) {
+            binding.manageModsButton.setTextColor(accent);
+            android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+            gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+            gd.setColor(android.graphics.Color.argb(26, android.graphics.Color.red(accent), android.graphics.Color.green(accent), android.graphics.Color.blue(accent)));
+            gd.setCornerRadius(20 * getResources().getDisplayMetrics().density);
+            gd.setStroke((int)(1 * getResources().getDisplayMetrics().density),
+                    android.graphics.Color.argb(51, android.graphics.Color.red(accent), android.graphics.Color.green(accent), android.graphics.Color.blue(accent)));
+            binding.manageModsButton.setBackground(gd);
+
+            if (binding.minecraftTitleText != null) {
+                pm.applyGradientToText(binding.minecraftTitleText, accent, android.graphics.Color.WHITE);
+            }
+        }
+
         viewModel.getModsLiveData().observe(this, this::updateModsUI);
     }
 

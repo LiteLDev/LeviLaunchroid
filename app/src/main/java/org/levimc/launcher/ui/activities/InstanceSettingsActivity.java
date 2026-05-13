@@ -167,10 +167,27 @@ public class InstanceSettingsActivity extends BaseActivity {
         TextView[] tabs = {tabGeneral, tabLaunchOptions, tabManagement};
         View[] sections = {sectionGeneral, sectionLaunchOptions, sectionManagement};
 
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(this);
+        int accent = pm.getAccentColor();
+
         for (int i = 0; i < tabs.length; i++) {
             boolean isSelected = tabs[i] == selectedTab;
-            tabs[i].setBackgroundResource(isSelected ? R.drawable.bg_tab_selected : R.drawable.bg_tab_unselected);
-            tabs[i].setTextColor(getColor(isSelected ? R.color.on_primary : R.color.text_secondary));
+
+            if (isSelected) {
+                if (accent != 0) {
+                    android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+                    gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+                    gd.setColor(accent);
+                    gd.setCornerRadius(16 * getResources().getDisplayMetrics().density);
+                    tabs[i].setBackground(gd);
+                } else {
+                    tabs[i].setBackgroundResource(R.drawable.bg_tab_selected);
+                }
+                tabs[i].setTextColor(android.graphics.Color.WHITE);
+            } else {
+                tabs[i].setBackgroundResource(R.drawable.bg_tab_unselected);
+                tabs[i].setTextColor(getColor(R.color.text_secondary));
+            }
 
             if (isSelected) {
                 sections[i].setVisibility(View.VISIBLE);

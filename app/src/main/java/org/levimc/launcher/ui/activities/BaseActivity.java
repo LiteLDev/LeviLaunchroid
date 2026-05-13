@@ -20,12 +20,14 @@ import androidx.core.widget.TextViewCompat;
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.auth.MsftAccountStore;
 import org.levimc.launcher.ui.animation.DynamicAnim;
+import org.levimc.launcher.util.PersonalizationManager;
 import org.levimc.launcher.util.ThemeManager;
 
 import java.util.Locale;
 
 public class BaseActivity extends AppCompatActivity {
     private int appliedThemeGeneration = -1;
+    private int appliedPersonalizationGeneration = -1;
     private boolean navBarInjected = false;
 
     @Override
@@ -46,6 +48,7 @@ public class BaseActivity extends AppCompatActivity {
         ThemeManager themeManager = new ThemeManager(this);
         themeManager.applyTheme();
         appliedThemeGeneration = ThemeManager.getThemeChangeGeneration();
+        appliedPersonalizationGeneration = PersonalizationManager.getChangeGeneration();
         super.onCreate(savedInstanceState);
         hideSystemUI();
     }
@@ -69,6 +72,7 @@ public class BaseActivity extends AppCompatActivity {
     private void wrapWithNavBar(View contentView) {
         if (shouldSkipNavBar()) {
             super.setContentView(contentView);
+            applyPersonalization();
             return;
         }
 
@@ -94,10 +98,17 @@ public class BaseActivity extends AppCompatActivity {
         navBarInjected = true;
         setupBaseNavBar();
 
+        applyPersonalization();
+
         contentView.post(() -> {
             DynamicAnim.springAlphaTo(contentView, 1f).start();
             DynamicAnim.springTranslationYTo(contentView, 0f).start();
         });
+    }
+
+    private void applyPersonalization() {
+        PersonalizationManager pm = new PersonalizationManager(this);
+        pm.applyToActivity(this);
     }
 
     protected boolean shouldSkipNavBar() {
@@ -109,6 +120,10 @@ public class BaseActivity extends AppCompatActivity {
             R.id.nav_tab_launch, R.id.nav_tab_instances,
             R.id.nav_tab_about, R.id.nav_tab_settings
         };
+
+        PersonalizationManager pm = new PersonalizationManager(this);
+        int accent = pm.getAccentColor();
+
         for (int id : tabIds) {
             TextView tab = findViewById(id);
             if (tab == null) continue;
@@ -116,6 +131,25 @@ public class BaseActivity extends AppCompatActivity {
             tab.setTextColor(color);
             tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.NORMAL);
             TextViewCompat.setCompoundDrawableTintList(tab, ColorStateList.valueOf(color));
+        }
+
+        if (pm.hasBackgroundImage()) {
+            View navRoot = findViewById(R.id.nav_bar_root);
+            if (navRoot != null) {
+                boolean isDark = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                        == Configuration.UI_MODE_NIGHT_YES;
+                navRoot.setBackgroundColor(isDark
+                        ? android.graphics.Color.argb(90, 25, 25, 25)
+                        : android.graphics.Color.argb(110, 255, 255, 255));
+            }
+            View navDivider = findViewById(R.id.nav_divider);
+            if (navDivider != null) {
+                boolean isDark = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                        == Configuration.UI_MODE_NIGHT_YES;
+                navDivider.setBackgroundColor(isDark
+                        ? android.graphics.Color.argb(40, 255, 255, 255)
+                        : android.graphics.Color.argb(40, 0, 0, 0));
+            }
         }
 
         View backButton = findViewById(R.id.nav_back_button);
@@ -176,12 +210,16 @@ public class BaseActivity extends AppCompatActivity {
             R.id.nav_tab_launch, R.id.nav_tab_instances,
             R.id.nav_tab_about, R.id.nav_tab_settings
         };
+
+        PersonalizationManager pm = new PersonalizationManager(this);
+        int accent = pm.getAccentColor();
+
         for (int id : tabIds) {
             TextView tab = findViewById(id);
             if (tab == null) continue;
             int color;
             if (id == activeTabId) {
-                color = getResources().getColor(R.color.on_surface, getTheme());
+                color = accent != 0 ? accent : getResources().getColor(R.color.on_surface, getTheme());
                 tab.setTextColor(color);
                 tab.setTypeface(tab.getTypeface(), android.graphics.Typeface.BOLD);
             } else {
@@ -197,8 +235,10 @@ public class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         int currentGen = ThemeManager.getThemeChangeGeneration();
-        if (appliedThemeGeneration != currentGen) {
+        int currentPGen = PersonalizationManager.getChangeGeneration();
+        if (appliedThemeGeneration != currentGen || appliedPersonalizationGeneration != currentPGen) {
             appliedThemeGeneration = currentGen;
+            appliedPersonalizationGeneration = currentPGen;
             recreate();
             return;
         }

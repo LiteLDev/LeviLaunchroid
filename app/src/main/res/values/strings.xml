@@ -591,4 +591,20 @@
         <item>Long press a mod to see more options like reordering or deletion.</item>
     </string-array>
 
+    <string name="theme_color_title">Theme Color</string>
+    <string name="theme_color_desc">The primary accent color of the application</string>
+    <string name="preset_colors">PRESET COLORS</string>
+    <string name="more_colors">MORE COLORS</string>
+    <string name="bg_image_title">Background Image</string>
+    <string name="bg_image_desc">Select an image to use as background</string>
+    <string name="bg_image_none">No image selected</string>
+    <string name="bg_image_selected">Custom background active</string>
+    <string name="select_image">Select Image</string>
+    <string name="clear">Clear</string>
+    <string name="base_mode_title">Base Mode</string>
+    <string name="base_mode_desc">Add a solid color mask under the background image to enhance contrast</string>
+    <string name="base_mode_option_none">None</string>
+    <string name="base_mode_option_follow">Follow Theme Color</string>
+    <string name="base_mode_option_custom">Custom Color</string>
+
 </resources>
