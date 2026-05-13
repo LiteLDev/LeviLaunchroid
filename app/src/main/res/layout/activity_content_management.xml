@@ -53,7 +53,12 @@
             android:fontFamily="@font/misans"
             android:text="@string/import_content"
             android:textColor="@color/on_primary"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            app:icon="@drawable/ic_upload"
+            app:iconGravity="start"
+            app:iconPadding="6dp"
+            app:iconTint="@android:color/white"
+            app:cornerRadius="8dp" />
 
         <ImageButton
             android:id="@+id/edit_options_button"
