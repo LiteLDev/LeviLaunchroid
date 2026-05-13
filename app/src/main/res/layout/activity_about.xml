@@ -123,25 +123,9 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/btn_afdian"
-                        android:layout_width="wrap_content"
-                        android:layout_height="28dp"
-                        android:paddingHorizontal="14dp"
-                        android:gravity="center"
-                        android:text="@string/about_afdian"
-                        android:fontFamily="@font/misans"
-                        android:textColor="#E91E63"
-                        android:textSize="11sp"
-                        android:textStyle="bold"
-                        android:background="@drawable/bg_link_chip_pink"
-                        android:clickable="true"
-                        android:focusable="true" />
-
-                    <TextView
                         android:id="@+id/btn_patreon"
                         android:layout_width="wrap_content"
                         android:layout_height="28dp"
-                        android:layout_marginStart="8dp"
                         android:paddingHorizontal="14dp"
                         android:gravity="center"
                         android:text="@string/about_patreon"
@@ -150,6 +134,26 @@
                         android:textSize="11sp"
                         android:textStyle="bold"
                         android:background="@drawable/bg_link_chip_orange"
+                        android:drawableStart="@drawable/ic_patreon"
+                        android:drawablePadding="6dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                    <TextView
+                        android:id="@+id/btn_afdian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_marginStart="8dp"
+                        android:paddingHorizontal="14dp"
+                        android:gravity="center"
+                        android:text="@string/about_afdian"
+                        android:fontFamily="@font/misans"
+                        android:textColor="#E91E63"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/bg_link_chip_pink"
+                        android:drawableStart="@drawable/ic_afdian"
+                        android:drawablePadding="6dp"
                         android:clickable="true"
                         android:focusable="true" />
                 </LinearLayout>
@@ -177,7 +181,9 @@
                         android:fontFamily="@font/misans"
                         android:textColor="@color/on_surface"
                         android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_code"
+                        android:drawablePadding="8dp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -196,6 +202,8 @@
                             android:textColor="@color/on_surface"
                             android:textSize="11sp"
                             android:background="@drawable/bg_link_chip_blue"
+                            android:drawableStart="@drawable/ic_github"
+                            android:drawablePadding="6dp"
                             android:clickable="true"
                             android:focusable="true" />
 
@@ -211,6 +219,8 @@
                             android:textColor="@color/on_surface"
                             android:textSize="11sp"
                             android:background="@drawable/bg_link_chip_blue"
+                            android:drawableStart="@drawable/ic_github"
+                            android:drawablePadding="6dp"
                             android:clickable="true"
                             android:focusable="true" />
                     </LinearLayout>
@@ -241,7 +251,9 @@
                         android:fontFamily="@font/misans"
                         android:textColor="@color/on_surface"
                         android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_github"
+                        android:drawablePadding="8dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -269,6 +281,8 @@
                             android:textColor="@color/on_surface"
                             android:textSize="11sp"
                             android:background="@drawable/bg_link_chip_blue"
+                            android:drawableStart="@drawable/ic_github"
+                            android:drawablePadding="6dp"
                             android:clickable="true"
                             android:focusable="true" />
 
@@ -285,6 +299,8 @@
                             android:textSize="11sp"
                             android:textStyle="bold"
                             android:background="@drawable/bg_link_chip_green"
+                            android:drawableStart="@drawable/ic_star"
+                            android:drawablePadding="6dp"
                             android:clickable="true"
                             android:focusable="true" />
                     </LinearLayout>

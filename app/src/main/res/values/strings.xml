@@ -567,16 +567,16 @@
     <string name="about_author_name">DreamGuXiang</string>
     <string name="about_author_badge">Author</string>
     <string name="about_author_role">LeviLauncher Authors</string>
-    <string name="about_afdian">❤️ Afdian</string>
-    <string name="about_patreon">🅿️ Patreon</string>
-    <string name="about_source_title">⟨/⟩ Source Code &amp; Open Source</string>
+    <string name="about_afdian">Afdian</string>
+    <string name="about_patreon">Patreon</string>
+    <string name="about_source_title">Source Code &amp; Open Source</string>
     <string name="about_github_repo">GitHub · LeviLauncher</string>
     <string name="about_github_org">LiteLDev Organization</string>
     <string name="about_license_note">See LICENSE in the repository for license details.</string>
-    <string name="about_contribute_title">🔀 Contribute</string>
+    <string name="about_contribute_title">Contribute</string>
     <string name="about_contribute_desc">Contributions via Issues or Pull Requests are welcome to improve LeviLauncher.</string>
-    <string name="about_issues">🔖 Issue</string>
-    <string name="about_star_fork">⭐ Star / Fork</string>
+    <string name="about_issues">Issue</string>
+    <string name="about_star_fork">Star / Fork</string>
 
     <string-array name="launcher_tips">
         <item>If incompatible resource packs are detected, click the warning row to review them directly.</item>

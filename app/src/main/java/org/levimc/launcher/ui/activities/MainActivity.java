@@ -492,7 +492,7 @@ import okhttp3.OkHttpClient;
             android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
             gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
             gd.setColor(android.graphics.Color.argb(26, android.graphics.Color.red(accent), android.graphics.Color.green(accent), android.graphics.Color.blue(accent)));
-            gd.setCornerRadius(20 * getResources().getDisplayMetrics().density);
+            gd.setCornerRadius(5 * getResources().getDisplayMetrics().density);
             gd.setStroke((int)(1 * getResources().getDisplayMetrics().density),
                     android.graphics.Color.argb(51, android.graphics.Color.red(accent), android.graphics.Color.green(accent), android.graphics.Color.blue(accent)));
             binding.manageModsButton.setBackground(gd);
