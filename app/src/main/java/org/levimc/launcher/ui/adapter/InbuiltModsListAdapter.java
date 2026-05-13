@@ -68,6 +68,9 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
             }
         });
         DynamicAnim.applyPressScale(holder.removeButton);
+
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(context);
+        pm.applyGlassToView(holder.itemView);
     }
 
 

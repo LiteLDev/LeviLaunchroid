@@ -304,9 +304,9 @@ public class PersonalizationManager {
             Drawable bg = child.getBackground();
             if (bg instanceof ColorDrawable) {
                 int color = ((ColorDrawable) bg).getColor();
-                if (color == bgColor) {
+                if (color == bgColor || isNearBlack(color)) {
                     child.setBackgroundColor(Color.TRANSPARENT);
-                } else if (color == surfColor || color == surfVariantColor) {
+                } else if (color == surfColor || color == surfVariantColor || isNearWhite(color)) {
                     child.setBackgroundColor(glassColor);
                 }
             } else if (bg instanceof GradientDrawable) {
@@ -314,7 +314,8 @@ public class PersonalizationManager {
                 try {
                     if (gd.getColor() != null) {
                         int gdColor = gd.getColor().getDefaultColor();
-                        if (gdColor == surfColor || gdColor == bgColor || gdColor == surfVariantColor) {
+                        if (gdColor == surfColor || gdColor == bgColor || gdColor == surfVariantColor
+                                || isNearBlack(gdColor) || isNearWhite(gdColor)) {
                             GradientDrawable newGd = new GradientDrawable();
                             newGd.setCornerRadius(dpToPx(activity, 12));
                             newGd.setColor(glassColor);
@@ -323,7 +324,27 @@ public class PersonalizationManager {
                     }
                 } catch (Exception ignored) {}
             } else if (bg instanceof StateListDrawable) {
-                // handled per-component in activities
+                StateListDrawable sld = (StateListDrawable) bg;
+                boolean modified = false;
+                for (int si = 0; si < sld.getStateCount(); si++) {
+                    Drawable stateDrawable = sld.getStateDrawable(si);
+                    if (stateDrawable instanceof GradientDrawable) {
+                        GradientDrawable sgd = (GradientDrawable) stateDrawable;
+                        try {
+                            if (sgd.getColor() != null) {
+                                int sgdColor = sgd.getColor().getDefaultColor();
+                                if (sgdColor == surfColor || sgdColor == bgColor || sgdColor == surfVariantColor
+                                        || isNearBlack(sgdColor) || isNearWhite(sgdColor)) {
+                                    sgd.setColor(glassColor);
+                                    modified = true;
+                                }
+                            }
+                        } catch (Exception ignored) {}
+                    }
+                }
+                if (modified) {
+                    sld.invalidateSelf();
+                }
             }
 
             if (child instanceof ViewGroup) {
@@ -425,10 +446,65 @@ public class PersonalizationManager {
         return isDarkMode((Context) activity);
     }
 
-    private boolean isDarkMode(Context ctx) {
+    public boolean isDarkMode(Context ctx) {
         int nightModeFlags = ctx.getResources().getConfiguration().uiMode
                 & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
         return nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES;
+    }
+
+    public int getEffectiveSurfaceColor() {
+        if (hasBackgroundImage()) {
+            return getGlassColor(isDarkMode(context));
+        }
+        return ContextCompat.getColor(context, R.color.surface);
+    }
+
+    public void applyGlassToView(View view) {
+        if (!hasBackgroundImage()) return;
+        boolean isDark = isDarkMode(context);
+        int glassColor = getGlassColor(isDark);
+        int surfColor = ContextCompat.getColor(context, R.color.surface);
+        int bgColor = ContextCompat.getColor(context, R.color.background);
+        int surfVariantColor = ContextCompat.getColor(context, R.color.surface_variant);
+
+        Drawable bg = view.getBackground();
+        if (bg instanceof GradientDrawable) {
+            GradientDrawable gd = (GradientDrawable) bg;
+            try {
+                if (gd.getColor() != null) {
+                    int gdColor = gd.getColor().getDefaultColor();
+                    if (gdColor == surfColor || gdColor == bgColor || gdColor == surfVariantColor
+                            || isNearBlack(gdColor) || isNearWhite(gdColor)) {
+                        gd.setColor(glassColor);
+                    }
+                }
+            } catch (Exception ignored) {}
+        } else if (bg instanceof StateListDrawable) {
+            StateListDrawable sld = (StateListDrawable) bg;
+            for (int si = 0; si < sld.getStateCount(); si++) {
+                Drawable stateDrawable = sld.getStateDrawable(si);
+                if (stateDrawable instanceof GradientDrawable) {
+                    GradientDrawable sgd = (GradientDrawable) stateDrawable;
+                    try {
+                        if (sgd.getColor() != null) {
+                            int sgdColor = sgd.getColor().getDefaultColor();
+                            if (sgdColor == surfColor || sgdColor == bgColor || sgdColor == surfVariantColor
+                                    || isNearBlack(sgdColor) || isNearWhite(sgdColor)) {
+                                sgd.setColor(glassColor);
+                            }
+                        }
+                    } catch (Exception ignored) {}
+                }
+            }
+            sld.invalidateSelf();
+        } else if (view instanceof CardView) {
+            CardView cv = (CardView) view;
+            int cardColor = cv.getCardBackgroundColor().getDefaultColor();
+            if (cardColor == surfColor || cardColor == bgColor || cardColor == surfVariantColor
+                    || isNearBlack(cardColor) || isNearWhite(cardColor)) {
+                cv.setCardBackgroundColor(glassColor);
+            }
+        }
     }
 
     private float dpToPx(Context context, float dp) {

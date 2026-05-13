@@ -51,6 +51,8 @@ public class ServersAdapter extends RecyclerView.Adapter<ServersAdapter.ViewHold
                 listener.onDeleteClick(server);
             }
         });
+
+        new org.levimc.launcher.util.PersonalizationManager(holder.itemView.getContext()).applyGlassToView(holder.itemView);
     }
 
     @Override

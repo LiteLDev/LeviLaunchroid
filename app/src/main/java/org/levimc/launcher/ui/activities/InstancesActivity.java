@@ -340,17 +340,16 @@ public class InstancesActivity extends BaseActivity {
 
             PersonalizationManager pm = new PersonalizationManager(holder.itemView.getContext());
             int accent = pm.getAccentColor();
+            int effectiveSurf = pm.getEffectiveSurfaceColor();
             if (isSelected && accent != 0) {
                 android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
                 gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
                 gd.setCornerRadius(12 * holder.itemView.getContext().getResources().getDisplayMetrics().density);
                 gd.setStroke((int)(2 * holder.itemView.getContext().getResources().getDisplayMetrics().density), accent);
-                boolean isDark = (holder.itemView.getContext().getResources().getConfiguration().uiMode
-                        & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
-                        == android.content.res.Configuration.UI_MODE_NIGHT_YES;
-                int surfColor = holder.itemView.getContext().getResources().getColor(R.color.surface, holder.itemView.getContext().getTheme());
-                gd.setColor(surfColor);
+                gd.setColor(effectiveSurf);
                 holder.itemView.setBackground(gd);
+            } else {
+                pm.applyGlassToView(holder.itemView);
             }
 
             holder.versionCode.setText(v.versionCode != null ? v.versionCode : v.directoryName);

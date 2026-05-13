@@ -73,6 +73,9 @@ public class InbuiltModsAdapter extends RecyclerView.Adapter<InbuiltModsAdapter.
         });
         holder.addButton.setVisibility(isModMenuEnabled ? View.GONE : View.VISIBLE);
         DynamicAnim.applyPressScale(holder.addButton);
+
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(context);
+        pm.applyGlassToView(holder.itemView);
     }
 
 

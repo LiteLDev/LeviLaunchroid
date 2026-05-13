@@ -92,6 +92,8 @@ public class ScreenshotsAdapter extends RecyclerView.Adapter<ScreenshotsAdapter.
                 listener.onSaveClick(screenshot);
             }
         });
+
+        new org.levimc.launcher.util.PersonalizationManager(holder.itemView.getContext()).applyGlassToView(holder.itemView);
     }
 
     @Override

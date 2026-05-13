@@ -93,6 +93,8 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldViewH
                 onWorldActionListener.onWorldTransfer(world);
             }
         });
+
+        new org.levimc.launcher.util.PersonalizationManager(holder.itemView.getContext()).applyGlassToView(holder.itemView);
     }
 
     @Override

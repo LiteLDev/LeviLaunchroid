@@ -71,6 +71,8 @@ public class ResourcePacksAdapter extends RecyclerView.Adapter<ResourcePacksAdap
                 onResourcePackActionListener.onResourcePackTransfer(pack);
             }
         });
+
+        new org.levimc.launcher.util.PersonalizationManager(holder.itemView.getContext()).applyGlassToView(holder.itemView);
     }
 
     @Override
