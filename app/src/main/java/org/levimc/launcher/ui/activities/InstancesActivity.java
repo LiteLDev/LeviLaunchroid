@@ -58,6 +58,11 @@ public class InstancesActivity extends BaseActivity {
         versionManager.loadAllVersions();
 
         apkImportManager = new ApkImportManager(this, null);
+        apkImportManager.setOnImportCompleteListener(() -> {
+            versionManager.loadAllVersions();
+            loadVersions();
+            applyFilters();
+        });
         apkImportResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {

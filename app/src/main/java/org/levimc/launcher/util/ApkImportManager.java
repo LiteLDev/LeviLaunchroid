@@ -22,11 +22,20 @@ public class ApkImportManager {
     private final Activity activity;
     private final MainViewModel viewModel;
     private final InstallProgressDialog progressDialog;
+    private OnImportCompleteListener importCompleteListener;
+
+    public interface OnImportCompleteListener {
+        void onImportComplete();
+    }
 
     public ApkImportManager(Activity activity, MainViewModel viewModel) {
         this.activity = activity;
         this.viewModel = viewModel;
         this.progressDialog = new InstallProgressDialog(activity);
+    }
+
+    public void setOnImportCompleteListener(OnImportCompleteListener listener) {
+        this.importCompleteListener = listener;
     }
 
     public void handleApkImportResult(Intent data) {
@@ -79,6 +88,9 @@ public class ApkImportManager {
                                             Toast.LENGTH_LONG
                                     ).show();
                                     VersionManager.get(activity).loadAllVersions();
+                                    if (importCompleteListener != null) {
+                                        importCompleteListener.onImportComplete();
+                                    }
                                 });
                             }
 
