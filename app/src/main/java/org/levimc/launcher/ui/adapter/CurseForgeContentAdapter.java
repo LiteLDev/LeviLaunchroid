@@ -151,6 +151,8 @@ public class CurseForgeContentAdapter extends RecyclerView.Adapter<RecyclerView.
                 icon.setImageResource(R.drawable.ic_minecraft_cube);
             }
 
+            new org.levimc.launcher.util.PersonalizationManager(itemView.getContext()).applyGlassToView(itemView);
+
             itemView.setOnClickListener(v -> listener.onContentClick(content));
         }
     }

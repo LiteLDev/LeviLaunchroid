@@ -66,7 +66,7 @@
                         android:id="@+id/select_version_button"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:background="@drawable/card_background"
+                        android:background="@drawable/bg_instance_selector"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingHorizontal="10dp"
@@ -112,24 +112,21 @@
                             app:tint="@color/text_secondary" />
                     </LinearLayout>
 
-                    <ImageButton
-                        android:id="@+id/instance_settings_button"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginStart="6dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_settings"
-                        app:tint="@color/text_secondary" />
-
                     <Button
                         android:id="@+id/launch_button"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:minWidth="0dp"
                         android:minHeight="0dp"
-                        android:paddingHorizontal="20dp"
+                        android:paddingHorizontal="16dp"
                         android:layout_marginStart="10dp"
-                        android:backgroundTint="@color/primary"
+                        android:background="@drawable/bg_launch_button"
+                        app:backgroundTint="@null"
+                        app:icon="@drawable/ic_nav_launch"
+                        app:iconPadding="6dp"
+                        app:iconTint="@android:color/white"
+                        app:iconGravity="textStart"
+                        app:iconSize="18dp"
                         android:text="@string/launch"
                         android:textColor="@color/on_primary"
                         android:textSize="13sp"

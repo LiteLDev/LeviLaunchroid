@@ -284,6 +284,15 @@ public class ContentDetailsActivity extends BaseActivity {
         params.height = height;
         dialog.getWindow().setAttributes(params);
 
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(this);
+        View dialogRoot = dialog.findViewById(android.R.id.content);
+        if (dialogRoot instanceof android.view.ViewGroup) {
+            android.view.ViewGroup rootGroup = (android.view.ViewGroup) dialogRoot;
+            for (int i = 0; i < rootGroup.getChildCount(); i++) {
+                pm.applyGlassToView(rootGroup.getChildAt(i));
+            }
+        }
+
         RecyclerView recycler = dialog.findViewById(R.id.recycler_files);
         View btnClose = dialog.findViewById(R.id.btn_close);
 
