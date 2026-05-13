@@ -2,7 +2,7 @@ package org.levimc.launcher.ui.activities;
 
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.ImageButton;
+
 import androidx.core.view.ViewCompat;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -66,18 +66,13 @@ public class ModDetailActivity extends BaseActivity {
         modFilenameText = findViewById(R.id.mod_filename_detail);
         modOrderText = findViewById(R.id.mod_order_detail);
         modSwitch = findViewById(R.id.mod_switch_detail);
-        headerContainer = findViewById(R.id.mod_detail_header_container);
+        headerContainer = findViewById(R.id.mod_detail_title);
         infoContainer = findViewById(R.id.mod_detail_info_container);
         actionsContainer = findViewById(R.id.mod_detail_actions_container);
 
-        // 与列表共享元素匹配：使用最外层头部卡片作为共享元素
         if (modFilenameArg != null && headerContainer != null) {
             ViewCompat.setTransitionName(headerContainer, "mod_card_" + modFilenameArg);
         }
-
-        ImageButton closeButton = findViewById(R.id.close_detail_button);
-        closeButton.setOnClickListener(v -> finish());
-        DynamicAnim.applyPressScale(closeButton);
 
         Button deleteButton = findViewById(R.id.delete_mod_button);
         deleteButton.setOnClickListener(v -> confirmDeleteMod());

@@ -81,8 +81,6 @@ public class MsftLoginActivity extends AppCompatActivity {
 
         webView = findViewById(R.id.msft_login_webview);
         statusText = findViewById(R.id.msft_login_status);
-        View backBtn = findViewById(R.id.back_button);
-        if (backBtn != null) backBtn.setOnClickListener(v -> finish());
 
         statusText.setText(R.string.ms_login_starting);
 

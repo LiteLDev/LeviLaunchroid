@@ -97,9 +97,6 @@ public class CurseForgeActivity extends BaseActivity {
         spinnerSort = findViewById(R.id.spinner_sort);
         recyclerView = findViewById(R.id.mods_recycler);
         loadingProgress = findViewById(R.id.loading_progress);
-        View backButton = findViewById(R.id.back_button);
-
-        backButton.setOnClickListener(v -> finish());
 
         adapter = new CurseForgeContentAdapter(this::onContentClick, new CurseForgeContentAdapter.OnPageChangeListener() {
             @Override

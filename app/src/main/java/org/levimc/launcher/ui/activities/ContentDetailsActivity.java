@@ -11,7 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -158,8 +158,6 @@ public class ContentDetailsActivity extends BaseActivity {
     }
 
     private void initViews() {
-        View backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(v -> finish());
 
         icon = findViewById(R.id.detail_icon);
         title = findViewById(R.id.detail_title);

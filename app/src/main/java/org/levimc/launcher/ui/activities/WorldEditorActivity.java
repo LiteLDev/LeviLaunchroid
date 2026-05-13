@@ -69,7 +69,6 @@ public class WorldEditorActivity extends BaseActivity {
     }
 
     private void setupUI(String worldName) {
-        binding.backButton.setOnClickListener(v -> onBackPressed());
         binding.titleText.setText(worldName != null ? worldName : getString(R.string.edit_world));
 
         binding.saveButton.setOnClickListener(v -> saveChanges());

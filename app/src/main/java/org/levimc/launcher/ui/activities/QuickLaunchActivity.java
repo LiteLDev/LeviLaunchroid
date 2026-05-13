@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
+
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -36,11 +36,6 @@ public class QuickLaunchActivity extends BaseActivity {
     }
 
     private void setupViews() {
-        ImageButton backButton = findViewById(R.id.back_button);
-        if (backButton != null) {
-            backButton.setOnClickListener(v -> finish());
-        }
-
         quickActionsRecycler = findViewById(R.id.quick_actions_recycler);
         quickActionsRecycler.setLayoutManager(new LinearLayoutManager(this));
         

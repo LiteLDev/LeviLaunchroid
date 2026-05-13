@@ -64,8 +64,6 @@ public class AccountsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accounts);
 
-        ImageButton backButton = findViewById(R.id.back_button);
-        if (backButton != null) backButton.setOnClickListener(v -> finish());
 
         gamertagText = findViewById(R.id.gamertag_text);
         privilegesText = findViewById(R.id.privileges_text);

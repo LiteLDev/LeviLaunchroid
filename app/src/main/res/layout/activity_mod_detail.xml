@@ -15,35 +15,15 @@
         android:paddingBottom="24dp"
         android:animateLayoutChanges="true">
 
-        <LinearLayout
-            android:id="@+id/mod_detail_header_container"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/mod_detail_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/header_background"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="16dp">
-
-            <ImageButton
-                android:id="@+id/close_detail_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="12dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_arrow_down"
-                android:rotation="90"
-                android:tint="@color/on_surface" />
-
-            <TextView
-                android:id="@+id/mod_detail_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/mod_detail_title"
-                android:fontFamily="@font/misans"
-                android:textColor="@color/on_surface"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:text="@string/mod_detail_title"
+            android:fontFamily="@font/misans"
+            android:textColor="@color/primary"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/mod_detail_info_container"

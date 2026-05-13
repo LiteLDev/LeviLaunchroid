@@ -16,20 +16,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/header_background"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="16dp">
-
-            <ImageButton
-                android:id="@+id/close_inbuilt_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="12dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_arrow_down"
-                android:rotation="90"
-                android:tint="@color/on_surface" />
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
@@ -37,11 +25,10 @@
                 android:layout_weight="1"
                 android:text="@string/inbuilt_mods_title"
                 android:fontFamily="@font/misans"
-                android:textColor="@color/on_surface"
+                android:textColor="@color/primary"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
-            <!-- Mod Menu Toggle -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

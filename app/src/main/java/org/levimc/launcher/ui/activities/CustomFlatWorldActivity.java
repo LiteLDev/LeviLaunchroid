@@ -71,7 +71,6 @@ public class CustomFlatWorldActivity extends BaseActivity {
     }
 
     private void setupUI() {
-        binding.backButton.setOnClickListener(v -> finish());
 
         ArrayAdapter<String> biomeAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, BIOME_NAMES);

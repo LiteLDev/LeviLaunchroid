@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
+
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
@@ -90,10 +90,6 @@ public class ModsFullscreenActivity extends BaseActivity {
     }
 
     private void setupViews() {
-        ImageButton closeButton = findViewById(R.id.close_fullscreen_button);
-        closeButton.setOnClickListener(v -> finish());
-        DynamicAnim.applyPressScale(closeButton);
-
         Button addModButton = findViewById(R.id.add_mod_fullscreen_button);
         addModButton.setOnClickListener(v -> {
             startFilePicker();

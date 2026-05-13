@@ -118,6 +118,12 @@ public class BaseActivity extends AppCompatActivity {
             TextViewCompat.setCompoundDrawableTintList(tab, ColorStateList.valueOf(color));
         }
 
+        View backButton = findViewById(R.id.nav_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+            DynamicAnim.applyPressScale(backButton);
+        }
+
         findViewById(R.id.nav_tab_launch).setOnClickListener(v -> {
             if (!(this instanceof MainActivity)) {
                 Intent intent = new Intent(this, MainActivity.class);

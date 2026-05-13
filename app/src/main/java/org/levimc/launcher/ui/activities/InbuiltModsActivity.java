@@ -2,7 +2,7 @@ package org.levimc.launcher.ui.activities;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
+
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,10 +43,6 @@ public class InbuiltModsActivity extends BaseActivity {
     }
 
     private void setupViews() {
-        ImageButton closeButton = findViewById(R.id.close_inbuilt_button);
-        closeButton.setOnClickListener(v -> finish());
-        DynamicAnim.applyPressScale(closeButton);
-
         recyclerView = findViewById(R.id.inbuilt_mods_recycler);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
 

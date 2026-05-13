@@ -182,7 +182,6 @@ public class ContentListActivity extends BaseActivity {
     }
 
     private void setupUI() {
-        binding.backButton.setOnClickListener(v -> finish());
 
         String worldsPath = getIntent().getStringExtra(EXTRA_WORLDS_DIRECTORY);
         if (worldsPath != null) {

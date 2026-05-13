@@ -82,7 +82,6 @@ public class ContentManagementActivity extends BaseActivity {
     }
 
     private void setupUI() {
-        binding.backButton.setOnClickListener(v -> finish());
         binding.editOptionsButton.setOnClickListener(v -> openOptionsEditor());
         binding.importContentButton.setOnClickListener(v -> startImport());
         

@@ -64,8 +64,6 @@ public class OptionsEditorActivity extends BaseActivity {
     }
 
     private void setupUI(String storageType) {
-        binding.backButton.setOnClickListener(v -> onBackPressed());
-        
         String title = getString(R.string.edit_options);
         if (storageType != null) {
             title += " (" + storageType + ")";
