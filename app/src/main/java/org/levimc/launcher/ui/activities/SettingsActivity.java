@@ -58,6 +58,9 @@ public class SettingsActivity extends BaseActivity {
     private View sectionUpdates;
     private View sectionAbout;
 
+    private static final String KEY_SELECTED_TAB = "selected_tab_index";
+    private int selectedTabIndex = 0;
+
     private PersonalizationManager personalizationManager;
     private LinearLayout colorGridContainer;
     private LinearLayout moreColorsContainer;
@@ -74,6 +77,10 @@ public class SettingsActivity extends BaseActivity {
         setupNavBar();
 
         personalizationManager = new PersonalizationManager(this);
+
+        if (savedInstanceState != null) {
+            selectedTabIndex = savedInstanceState.getInt(KEY_SELECTED_TAB, 0);
+        }
 
         permissionsHandler = PermissionsHandler.getInstance();
         permissionResultLauncher = registerForActivityResult(
@@ -106,7 +113,14 @@ public class SettingsActivity extends BaseActivity {
         setupUpdatesSection();
         setupAboutSection();
 
-        selectTab(tabBasic);
+        TextView[] tabs = {tabBasic, tabPersonalize, tabUpdates, tabAbout};
+        selectTab(tabs[selectedTabIndex]);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_SELECTED_TAB, selectedTabIndex);
     }
 
     private void initTabs() {
@@ -120,10 +134,10 @@ public class SettingsActivity extends BaseActivity {
         sectionUpdates = findViewById(R.id.section_updates);
         sectionAbout = findViewById(R.id.section_about);
 
-        tabBasic.setOnClickListener(v -> selectTab(tabBasic));
-        tabPersonalize.setOnClickListener(v -> selectTab(tabPersonalize));
-        tabUpdates.setOnClickListener(v -> selectTab(tabUpdates));
-        tabAbout.setOnClickListener(v -> selectTab(tabAbout));
+        tabBasic.setOnClickListener(v -> { selectedTabIndex = 0; selectTab(tabBasic); });
+        tabPersonalize.setOnClickListener(v -> { selectedTabIndex = 1; selectTab(tabPersonalize); });
+        tabUpdates.setOnClickListener(v -> { selectedTabIndex = 2; selectTab(tabUpdates); });
+        tabAbout.setOnClickListener(v -> { selectedTabIndex = 3; selectTab(tabAbout); });
     }
 
     private void selectTab(TextView selectedTab) {
@@ -321,7 +335,7 @@ public class SettingsActivity extends BaseActivity {
                 final int finalColor = color;
                 wrapper.setOnClickListener(v -> {
                     personalizationManager.setAccentColor(finalColor);
-                    recreate();
+                    refreshColorPickerInPlace();
                 });
                 DynamicAnim.applyPressScale(wrapper);
 
@@ -331,57 +345,16 @@ public class SettingsActivity extends BaseActivity {
             container.addView(row);
         }
 
-        if (selectedColor != 0) {
-            LinearLayout resetRow = new LinearLayout(this);
-            resetRow.setOrientation(LinearLayout.HORIZONTAL);
-            resetRow.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-            LinearLayout.LayoutParams resetRowParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            resetRowParams.topMargin = (int) (8 * density);
-            resetRow.setLayoutParams(resetRowParams);
+    }
 
-            boolean alreadyHasReset = container.getTag() != null && container.getTag().equals("has_reset");
-            if (!alreadyHasReset && container == moreColorsContainer) {
-                FrameLayout resetWrapper = new FrameLayout(this);
-                LinearLayout.LayoutParams rwParams = new LinearLayout.LayoutParams(circleSize, circleSize);
-                rwParams.setMargins(margin, margin, margin, margin);
-                resetWrapper.setLayoutParams(rwParams);
-
-                View resetCircle = new View(this);
-                resetCircle.setLayoutParams(new FrameLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT));
-                GradientDrawable resetDrawable = new GradientDrawable();
-                resetDrawable.setShape(GradientDrawable.OVAL);
-                boolean isDark = (getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
-                        == android.content.res.Configuration.UI_MODE_NIGHT_YES;
-                resetDrawable.setColor(isDark ? Color.argb(80, 255, 255, 255) : Color.argb(80, 0, 0, 0));
-                resetDrawable.setStroke((int) (1 * density), isDark ? Color.argb(100, 255, 255, 255) : Color.argb(100, 0, 0, 0));
-                resetCircle.setBackground(resetDrawable);
-                resetWrapper.addView(resetCircle);
-
-                ImageView resetIcon = new ImageView(this);
-                FrameLayout.LayoutParams riParams = new FrameLayout.LayoutParams(checkSize, checkSize);
-                riParams.gravity = Gravity.CENTER;
-                resetIcon.setLayoutParams(riParams);
-                resetIcon.setImageResource(R.drawable.ic_close);
-                resetIcon.setColorFilter(isDark ? Color.WHITE : Color.BLACK);
-                resetWrapper.addView(resetIcon);
-
-                resetWrapper.setClickable(true);
-                resetWrapper.setFocusable(true);
-                resetWrapper.setOnClickListener(v -> {
-                    personalizationManager.clearAccentColor();
-                    recreate();
-                });
-                DynamicAnim.applyPressScale(resetWrapper);
-
-                resetRow.addView(resetWrapper);
-                container.addView(resetRow);
-                container.setTag("has_reset");
-            }
-        }
+    private void refreshColorPickerInPlace() {
+        setupColorPicker();
+        // Re-apply personalization to update accent across the current UI
+        PersonalizationManager pm = new PersonalizationManager(this);
+        pm.applyToActivity(this);
+        // Refresh tab styling with new accent
+        TextView[] tabs = {tabBasic, tabPersonalize, tabUpdates, tabAbout};
+        selectTab(tabs[selectedTabIndex]);
     }
 
     private void setupBackgroundImagePicker() {
