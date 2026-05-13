@@ -93,6 +93,13 @@
 
     <string name="settings_title">Settings</string>
     <string name="settings_desc">Your launcher settings</string>
+    <string name="settings_subtitle">Configure common launcher options</string>
+    <string name="settings_tab_basic">Basic Settings</string>
+    <string name="settings_tab_personalize">Personalization</string>
+    <string name="settings_tab_updates">Updates</string>
+    <string name="settings_tab_about">About</string>
+    <string name="settings_theme_desc">Choose the application theme</string>
+
 
     <string name="unknown_sources_permission_title">Install Permission</string>
     <string name="unknown_sources_permission_message">To install or update this app, please grant permission to install unknown apps. Click "Grant" to open system settings, enable the permission for this app, and return to continue.</string>
