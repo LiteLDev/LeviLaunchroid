@@ -202,7 +202,9 @@
                         android:fontFamily="@font/misans"
                         android:textColor="@color/on_surface"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_plugin"
+                        android:drawablePadding="6dp" />
 
                     <Button
                         android:id="@+id/manage_mods_button"
@@ -267,7 +269,9 @@
                         android:fontFamily="@font/misans"
                         android:textColor="@color/on_surface"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_content"
+                        android:drawablePadding="6dp" />
 
                     <TextView
                         android:id="@+id/content_view_all"
@@ -309,11 +313,11 @@
                             android:focusable="true"
                             android:foreground="?attr/selectableItemBackground">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="🌍"
-                                android:textSize="16sp" />
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_world"
+                                app:tint="@color/on_surface" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -356,11 +360,11 @@
                             android:focusable="true"
                             android:foreground="?attr/selectableItemBackground">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="📦"
-                                android:textSize="16sp" />
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_photo"
+                                app:tint="@color/on_surface" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -403,11 +407,11 @@
                             android:focusable="true"
                             android:foreground="?attr/selectableItemBackground">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="⚙️"
-                                android:textSize="16sp" />
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_behavior"
+                                app:tint="@color/on_surface" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -459,7 +463,9 @@
                     android:fontFamily="@font/misans"
                     android:textColor="@color/on_surface"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:drawableStart="@drawable/ic_misc"
+                    android:drawablePadding="6dp" />
 
                 <ScrollView
                     android:layout_width="match_parent"

@@ -10,8 +10,8 @@
     <string name="current_instance">Current Instance</string>
 
     <!-- Mods -->
-    <string name="mods_title">🧩 Mods (%d)</string>
-    <string name="mods_section_title">🧩 Mods</string>
+    <string name="mods_title">Mods (%d)</string>
+    <string name="mods_section_title">Mods</string>
     <string name="external_mods_label">External Mods</string>
     <string name="inbuilt_mods_label">Inbuilt Mods</string>
     <string name="manage_mods">Manage Mods</string>
@@ -26,8 +26,8 @@
     <string name="font_license">This app uses the Misans font.</string>
     <string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
     <string name="quick_actions_title">Quick Actions</string>
-    <string name="content_mgmt_section_title">📦 Content Management</string>
-    <string name="misc_section_title">🔧 Miscellaneous</string>
+    <string name="content_mgmt_section_title">Content Management</string>
+    <string name="misc_section_title">Miscellaneous</string>
     <string name="view_all">View All →</string>
     <string name="content_management_subtitle">Manage worlds, resource packs and behavior packs</string>
     <string name="import_apk_subtitle">Install Minecraft from APK or APKS file</string>
@@ -42,7 +42,7 @@
 
     <string name="import_confirmation_title">Import Mods</string>
     <string name="import_confirmation_message">Are you sure you want to import the selected %d mod files?</string>
-    <string name="import_so_plugin_title">🧩 Import SO Plugin</string>
+    <string name="import_so_plugin_title">Import SO Plugin</string>
     <string name="plugin_name_label">Plugin Name</string>
     <string name="plugin_type_label">Type</string>
     <string name="plugin_version_label">Version</string>
@@ -305,7 +305,7 @@
     <string name="genuine_badge_label">License not verified</string>
     <string name="invalid_license_detected_toast">Non-genuine Minecraft detected. Ensure Minecraft is from Google Play Store</string>
 
-    <string name="full_mods_title">🧩 Mods </string>
+    <string name="full_mods_title">Mods </string>
     <string name="total_mods">Total Mods:</string>
     <string name="enabled_mods">Enabled:</string>
     <string name="add_mod">Add Mod</string>
@@ -388,7 +388,7 @@
 
     <!-- Inbuilt Mods -->
     <string name="inbuilt_mods">Inbuilt Mods</string>
-    <string name="inbuilt_mods_title">🔧 Inbuilt Mods</string>
+    <string name="inbuilt_mods_title">Inbuilt Mods</string>
     <string name="inbuilt_mods_subtitle">Internal mods that run without native libraries</string>
     <string name="no_inbuilt_mods_available">All inbuilt mods have been added</string>
     <string name="inbuilt_mod_added">%s added to mods</string>
@@ -571,7 +571,7 @@
     <string name="about_patreon">Patreon</string>
     <string name="about_source_title">Source Code &amp; Open Source</string>
     <string name="about_github_repo">GitHub · LeviLauncher</string>
-    <string name="about_github_org">LiteLDev Organization</string>
+    <string name="about_github_org">LiteLDev</string>
     <string name="about_license_note">See LICENSE in the repository for license details.</string>
     <string name="about_contribute_title">Contribute</string>
     <string name="about_contribute_desc">Contributions via Issues or Pull Requests are welcome to improve LeviLauncher.</string>

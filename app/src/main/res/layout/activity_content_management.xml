@@ -119,12 +119,11 @@
                 android:clickable="true"
                 android:focusable="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/misans"
-                    android:text="🌍"
-                    android:textSize="24sp" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_world"
+                    app:tint="@color/on_surface" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -150,12 +149,11 @@
                 android:clickable="true"
                 android:focusable="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/misans"
-                    android:text="👤"
-                    android:textSize="24sp" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_tshirt"
+                    app:tint="@color/on_surface" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -181,12 +179,11 @@
                 android:clickable="true"
                 android:focusable="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/misans"
-                    android:text="📸"
-                    android:textSize="24sp" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_screenshot"
+                    app:tint="@color/on_surface" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -220,12 +217,11 @@
                 android:clickable="true"
                 android:focusable="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/misans"
-                    android:text="📦"
-                    android:textSize="24sp" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_photo"
+                    app:tint="@color/on_surface" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -251,12 +247,11 @@
                 android:clickable="true"
                 android:focusable="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/misans"
-                    android:text="⚙️"
-                    android:textSize="24sp" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_behavior"
+                    app:tint="@color/on_surface" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -282,12 +277,11 @@
                 android:clickable="true"
                 android:focusable="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/misans"
-                    android:text="🌐"
-                    android:textSize="24sp" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_server"
+                    app:tint="@color/on_surface" />
 
                 <TextView
                     android:layout_width="wrap_content"
