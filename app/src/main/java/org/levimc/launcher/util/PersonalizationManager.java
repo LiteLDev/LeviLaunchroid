@@ -35,12 +35,6 @@ public class PersonalizationManager {
     private static final String PREFS_NAME = "personalization_prefs";
     private static final String KEY_ACCENT_COLOR = "accent_color";
     private static final String KEY_BG_IMAGE_PATH = "bg_image_path";
-    private static final String KEY_BASE_MODE = "base_mode";
-
-    public static final int BASE_MODE_NONE = 0;
-    public static final int BASE_MODE_FOLLOW_THEME = 1;
-    public static final int BASE_MODE_CUSTOM = 2;
-    private static final String KEY_BASE_CUSTOM_COLOR = "base_custom_color";
 
     private static int sChangeGeneration = 0;
 
@@ -147,23 +141,7 @@ public class PersonalizationManager {
         }
     }
 
-    public int getBaseMode() {
-        return prefs.getInt(KEY_BASE_MODE, BASE_MODE_NONE);
-    }
 
-    public void setBaseMode(int mode) {
-        prefs.edit().putInt(KEY_BASE_MODE, mode).apply();
-        sChangeGeneration++;
-    }
-
-    public int getBaseCustomColor() {
-        return prefs.getInt(KEY_BASE_CUSTOM_COLOR, Color.BLACK);
-    }
-
-    public void setBaseCustomColor(int color) {
-        prefs.edit().putInt(KEY_BASE_CUSTOM_COLOR, color).apply();
-        sChangeGeneration++;
-    }
 
     public static int getChangeGeneration() {
         return sChangeGeneration;
@@ -248,7 +226,7 @@ public class PersonalizationManager {
         }
         bgView.setImageBitmap(bmp);
 
-        int baseMode = getBaseMode();
+        int baseMode = 0;
         View overlayView = rootView.findViewWithTag("personalization_overlay");
         if (overlayView == null) {
             overlayView = new View(activity);
@@ -261,26 +239,8 @@ public class PersonalizationManager {
         }
 
         boolean isDark = isDarkMode(activity);
-        int accentForOverlay = getAccentColor();
-        switch (baseMode) {
-            case BASE_MODE_FOLLOW_THEME:
-                if (accentForOverlay != 0) {
-                    overlayView.setBackgroundColor(Color.argb(140, Color.red(accentForOverlay), Color.green(accentForOverlay), Color.blue(accentForOverlay)));
-                } else {
-                    overlayView.setBackgroundColor(isDark ? Color.argb(140, 0, 0, 0) : Color.argb(120, 255, 255, 255));
-                }
-                overlayView.setVisibility(View.VISIBLE);
-                break;
-            case BASE_MODE_CUSTOM:
-                int customColor = getBaseCustomColor();
-                overlayView.setBackgroundColor(Color.argb(140, Color.red(customColor), Color.green(customColor), Color.blue(customColor)));
-                overlayView.setVisibility(View.VISIBLE);
-                break;
-            default:
-                overlayView.setBackgroundColor(isDark ? Color.argb(100, 0, 0, 0) : Color.argb(80, 255, 255, 255));
-                overlayView.setVisibility(View.VISIBLE);
-                break;
-        }
+        overlayView.setBackgroundColor(isDark ? Color.argb(100, 0, 0, 0) : Color.argb(80, 255, 255, 255));
+        overlayView.setVisibility(View.VISIBLE);
 
         makeChildBackgroundsTranslucent(rootView, activity);
     }

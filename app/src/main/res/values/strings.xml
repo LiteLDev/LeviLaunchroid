@@ -544,6 +544,7 @@
     <string name="curseforge_importing">Importing…</string>
     <string name="curseforge_download_failed">Download failed</string>
     <string name="curseforge_available_files">Available Files</string>
+
     <!-- Navigation Bar -->
     <string name="nav_launch">Launch</string>
     <string name="nav_import">Import</string>
@@ -579,6 +580,9 @@
     <string name="about_star_fork">Star / Fork</string>
 
     <string-array name="launcher_tips">
+       <item>Settings lets you adjust theme, color, background, and other appearance options to match your setup.</item>
+        <item>LeviLauncher is open source. Use GitHub issues to report launcher problems or suggest improvements.</item>
+        <item>Use the version dropdown to switch the current instance quickly.</item>
         <item>Do people actually read these?</item>
         <item>You can drag mods to reorder their load priority.</item>
         <item>Try Version Isolation!</item>
@@ -599,10 +603,5 @@
     <string name="bg_image_selected">Custom background active</string>
     <string name="select_image">Select Image</string>
     <string name="clear">Clear</string>
-    <string name="base_mode_title">Base Mode</string>
-    <string name="base_mode_desc">Add a solid color mask under the background image to enhance contrast</string>
-    <string name="base_mode_option_none">None</string>
-    <string name="base_mode_option_follow">Follow Theme Color</string>
-    <string name="base_mode_option_custom">Custom Color</string>
 
 </resources>

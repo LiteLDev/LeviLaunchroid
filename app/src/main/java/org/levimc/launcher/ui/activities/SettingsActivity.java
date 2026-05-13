@@ -267,7 +267,6 @@ public class SettingsActivity extends BaseActivity {
 
         setupColorPicker();
         setupBackgroundImagePicker();
-        setupBaseMode();
     }
 
     private void setupColorPicker() {
@@ -349,12 +348,67 @@ public class SettingsActivity extends BaseActivity {
 
     private void refreshColorPickerInPlace() {
         setupColorPicker();
-        // Re-apply personalization to update accent across the current UI
         PersonalizationManager pm = new PersonalizationManager(this);
+        int accent = pm.getAccentColor();
+        
         pm.applyToActivity(this);
-        // Refresh tab styling with new accent
+        
         TextView[] tabs = {tabBasic, tabPersonalize, tabUpdates, tabAbout};
         selectTab(tabs[selectedTabIndex]);
+        
+        View settingsTitle = findViewById(R.id.settings_title);
+        if (settingsTitle instanceof TextView && accent != 0) {
+            ((TextView) settingsTitle).setTextColor(accent);
+        }
+        
+        Button btnSelectImage = findViewById(R.id.btn_select_bg_image);
+        if (btnSelectImage != null && accent != 0) {
+            btnSelectImage.setBackgroundTintList(ColorStateList.valueOf(accent));
+            btnSelectImage.setTextColor(Color.WHITE);
+        }
+        
+        Button btnCheckUpdate = findViewById(R.id.btn_check_update);
+        if (btnCheckUpdate != null && accent != 0) {
+            btnCheckUpdate.setBackgroundTintList(ColorStateList.valueOf(accent));
+            btnCheckUpdate.setTextColor(Color.WHITE);
+        }
+        
+        SwitchMaterial switchLogcat = findViewById(R.id.switch_logcat);
+        if (switchLogcat != null && accent != 0) {
+            int[][] states = {{android.R.attr.state_checked}, {}};
+            switchLogcat.setThumbTintList(new ColorStateList(states, new int[]{accent, 0xFFAAAAAA}));
+            int trackChecked = Color.argb(100, Color.red(accent), Color.green(accent), Color.blue(accent));
+            switchLogcat.setTrackTintList(new ColorStateList(states, new int[]{trackChecked, 0xFF555555}));
+        }
+        
+        SwitchMaterial switchManagedLogin = findViewById(R.id.switch_managed_login);
+        if (switchManagedLogin != null && accent != 0) {
+            int[][] states = {{android.R.attr.state_checked}, {}};
+            switchManagedLogin.setThumbTintList(new ColorStateList(states, new int[]{accent, 0xFFAAAAAA}));
+            int trackChecked = Color.argb(100, Color.red(accent), Color.green(accent), Color.blue(accent));
+            switchManagedLogin.setTrackTintList(new ColorStateList(states, new int[]{trackChecked, 0xFF555555}));
+        }
+        
+        TextView navAppName = findViewById(R.id.nav_app_name);
+        if (navAppName != null && accent != 0) {
+            pm.applySubtleWhiteGradient(navAppName, accent, 0.35f, false);
+        }
+        
+        Button navSignInBtn = findViewById(R.id.nav_sign_in_button);
+        if (navSignInBtn != null && accent != 0) {
+            navSignInBtn.setBackgroundTintList(ColorStateList.valueOf(accent));
+            navSignInBtn.setTextColor(Color.WHITE);
+        }
+        
+        int[] navTabIds = {R.id.nav_tab_launch, R.id.nav_tab_instances, R.id.nav_tab_about, R.id.nav_tab_settings};
+        for (int id : navTabIds) {
+            TextView navTab = findViewById(id);
+            if (navTab != null && id == R.id.nav_tab_settings && accent != 0) {
+                navTab.setTextColor(accent);
+                navTab.setTypeface(navTab.getTypeface(), android.graphics.Typeface.BOLD);
+                androidx.core.widget.TextViewCompat.setCompoundDrawableTintList(navTab, ColorStateList.valueOf(accent));
+            }
+        }
     }
 
     private void setupBackgroundImagePicker() {
@@ -406,59 +460,7 @@ public class SettingsActivity extends BaseActivity {
         }
     }
 
-    private void setupBaseMode() {
-        LinearLayout baseModeContainer = findViewById(R.id.base_mode_container);
-        if (baseModeContainer == null) return;
 
-        TextView btnNone = findViewById(R.id.base_mode_none);
-        TextView btnFollow = findViewById(R.id.base_mode_follow);
-        TextView btnCustom = findViewById(R.id.base_mode_custom);
-
-        if (btnNone == null || btnFollow == null || btnCustom == null) return;
-
-        int currentMode = personalizationManager.getBaseMode();
-        updateBaseModeButtons(btnNone, btnFollow, btnCustom, currentMode);
-
-        btnNone.setOnClickListener(v -> {
-            personalizationManager.setBaseMode(PersonalizationManager.BASE_MODE_NONE);
-            updateBaseModeButtons(btnNone, btnFollow, btnCustom, PersonalizationManager.BASE_MODE_NONE);
-        });
-        btnFollow.setOnClickListener(v -> {
-            personalizationManager.setBaseMode(PersonalizationManager.BASE_MODE_FOLLOW_THEME);
-            updateBaseModeButtons(btnNone, btnFollow, btnCustom, PersonalizationManager.BASE_MODE_FOLLOW_THEME);
-        });
-        btnCustom.setOnClickListener(v -> {
-            personalizationManager.setBaseMode(PersonalizationManager.BASE_MODE_CUSTOM);
-            updateBaseModeButtons(btnNone, btnFollow, btnCustom, PersonalizationManager.BASE_MODE_CUSTOM);
-        });
-    }
-
-    private void updateBaseModeButtons(TextView btnNone, TextView btnFollow, TextView btnCustom, int selectedMode) {
-        TextView[] buttons = {btnNone, btnFollow, btnCustom};
-        int[] modes = {PersonalizationManager.BASE_MODE_NONE, PersonalizationManager.BASE_MODE_FOLLOW_THEME, PersonalizationManager.BASE_MODE_CUSTOM};
-
-        int accent = personalizationManager.getAccentColor();
-
-        for (int i = 0; i < buttons.length; i++) {
-            boolean isSelected = modes[i] == selectedMode;
-
-            if (isSelected) {
-                if (accent != 0) {
-                    GradientDrawable gd = new GradientDrawable();
-                    gd.setShape(GradientDrawable.RECTANGLE);
-                    gd.setColor(accent);
-                    gd.setCornerRadius(16 * getResources().getDisplayMetrics().density);
-                    buttons[i].setBackground(gd);
-                } else {
-                    buttons[i].setBackgroundResource(R.drawable.bg_tab_selected);
-                }
-                buttons[i].setTextColor(Color.WHITE);
-            } else {
-                buttons[i].setBackgroundResource(R.drawable.bg_tab_unselected);
-                buttons[i].setTextColor(getColor(R.color.text_secondary));
-            }
-        }
-    }
 
     private void setupUpdatesSection() {
         try {

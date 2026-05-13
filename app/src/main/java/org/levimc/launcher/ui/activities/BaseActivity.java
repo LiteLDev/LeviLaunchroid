@@ -163,25 +163,21 @@ public class BaseActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                finish();
             }
         });
         findViewById(R.id.nav_tab_instances).setOnClickListener(v -> {
             if (!(this instanceof InstancesActivity)) {
                 startActivity(new Intent(this, InstancesActivity.class));
-                finish();
             }
         });
         findViewById(R.id.nav_tab_about).setOnClickListener(v -> {
             if (!(this instanceof AboutActivity)) {
                 startActivity(new Intent(this, AboutActivity.class));
-                finish();
             }
         });
         findViewById(R.id.nav_tab_settings).setOnClickListener(v -> {
             if (!(this instanceof SettingsActivity)) {
                 startActivity(new Intent(this, SettingsActivity.class));
-                finish();
             }
         });
 
