@@ -343,9 +343,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
+                                android:layout_marginBottom="1dp"
                                 android:text="›"
+                                android:fontFamily="@font/misans"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="16sp" />
+                                android:textSize="13sp" />
                         </LinearLayout>
 
                         <!-- Resource Packs Row -->
@@ -390,9 +392,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
+                                android:layout_marginBottom="1dp"
                                 android:text="›"
+                                android:fontFamily="@font/misans"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="16sp" />
+                                android:textSize="13sp" />
                         </LinearLayout>
 
                         <!-- Behavior Packs Row -->
@@ -437,9 +441,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
+                                android:layout_marginBottom="1dp"
                                 android:text="›"
+                                android:fontFamily="@font/misans"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="16sp" />
+                                android:textSize="13sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </ScrollView>

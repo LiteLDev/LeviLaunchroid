@@ -579,16 +579,14 @@
     <string name="about_star_fork">Star / Fork</string>
 
     <string-array name="launcher_tips">
-        <item>If incompatible resource packs are detected, click the warning row to review them directly.</item>
+        <item>Do people actually read these?</item>
         <item>You can drag mods to reorder their load priority.</item>
-        <item>Enable version isolation to keep different game versions separate.</item>
+        <item>Try Version Isolation!</item>
         <item>Use Quick Launch to connect directly to a server without opening the game first.</item>
         <item>You can import .mcworld, .mcpack, and .mcaddon files from the Content Management page.</item>
-        <item>Sign in with your Microsoft account to access Realms and online play.</item>
-        <item>Tap the version selector to switch between installed Minecraft versions.</item>
+        <item>Manage multiple Xbox accounts inside the launcher and switch between them seamlessly.</item>
         <item>CurseForge lets you browse and download community content directly.</item>
-        <item>Inbuilt mods like FPS Display and Auto Sprint work without native libraries.</item>
-        <item>Long press a mod to see more options like reordering or deletion.</item>
+        <item>Load external native SO modules to extend or enhance Minecraft features and performance.</item>
     </string-array>
 
     <string name="theme_color_title">Theme Color</string>

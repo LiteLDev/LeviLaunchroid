@@ -191,7 +191,7 @@ public class PersonalizationManager {
     private void applyNavBarAccent(Activity activity, int accent) {
         TextView appName = activity.findViewById(R.id.nav_app_name);
         if (appName != null) {
-            applyGradientToText(appName, accent, Color.WHITE);
+            applySubtleWhiteGradient(appName, accent, 0.35f, false);
         }
 
         View signInBtn = activity.findViewById(R.id.nav_sign_in_button);
@@ -202,20 +202,34 @@ public class PersonalizationManager {
         }
     }
 
-    public void applyGradientToText(TextView textView, int color1, int color2) {
+    public void applySubtleWhiteGradient(TextView textView, int accentColor, float whiteRatio, boolean whiteOnLeft) {
         textView.post(() -> {
             String text = textView.getText().toString();
             float textWidth = textView.getPaint().measureText(text);
             if (textWidth <= 0) textWidth = 1f;
+
+            int blendedWhite = blendColors(accentColor, Color.WHITE, whiteRatio);
+
+            int leftColor = whiteOnLeft ? blendedWhite : accentColor;
+            int rightColor = whiteOnLeft ? accentColor : blendedWhite;
+
             Shader shader = new LinearGradient(
                     0, 0, textWidth, 0,
-                    new int[]{color1, color2},
+                    new int[]{leftColor, rightColor},
                     new float[]{0f, 1f},
                     Shader.TileMode.CLAMP
             );
             textView.getPaint().setShader(shader);
             textView.invalidate();
         });
+    }
+
+    private int blendColors(int color1, int color2, float ratio) {
+        float inverseRatio = 1f - ratio;
+        int r = (int) (Color.red(color1) * inverseRatio + Color.red(color2) * ratio);
+        int g = (int) (Color.green(color1) * inverseRatio + Color.green(color2) * ratio);
+        int b = (int) (Color.blue(color1) * inverseRatio + Color.blue(color2) * ratio);
+        return Color.rgb(r, g, b);
     }
 
     private void applyBackgroundImage(Activity activity, ViewGroup rootView) {

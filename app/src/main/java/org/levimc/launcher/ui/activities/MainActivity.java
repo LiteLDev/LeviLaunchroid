@@ -498,7 +498,7 @@ import okhttp3.OkHttpClient;
             binding.manageModsButton.setBackground(gd);
 
             if (binding.minecraftTitleText != null) {
-                pm.applyGradientToText(binding.minecraftTitleText, accent, android.graphics.Color.WHITE);
+                pm.applySubtleWhiteGradient(binding.minecraftTitleText, accent, 0.35f, true);
             }
         }
 
@@ -657,12 +657,36 @@ import okhttp3.OkHttpClient;
         GameVersion currentVersion = versionManager.getSelectedVersion();
         if (currentVersion == null) return;
 
+        android.content.SharedPreferences cmPrefs = getSharedPreferences("content_management", MODE_PRIVATE);
+        String savedType = cmPrefs.getString("storage_type", "INTERNAL");
+        org.levimc.launcher.settings.FeatureSettings.StorageType storageType;
+        try {
+            storageType = org.levimc.launcher.settings.FeatureSettings.StorageType.valueOf(savedType);
+        } catch (IllegalArgumentException e) {
+            storageType = org.levimc.launcher.settings.FeatureSettings.StorageType.INTERNAL;
+        }
+
         java.io.File baseDir;
-        if (currentVersion.versionIsolation
-                && currentVersion.versionDir != null) {
-            baseDir = new java.io.File(currentVersion.versionDir, "games/com.mojang");
-        } else {
-            baseDir = new java.io.File(getDataDir(), "games/com.mojang");
+        switch (storageType) {
+            case VERSION_ISOLATION:
+                if (currentVersion.versionDir != null) {
+                    baseDir = new java.io.File(currentVersion.versionDir, "games/com.mojang");
+                } else {
+                    baseDir = new java.io.File(getDataDir(), "games/com.mojang");
+                }
+                break;
+            case EXTERNAL:
+                java.io.File externalDir = getExternalFilesDir(null);
+                if (externalDir != null) {
+                    baseDir = new java.io.File(externalDir, "games/com.mojang");
+                } else {
+                    baseDir = new java.io.File(getDataDir(), "games/com.mojang");
+                }
+                break;
+            case INTERNAL:
+            default:
+                baseDir = new java.io.File(getDataDir(), "games/com.mojang");
+                break;
         }
 
         contentManager.setStorageDirectories(

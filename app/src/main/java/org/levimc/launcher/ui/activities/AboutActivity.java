@@ -37,8 +37,25 @@ public class AboutActivity extends BaseActivity {
 
         loadAuthorAvatar();
         setupLinks();
+        styleAuthorBadge();
 
         DynamicAnim.applyPressScaleRecursively(findViewById(android.R.id.content));
+    }
+
+    private void styleAuthorBadge() {
+        TextView badge = findViewById(R.id.author_badge);
+        if (badge == null) return;
+
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(this);
+        int accent = pm.getAccentColor();
+        if (accent != 0) {
+            android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+            gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+            gd.setColor(accent);
+            gd.setCornerRadius(4 * getResources().getDisplayMetrics().density);
+            badge.setBackground(gd);
+            badge.setTextColor(android.graphics.Color.WHITE);
+        }
     }
 
     private void setupNavBar() {

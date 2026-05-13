@@ -92,6 +92,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/author_badge"
                                 android:layout_width="wrap_content"
                                 android:layout_height="18dp"
                                 android:layout_marginStart="8dp"
