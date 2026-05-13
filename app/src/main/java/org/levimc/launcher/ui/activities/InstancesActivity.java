@@ -336,21 +336,30 @@ public class InstancesActivity extends BaseActivity {
                     && selectedVersion.directoryName.equals(v.directoryName);
 
             holder.itemView.setActivated(isSelected);
-            holder.itemView.setBackgroundResource(R.drawable.bg_instance_card);
 
             PersonalizationManager pm = new PersonalizationManager(holder.itemView.getContext());
             int accent = pm.getAccentColor();
-            int effectiveSurf = pm.getEffectiveSurfaceColor();
-            if (isSelected && accent != 0) {
-                android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
-                gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
-                gd.setCornerRadius(12 * holder.itemView.getContext().getResources().getDisplayMetrics().density);
-                gd.setStroke((int)(2 * holder.itemView.getContext().getResources().getDisplayMetrics().density), accent);
-                gd.setColor(effectiveSurf);
-                holder.itemView.setBackground(gd);
+            
+            int bgColor;
+            if (pm.hasBackgroundImage()) {
+                bgColor = pm.getEffectiveSurfaceColor();
             } else {
-                pm.applyGlassToView(holder.itemView);
+                bgColor = androidx.core.content.ContextCompat.getColor(holder.itemView.getContext(), R.color.surface);
             }
+            
+            android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+            gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+            gd.setCornerRadius(12 * holder.itemView.getContext().getResources().getDisplayMetrics().density);
+            gd.setColor(bgColor);
+            
+            if (isSelected && accent != 0) {
+                gd.setStroke((int)(2 * holder.itemView.getContext().getResources().getDisplayMetrics().density), accent);
+            } else {
+                gd.setStroke((int)(1 * holder.itemView.getContext().getResources().getDisplayMetrics().density), 
+                    androidx.core.content.ContextCompat.getColor(holder.itemView.getContext(), R.color.outline));
+            }
+            
+            holder.itemView.setBackground(gd);
 
             holder.versionCode.setText(v.versionCode != null ? v.versionCode : v.directoryName);
 

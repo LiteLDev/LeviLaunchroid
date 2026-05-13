@@ -45,12 +45,12 @@ public class PersonalizationManager {
     private final SharedPreferences prefs;
     private final Context context;
 
-    private static final int GLASS_ALPHA_DARK = 90;
+    private static final int GLASS_ALPHA_DARK = 50;
     private static final int GLASS_R_DARK = 25;
     private static final int GLASS_G_DARK = 25;
     private static final int GLASS_B_DARK = 25;
 
-    private static final int GLASS_ALPHA_LIGHT = 110;
+    private static final int GLASS_ALPHA_LIGHT = 50;
     private static final int GLASS_R_LIGHT = 255;
     private static final int GLASS_G_LIGHT = 255;
     private static final int GLASS_B_LIGHT = 255;

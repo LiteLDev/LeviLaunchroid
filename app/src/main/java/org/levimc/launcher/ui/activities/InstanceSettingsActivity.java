@@ -1,19 +1,11 @@
 package org.levimc.launcher.ui.activities;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -22,10 +14,6 @@ import org.levimc.launcher.core.versions.GameVersion;
 import org.levimc.launcher.core.versions.VersionManager;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 
 public class InstanceSettingsActivity extends BaseActivity {
 
@@ -36,14 +24,7 @@ public class InstanceSettingsActivity extends BaseActivity {
     private View sectionGeneral, sectionLaunchOptions, sectionManagement;
 
     private EditText editName;
-    private ImageView iconPreview;
     private SwitchMaterial switchIsolation;
-    private boolean pendingIsolation;
-    private String pendingName;
-    private Bitmap pendingIcon;
-    private boolean clearIcon;
-
-    private ActivityResultLauncher<Intent> iconPickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,26 +43,6 @@ public class InstanceSettingsActivity extends BaseActivity {
             return;
         }
 
-        iconPickerLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        Uri uri = result.getData().getData();
-                        if (uri != null) {
-                            try {
-                                InputStream is = getContentResolver().openInputStream(uri);
-                                pendingIcon = BitmapFactory.decodeStream(is);
-                                clearIcon = false;
-                                if (is != null) is.close();
-                                if (pendingIcon != null) {
-                                    iconPreview.setImageBitmap(pendingIcon);
-                                }
-                            } catch (Exception ignored) {}
-                        }
-                    }
-                }
-        );
-
         initViews();
         populateData();
         selectTab(tabGeneral);
@@ -97,7 +58,6 @@ public class InstanceSettingsActivity extends BaseActivity {
         sectionManagement = findViewById(R.id.section_management);
 
         editName = findViewById(R.id.edit_instance_name);
-        iconPreview = findViewById(R.id.instance_icon_preview);
         switchIsolation = findViewById(R.id.switch_version_isolation);
 
         tabGeneral.setOnClickListener(v -> selectTab(tabGeneral));
@@ -106,20 +66,6 @@ public class InstanceSettingsActivity extends BaseActivity {
 
         findViewById(R.id.btn_cancel).setOnClickListener(v -> finish());
         findViewById(R.id.btn_ok).setOnClickListener(v -> saveAndFinish());
-
-        Button btnClearIcon = findViewById(R.id.btn_clear_icon);
-        btnClearIcon.setOnClickListener(v -> {
-            clearIcon = true;
-            pendingIcon = null;
-            iconPreview.setImageResource(R.drawable.ic_minecraft);
-        });
-
-        iconPreview.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            iconPickerLauncher.launch(intent);
-        });
 
         Button btnDelete = findViewById(R.id.btn_delete_instance);
         if (version.isInstalled) {
@@ -149,18 +95,8 @@ public class InstanceSettingsActivity extends BaseActivity {
             }
         }
         editName.setText(currentName);
-        pendingName = currentName;
 
-        pendingIsolation = version.versionIsolation;
-        switchIsolation.setChecked(pendingIsolation);
-
-        File logoFile = getInstanceLogoFile();
-        if (logoFile != null && logoFile.exists()) {
-            Bitmap bmp = BitmapFactory.decodeFile(logoFile.getAbsolutePath());
-            if (bmp != null) {
-                iconPreview.setImageBitmap(bmp);
-            }
-        }
+        switchIsolation.setChecked(version.versionIsolation);
     }
 
     private void selectTab(TextView selectedTab) {
@@ -217,15 +153,6 @@ public class InstanceSettingsActivity extends BaseActivity {
 
         versionManager.setInstanceVersionIsolation(version, switchIsolation.isChecked());
 
-        if (pendingIcon != null && !clearIcon) {
-            saveIconToFile(pendingIcon);
-        } else if (clearIcon) {
-            File logoFile = getInstanceLogoFile();
-            if (logoFile != null && logoFile.exists()) {
-                logoFile.delete();
-            }
-        }
-
         setResult(RESULT_OK);
         finish();
     }
@@ -253,19 +180,6 @@ public class InstanceSettingsActivity extends BaseActivity {
                 })
                 .setNegativeButton(getString(R.string.cancel), null)
                 .show();
-    }
-
-    private File getInstanceLogoFile() {
-        if (version.versionDir == null) return null;
-        return new File(version.versionDir, "LargeLogo.png");
-    }
-
-    private void saveIconToFile(Bitmap bitmap) {
-        File logoFile = getInstanceLogoFile();
-        if (logoFile == null) return;
-        try (FileOutputStream fos = new FileOutputStream(logoFile)) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception ignored) {}
     }
 
     private void setupNavBar() {
