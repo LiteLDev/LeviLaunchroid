@@ -130,6 +130,13 @@
             tools:ignore="DiscouragedApi"
             android:label="@string/settings_title" />
 
+        <activity
+            android:name="org.levimc.launcher.ui.activities.InstanceSettingsActivity"
+            android:exported="false"
+            android:screenOrientation="sensorLandscape"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"
+            tools:ignore="DiscouragedApi" />
+
         <!-- Accounts Management -->
         <activity
             android:name="org.levimc.launcher.ui.activities.AccountsActivity"

@@ -641,7 +641,7 @@ import okhttp3.OkHttpClient;
         if (currentVersion == null) return;
 
         java.io.File baseDir;
-        if (FeatureSettings.getInstance().isVersionIsolationEnabled()
+        if (currentVersion.versionIsolation
                 && currentVersion.versionDir != null) {
             baseDir = new java.io.File(currentVersion.versionDir, "games/com.mojang");
         } else {
@@ -715,13 +715,13 @@ import okhttp3.OkHttpClient;
             }
         }
 
-        if (!version.isInstalled && !FeatureSettings.getInstance().isVersionIsolationEnabled()) {
+        if (!version.isInstalled && !version.versionIsolation) {
             binding.launchButton.setEnabled(true);
             new CustomAlertDialog(this)
                     .setTitleText(getString(R.string.dialog_title_version_isolation))
                     .setMessage(getString(R.string.dialog_message_version_isolation))
                     .setPositiveButton(getString(R.string.dialog_positive_enable), v -> {
-                        FeatureSettings.getInstance().setVersionIsolationEnabled(true);
+                        VersionManager.get(this).setInstanceVersionIsolation(version, true);
                         performActualLaunch();
                     })
                     .setNegativeButton(getString(R.string.dialog_negative_cancel), null)

@@ -45,6 +45,7 @@ public class InstancesActivity extends BaseActivity {
 
     private ApkImportManager apkImportManager;
     private ActivityResultLauncher<Intent> apkImportResultLauncher;
+    private ActivityResultLauncher<Intent> instanceSettingsLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,17 @@ public class InstancesActivity extends BaseActivity {
                 result -> {
                     if (apkImportManager != null)
                         apkImportManager.handleActivityResult(result.getResultCode(), result.getData());
+                }
+        );
+
+        instanceSettingsLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        versionManager.loadAllVersions();
+                        loadVersions();
+                        applyFilters();
+                    }
                 }
         );
 
@@ -87,6 +99,12 @@ public class InstancesActivity extends BaseActivity {
             versionManager.selectVersion(version);
             adapter.setSelectedVersion(version);
             adapter.notifyDataSetChanged();
+        });
+
+        adapter.setOnSettingsClickListener(version -> {
+            Intent intent = new Intent(this, InstanceSettingsActivity.class);
+            intent.putExtra("version", version);
+            instanceSettingsLauncher.launch(intent);
         });
 
         setupFilterTabs();
@@ -249,13 +267,22 @@ public class InstancesActivity extends BaseActivity {
         private List<GameVersion> versions;
         private GameVersion selectedVersion;
         private OnItemClickListener listener;
+        private OnSettingsClickListener settingsListener;
 
         interface OnItemClickListener {
             void onClick(GameVersion version);
         }
 
+        interface OnSettingsClickListener {
+            void onClick(GameVersion version);
+        }
+
         void setOnItemClickListener(OnItemClickListener l) {
             this.listener = l;
+        }
+
+        void setOnSettingsClickListener(OnSettingsClickListener l) {
+            this.settingsListener = l;
         }
 
         InstanceCardAdapter(List<GameVersion> versions, GameVersion selected) {
@@ -309,7 +336,9 @@ public class InstancesActivity extends BaseActivity {
             }
             holder.displayName.setText(displayLabel);
 
-            holder.settingsIcon.setOnClickListener(iv -> {});
+            holder.settingsIcon.setOnClickListener(iv -> {
+                if (settingsListener != null) settingsListener.onClick(v);
+            });
 
             holder.itemView.setOnClickListener(iv -> {
                 if (listener != null) listener.onClick(v);

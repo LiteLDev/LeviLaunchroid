@@ -175,6 +175,23 @@
 
     <string name="version_isolation">Version Isolation</string>
 
+    <string name="instance_settings_title">Instance Settings</string>
+    <string name="instance_tab_general">General</string>
+    <string name="instance_tab_launch_options">Launch Options</string>
+    <string name="instance_tab_management">Management</string>
+    <string name="instance_new_name">New Name</string>
+    <string name="instance_rename_hint">Only rename the folder. Game version and type are unaffected.</string>
+    <string name="instance_custom_icon">Custom Icon (square required)</string>
+    <string name="instance_clear_icon">Clear</string>
+    <string name="instance_icon_hint">Will be saved as LargeLogo.png under the version folder. Click the icon to change.</string>
+    <string name="instance_isolation_desc">Isolate game data for this instance. Other instances will not be affected.</string>
+    <string name="instance_danger_zone">Danger Zone</string>
+    <string name="instance_danger_zone_desc">These actions affect the instance registration or local files. Double-check before continuing.</string>
+    <string name="instance_delete_desc">Permanently deletes this instance from your device, including worlds, configs, and installed content.</string>
+    <string name="instance_delete_warning">This action cannot be undone.</string>
+    <string name="instance_delete_confirm_title">Delete Instance</string>
+    <string name="instance_delete_confirm_msg">Are you sure you want to delete this instance? All data including worlds will be permanently removed.</string>
+
     <!-- Language Setting -->
     <string name="language">Language</string>
     <string name="english">English</string>
