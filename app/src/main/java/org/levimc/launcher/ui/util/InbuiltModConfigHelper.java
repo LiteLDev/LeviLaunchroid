@@ -242,6 +242,40 @@ public class InbuiltModConfigHelper {
         });
         DynamicAnim.applyPressScale(btnSave);
 
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(context);
+        int accent = pm.getAccentColor();
+        if (accent != 0) {
+            android.content.res.ColorStateList accentTint = android.content.res.ColorStateList.valueOf(accent);
+            if (seekBarSize != null) {
+                seekBarSize.setProgressTintList(accentTint);
+                seekBarSize.setThumbTintList(accentTint);
+            }
+            if (seekBarOpacity != null) {
+                seekBarOpacity.setProgressTintList(accentTint);
+                seekBarOpacity.setThumbTintList(accentTint);
+            }
+            if (seekBarCursor != null) {
+                seekBarCursor.setProgressTintList(accentTint);
+                seekBarCursor.setThumbTintList(accentTint);
+            }
+            if (seekBarZoom != null) {
+                seekBarZoom.setProgressTintList(accentTint);
+                seekBarZoom.setThumbTintList(accentTint);
+            }
+            if (lockSwitch != null) {
+                int[][] states = {{android.R.attr.state_checked}, {}};
+                lockSwitch.setThumbTintList(new android.content.res.ColorStateList(states, new int[]{accent, 0xFFAAAAAA}));
+                int trackChecked = android.graphics.Color.argb(100, android.graphics.Color.red(accent), android.graphics.Color.green(accent), android.graphics.Color.blue(accent));
+                lockSwitch.setTrackTintList(new android.content.res.ColorStateList(states, new int[]{trackChecked, 0xFF555555}));
+            }
+            if (btnSave != null) {
+                btnSave.setBackgroundTintList(accentTint);
+            }
+            if (title != null) {
+                title.setTextColor(accent);
+            }
+        }
+
         dialog.show();
     }
 

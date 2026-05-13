@@ -69,6 +69,11 @@ public class OptionsPropertiesAdapter extends RecyclerView.Adapter<RecyclerView.
         } else if (holder instanceof PropertyViewHolder propHolder) {
             propHolder.bind((OptionProperty) item, listener);
         }
+
+        android.content.Context ctx = holder.itemView.getContext();
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(ctx);
+        pm.applyGlassToView(holder.itemView);
+        pm.applyAccentToView(holder.itemView, ctx);
     }
 
     @Override

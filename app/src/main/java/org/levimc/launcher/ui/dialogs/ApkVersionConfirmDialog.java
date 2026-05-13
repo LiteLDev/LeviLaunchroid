@@ -126,6 +126,15 @@ public class ApkVersionConfirmDialog extends DialogFragment {
         DynamicAnim.applyPressScale(btnInstall);
         DynamicAnim.applyPressScale(btnCancel);
 
+        try {
+            org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(context);
+            int accent = pm.getAccentColor();
+            if (accent != 0) {
+                btnInstall.setBackgroundTintList(android.content.res.ColorStateList.valueOf(accent));
+                btnInstall.setTextColor(Color.WHITE);
+            }
+        } catch (Exception ignored) {}
+
         return dialog;
     }
 

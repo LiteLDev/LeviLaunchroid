@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -362,19 +364,51 @@ public class PersonalizationManager {
     }
 
     public void applyAccentColorRecursive(View view, int accentColor, Activity activity) {
-        int defaultPrimary = ContextCompat.getColor(activity, R.color.primary);
-        int defaultAccentText = ContextCompat.getColor(activity, R.color.accent_text);
+        applyAccentColorRecursive(view, accentColor, (Context) activity);
+    }
+
+    public void applyAccentColorRecursive(View view, int accentColor, Context ctx) {
+        int defaultPrimary = ContextCompat.getColor(ctx, R.color.primary);
+        int defaultSecondary = ContextCompat.getColor(ctx, R.color.secondary);
+        int defaultTertiary = ContextCompat.getColor(ctx, R.color.tertiary);
+        int defaultAccentText = ContextCompat.getColor(ctx, R.color.accent_text);
 
         if (view instanceof com.google.android.material.switchmaterial.SwitchMaterial) {
             com.google.android.material.switchmaterial.SwitchMaterial sw =
                     (com.google.android.material.switchmaterial.SwitchMaterial) view;
             try {
-                if (sw.getThumbTintList() != null) {
-                    int thumbTint = sw.getThumbTintList().getDefaultColor();
-                    if (thumbTint == defaultPrimary) {
-                        sw.setThumbTintList(ColorStateList.valueOf(accentColor));
-                    }
-                }
+                int[][] states = {{android.R.attr.state_checked}, {}};
+                sw.setThumbTintList(new ColorStateList(states, new int[]{accentColor, 0xFFAAAAAA}));
+                int trackChecked = Color.argb(100, Color.red(accentColor), Color.green(accentColor), Color.blue(accentColor));
+                sw.setTrackTintList(new ColorStateList(states, new int[]{trackChecked, 0xFF555555}));
+            } catch (Exception ignored) {}
+        }
+
+        if (view instanceof Switch && !(view instanceof com.google.android.material.switchmaterial.SwitchMaterial)) {
+            Switch sw = (Switch) view;
+            try {
+                int[][] states = {{android.R.attr.state_checked}, {}};
+                sw.setThumbTintList(new ColorStateList(states, new int[]{accentColor, 0xFFAAAAAA}));
+                int trackChecked = Color.argb(100, Color.red(accentColor), Color.green(accentColor), Color.blue(accentColor));
+                sw.setTrackTintList(new ColorStateList(states, new int[]{trackChecked, 0xFF555555}));
+            } catch (Exception ignored) {}
+        }
+
+        if (view instanceof androidx.appcompat.widget.SwitchCompat && !(view instanceof com.google.android.material.switchmaterial.SwitchMaterial)) {
+            androidx.appcompat.widget.SwitchCompat sw = (androidx.appcompat.widget.SwitchCompat) view;
+            try {
+                int[][] states = {{android.R.attr.state_checked}, {}};
+                sw.setThumbTintList(new ColorStateList(states, new int[]{accentColor, 0xFFAAAAAA}));
+                int trackChecked = Color.argb(100, Color.red(accentColor), Color.green(accentColor), Color.blue(accentColor));
+                sw.setTrackTintList(new ColorStateList(states, new int[]{trackChecked, 0xFF555555}));
+            } catch (Exception ignored) {}
+        }
+
+        if (view instanceof SeekBar) {
+            SeekBar sb = (SeekBar) view;
+            try {
+                sb.setProgressTintList(ColorStateList.valueOf(accentColor));
+                sb.setThumbTintList(ColorStateList.valueOf(accentColor));
             } catch (Exception ignored) {}
         }
 
@@ -383,7 +417,7 @@ public class PersonalizationManager {
             try {
                 if (btn.getBackgroundTintList() != null) {
                     int currentTint = btn.getBackgroundTintList().getDefaultColor();
-                    if (currentTint == defaultPrimary) {
+                    if (currentTint == defaultPrimary || currentTint == defaultSecondary || currentTint == defaultTertiary) {
                         btn.setBackgroundTintList(ColorStateList.valueOf(accentColor));
                         btn.setTextColor(Color.WHITE);
                     }
@@ -398,9 +432,12 @@ public class PersonalizationManager {
             if (bg instanceof GradientDrawable) {
                 GradientDrawable gd = (GradientDrawable) bg;
                 try {
-                    if (gd.getColor() != null && gd.getColor().getDefaultColor() == defaultPrimary) {
-                        gd.setColor(accentColor);
-                        btn.setTextColor(Color.WHITE);
+                    if (gd.getColor() != null) {
+                        int gdColor = gd.getColor().getDefaultColor();
+                        if (gdColor == defaultPrimary || gdColor == defaultSecondary || gdColor == defaultTertiary) {
+                            gd.setColor(accentColor);
+                            btn.setTextColor(Color.WHITE);
+                        }
                     }
                 } catch (Exception ignored) {}
             }
@@ -437,9 +474,15 @@ public class PersonalizationManager {
         if (view instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) view;
             for (int i = 0; i < group.getChildCount(); i++) {
-                applyAccentColorRecursive(group.getChildAt(i), accentColor, activity);
+                applyAccentColorRecursive(group.getChildAt(i), accentColor, ctx);
             }
         }
+    }
+
+    public void applyAccentToView(View view, Context context) {
+        int accent = getAccentColor();
+        if (accent == 0) return;
+        applyAccentColorRecursive(view, accent, context);
     }
 
     private boolean isDarkMode(Activity activity) {

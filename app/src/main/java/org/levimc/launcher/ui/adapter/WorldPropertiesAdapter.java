@@ -72,6 +72,11 @@ public class WorldPropertiesAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else if (holder instanceof PropertyViewHolder propHolder) {
             propHolder.bind((WorldProperty) item, listener);
         }
+
+        android.content.Context context = holder.itemView.getContext();
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(context);
+        pm.applyGlassToView(holder.itemView);
+        pm.applyAccentToView(holder.itemView, context);
     }
 
     @Override

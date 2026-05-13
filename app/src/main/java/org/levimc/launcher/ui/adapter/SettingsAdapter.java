@@ -35,6 +35,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Contai
             holder.container.removeAllViews();
             builder.build(holder.container);
         }
+        android.content.Context ctx = holder.itemView.getContext();
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(ctx);
+        pm.applyAccentToView(holder.itemView, ctx);
     }
 
     @Override

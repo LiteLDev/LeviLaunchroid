@@ -71,6 +71,7 @@ public class InbuiltModsListAdapter extends RecyclerView.Adapter<InbuiltModsList
 
         org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(context);
         pm.applyGlassToView(holder.itemView);
+        pm.applyAccentToView(holder.itemView, context);
     }
 
 

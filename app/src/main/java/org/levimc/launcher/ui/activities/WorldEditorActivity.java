@@ -226,8 +226,15 @@ public class WorldEditorActivity extends BaseActivity {
                     .setNegativeButton(R.string.cancel, (d, which) -> d.dismiss())
                     .show();
 
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.WHITE);
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
+            org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(this);
+            int accent = pm.getAccentColor();
+            if (accent != 0) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(accent);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(accent);
+            } else {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.WHITE);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
+            }
         } else {
             super.onBackPressed();
         }

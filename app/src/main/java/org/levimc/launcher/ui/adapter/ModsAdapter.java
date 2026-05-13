@@ -91,6 +91,11 @@ public class ModsAdapter extends RecyclerView.Adapter<ModsAdapter.ModViewHolder>
                 onModClickListener.onModClick(mod, position, holder.itemView);
             }
         });
+
+        android.content.Context context = holder.itemView.getContext();
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(context);
+        pm.applyGlassToView(holder.itemView);
+        pm.applyAccentToView(holder.itemView, context);
     }
 
     @Override

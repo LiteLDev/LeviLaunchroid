@@ -74,6 +74,10 @@ public class CurseForgeContentAdapter extends RecyclerView.Adapter<RecyclerView.
         } else if (holder instanceof FooterViewHolder) {
             ((FooterViewHolder) holder).bind(currentPage, totalPages, pageChangeListener);
         }
+
+        android.content.Context ctx = holder.itemView.getContext();
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(ctx);
+        pm.applyAccentToView(holder.itemView, ctx);
     }
 
     @Override
