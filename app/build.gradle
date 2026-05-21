@@ -136,7 +136,7 @@ dependencies {
     implementation libs.okhttp
     implementation libs.androidx.dynamicanimation
     implementation libs.bedrock.connection
-    implementation libs.xcrash.android.lib
+    implementation libs.xcrash
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

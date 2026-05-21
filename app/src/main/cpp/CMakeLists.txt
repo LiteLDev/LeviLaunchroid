@@ -6,6 +6,7 @@ set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
 
 if(ANDROID)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    add_link_options("-Wl,-z,max-page-size=16384")
 endif()
 
 add_subdirectory(unpaircore)
