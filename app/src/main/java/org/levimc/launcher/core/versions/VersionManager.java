@@ -17,6 +17,7 @@ import org.levimc.launcher.ui.activities.MainActivity;
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
 import org.levimc.launcher.ui.dialogs.LibsRepairDialog;
 import org.levimc.launcher.util.ApkUtils;
+import org.levimc.launcher.util.NativeImageGuard;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -215,6 +216,9 @@ public class VersionManager {
                                             fos.write(buffer, 0, len);
                                             progress[0] += len;
                                         }
+                                    }
+                                    if (!NativeImageGuard.processRequired(outFile)) {
+                                        throw new IOException("Failed to prepare native library: " + outFile.getName());
                                     }
 
                                     int percent = (int) ((progress[0] * 100) / totalSize);

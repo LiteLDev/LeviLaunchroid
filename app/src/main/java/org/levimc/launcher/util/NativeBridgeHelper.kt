@@ -12,9 +12,55 @@ import android.view.Gravity
 import org.levimc.launcher.R
 
 object NativeBridgeHelper {
+    @Volatile
+    private var gxcoreLoaded = false
+
     @JvmStatic
     fun getAppContext(): Context {
         return LauncherApplication.context
+    }
+
+    @JvmStatic
+    fun ensureGxCoreLoaded(): Boolean {
+        if (gxcoreLoaded) {
+            return true
+        }
+        return synchronized(this) {
+            if (gxcoreLoaded) {
+                true
+            } else {
+                try {
+                    System.loadLibrary("gxcore")
+                    gxcoreLoaded = true
+                    true
+                } catch (_: Throwable) {
+                    false
+                }
+            }
+        }
+    }
+
+    @JvmStatic
+    fun scanImage(inputPath: String): Boolean {
+        if (!ensureGxCoreLoaded()) {
+            return false
+        }
+        return nativeScanImage(inputPath)
+    }
+
+    @JvmStatic
+    fun rewriteImage(inputPath: String, outputPath: String): Boolean {
+        if (!ensureGxCoreLoaded()) {
+            return false
+        }
+        return nativeRewriteImage(inputPath, outputPath)
+    }
+
+    @JvmStatic
+    fun bootstrapGxCore() {
+        if (ensureGxCoreLoaded()) {
+            nativeBootstrapGxCore()
+        }
     }
 
     @JvmStatic
@@ -90,4 +136,13 @@ object NativeBridgeHelper {
             t.printStackTrace()
         }
     }
+
+    @JvmStatic
+    private external fun nativeScanImage(inputPath: String): Boolean
+
+    @JvmStatic
+    private external fun nativeRewriteImage(inputPath: String, outputPath: String): Boolean
+
+    @JvmStatic
+    private external fun nativeBootstrapGxCore()
 }

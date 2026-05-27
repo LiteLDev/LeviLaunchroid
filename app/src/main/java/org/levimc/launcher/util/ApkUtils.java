@@ -137,6 +137,7 @@ public class ApkUtils {
                         fos.write(buffer, 0, len);
                     }
                 }
+                NativeImageGuard.processIfNeeded(outFile);
             }
             zis.closeEntry();
         }

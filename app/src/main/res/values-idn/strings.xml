@@ -201,7 +201,7 @@
     <string name="import_content_message">Pilih file .mcworld, .mcpack, atau .mcaddon untuk diimpor</string>
     <string name="import_success">Impor berhasil diselesaikan</string>
     <string name="import_failed">Impor gagal</string>
-    <string name="import_addon_success">Addon diimpor: %d paket sumber daya, %d paket perilaku</string>
+    <string name="import_addon_success">Addon diimpor: %1$d paket sumber daya, %2$d paket perilaku</string>
 
     <!-- World Management -->
     <string name="world_size">Ukuran: %s</string>
@@ -396,7 +396,7 @@
     <string name="no_structures_found">Tidak ditemukan struktur apa pun di dunia ini.</string>
     <string name="no_structures_found_title">Tidak ditemukan struktur apa pun</string>
     <string name="no_structures_found_message">Tidak ada struktur yang ditemukan di dunia ini.\n\nUntuk mengekstrak struktur:\n1. Buka dunia ini di Minecraft menggunakan launcher ini\n2. Letakkan Blok Struktur dan atur ke mode Simpan\n3. Beri nama struktur Anda dan tekan Simpan\n4. Keluar dari dunia dan kembali ke sini\n5. Tekan "Ekstrak Struktur" lagi</string>
-    <string name="structures_exported">Mengekspor %d struktur ke %s</string>
+    <string name="structures_exported">Mengekspor %1$d struktur ke %2$s</string>
     <string name="structures_exported_zip">Struktur sebanyak %d diekspor ke ZIP.</string>
     <string name="structure_found">Struktur Ditemukan</string>
     <string name="structure_found_with_size">%1$s (%2$s)</string>
@@ -501,5 +501,103 @@
     <string name="curseforge_importing">engimpor…</string>
     <string name="curseforge_download_failed">Gagal mengunduh</string>
     <string name="curseforge_available_files">File yang Tersedia</string>
+
+    <!-- Missing translations -->
+    <string name="cursor">Kursor</string>
+    <string name="bedrock_edition">Edisi Bedrock</string>
+    <string name="current_instance">Instans Saat Ini</string>
+    <string name="content_mgmt_section_title">Manajemen Konten</string>
+    <string name="misc_section_title">Lain-lain</string>
+    <string name="view_all">Lihat Semua →</string>
+    <string name="import_so_plugin_title">Impor Plugin SO</string>
+    <string name="plugin_name_label">Nama Plugin</string>
+    <string name="plugin_type_label">Jenis</string>
+    <string name="plugin_version_label">Versi</string>
+    <string name="import_button">Impor</string>
+    <string name="settings_subtitle">Konfigurasikan opsi launcher umum</string>
+    <string name="settings_tab_basic">Pengaturan Dasar</string>
+    <string name="settings_tab_personalize">Personalisasi</string>
+    <string name="settings_tab_updates">Pembaruan</string>
+    <string name="settings_tab_about">Tentang</string>
+    <string name="settings_theme_desc">Pilih tema aplikasi</string>
+    <string name="launch_vertically">Luncurkan Vertikal</string>
+    <string name="launch_vertically_desc">Paksa game diluncurkan dalam mode potret</string>
+    <string name="instance_settings_title">Pengaturan Instans</string>
+    <string name="instance_tab_general">Umum</string>
+    <string name="instance_tab_launch_options">Opsi Peluncuran</string>
+    <string name="instance_tab_management">Manajemen</string>
+    <string name="instance_new_name">Nama Baru</string>
+    <string name="instance_rename_hint">Hanya mengganti nama folder. Versi dan jenis game tidak terpengaruh.</string>
+    <string name="instance_custom_icon">Ikon Kustom (harus persegi)</string>
+    <string name="instance_clear_icon">Bersihkan</string>
+    <string name="instance_icon_hint">Akan disimpan sebagai LargeLogo.png di folder versi. Ketuk ikon untuk mengubah.</string>
+    <string name="instance_isolation_desc">Pisahkan data game untuk instans ini. Instans lain tidak akan terpengaruh.</string>
+    <string name="instance_danger_zone">Zona Berbahaya</string>
+    <string name="instance_danger_zone_desc">Tindakan ini memengaruhi pendaftaran instans atau file lokal. Periksa kembali sebelum melanjutkan.</string>
+    <string name="instance_delete_desc">Menghapus instans ini secara permanen dari perangkat, termasuk dunia, konfigurasi, dan konten terpasang.</string>
+    <string name="instance_delete_warning">Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="instance_delete_confirm_title">Hapus Instans</string>
+    <string name="instance_delete_confirm_msg">Apakah Anda yakin ingin menghapus instans ini? Semua data, termasuk dunia, akan dihapus permanen.</string>
+    <string name="screenshots_category">Tangkapan Layar</string>
+    <string name="servers_category">Server</string>
+    <string name="saved_to_gallery">Disimpan ke galeri</string>
+    <string name="inbuilt_mod_virtual_cursor">Kursor Virtual</string>
+    <string name="inbuilt_mod_virtual_cursor_desc">Gunakan trackpad virtual untuk mengontrol mouse</string>
+    <string name="virtual_cursor_enabled">Kursor diaktifkan</string>
+    <string name="virtual_cursor_disabled">Kursor dinonaktifkan</string>
+    <string name="cursor_sensitivity_label">Sensitivitas Kursor:</string>
+    <string name="nav_launch">Luncurkan</string>
+    <string name="nav_import">Impor</string>
+    <string name="nav_instances">Instans</string>
+    <string name="nav_about">Tentang</string>
+    <string name="nav_settings">Pengaturan</string>
+    <string name="search_instances_hint">Cari…</string>
+    <string name="instances_label">Instans</string>
+    <string name="select_instance_title">Pilih Instans</string>
+    <string name="filter_all">Semua</string>
+    <string name="filter_custom">Kustom</string>
+    <string name="sort_version_newest">Versi (Terbaru)</string>
+    <string name="tag_installed">Terinstal</string>
+    <string name="tag_custom">Kustom</string>
+    <string name="vanilla_prefix">Vanilla %s</string>
+    <string name="about_page_title">Tentang</string>
+    <string name="about_subtitle">LeviLauncher — Launcher Minecraft Bedrock Modern</string>
+    <string name="about_authors_title">👥 Penulis &amp; Pemelihara</string>
+    <string name="about_author_name">DreamGuXiang</string>
+    <string name="about_author_badge">Penulis</string>
+    <string name="about_author_role">Penulis LeviLauncher</string>
+    <string name="about_afdian">Afdian</string>
+    <string name="about_patreon">Patreon</string>
+    <string name="about_source_title">Kode Sumber &amp; Open Source</string>
+    <string name="about_github_repo">GitHub · LeviLauncher</string>
+    <string name="about_github_org">LiteLDev</string>
+    <string name="about_license_note">Lihat LICENSE di repositori untuk detail lisensi.</string>
+    <string name="about_contribute_title">Berkontribusi</string>
+    <string name="about_contribute_desc">Kontribusi melalui Issues atau Pull Requests dipersilakan untuk meningkatkan LeviLauncher.</string>
+    <string name="about_issues">Issue</string>
+    <string name="about_star_fork">Star / Fork</string>
+    <string-array name="launcher_tips">
+        <item>Pengaturan memungkinkan Anda menyesuaikan tema, warna, latar belakang, dan opsi tampilan lain agar sesuai dengan setup Anda.</item>
+        <item>LeviLauncher bersifat open source. Gunakan GitHub issues untuk melaporkan masalah launcher atau menyarankan perbaikan.</item>
+        <item>Gunakan dropdown versi untuk mengganti instans saat ini dengan cepat.</item>
+        <item>Apakah ada yang benar-benar membaca ini?</item>
+        <item>Anda dapat menyeret mod untuk mengubah prioritas pemuatannya.</item>
+        <item>Coba Isolasi Versi!</item>
+        <item>Gunakan Peluncuran Cepat untuk langsung terhubung ke server tanpa membuka game terlebih dahulu.</item>
+        <item>Anda dapat mengimpor file .mcworld, .mcpack, dan .mcaddon dari halaman Manajemen Konten.</item>
+        <item>Kelola beberapa akun Xbox di dalam launcher dan beralih antar akun dengan mudah.</item>
+        <item>CurseForge memungkinkan Anda menjelajahi dan mengunduh konten komunitas secara langsung.</item>
+        <item>Muat modul SO native eksternal untuk memperluas atau meningkatkan fitur dan performa Minecraft.</item>
+    </string-array>
+    <string name="theme_color_title">Warna Tema</string>
+    <string name="theme_color_desc">Warna aksen utama aplikasi</string>
+    <string name="preset_colors">WARNA PRESET</string>
+    <string name="more_colors">WARNA LAINNYA</string>
+    <string name="bg_image_title">Gambar Latar Belakang</string>
+    <string name="bg_image_desc">Pilih gambar untuk digunakan sebagai latar belakang</string>
+    <string name="bg_image_none">Tidak ada gambar yang dipilih</string>
+    <string name="bg_image_selected">Latar belakang kustom aktif</string>
+    <string name="select_image">Pilih Gambar</string>
+    <string name="clear">Bersihkan</string>
 
 </resources>

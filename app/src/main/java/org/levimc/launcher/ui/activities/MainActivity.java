@@ -870,7 +870,7 @@ import okhttp3.OkHttpClient;
                 String q = query.toLowerCase();
                 filteredVersions = new ArrayList<>();
                 for (GameVersion v : allVersions) {
-                    String name = v.displayName != null ? v.displayName.toLowerCase() : "";
+                    String name = getInstanceDisplayName(v).toLowerCase();
                     String code = v.versionCode != null ? v.versionCode.toLowerCase() : "";
                     String dir = v.directoryName != null ? v.directoryName.toLowerCase() : "";
                     if (name.contains(q) || code.contains(q) || dir.contains(q)) {
@@ -894,8 +894,10 @@ import okhttp3.OkHttpClient;
                     && selectedVersion.directoryName != null
                     && selectedVersion.directoryName.equals(v.directoryName);
 
-            holder.name.setText(v.versionCode != null ? v.versionCode : v.directoryName);
-            holder.version.setText(v.versionCode != null ? v.versionCode : "");
+            holder.name.setText(getInstanceDisplayName(v));
+            String versionText = getInstanceVersionText(v);
+            holder.version.setText(versionText);
+            holder.version.setVisibility(TextUtils.isEmpty(versionText) ? View.GONE : View.VISIBLE);
             holder.itemView.setActivated(isSelected);
             holder.check.setVisibility(isSelected ? View.VISIBLE : View.GONE);
             holder.tag.setVisibility(View.GONE);
@@ -949,8 +951,37 @@ import okhttp3.OkHttpClient;
 
      public void setTextMinecraftVersion() {
         if (binding == null) return;
-        String version = versionManager.getSelectedVersion() != null ? versionManager.getSelectedVersion().versionCode : null;
-        binding.textMinecraftVersion.setText(TextUtils.isEmpty(version) ? getString(R.string.not_found_version) : version);
+        GameVersion selectedVersion = versionManager.getSelectedVersion();
+        String instanceName = selectedVersion != null ? getInstanceDisplayName(selectedVersion) : null;
+        binding.textMinecraftVersion.setText(TextUtils.isEmpty(instanceName) ? getString(R.string.not_found_version) : instanceName);
+    }
+
+    private static String getInstanceDisplayName(GameVersion version) {
+        if (version == null) return "";
+
+        String displayName = stripVersionSuffix(version.displayName, version.versionCode);
+        if (!TextUtils.isEmpty(displayName)) return displayName;
+        if (!TextUtils.isEmpty(version.directoryName)) return version.directoryName;
+        return !TextUtils.isEmpty(version.versionCode) ? version.versionCode : "";
+    }
+
+    private static String getInstanceVersionText(GameVersion version) {
+        if (version == null) return "";
+        if (!TextUtils.isEmpty(version.versionCode)) return version.versionCode;
+        return !TextUtils.isEmpty(version.directoryName) ? version.directoryName : "";
+    }
+
+    private static String stripVersionSuffix(String displayName, String versionCode) {
+        if (TextUtils.isEmpty(displayName)) return "";
+
+        String trimmedName = displayName.trim();
+        if (TextUtils.isEmpty(versionCode)) return trimmedName;
+
+        String suffix = " (" + versionCode + ")";
+        if (trimmedName.endsWith(suffix)) {
+            return trimmedName.substring(0, trimmedName.length() - suffix.length()).trim();
+        }
+        return trimmedName;
     }
 
     private void handleIncomingFiles() {

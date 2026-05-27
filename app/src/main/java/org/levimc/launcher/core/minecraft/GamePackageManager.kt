@@ -8,6 +8,8 @@ import android.content.res.AssetManager
 import android.os.Build
 import android.util.Log
 import org.levimc.launcher.core.versions.GameVersion
+import org.levimc.launcher.util.NativeBridgeHelper
+import org.levimc.launcher.util.NativeImageGuard
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -31,16 +33,19 @@ class GamePackageManager private constructor(private val context: Context, priva
         "libc++_shared.so",
         "libfmod.so",
         "libMediaDecoders_Android.so",
-        "libHttpClient.Android.so",
         "libminecraftpe.so",
     )
+
+    private val optionalLibs = arrayOf(
+        "libHttpClient.Android.so",
+    )
+
+    private val extractableLibs = requiredLibs + optionalLibs
 
     private val systemLoadedLibs = arrayOf(
         "libPlayFabMultiplayer.so",
         "libmaesdk.so",
-        "libpairipcore.so",
         "libgxcore.so",
-
     )
 
     init {
@@ -77,14 +82,10 @@ class GamePackageManager private constructor(private val context: Context, priva
     }
 
     private fun resolveNativeLibDir(): String {
-        val appInfo = packageContext.applicationInfo
-        return if (appInfo.splitPublicSourceDirs?.isNotEmpty() == true) {
-            val cacheLibDir = File(context.cacheDir, "lib/${getDeviceAbi()}")
-            cacheLibDir.mkdirs()
-            cacheLibDir.absolutePath
-        } else {
-            appInfo.nativeLibraryDir
-        }
+        val cacheName = version?.directoryName ?: packageContext.packageName
+        val cacheLibDir = File(context.cacheDir, "lib/$cacheName/${getDeviceAbi()}")
+        cacheLibDir.mkdirs()
+        return cacheLibDir.absolutePath
     }
 
     private fun getDeviceAbi(): String {
@@ -109,7 +110,7 @@ class GamePackageManager private constructor(private val context: Context, priva
             val baseApk = applicationInfo.sourceDir?.let { File(it) }
             markerString = "installed_" + if (baseApk != null && baseApk.exists()) baseApk.lastModified().toString() else "0"
         }
-        markerString += "_" + getDeviceAbi()
+        markerString += "_" + getDeviceAbi() + "_" + NativeImageGuard.TOKEN
 
         val markerFile = File(outputDir, ".extraction_marker")
         var markerMatches = false
@@ -122,9 +123,10 @@ class GamePackageManager private constructor(private val context: Context, priva
                 // Ignore
             }
         }
+        val cacheRequiredLibs = getCacheRequiredLibs()
         var allPresent = markerMatches
         if (allPresent) {
-            for (lib in requiredLibs) {
+            for (lib in cacheRequiredLibs) {
                 val file = File(outputDir, lib)
                 if (!file.exists() || file.length() == 0L) {
                     allPresent = false
@@ -134,9 +136,12 @@ class GamePackageManager private constructor(private val context: Context, priva
         }
         
         if (allPresent) {
-            for (lib in requiredLibs) {
+            for (lib in extractableLibs) {
                 try {
-                    ensureReadOnly(File(outputDir, lib))
+                    val file = File(outputDir, lib)
+                    if (file.exists()) {
+                        ensureReadOnly(file)
+                    }
                 } catch (e: Exception) {
                     Log.w(TAG, "Failed ensureReadOnly: ${e.message}")
                 }
@@ -160,7 +165,7 @@ class GamePackageManager private constructor(private val context: Context, priva
                 }
             }
             apkPaths.forEach { extractFromApk(it, outputDir, getDeviceAbi()) }
-            if (requiredLibs.any { !File(outputDir, it).exists() }) {
+            if (cacheRequiredLibs.any { !File(outputDir, it).exists() }) {
                 Log.w(TAG, "Primary ABI ${getDeviceAbi()} libraries missing, trying fallback ABIs")
                 val fallbackAbis = listOf("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
                 fallbackAbis.filter { it != getDeviceAbi() }.forEach { abi ->
@@ -178,8 +183,9 @@ class GamePackageManager private constructor(private val context: Context, priva
             apkPaths.forEach { extractFromApk(it, outputDir, getDeviceAbi()) }
         }
         verifyLibraries(outputDir)
+        processNativeImages(outputDir)
 
-        if (requiredLibs.all { File(outputDir, it).let { f -> f.exists() && f.length() > 0 } }) {
+        if (cacheRequiredLibs.all { File(outputDir, it).let { f -> f.exists() && f.length() > 0 } }) {
             try {
                 markerFile.writeText(markerString)
             } catch (e: Exception) {
@@ -195,13 +201,17 @@ class GamePackageManager private constructor(private val context: Context, priva
             return
         }
 
-        requiredLibs.forEach { lib ->
+        extractableLibs.forEach { lib ->
             val srcFile = File(source, lib)
             val dstFile = File(destDir, lib)
             if (srcFile.exists() && srcFile.length() > 0) {
                 try {
                     srcFile.inputStream().use { input ->
                         copyStreamToReadOnlyFile(input, dstFile)
+                    }
+                    if (!processNativeImage(dstFile, true)) {
+                        dstFile.delete()
+                        throw IOException("Failed to prepare native library: ${dstFile.name}")
                     }
                     logFileOperation("Copied", lib)
                 } catch (e: Exception) {
@@ -226,18 +236,18 @@ class GamePackageManager private constructor(private val context: Context, priva
         try {
             ZipFile(apkPath).use { zip ->
                 val abiPath = "lib/$abi"
-                requiredLibs.forEach { lib ->
+                extractableLibs.forEach { lib ->
                     val entry = zip.getEntry("$abiPath/$lib")
                     if (entry == null) {
                         return@forEach
                     }
                     val output = File(outputDir, lib)
-                    if (output.exists() && output.length() > 0) {
-                        ensureReadOnly(output)
-                        return@forEach
-                    }
                     zip.getInputStream(entry).use { input ->
                         copyStreamToReadOnlyFile(input, output)
+                    }
+                    if (!processNativeImage(output, true)) {
+                        output.delete()
+                        throw IOException("Failed to prepare native library: ${output.name}")
                     }
                 }
             }
@@ -288,11 +298,59 @@ class GamePackageManager private constructor(private val context: Context, priva
     }
 
     private fun verifyLibraries(dir: File) {
-        val missing = requiredLibs.filterNot {
+        val missing = getCacheRequiredLibs().filterNot {
             File(dir, it).let { f -> f.exists() && f.length() > 0 }
         }
         if (missing.isNotEmpty()) {
             Log.w(TAG, "Missing libraries in $dir: ${missing.joinToString()}")
+        }
+    }
+
+    private fun processNativeImage(file: File, force: Boolean = false): Boolean {
+        if (!file.name.endsWith(".so")) {
+            return true
+        }
+        return if (force) {
+            NativeImageGuard.processRequired(file)
+        } else {
+            NativeImageGuard.processIfNeeded(file)
+        }
+    }
+
+    private fun processNativeImages(dir: File) {
+        NativeImageGuard.processDirectory(dir)
+    }
+
+    private fun getCacheRequiredLibs(): Array<String> {
+        return if (shouldLoadHttpClient()) {
+            requiredLibs + optionalLibs
+        } else {
+            requiredLibs
+        }
+    }
+
+    private fun shouldLoadHttpClient(): Boolean {
+        val versionCode = version?.versionCode ?: return false
+        val targetVersion = if (versionCode.contains("beta")) "1.21.130.20" else "1.21.130"
+        return isVersionAtLeast(versionCode, targetVersion)
+    }
+
+    private fun isVersionAtLeast(currentVersion: String, targetVersion: String): Boolean {
+        return try {
+            val current = currentVersion.replace(Regex("[^0-9.]"), "").split(".")
+            val target = targetVersion.split(".")
+            val maxLength = maxOf(current.size, target.size)
+
+            for (i in 0 until maxLength) {
+                val currentPart = current.getOrNull(i)?.toIntOrNull() ?: 0
+                val targetPart = target.getOrNull(i)?.toIntOrNull() ?: 0
+
+                if (currentPart > targetPart) return true
+                if (currentPart < targetPart) return false
+            }
+            true
+        } catch (_: Exception) {
+            false
         }
     }
 
@@ -369,7 +427,12 @@ class GamePackageManager private constructor(private val context: Context, priva
         val libName = libFile.name
         return if (systemLoadedLibs.contains(libName)) {
             try {
-                System.loadLibrary(name.removePrefix("lib").removeSuffix(".so"))
+                val normalizedName = name.removePrefix("lib").removeSuffix(".so")
+                if (normalizedName == "gxcore") {
+                    NativeBridgeHelper.bootstrapGxCore()
+                } else {
+                    System.loadLibrary(normalizedName)
+                }
                 true
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load system library $name: ${e.message}")

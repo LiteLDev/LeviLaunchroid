@@ -98,10 +98,14 @@
                                 android:id="@+id/text_minecraft_version"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:minWidth="72dp"
+                                android:maxWidth="180dp"
                                 android:fontFamily="@font/misans"
                                 android:textColor="@color/on_surface"
                                 android:textSize="13sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:ellipsize="end" />
                         </LinearLayout>
 
                         <ImageView

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.animation.ValueAnimator;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +40,7 @@ public class CustomAlertDialog extends Dialog {
     private boolean mBlurBackground;
     private int mTitleColor = 0;
     private boolean mUseBorderedBackground;
+    private boolean mDismissing;
 
     public CustomAlertDialog(Context context) {
         super(context);
@@ -280,9 +282,10 @@ public class CustomAlertDialog extends Dialog {
     @Override
     public void dismiss() {
         try {
-            if (!isShowing()) {
+            if (!isShowing() || mDismissing) {
                 return;
             }
+            mDismissing = true;
             Window window = getWindow();
             if (window == null || window.getDecorView().getParent() == null) {
                 try {
@@ -290,15 +293,7 @@ public class CustomAlertDialog extends Dialog {
                 } catch (Exception ignored) {}
                 return;
             }
-            if (mBlurBackground) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-                }
-            }
-            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            WindowManager.LayoutParams params = window.getAttributes();
-            params.dimAmount = 0f;
-            window.setAttributes(params);
+            animateBackdropDismiss(window);
 
             View content = findViewById(android.R.id.content);
             if (content != null) {
@@ -307,20 +302,57 @@ public class CustomAlertDialog extends Dialog {
                         if (isShowing()) {
                             Window w = getWindow();
                             if (w != null && w.getDecorView().getParent() != null) {
+                                clearBackdrop(w);
                                 CustomAlertDialog.super.dismiss();
                             }
                         }
                     } catch (Exception ignored) {}
                 });
             } else {
+                clearBackdrop(window);
                 super.dismiss();
             }
         } catch (Exception ignored) {}
     }
 
+    private void animateBackdropDismiss(Window window) {
+        WindowManager.LayoutParams initialParams = window.getAttributes();
+        float startDimAmount = initialParams.dimAmount;
+        if (startDimAmount <= 0f) {
+            return;
+        }
+
+        ValueAnimator dimAnimator = ValueAnimator.ofFloat(startDimAmount, 0f);
+        dimAnimator.setDuration(160L);
+        dimAnimator.addUpdateListener(animation -> {
+            Window currentWindow = getWindow();
+            if (currentWindow == null || currentWindow.getDecorView().getParent() == null) {
+                return;
+            }
+            WindowManager.LayoutParams params = currentWindow.getAttributes();
+            params.dimAmount = (float) animation.getAnimatedValue();
+            currentWindow.setAttributes(params);
+        });
+        dimAnimator.start();
+    }
+
+    private void clearBackdrop(Window window) {
+        if (mBlurBackground && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        }
+        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.dimAmount = 0f;
+        window.setAttributes(params);
+    }
+
     public void dismissImmediately() {
         try {
             if (isShowing()) {
+                Window window = getWindow();
+                if (window != null) {
+                    clearBackdrop(window);
+                }
                 super.dismiss();
             }
         } catch (Exception ignored) {}

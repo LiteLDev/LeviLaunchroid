@@ -240,7 +240,7 @@
     <string name="import_content_message">Select .mcworld, .mcpack, or .mcaddon file to import</string>
     <string name="import_success">Import completed successfully</string>
     <string name="import_failed">Import failed</string>
-    <string name="import_addon_success">Addon imported: %d resource pack(s), %d behavior pack(s)</string>
+    <string name="import_addon_success">Addon imported: %1$d resource pack(s), %2$d behavior pack(s)</string>
 
     <!-- World Management -->
     <string name="world_size">Size: %s</string>
@@ -441,7 +441,7 @@
     <string name="no_structures_found">No structures found in this world</string>
     <string name="no_structures_found_title">No Structures Found</string>
     <string name="no_structures_found_message">No structures were found in this world.\n\nTo extract a structure:\n1. Open this world in Minecraft using this launcher\n2. Place a Structure Block and set it to Save mode\n3. Give your structure a name and press Save\n4. Exit the world and return here\n5. Press \"Extract Structures\" again</string>
-    <string name="structures_exported">Exported %d structures to %s</string>
+    <string name="structures_exported">Exported %1$d structures to %2$s</string>
     <string name="structures_exported_zip">Exported %d structures to ZIP</string>
     <string name="structure_found">Structure Found</string>
     <string name="structure_found_with_size">%1$s (%2$s)</string>

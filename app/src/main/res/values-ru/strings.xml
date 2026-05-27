@@ -196,7 +196,7 @@
     <string name="import_content_message">Выберите файл .mcworld, .mcpack или .mcaddon для импорта</string>
     <string name="import_success">Импорт успешно завершен</string>
     <string name="import_failed">Ошибка импорта</string>
-    <string name="import_addon_success">Аддон импортирован: наборов ресурсов — %d, наборов параметров — %d</string>
+    <string name="import_addon_success">Аддон импортирован: наборов ресурсов — %1$d, наборов поведения — %2$d</string>
 
     <!-- World Management -->
     <string name="world_size">Размер: %s</string>
@@ -392,7 +392,7 @@
     <string name="no_structures_found">В этом мире не найдено структур</string>
     <string name="no_structures_found_title">Структуры не найдены</string>
     <string name="no_structures_found_message">В этом мире не найдено структур.\n\nЧтобы извлечь структуру:\n1. Откройте этот мир в Minecraft через этот лаунчер\n2. Поставьте Блок структуры и переключите в режим Сохранения\n3. Дайте структуре имя и нажмите Сохранить\n4. Выйдите из мира и вернитесь сюда\n5. Нажмите «Извлечь структуры» снова</string>
-    <string name="structures_exported">Экспортировано %d структур в %s</string>
+    <string name="structures_exported">Экспортировано %1$d структур в %2$s</string>
     <string name="structures_exported_zip">Экспортировано %d структур в ZIP</string>
     <string name="structure_found">Структура найдена</string>
     <string name="structure_found_with_size">%1$s (%2$s)</string>
@@ -497,5 +497,108 @@
     <string name="curseforge_importing">Импорт…</string>
     <string name="curseforge_download_failed">Ошибка скачивания</string>
     <string name="curseforge_available_files">Доступные файлы</string>
+
+    <!-- Missing translations -->
+    <string name="cursor">Курсор</string>
+    <string name="bedrock_edition">Bedrock Edition</string>
+    <string name="current_instance">Текущий экземпляр</string>
+    <string name="content_mgmt_section_title">Управление контентом</string>
+    <string name="misc_section_title">Разное</string>
+    <string name="view_all">Показать все →</string>
+    <string name="import_so_plugin_title">Импорт SO-плагина</string>
+    <string name="plugin_name_label">Название плагина</string>
+    <string name="plugin_type_label">Тип</string>
+    <string name="plugin_version_label">Версия</string>
+    <string name="import_button">Импорт</string>
+    <string name="settings_subtitle">Настройка основных параметров лаунчера</string>
+    <string name="settings_tab_basic">Основные настройки</string>
+    <string name="settings_tab_personalize">Персонализация</string>
+    <string name="settings_tab_updates">Обновления</string>
+    <string name="settings_tab_about">О приложении</string>
+    <string name="settings_theme_desc">Выберите тему приложения</string>
+    <string name="launch_vertically">Запуск вертикально</string>
+    <string name="launch_vertically_desc">Принудительно запускать игру в портретном режиме</string>
+    <string name="instance_settings_title">Настройки экземпляра</string>
+    <string name="instance_tab_general">Общие</string>
+    <string name="instance_tab_launch_options">Параметры запуска</string>
+    <string name="instance_tab_management">Управление</string>
+    <string name="instance_new_name">Новое имя</string>
+    <string name="instance_rename_hint">Переименовывается только папка. Версия и тип игры не изменяются.</string>
+    <string name="instance_custom_icon">Пользовательский значок (требуется квадрат)</string>
+    <string name="instance_clear_icon">Очистить</string>
+    <string name="instance_icon_hint">Будет сохранён как LargeLogo.png в папке версии. Нажмите на значок, чтобы изменить.</string>
+    <string name="instance_isolation_desc">Изолировать игровые данные для этого экземпляра. Другие экземпляры не будут затронуты.</string>
+    <string name="instance_danger_zone">Опасная зона</string>
+    <string name="instance_danger_zone_desc">Эти действия влияют на регистрацию экземпляра или локальные файлы. Проверьте всё перед продолжением.</string>
+    <string name="instance_delete_desc">Навсегда удаляет этот экземпляр с устройства, включая миры, настройки и установленный контент.</string>
+    <string name="instance_delete_warning">Это действие нельзя отменить.</string>
+    <string name="instance_delete_confirm_title">Удалить экземпляр</string>
+    <string name="instance_delete_confirm_msg">Вы уверены, что хотите удалить этот экземпляр? Все данные, включая миры, будут удалены навсегда.</string>
+    <string name="skin_packs_title">Скин-паки</string>
+    <string name="worlds_category">Миры</string>
+    <string name="resource_packs_category">Наборы ресурсов</string>
+    <string name="behavior_packs_category">Наборы поведения</string>
+    <string name="skin_packs_category">Скин-паки</string>
+    <string name="screenshots_category">Скриншоты</string>
+    <string name="servers_category">Серверы</string>
+    <string name="saved_to_gallery">Сохранено в галерею</string>
+    <string name="inbuilt_mod_virtual_cursor">Виртуальный курсор</string>
+    <string name="inbuilt_mod_virtual_cursor_desc">Используйте виртуальный трекпад для управления мышью</string>
+    <string name="virtual_cursor_enabled">Курсор включён</string>
+    <string name="virtual_cursor_disabled">Курсор отключён</string>
+    <string name="cursor_sensitivity_label">Чувствительность курсора:</string>
+    <string name="nav_launch">Запуск</string>
+    <string name="nav_import">Импорт</string>
+    <string name="nav_instances">Экземпляры</string>
+    <string name="nav_about">О приложении</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="search_instances_hint">Поиск…</string>
+    <string name="instances_label">Экземпляры</string>
+    <string name="select_instance_title">Выбрать экземпляр</string>
+    <string name="filter_all">Все</string>
+    <string name="filter_custom">Пользовательские</string>
+    <string name="sort_version_newest">Версия (новейшая)</string>
+    <string name="tag_installed">Установлено</string>
+    <string name="tag_custom">Пользовательская</string>
+    <string name="vanilla_prefix">Vanilla %s</string>
+    <string name="about_page_title">О приложении</string>
+    <string name="about_subtitle">LeviLauncher — современный лаунчер Minecraft Bedrock</string>
+    <string name="about_authors_title">👥 Авторы и сопровождающие</string>
+    <string name="about_author_name">DreamGuXiang</string>
+    <string name="about_author_badge">Автор</string>
+    <string name="about_author_role">Авторы LeviLauncher</string>
+    <string name="about_afdian">Afdian</string>
+    <string name="about_patreon">Patreon</string>
+    <string name="about_source_title">Исходный код и открытый исходный код</string>
+    <string name="about_github_repo">GitHub · LeviLauncher</string>
+    <string name="about_github_org">LiteLDev</string>
+    <string name="about_license_note">Подробности лицензии смотрите в файле LICENSE в репозитории.</string>
+    <string name="about_contribute_title">Участие в разработке</string>
+    <string name="about_contribute_desc">Вклад через Issues или Pull Requests приветствуется и помогает улучшать LeviLauncher.</string>
+    <string name="about_issues">Issue</string>
+    <string name="about_star_fork">Star / Fork</string>
+    <string-array name="launcher_tips">
+        <item>В настройках можно изменить тему, цвет, фон и другие параметры внешнего вида под ваш стиль.</item>
+        <item>LeviLauncher имеет открытый исходный код. Используйте GitHub issues, чтобы сообщить о проблемах лаунчера или предложить улучшения.</item>
+        <item>Используйте выпадающий список версий, чтобы быстро переключать текущий экземпляр.</item>
+        <item>Кто-нибудь вообще читает эти подсказки?</item>
+        <item>Вы можете перетаскивать моды, чтобы менять их приоритет загрузки.</item>
+        <item>Попробуйте изоляцию версий!</item>
+        <item>Используйте быстрый запуск, чтобы подключаться к серверу без предварительного открытия игры.</item>
+        <item>На странице управления контентом можно импортировать файлы .mcworld, .mcpack и .mcaddon.</item>
+        <item>Управляйте несколькими аккаунтами Xbox внутри лаунчера и легко переключайтесь между ними.</item>
+        <item>CurseForge позволяет просматривать и загружать контент сообщества напрямую.</item>
+        <item>Загружайте внешние нативные SO-модули, чтобы расширять или улучшать возможности и производительность Minecraft.</item>
+    </string-array>
+    <string name="theme_color_title">Цвет темы</string>
+    <string name="theme_color_desc">Основной акцентный цвет приложения</string>
+    <string name="preset_colors">ГОТОВЫЕ ЦВЕТА</string>
+    <string name="more_colors">ДРУГИЕ ЦВЕТА</string>
+    <string name="bg_image_title">Фоновое изображение</string>
+    <string name="bg_image_desc">Выберите изображение для фона</string>
+    <string name="bg_image_none">Изображение не выбрано</string>
+    <string name="bg_image_selected">Пользовательский фон активен</string>
+    <string name="select_image">Выбрать изображение</string>
+    <string name="clear">Очистить</string>
 
 </resources>

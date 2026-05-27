@@ -194,7 +194,7 @@
     <string name="import_content_message">选择 .mcworld、.mcpack 或 .mcaddon 文件以导入</string>
     <string name="import_success">导入成功</string>
     <string name="import_failed">导入失败</string>
-    <string name="import_addon_success">已导入附加包：%d 个资源包，%d 个行为包</string>
+    <string name="import_addon_success">已导入附加包：%1$d 个资源包，%2$d 个行为包</string>
 
     <!-- World Management -->
     <string name="world_size">大小：%s</string>
@@ -388,7 +388,7 @@
     <string name="no_structures_found">在此世界中未发现任何结构</string>
     <string name="no_structures_found_title">未找到结构</string>
     <string name="no_structures_found_message">在此世界中未发现任何结构。\n\n要提取结构：\n1. 通过此启动器在 Minecraft 中打开此世界\n2. 放置结构方块并设置为保存模式\n3. 为结构命名并点击保存\n4. 退出世界并返回此处\n5. 再次点击"提取结构"</string>
-    <string name="structures_exported">已导出 %d 个结构至 %s</string>
+    <string name="structures_exported">已导出 %1$d 个结构至 %2$s</string>
     <string name="structures_exported_zip">已导出 %d 个结构至 ZIP</string>
     <string name="structure_found">发现结构</string>
     <string name="structure_found_with_size">%1$s (%2$s)</string>
@@ -493,5 +493,110 @@
     <string name="curseforge_importing">导入中…</string>
     <string name="curseforge_download_failed">下载失败</string>
     <string name="curseforge_available_files">可用文件</string>
+
+    <!-- Missing translations -->
+    <string name="beta_badge">Beta</string>
+    <string name="debug_badge">Debug</string>
+    <string name="cursor">光标</string>
+    <string name="bedrock_edition">基岩版</string>
+    <string name="current_instance">当前实例</string>
+    <string name="content_mgmt_section_title">内容管理</string>
+    <string name="misc_section_title">其他</string>
+    <string name="view_all">查看全部 →</string>
+    <string name="import_so_plugin_title">导入 SO 插件</string>
+    <string name="plugin_name_label">插件名称</string>
+    <string name="plugin_type_label">类型</string>
+    <string name="plugin_version_label">版本</string>
+    <string name="import_button">导入</string>
+    <string name="settings_subtitle">配置常用启动器选项</string>
+    <string name="settings_tab_basic">基础设置</string>
+    <string name="settings_tab_personalize">个性化</string>
+    <string name="settings_tab_updates">更新</string>
+    <string name="settings_tab_about">关于</string>
+    <string name="settings_theme_desc">选择应用主题</string>
+    <string name="launch_vertically">竖屏启动</string>
+    <string name="launch_vertically_desc">强制游戏以竖屏模式启动</string>
+    <string name="instance_settings_title">实例设置</string>
+    <string name="instance_tab_general">常规</string>
+    <string name="instance_tab_launch_options">启动选项</string>
+    <string name="instance_tab_management">管理</string>
+    <string name="instance_new_name">新名称</string>
+    <string name="instance_rename_hint">仅重命名文件夹。游戏版本和类型不受影响。</string>
+    <string name="instance_custom_icon">自定义图标（需为正方形）</string>
+    <string name="instance_clear_icon">清除</string>
+    <string name="instance_icon_hint">将保存为版本文件夹下的 LargeLogo.png。点击图标进行更改。</string>
+    <string name="instance_isolation_desc">为此实例隔离游戏数据。其他实例不会受到影响。</string>
+    <string name="instance_danger_zone">危险区域</string>
+    <string name="instance_danger_zone_desc">这些操作会影响实例注册信息或本地文件。继续前请仔细确认。</string>
+    <string name="instance_delete_desc">从设备中永久删除此实例，包括世界、配置和已安装内容。</string>
+    <string name="instance_delete_warning">此操作无法撤销。</string>
+    <string name="instance_delete_confirm_title">删除实例</string>
+    <string name="instance_delete_confirm_msg">确定要删除此实例吗？包括世界在内的所有数据都将被永久移除。</string>
+    <string name="skin_packs_title">皮肤包</string>
+    <string name="worlds_category">世界</string>
+    <string name="resource_packs_category">资源包</string>
+    <string name="behavior_packs_category">行为包</string>
+    <string name="skin_packs_category">皮肤包</string>
+    <string name="screenshots_category">截图</string>
+    <string name="servers_category">服务器</string>
+    <string name="saved_to_gallery">已保存到相册</string>
+    <string name="inbuilt_mod_virtual_cursor">虚拟光标</string>
+    <string name="inbuilt_mod_virtual_cursor_desc">使用虚拟触控板控制鼠标</string>
+    <string name="virtual_cursor_enabled">光标已启用</string>
+    <string name="virtual_cursor_disabled">光标已禁用</string>
+    <string name="cursor_sensitivity_label">光标灵敏度：</string>
+    <string name="nav_launch">启动</string>
+    <string name="nav_import">导入</string>
+    <string name="nav_instances">实例</string>
+    <string name="nav_about">关于</string>
+    <string name="nav_settings">设置</string>
+    <string name="search_instances_hint">搜索…</string>
+    <string name="instances_label">实例</string>
+    <string name="select_instance_title">选择实例</string>
+    <string name="filter_all">全部</string>
+    <string name="filter_custom">自定义</string>
+    <string name="sort_version_newest">版本（最新）</string>
+    <string name="tag_installed">已安装</string>
+    <string name="tag_custom">自定义</string>
+    <string name="vanilla_prefix">原版 %s</string>
+    <string name="about_page_title">关于</string>
+    <string name="about_subtitle">LeviLauncher — 现代 Minecraft 基岩版启动器</string>
+    <string name="about_authors_title">👥 作者与维护者</string>
+    <string name="about_author_name">DreamGuXiang</string>
+    <string name="about_author_badge">作者</string>
+    <string name="about_author_role">LeviLauncher 作者</string>
+    <string name="about_afdian">爱发电</string>
+    <string name="about_patreon">Patreon</string>
+    <string name="about_source_title">源代码与开源</string>
+    <string name="about_github_repo">GitHub · LeviLauncher</string>
+    <string name="about_github_org">LiteLDev</string>
+    <string name="about_license_note">许可证详情请参阅仓库中的 LICENSE。</string>
+    <string name="about_contribute_title">参与贡献</string>
+    <string name="about_contribute_desc">欢迎通过 Issues 或 Pull Requests 改进 LeviLauncher。</string>
+    <string name="about_issues">Issue</string>
+    <string name="about_star_fork">Star / Fork</string>
+    <string-array name="launcher_tips">
+        <item>在设置中可以调整主题、颜色、背景和其他外观选项，让启动器更符合你的使用习惯。</item>
+        <item>LeviLauncher 是开源项目。你可以通过 GitHub Issues 反馈启动器问题或提出改进建议。</item>
+        <item>使用版本下拉菜单可以快速切换当前实例。</item>
+        <item>真的有人会读这些提示吗？</item>
+        <item>你可以拖动模组来调整加载优先级。</item>
+        <item>试试版本隔离吧！</item>
+        <item>使用快速启动可以不先打开游戏，直接连接到服务器。</item>
+        <item>你可以在内容管理页面导入 .mcworld、.mcpack 和 .mcaddon 文件。</item>
+        <item>在启动器中管理多个 Xbox 账号，并在它们之间无缝切换。</item>
+        <item>CurseForge 可以让你直接浏览并下载社区内容。</item>
+        <item>加载外部原生 SO 模块以扩展或增强 Minecraft 功能和性能。</item>
+    </string-array>
+    <string name="theme_color_title">主题颜色</string>
+    <string name="theme_color_desc">应用的主强调色</string>
+    <string name="preset_colors">预设颜色</string>
+    <string name="more_colors">更多颜色</string>
+    <string name="bg_image_title">背景图片</string>
+    <string name="bg_image_desc">选择一张图片作为背景</string>
+    <string name="bg_image_none">未选择图片</string>
+    <string name="bg_image_selected">自定义背景已启用</string>
+    <string name="select_image">选择图片</string>
+    <string name="clear">清除</string>
 
 </resources>

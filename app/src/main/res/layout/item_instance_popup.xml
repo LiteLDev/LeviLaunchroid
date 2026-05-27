@@ -29,20 +29,24 @@
 
         <TextView
             android:id="@+id/instance_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/on_surface"
             android:textSize="14sp"
             android:textStyle="bold"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:fontFamily="@font/misans" />
 
         <TextView
             android:id="@+id/instance_version"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:textColor="@color/text_secondary"
             android:textSize="11sp"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:fontFamily="@font/misans" />
     </LinearLayout>
 

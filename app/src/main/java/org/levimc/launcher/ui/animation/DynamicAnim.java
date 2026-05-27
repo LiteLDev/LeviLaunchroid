@@ -1,9 +1,12 @@
 package org.levimc.launcher.ui.animation;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.content.Context;
+import android.view.animation.AccelerateInterpolator;
 import androidx.recyclerview.widget.RecyclerView;
 
 import androidx.annotation.Nullable;
@@ -13,6 +16,8 @@ import androidx.dynamicanimation.animation.SpringForce;
 
 public final class DynamicAnim {
     private DynamicAnim() {}
+
+    private static final long DIALOG_DISMISS_DURATION_MS = 160L;
 
     public static SpringAnimation springAlphaTo(View view, float target) {
         SpringAnimation anim = new SpringAnimation(view, DynamicAnimation.ALPHA, target);
@@ -98,18 +103,23 @@ public final class DynamicAnim {
             if (onEnd != null) onEnd.run();
             return;
         }
-        SpringAnimation alphaOut = springAlphaTo(root, 0f);
-        SpringAnimation sxOut = springScaleXTo(root, 0.94f);
-        SpringAnimation syOut = springScaleYTo(root, 0.94f);
-        alphaOut.addEndListener((animation, canceled, value, velocity) -> {
-            if (onEnd != null) onEnd.run();
-        });
-        alphaOut.start();
-        sxOut.start();
-        syOut.start();
+        root.animate().cancel();
+        root.animate()
+                .alpha(0f)
+                .scaleX(0.94f)
+                .scaleY(0.94f)
+                .setDuration(DIALOG_DISMISS_DURATION_MS)
+                .setInterpolator(new AccelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        root.animate().setListener(null);
+                        if (onEnd != null) onEnd.run();
+                    }
+                })
+                .start();
     }
 
-    // 递归为所有可点击子视图添加按压缩放反馈
     public static void applyPressScaleRecursively(View root) {
         if (root == null) return;
         if (root.isClickable()) applyPressScale(root);
