@@ -8,6 +8,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 
@@ -532,6 +534,7 @@ public class VersionManager {
 
     public static void attemptRepairLibs(Activity activity, GameVersion version) {
         LibsRepairDialog repairDialog = new LibsRepairDialog(activity);
+        Handler mainHandler = new Handler(Looper.getMainLooper());
 
         VersionManager.LibsRepairCallback callback = new VersionManager.LibsRepairCallback() {
             @Override
@@ -596,8 +599,10 @@ public class VersionManager {
                 .setTitleText(String.format(activity.getString(R.string.missing_libs_title), version.directoryName))
                 .setMessage(activity.getString(R.string.missing_libs_message))
                 .setPositiveButton(activity.getString(R.string.repair), v -> {
-                    repairDialog.show();
-                    VersionManager.get(activity).repairLibsAsync(version, callback);
+                    mainHandler.postDelayed(() -> {
+                        repairDialog.show();
+                        VersionManager.get(activity).repairLibsAsync(version, callback);
+                    }, 180L);
                 })
                 .setNegativeButton(activity.getString(R.string.cancel), null)
                 .show();

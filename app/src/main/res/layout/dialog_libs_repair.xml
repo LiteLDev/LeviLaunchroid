@@ -4,27 +4,27 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="24dp"
-    android:minWidth="280dp"
-    android:background="@drawable/bg_rounded_card">
+    android:minWidth="300dp"
+    android:background="@drawable/dialog_background_black_border">
     
     <TextView
         android:id="@+id/title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/repair_libs_dialog_title"
         android:textSize="18sp"
-        android:textColor="@color/on_primary"
-        android:gravity="center"
-        android:layout_marginBottom="8dp"/>
+        android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        android:fontFamily="@font/misans"/>
 
     <TextView
         android:id="@+id/status_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="14sp"
-        android:textColor="@color/on_primary"
-        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"/>
         
     <ProgressBar
@@ -35,7 +35,7 @@
         android:layout_marginTop="4dp"
         android:max="100"
         android:progress="0"
-        android:progressTint="@color/secondary"
+        android:progressTint="?attr/colorPrimary"
         android:progressBackgroundTint="@color/outline"/>
         
     <TextView
@@ -43,8 +43,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="0%"
-        android:gravity="center"
-        android:textColor="@color/on_primary"
+        android:gravity="end"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:layout_marginTop="8dp"/>
         
 </LinearLayout>
