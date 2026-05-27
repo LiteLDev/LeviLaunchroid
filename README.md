@@ -38,13 +38,13 @@ LeviLauncher enables you to import your official Minecraft APK and run it direct
 
 Before installing LeviLauncher, ensure your device meets the following minimum specifications:
 
-- **Operating System:** Android 8.0 (API 26) or higher
+- **Operating System:** Android 9.0 (API 28) or higher
 - **Device Architecture:** ARM64 (v8a)
 - **RAM:** Minimum 1 GB available RAM (2 GB or more recommended)
 - **Storage:** At least 2 GB of available storage for Minecraft and game data
 - **License Requirement:** You must own a licensed copy of Minecraft Bedrock Edition purchased from Google Play
 
-> **Note:** For optimal performance and stability, we recommend Android 8.0 or higher with at least 3 GB of available RAM and 5 GB of free storage.
+> **Note:** For optimal performance and stability, we recommend Android 9.0 or higher with at least 3 GB of available RAM and 5 GB of free storage.
 
 ---
 
@@ -168,7 +168,6 @@ LeviLauncher would not be possible without the contributions and support of many
 
 - **LeviMC Organization** – For maintaining the LeviLauncher project and providing infrastructure support
 - **Android Community** – For excellent documentation, libraries, and tools that made this launcher possible
-- **UnpairedCore Library** – For providing essential utilities and components used in LeviLauncher. See [Kitsuri Studios - UnpairCore](https://github.com/Kitsuri-Studios/unpaircore)
 - **Open Source Community** – For all the libraries, frameworks, and tools that power this project
 - **Contributors** – A heartfelt thank you to all [contributors](https://github.com/LiteLDev/LeviLaunchroid/graphs/contributors) who have continuously improved and maintained LeviLauncher through their time and expertise
 
