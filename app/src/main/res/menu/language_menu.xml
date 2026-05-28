@@ -4,12 +4,27 @@
         android:id="@+id/action_english"
         android:title="@string/english"/>
     <item
-        android:id="@+id/action_russian"
-        android:title="@string/russian"/>
-    <item
         android:id="@+id/action_chinese"
         android:title="@string/chinese"/>
     <item
+        android:id="@+id/action_russian"
+        android:title="@string/russian"/>
+    <item
         android:id="@+id/action_indonesian"
         android:title="@string/indonesian"/>
+    <item
+        android:id="@+id/action_spanish"
+        android:title="@string/spanish"/>
+    <item
+        android:id="@+id/action_portuguese"
+        android:title="@string/portuguese"/>
+    <item
+        android:id="@+id/action_french"
+        android:title="@string/french"/>
+    <item
+        android:id="@+id/action_japanese"
+        android:title="@string/japanese"/>
+    <item
+        android:id="@+id/action_hindi"
+        android:title="@string/hindi"/>
 </menu>

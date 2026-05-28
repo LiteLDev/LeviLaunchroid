@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <string name="app_name">LeviLauncher</string>
+    <string name="minecraft">Minecraft</string>
+    <string name="launch">Jugar</string>
+    <string name="beta_badge">Beta</string>
+    <string name="debug_badge">Depuración</string>
+    <string name="cursor">Cursor</string>
+    <string name="bedrock_edition">Bedrock Edition</string>
+    <string name="current_instance">Instancia actual</string>
+
+    <!-- Mods -->
+    <string name="mods_title">Mods (%d)</string>
+    <string name="mods_section_title">Mods</string>
+    <string name="external_mods_label">Mods externos</string>
+    <string name="inbuilt_mods_label">Mods incorporados</string>
+    <string name="manage_mods">Administrar Mods</string>
+    <string name="no_mods_found">No se encontraron mods</string>
+    <string name="mod_load_order">Orden de carga: %d</string>
+    <string name="drag_to_reorder">Arrastra para reordenar</string>
+    <string name="mod_reordered">Orden de mods actualizado</string>
+
+    <!-- About -->
+    <string name="about_title">☕ Acerca de</string>
+    <string name="copyright">©2024–2026 LeviMC. Todos los derechos reservados.</string>
+    <string name="font_license">Esta aplicación usa la fuente Misans.</string>
+    <string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
+    <string name="quick_actions_title">Acciones rápidas</string>
+    <string name="content_mgmt_section_title">Gestión de contenido</string>
+    <string name="misc_section_title">Miscelánea</string>
+    <string name="view_all">Ver todo →</string>
+    <string name="content_management_subtitle">Gestiona mundos, paquetes de recursos y comportamientos</string>
+    <string name="import_apk_subtitle">Instalar Minecraft desde archivo APK o APKS</string>
+    <string name="ms_add_account">Añadir cuenta</string>
+    <string name="ms_add_account_subtitle">Iniciar sesión con Microsoft</string>
+
+    <!-- Dialogs -->
+    <string name="content_detected_title">Contenido detectado</string>
+    <string name="content_detected_message">¿Quieres iniciar el juego ahora?\n\nArchivo: %s</string>
+    <string name="launch_now">Iniciar ahora</string>
+    <string name="launch_later">Iniciar más tarde</string>
+
+    <string name="import_confirmation_title">Importar Mods</string>
+    <string name="import_confirmation_message">¿Estás seguro de que quieres importar los %d archivos de mods seleccionados?</string>
+    <string name="import_so_plugin_title">Importar Plugin SO</string>
+    <string name="plugin_name_label">Nombre del Plugin</string>
+    <string name="plugin_type_label">Tipo</string>
+    <string name="plugin_version_label">Versión</string>
+    <string name="import_button">Importar</string>
+    <string name="overwrite_file_title">El archivo ya existe</string>
+    <string name="overwrite_file_message">El archivo %s ya existe. ¿Quieres sobrescribirlo?</string>
+    <string name="overwrite">Sobrescribir</string>
+    <string name="skip">Omitir</string>
+    <string name="confirm">Confirmar</string>
+
+    <string name="installed_packages">Paquetes Instalados</string>
+    <string name="local_custom">Personalizado Local</string>
+
+    <!-- Permissions -->
+    <string name="storage_permission_title">Permiso de almacenamiento requerido</string>
+    <string name="storage_permission_message">Concede permiso de almacenamiento para acceder al directorio de mods y detectarlos.</string>
+    <string name="grant_permission">Conceder</string>
+    <string name="cancel">Cancelar</string>
+
+    <!-- Feedback -->
+    <string name="files_processed">Se procesaron correctamente %d archivos de mods</string>
+    <string name="user_cancelled">Importación cancelada por el usuario</string>
+
+    <string name="exit">Salir</string>
+
+    <string name="overlay_permission_message">Por favor concede el permiso de superposición</string>
+    <string name="overlay_permission_denied_message">Concede el permiso de superposición, de lo contrario no se podrá mostrar la ventana de registro.</string>
+    <string name="overlay_permission_not_granted">Permiso de superposición no concedido</string>
+    <string name="storage_permission_not_granted">Permiso de almacenamiento no concedido</string>
+
+    <string name="import_apk">Importar APK</string>
+    <string name="install">Instalar</string>
+    <string name="version_name">Nombre de versión</string>
+    <string name="name_invalid">¡Este nombre no se puede usar o ya está en uso!</string>
+    <string name="install_done">Instalación terminada, versión: %1$s</string>
+
+    <string name="illegal_apk_title">APK Ilegal</string>
+    <string name="not_mc_apk">No es un APK de Minecraft</string>
+    <string name="not_apk_or_apks">Por favor, selecciona un archivo APK o APKS</string>
+
+    <string name="not_found_version">No se encontró versión</string>
+
+    <string name="installing_title">Instalando…</string>
+    <string name="installing_message">Por favor espera, instalando Minecraft</string>
+
+    <string name="enable_debug_log">Habilitar registro de depuración</string>
+
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_desc">Ajustes de tu launcher</string>
+    <string name="settings_subtitle">Configurar opciones comunes del launcher</string>
+    <string name="settings_tab_basic">Ajustes Básicos</string>
+    <string name="settings_tab_personalize">Personalización</string>
+    <string name="settings_tab_updates">Actualizaciones</string>
+    <string name="settings_tab_about">Acerca de</string>
+    <string name="settings_theme_desc">Elige el tema de la aplicación</string>
+
+    <string name="unknown_sources_permission_title">Permiso de Instalación</string>
+    <string name="unknown_sources_permission_message">Para instalar o actualizar esta app, concede permiso para instalar apps desconocidas. Toca \"Conceder\" para abrir los ajustes del sistema, habilitar el permiso para esta app y volver para continuar.</string>
+
+    <string name="check_update">Buscar actualizaciones</string>
+    <string name="version_prefix">Versión: </string>
+
+    <string name="dialog_title_no_version">Ninguna versión seleccionada</string>
+    <string name="dialog_message_no_version">Por favor selecciona una versión del juego antes de iniciar.</string>
+    <string name="dialog_title_version_isolation">Aislamiento de versión requerido</string>
+    <string name="dialog_message_version_isolation">Esta es una versión importada. Habilita el aislamiento de versión en los ajustes para iniciar esta versión.</string>
+    <string name="dialog_positive_enable">Habilitar</string>
+    <string name="dialog_title_launch_failed">Fallo al iniciar</string>
+    <string name="dialog_message_launch_failed">Fallo al iniciar Minecraft: %1$s</string>
+    <string name="dialog_title_disable_version_isolation">Deshabilitar Aislamiento</string>
+    <string name="dialog_message_disable_version_isolation">Intentas iniciar una versión instalada con el aislamiento habilitado. Deshabilita el aislamiento de versión para continuar.</string>
+    <string name="dialog_positive_disable">Deshabilitar</string>
+    <string name="dialog_positive_ok">Aceptar</string>
+
+    <string name="new_version_found">Nueva versión encontrada: %1$s</string>
+    <string name="update_question">¿Quieres descargar e instalar la última versión?</string>
+    <string name="download_update">Descargar actualización</string>
+    <string name="ignore_this_version">Ignorar esta versión</string>
+    <string name="update_progress">Progreso de descarga: %1$d%%</string>
+    <string name="update_failed">Descarga fallida: %1$s</string>
+    <string name="install_failed">No se puede instalar la actualización: %1$s</string>
+    <string name="already_latest_version">Ya tienes la última versión (%1$s)</string>
+    <string name="version_ignored">Esta versión ha sido ignorada</string>
+    <string name="downloading_update">Descargando actualización…</string>
+
+    <string name="repair_libs_in_progress">Reparando archivos de bibliotecas del juego…</string>
+    <string name="repair_completed">Reparación completada</string>
+    <string name="repair_libs_success_message">Los archivos de biblioteca del juego se repararon correctamente. Ahora puedes iniciar el juego.</string>
+    <string name="repair_failed">Reparación fallida</string>
+    <string name="repair_libs_failed_message">Fallo al reparar archivos del juego. Verifica la integridad de los archivos.</string>
+    <string name="repair_error">Error de reparación</string>
+    <string name="repair_libs_error_message">Ocurrió un error durante la reparación: %s</string>
+    <string name="missing_libs_title">Faltan archivos de biblioteca - %s</string>
+    <string name="missing_libs_message">Faltan archivos de biblioteca necesarios. ¿Quieres repararlos ahora?</string>
+    <string name="repair">Reparar</string>
+    <string name="repair_libs_dialog_title">Reparando bibliotecas del juego</string>
+    <string name="repair_preparing">Preparando…</string>
+    <string name="repair_processing">Extrayendo bibliotecas…</string>
+
+    <string name="theme_title">Modo de Tema</string>
+    <string name="theme_follow_system">Seguir Sistema</string>
+    <string name="theme_light">Modo Claro</string>
+    <string name="theme_dark">Modo Oscuro</string>
+
+    <string name="error_no_browser">No hay navegador disponible</string>
+
+    <string name="eula_title">Acuerdo de Licencia de LeviLauncher</string>
+    <string name="eula_message"><b>Bienvenido a LeviLauncher</b>\n\nAl usar este software aceptas que:\n\n• Este es un launcher <b>no oficial</b> de Minecraft\n• Debes poseer una copia <b>con licencia</b> de Minecraft\n• Se prohíbe cualquier forma de piratería o trampa\n• Los mods/packs se usan bajo tu propio riesgo\n• No está afiliado con Mojang/Microsoft\n\nEl uso continuo constituye un acuerdo</string>
+    <string name="eula_agree">Aceptar</string>
+    <string name="eula_exit">Rechazar</string>
+
+    <string name="allow_unknown_sources">Por favor permite la instalación desde orígenes desconocidos antes de continuar</string>
+
+    <string name="dialog_title_delete_version">Eliminar versión</string>
+    <string name="dialog_message_delete_version">¿Estás seguro de eliminar esta versión personalizada? Esta acción no se puede deshacer.</string>
+    <string name="dialog_positive_delete">Eliminar</string>
+    <string name="dialog_negative_cancel">Cancelar</string>
+    <string name="toast_delete_success">Eliminado correctamente</string>
+    <string name="toast_delete_failed">Fallo al eliminar: %1$s</string>
+    <string name="error_delete_builtin_version">No se puede eliminar la versión integrada</string>
+    <string name="invalid_mod_file">Fallo</string>
+    <string name="invalid_mod_file_reason">Solo se permiten archivos .so o paquetes de mods .zip. El archivo seleccionado no es un paquete válido de mod nativo.</string>
+    <string name="error_versions">Versiones con error</string>
+
+    <string name="dialog_title_delete_mod">Eliminar Mod</string>
+    <string name="dialog_message_delete_mod">¿Estás seguro de que quieres eliminar este mod?</string>
+
+    <string name="version_isolation">Aislamiento de Versión</string>
+    <string name="launch_vertically">Iniciar verticalmente</string>
+    <string name="launch_vertically_desc">Forzar inicio del juego en modo retrato (vertical)</string>
+
+    <string name="instance_settings_title">Ajustes de Instancia</string>
+    <string name="instance_tab_general">General</string>
+    <string name="instance_tab_launch_options">Opciones de Inicio</string>
+    <string name="instance_tab_management">Gestión</string>
+    <string name="instance_new_name">Nuevo Nombre</string>
+    <string name="instance_rename_hint">Solo renombra la carpeta. La versión y el tipo de juego no se ven afectados.</string>
+    <string name="instance_custom_icon">Icono Personalizado (requiere cuadrado)</string>
+    <string name="instance_clear_icon">Borrar</string>
+    <string name="instance_icon_hint">Se guardará como LargeLogo.png en la carpeta de la versión. Toca para cambiar.</string>
+    <string name="instance_isolation_desc">Aislar datos de juego para esta instancia. Otras instancias no se verán afectadas.</string>
+    <string name="instance_danger_zone">Zona de Peligro</string>
+    <string name="instance_danger_zone_desc">Estas acciones afectan el registro o archivos locales. Revisa antes de continuar.</string>
+    <string name="instance_delete_desc">Elimina permanentemente esta instancia, incluyendo mundos, configuraciones y contenido instalado.</string>
+    <string name="instance_delete_warning">Esta acción no se puede deshacer.</string>
+    <string name="instance_delete_confirm_title">Eliminar Instancia</string>
+    <string name="instance_delete_confirm_msg">¿Estás seguro? Todos los datos, incluyendo mundos, se eliminarán permanentemente.</string>
+
+    <string name="language">Idioma (Language)</string>
+    <string name="english">English</string>
+    <string name="chinese">简体中文</string>
+    <string name="russian">Русский</string>
+    <string name="indonesian">Bahasa Indonesia</string>
+    <string name="spanish">Español</string>
+    <string name="portuguese">Português</string>
+    <string name="french">Français</string>
+    <string name="japanese">日本語</string>
+    <string name="hindi">हिन्दी</string>
+
+    <string name="rename_version_title">Renombrar Versión</string>
+    <string name="rename_version_message">Introduce un nuevo nombre para esta versión:</string>
+    <string name="new_version_name">Nuevo nombre de versión</string>
+    <string name="rename">Renombrar</string>
+    <string name="rename_success">Versión renombrada con éxito</string>
+    <string name="rename_failed">Error al renombrar: %1$s</string>
+    <string name="cannot_rename_installed">No se puede renombrar versiones instaladas</string>
+
+    <string name="content_management">Gestión de Contenido</string>
+    <string name="worlds_title">Mundos</string>
+    <string name="resource_packs_title">Packs de Recursos</string>
+    <string name="behavior_packs_title">Packs de Comportamientos</string>
+    <string name="skin_packs_title">Packs de Aspectos</string>
+    <string name="worlds_category">Mundos</string>
+    <string name="resource_packs_category">Packs de Recursos</string>
+    <string name="behavior_packs_category">Packs de Comportamientos</string>
+    <string name="skin_packs_category">Packs de Aspectos</string>
+    <string name="screenshots_category">Capturas</string>
+    <string name="servers_category">Servidores</string>
+    <string name="storage_internal">Interno</string>
+    <string name="storage_external">Externo</string>
+    <string name="storage_version_isolation">Aislamiento de Versión</string>
+    <string name="select_storage_label">Seleccionar Almacenamiento:</string>
+    <string name="search_hint">Buscar…</string>
+    <string name="search_properties_hint">Buscar propiedades…</string>
+    <string name="no_matching_properties">No se encontraron propiedades coincidentes</string>
+    <string name="transfer">Transferir</string>
+    <string name="transfer_content">Transferir Contenido</string>
+    <string name="transfer_to">Transferir a:</string>
+    <string name="transfer_success">Transferencia completada</string>
+    <string name="transfer_failed">Fallo en la transferencia</string>
+    <string name="transfer_same_location">El contenido ya está aquí</string>
+    <string name="import_content">Importar</string>
+    <string name="import_content_title">Importar Contenido</string>
+    <string name="import_content_message">Selecciona un archivo .mcworld, .mcpack o .mcaddon para importar</string>
+    <string name="import_success">Importación completada</string>
+    <string name="import_failed">Fallo al importar</string>
+    <string name="import_addon_success">Addon importado: %1$d packs de recursos, %2$d packs de comportamientos</string>
+
+    <string name="world_size">Tamaño: %s</string>
+    <string name="world_last_played">Último juego: %s</string>
+    <string name="import_world">Importar Mundo</string>
+    <string name="export_world">Exportar Mundo</string>
+    <string name="delete_world">Eliminar Mundo</string>
+    <string name="backup_world">Respaldar Mundo</string>
+    <string name="export">Exportar</string>
+    <string name="backup">Respaldar</string>
+    <string name="delete">Eliminar</string>
+    <string name="delete_pack">Eliminar</string>
+
+    <string name="import_resource_pack">Importar Pack de Recursos</string>
+    <string name="import_behavior_pack">Importar Pack de Comportamientos</string>
+    <string name="import_skin_pack">Importar Pack de Aspectos</string>
+    <string name="delete_resource_pack">Eliminar Pack de Recursos</string>
+    <string name="delete_skin_pack">Eliminar Pack de Aspectos</string>
+    <string name="delete_behavior_pack">Eliminar Pack de Comportamientos</string>
+
+    <string name="confirm_delete_world">¿Seguro que quieres eliminar este mundo? No se puede deshacer.</string>
+    <string name="confirm_delete_resource_pack">¿Seguro que quieres eliminar este pack de recursos? No se puede deshacer.</string>
+    <string name="confirm_delete_behavior_pack">¿Seguro que quieres eliminar este pack de comportamientos? No se puede deshacer.</string>
+    <string name="confirm_delete_skin_pack">¿Seguro que quieres eliminar este pack de aspectos? No se puede deshacer.</string>
+
+    <string name="edit_world">Editar Mundo</string>
+    <string name="edit">Editar</string>
+    <string name="save">Guardar</string>
+    <string name="saved_to_gallery">Guardado en galería</string>
+    <string name="level_dat_not_found">No se encontró level.dat</string>
+    <string name="no_editable_properties">No hay propiedades editables</string>
+    <string name="no_data">Sin datos</string>
+    <string name="error_loading_world">Error al cargar el mundo</string>
+    <string name="world_saved">Mundo guardado con éxito</string>
+    <string name="save_failed">Error al guardar</string>
+    <string name="unsaved_changes">Cambios sin guardar</string>
+    <string name="discard_changes_message">Tienes cambios sin guardar. ¿Quieres descartarlos?</string>
+    <string name="discard">Descartar</string>
+
+    <string name="custom_flat_world">Mundo Plano Personalizado</string>
+    <string name="world_name">Nombre del Mundo</string>
+    <string name="enter_world_name">Introduce el nombre del mundo</string>
+    <string name="biome">Bioma</string>
+    <string name="game_mode">Modo de Juego</string>
+    <string name="layers">Capas (de abajo hacia arriba)</string>
+    <string name="layers_hint">Arrastra para reordenar, desliza para eliminar</string>
+    <string name="add_layer">+ Añadir Capa</string>
+    <string name="create_world">Crear Mundo</string>
+    <string name="add_at_least_one_layer">Añade al menos una capa</string>
+    <string name="world_created_successfully">Mundo creado con éxito</string>
+    <string name="failed_to_create_world">Fallo al crear mundo</string>
+
+    <string name="minecraft_playstore_required_title">Se requiere versión de Play Store</string>
+    <string name="minecraft_playstore_required_message">Este launcher solo funciona con la app oficial de Minecraft desde Google Play Store. Por favor instálala para continuar.</string>
+    <string name="buy_minecraft">Obtener Minecraft</string>
+    <string name="minecraft_not_installed_title">Minecraft no instalado</string>
+    <string name="minecraft_not_installed_message">Minecraft no está instalado en tu dispositivo. Por favor instálalo desde Google Play Store para usar este launcher.</string>
+    <string name="install_minecraft">Instalar Minecraft</string>
+    <string name="genuine_badge_label">Licencia no verificada</string>
+    <string name="invalid_license_detected_toast">Minecraft no original detectado. Asegúrate de tener Minecraft de Google Play Store</string>
+
+    <string name="full_mods_title">Mods </string>
+    <string name="total_mods">Total de Mods:</string>
+    <string name="enabled_mods">Habilitados:</string>
+    <string name="add_mod">Añadir Mod</string>
+
+    <string name="mod_detail_title">Detalles del Mod</string>
+    <string name="delete_mod">Eliminar Mod</string>
+    <string name="error_loading_mod">Error al cargar los detalles</string>
+    <string name="mod_enabled">Mod habilitado</string>
+    <string name="mod_disabled">Mod deshabilitado</string>
+    <string name="mod_filename_format">Archivo: %s</string>
+    <string name="mod_enable_status">Estado de Habilitación</string>
+
+    <string name="game_version_select_title">Seleccionar Versión del Juego</string>
+    <string name="back">Atrás</string>
+
+    <string name="splash_logo_desc">Logo de hoja</string>
+
+    <string name="accounts_title">Cuentas</string>
+    <string name="microsoft_accounts">Cuentas de Microsoft</string>
+    <string name="manage_accounts">Gestionar cuentas</string>
+    <string name="not_signed_in">No has iniciado sesión</string>
+    <string name="xuid">XUID</string>
+    <string name="sign_in">Iniciar Sesión</string>
+    <string name="sign_out">Cerrar Sesión</string>
+    <string name="accounts_active_privilege">Sesión iniciada</string>
+
+    <string name="ms_login_title">Inicio de sesión Microsoft</string>
+    <string name="ms_login_starting">Iniciando sesión con Microsoft…</string>
+    <string name="ms_login_exchanging">Intercambiando token…</string>
+    <string name="ms_login_auth_xbox_device">Autenticando dispositivo Xbox…</string>
+    <string name="ms_login_fetch_minecraft_identity">Obteniendo identidad de Minecraft…</string>
+    <string name="ms_login_success">Sesión iniciada como %1$s</string>
+    <string name="ms_login_failed">Fallo de inicio de sesión</string>
+    <string name="ms_login_failed_detail">Fallo al iniciar sesión: %1$s</string>
+
+    <string name="ms_set_active">Establecer Activa</string>
+    <string name="ms_delete">Eliminar</string>
+    <string name="ms_active_badge">Activa</string>
+    <string name="ms_account_subtitle_format">ID Usuario: %1$s • Actualizado: %2$s</string>
+    <string name="xbox_avatar">Avatar de Xbox</string>
+    <string name="launcher_managed_mc_login">Inicia sesión en Minecraft con LeviLauncher</string>
+    <string name="dialog_title_login_required">Se requiere inicio de sesión</string>
+    <string name="dialog_message_login_required">El inicio de sesión gestionado está habilitado, pero no hay ninguna cuenta. Ve a Cuentas para iniciar sesión.</string>
+    <string name="go_to_accounts">Cuentas</string>
+    <string name="disable_launcher_login_and_continue">Cerrar</string>
+
+    <string name="label_current_account">Cuenta Actual</string>
+    <string name="label_other_accounts">Otras Cuentas</string>
+
+    <string name="crash_title">La aplicación se bloqueó</string>
+    <string name="crash_back_to_main">Volver al Inicio</string>
+    <string name="crash_share_log">Compartir Registro</string>
+    <string name="crash_log_file_label">Archivo de registro:</string>
+    <string name="crash_log_file_missing">Archivo no encontrado o ilegible.</string>
+    <string name="crash_read_failed">Fallo al leer registro: %1$s</string>
+    <string name="crash_emergency_label">Emergencia:</string>
+    <string name="crash_no_details">Sin detalles de error disponibles.</string>
+    <string name="dialog_title_exit_app">Salir de la aplicación</string>
+    <string name="dialog_message_exit_app">¿Estás seguro de que deseas salir?</string>
+    <string name="dialog_positive_exit">Salir</string>
+    <string name="show_logcat_overlay">Superposición Logcat</string>
+    <string name="logcat_live">Logcat: <b>en vivo</b></string>
+    <string name="logcat_paused">Logcat: en pausa</string>
+    <string name="logcat_filter_hint">Filtro de palabra clave</string>
+    <string name="logcat_blacklist_hint">Lista negra (separada por comas)</string>
+    <string name="logcat_filter_clear">Borrar filtros</string>
+    <string name="logcat_filter">Filtro</string>
+    <string name="logcat_autoscroll">Auto-scroll</string>
+    <string name="logcat_pause">Pausa</string>
+    <string name="logcat_clear">Limpiar</string>
+    <string name="logcat_close">Cerrar</string>
+    <string name="logcat_corner_bottom_left">Redimensionar: abajo-izq</string>
+    <string name="logcat_corner_bottom_right">Redimensionar: abajo-der</string>
+
+    <string name="inbuilt_mods">Mods Incorporados</string>
+    <string name="inbuilt_mods_title">Mods Incorporados</string>
+    <string name="inbuilt_mods_subtitle">Mods internos que funcionan sin bibliotecas nativas</string>
+    <string name="no_inbuilt_mods_available">Todos los mods incorporados han sido añadidos</string>
+    <string name="inbuilt_mod_added">%s añadido a los mods</string>
+    <string name="inbuilt_mod_removed">%s eliminado de los mods</string>
+    <string name="add">Añadir</string>
+    <string name="remove">Quitar</string>
+
+    <string name="inbuilt_mod_quick_drop">Dejar caer rápido</string>
+    <string name="inbuilt_mod_quick_drop_desc">Suelta objetos rápidamente</string>
+    <string name="inbuilt_mod_camera">Perspectiva Rápida</string>
+    <string name="inbuilt_mod_camera_desc">Cambiar la vista de la cámara</string>
+    <string name="inbuilt_mod_hud">Ocultar HUD</string>
+    <string name="inbuilt_mod_hud_desc">Ocultar barra de acceso rápido y UI</string>
+    <string name="inbuilt_mod_autosprint">Auto Sprint</string>
+    <string name="inbuilt_mod_autosprint_desc">Activar/desactivar el sprint automático</string>
+    <string name="inbuilt_mod_chick_pet">Mascota Pollito</string>
+    <string name="inbuilt_mod_chick_pet_desc">¡Un lindo pollito pixelado que camina, duerme y corre al tocarlo!</string>
+    <string name="inbuilt_mod_zoom">Zoom</string>
+    <string name="inbuilt_mod_zoom_desc">Mantén pulsado para hacer zoom, tipo OptiFine</string>
+    <string name="zoom_level_label">Nivel de Zoom:</string>
+    <string name="zoom_keybind_label">Tecla de Zoom:</string>
+    <string name="zoom_keybind_press">Presiona cualquier tecla…</string>
+    <string name="zoom_keybind_tap_to_change">Toca para cambiar</string>
+    <string name="inbuilt_mod_fps_display">Mostrar FPS</string>
+    <string name="inbuilt_mod_fps_display_desc">Muestra los cuadros por segundo actuales</string>
+    <string name="inbuilt_mod_cps_display">Mostrar CPS</string>
+    <string name="inbuilt_mod_cps_display_desc">Muestra los clics por segundo</string>
+    <string name="inbuilt_mod_snaplook">Snaplook</string>
+    <string name="inbuilt_mod_snaplook_desc">Mantén para mirar atrás rápido (3ra persona frontal)</string>
+    <string name="inbuilt_mod_virtual_cursor">Cursor Virtual</string>
+    <string name="inbuilt_mod_virtual_cursor_desc">Usa un panel táctil virtual para controlar el ratón</string>
+    <string name="virtual_cursor_enabled">Cursor habilitado</string>
+    <string name="virtual_cursor_disabled">Cursor deshabilitado</string>
+    <string name="cursor_sensitivity_label">Sensibilidad del Cursor:</string>
+    <string name="inbuilt_badge">INCORPORADO</string>
+    <string name="autosprint_keybind_label">Tecla Auto Sprint:</string>
+    <string name="autosprint_keybind_press">Presiona cualquier tecla…</string>
+    <string name="configure">Configurar</string>
+    <string name="overlay_button_size">Tamaño de Botón Overlay</string>
+    <string name="overlay_button_opacity">Opacidad de Botón Overlay</string>
+    <string name="overlay_button_lock">Bloquear Posición</string>
+    <string name="overlay_button_lock_desc">Prevenir arrastres y activaciones accidentales</string>
+    <string name="settings">Ajustes</string>
+
+    <string name="extract_structures">Extraer Estructuras</string>
+    <string name="no_structures_found">No se encontraron estructuras en este mundo</string>
+    <string name="no_structures_found_title">Sin Estructuras Encontradas</string>
+    <string name="no_structures_found_message">No se encontraron estructuras en este mundo.\n\nPara extraer una estructura:\n1. Abre este mundo usando este launcher\n2. Coloca un Bloque de Estructura y guárdalo\n3. Dale nombre y presiona Guardar\n4. Sal del mundo y vuelve aquí\n5. Presiona \"Extraer Estructuras\" otra vez</string>
+    <string name="structures_exported">Exportadas %1$d estructuras a %2$s</string>
+    <string name="structures_exported_zip">Exportadas %d estructuras a ZIP</string>
+    <string name="structure_found">Estructura Encontrada</string>
+    <string name="structure_found_with_size">%1$s (%2$s)</string>
+    <string name="structure_exported">Exportado: %s</string>
+    <string name="extract">Extraer</string>
+    <string name="structures_found_title">Estructuras Encontradas</string>
+    <string name="structures_found_count">%d estructuras encontradas en este mundo</string>
+
+    <string name="mod_menu">Menú de Mods</string>
+    <string name="mod_menu_modules">Módulos</string>
+    <string name="mod_menu_search_hint">Buscar mods…</string>
+    <string name="mod_menu_no_mods">No hay mods añadidos</string>
+    <string name="mod_menu_settings_coming">Ajustes próximamente</string>
+    <string name="mod_menu_notifications">Notificaciones</string>
+    <string name="mod_menu_notifications_desc">Mostrar notificación al habilitar mods</string>
+    <string name="mod_menu_opacity">Opacidad del Menú de Mods</string>
+    <string name="mod_menu_button_opacity">Opacidad del Botón Menú</string>
+    <string name="mod_menu_version">v1.0</string>
+    <string name="mod_menu_enabled">Menú de Mods habilitado</string>
+    <string name="mod_menu_disabled">Menú de Mods deshabilitado</string>
+    <string name="mod_menu_active_title">Menú de Mods Activo</string>
+    <string name="mod_menu_active_desc">Ahora los mods incorporados se acceden desde el Menú de Mods en el juego. Deshabilita esto para añadir botones individuales.</string>
+    <string name="mod_status_enabled">Habilitado</string>
+    <string name="mod_status_disabled">Deshabilitado</string>
+    <string name="mod_notification_enabled">%s habilitado</string>
+
+    <string name="edit_options">Editar Opciones</string>
+    <string name="options_file_not_found">Archivo de opciones no encontrado</string>
+    <string name="no_options_found">No se encontraron opciones</string>
+    <string name="search_options_hint">Buscar opciones…</string>
+    <string name="no_matching_options">Sin opciones coincidentes</string>
+    <string name="error_loading_options">Error al cargar opciones</string>
+    <string name="options_saved">Opciones guardadas con éxito</string>
+
+    <string name="quick_launch_title">Lanzamiento Rápido</string>
+    <string name="quick_launch_subtitle">Inicia Minecraft con acciones específicas usando URI</string>
+    <string name="quick_launch_how_to_play">Cómo Jugar</string>
+    <string name="quick_launch_how_to_play_desc">Abre la pantalla de Cómo Jugar</string>
+    <string name="quick_launch_servers_tab">Pestaña Servidores</string>
+    <string name="quick_launch_servers_tab_desc">Abre la pestaña de servidores en el menú jugar</string>
+    <string name="quick_launch_profile">Perfil / Vestidor</string>
+    <string name="quick_launch_profile_desc">Abre la pantalla de personalización del personaje</string>
+    <string name="quick_launch_store_home">Inicio del Mercado</string>
+    <string name="quick_launch_store_home_desc">Abre la pantalla de inicio del Mercado</string>
+    <string name="quick_launch_minecoins">Minecoins</string>
+    <string name="quick_launch_minecoins_desc">Abre la pantalla de compra de Minecoins</string>
+    <string name="quick_launch_marketplace_pass">Marketplace Pass</string>
+    <string name="quick_launch_marketplace_pass_desc">Abre la pantalla de suscripción del Marketplace Pass</string>
+    <string name="quick_launch_connect_server">Conectar a Servidor</string>
+    <string name="quick_launch_connect_server_desc">Conecta directamente a un servidor Bedrock</string>
+    <string name="quick_launch_add_server">Añadir Servidor Externo</string>
+    <string name="quick_launch_add_server_desc">Añade un nuevo servidor a tu lista de servidores</string>
+    <string name="quick_launch_realm_invite">Unirse a Realm</string>
+    <string name="quick_launch_realm_invite_desc">Acepta un código de invitación a Realm</string>
+    <string name="quick_launch_load_world">Cargar Mundo</string>
+    <string name="quick_launch_load_world_desc">Cargar un mundo local por nombre</string>
+    <string name="quick_launch_command">Ejecutar Comando</string>
+    <string name="quick_launch_command_desc">Ejecutar un comando en el juego</string>
+    <string name="quick_launch_custom_uri">URI Personalizada</string>
+    <string name="quick_launch_custom_uri_desc">Ingresa una URI de minecraft://</string>
+
+    <string name="server_ip_hint">Dirección IP del Servidor</string>
+    <string name="server_port_hint">Puerto (por defecto: 19132)</string>
+    <string name="server_name_hint">Nombre del Servidor</string>
+    <string name="realm_invite_code_hint">Código Invitación Realm</string>
+    <string name="world_name_hint">Nombre del Mundo</string>
+    <string name="command_hint">Comando (sin /)</string>
+    <string name="command_warning">Nota: Esto te desconectará si se usa en un mundo local</string>
+    <string name="uri_hint">minecraft://…</string>
+    <string name="custom_uri_hint">Ingresa URI completa. Ej:\nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
+    <string name="select_tab">Seleccionar Pestaña:</string>
+
+    <string name="server_ip_required">IP requerida</string>
+    <string name="server_details_required">Nombre e IP de servidor requeridos</string>
+    <string name="invalid_port">Número de puerto inválido</string>
+    <string name="invite_code_required">Código de invitación requerido</string>
+    <string name="world_name_required">Nombre del mundo requerido</string>
+    <string name="command_required">Comando requerido</string>
+    <string name="invalid_minecraft_uri">URI inválida</string>
+
+    <string name="connect">Conectar</string>
+    <string name="join">Unirse</string>
+    <string name="load">Cargar</string>
+    <string name="execute">Ejecutar</string>
+
+    <string name="quick_launch">Lanzamiento Rápido</string>
+    <string name="quick_launch_menu_subtitle">Inicia con acciones URI</string>
+
+    <string name="curseforge_title">CurseForge</string>
+    <string name="curseforge_subtitle">Navegar y descargar contenidos</string>
+    <string name="curseforge_search_hint">Buscar contenidos…</string>
+    <string name="curseforge_download">Descargar</string>
+    <string name="curseforge_downloading">Descargando…</string>
+    <string name="curseforge_importing">Importando…</string>
+    <string name="curseforge_download_failed">Descarga fallida</string>
+    <string name="curseforge_available_files">Archivos Disponibles</string>
+
+    <string name="nav_launch">Jugar</string>
+    <string name="nav_import">Importar</string>
+    <string name="nav_instances">Instancias</string>
+    <string name="nav_about">Acerca de</string>
+    <string name="nav_settings">Ajustes</string>
+
+    <string name="search_instances_hint">Buscar…</string>
+    <string name="instances_label">Instancias</string>
+    <string name="select_instance_title">Seleccionar Instancia</string>
+    <string name="filter_all">Todas</string>
+    <string name="filter_custom">Personalizadas</string>
+    <string name="sort_version_newest">Versión (Más Reciente)</string>
+    <string name="tag_installed">Instalada</string>
+    <string name="tag_custom">Personalizada</string>
+    <string name="vanilla_prefix">Vanilla %s</string>
+
+    <string name="about_page_title">Acerca de</string>
+    <string name="about_subtitle">LeviLauncher — Un moderno Launcher para Minecraft Bedrock</string>
+    <string name="about_authors_title">👥 Autores y Mantenedores</string>
+    <string name="about_author_name">DreamGuXiang</string>
+    <string name="about_author_badge">Autor</string>
+    <string name="about_author_role">Autores de LeviLauncher</string>
+    <string name="about_afdian">Afdian</string>
+    <string name="about_patreon">Patreon</string>
+    <string name="about_source_title">Código Fuente y Open Source</string>
+    <string name="about_github_repo">GitHub · LeviLauncher</string>
+    <string name="about_github_org">LiteLDev</string>
+    <string name="about_license_note">Consulta el archivo LICENSE en el repositorio.</string>
+    <string name="about_contribute_title">Contribuir</string>
+    <string name="about_contribute_desc">Contribuciones vía Issues o Pull Requests son bienvenidas.</string>
+    <string name="about_issues">Issue</string>
+    <string name="about_star_fork">Dar Estrella / Hacer Fork</string>
+
+    <string-array name="launcher_tips">
+        <item>Los Ajustes te permiten cambiar el tema, color, fondo y otras opciones para adaptar tu launcher.</item>
+        <item>LeviLauncher es de código abierto. Usa los issues en GitHub para informar de problemas o sugerir mejoras.</item>
+        <item>Usa el menú de versión para cambiar de instancia rápidamente.</item>
+        <item>¿Alguien lee realmente estos consejos?</item>
+        <item>Puedes arrastrar los mods para reordenar su prioridad de carga.</item>
+        <item>¡Prueba el Aislamiento de Versión!</item>
+        <item>Usa el Lanzamiento Rápido para conectarte a un servidor sin abrir primero el juego.</item>
+        <item>Puedes importar archivos .mcworld, .mcpack y .mcaddon desde la página de Gestión de Contenido.</item>
+        <item>Gestiona varias cuentas Xbox dentro del launcher y cambia entre ellas sin problemas.</item>
+        <item>CurseForge te permite navegar y descargar contenido de la comunidad directamente.</item>
+        <item>Carga módulos SO externos para extender o mejorar el rendimiento de Minecraft.</item>
+    </string-array>
+
+    <string name="theme_color_title">Color del Tema</string>
+    <string name="theme_color_desc">El color de acento primario de la aplicación</string>
+    <string name="preset_colors">COLORES PREDETERMINADOS</string>
+    <string name="more_colors">MÁS COLORES</string>
+    <string name="bg_image_title">Imagen de Fondo</string>
+    <string name="bg_image_desc">Selecciona una imagen como fondo</string>
+    <string name="bg_image_none">Ninguna imagen seleccionada</string>
+    <string name="bg_image_selected">Fondo personalizado activo</string>
+    <string name="select_image">Seleccionar Imagen</string>
+    <string name="clear">Limpiar</string>
+
+</resources>

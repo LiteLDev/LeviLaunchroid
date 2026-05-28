@@ -62,6 +62,21 @@ public class LanguageManager {
         } else if (itemId == R.id.action_indonesian) {
             setAppLanguage("idn");
             return true;
+        } else if (itemId == R.id.action_spanish) {
+            setAppLanguage("es");
+            return true;
+        } else if (itemId == R.id.action_portuguese) {
+            setAppLanguage("pt");
+            return true;
+        } else if (itemId == R.id.action_french) {
+            setAppLanguage("fr");
+            return true;
+        } else if (itemId == R.id.action_japanese) {
+            setAppLanguage("ja");
+            return true;
+        } else if (itemId == R.id.action_hindi) {
+            setAppLanguage("hi");
+            return true;
         }
         return false;
     });
