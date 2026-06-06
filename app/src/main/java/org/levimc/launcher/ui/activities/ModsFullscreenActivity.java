@@ -93,6 +93,9 @@ public class ModsFullscreenActivity extends BaseActivity {
 
     private void setupViews() {
         Button addModButton = findViewById(R.id.add_mod_fullscreen_button);
+        if (!getSharedPreferences("LauncherPrefs", MODE_PRIVATE).getBoolean("game_verified", false)) {
+            addModButton.setVisibility(View.GONE);
+        }
         addModButton.setOnClickListener(v -> {
             startFilePicker();
         });
