@@ -38,7 +38,7 @@ android {
     compileSdkVersion 36
     defaultConfig {
         applicationId "org.levimc.launcher"
-        minSdkVersion 26
+        minSdkVersion 28
         targetSdkVersion 35
         versionCode getVersionCodeByTimestamp()
         versionName getGitTag()

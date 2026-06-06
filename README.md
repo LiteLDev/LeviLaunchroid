@@ -12,7 +12,7 @@
 [![License: Apache 2.0](https://img.shields.io/github/license/LiteLDev/LeviLaunchroid)](https://github.com/LiteLDev/LeviLaunchroid/blob/main/LICENSE)
 [![Issues](https://img.shields.io/github/issues/LiteLDev/LeviLaunchroid?style=flat-square&color=red)](https://github.com/LiteLDev/LeviLaunchroid/issues)
 [![Stars](https://img.shields.io/github/stars/LiteLDev/LeviLaunchroid?style=flat-square&color=yellow)](https://github.com/LiteLDev/LeviLaunchroid)
-[![Android](https://img.shields.io/badge/Android-7.0%2B-green?style=flat-square&logo=android)](https://www.android.com/)
+[![Android](https://img.shields.io/badge/Android-9.0%2B-green?style=flat-square&logo=android)](https://www.android.com/)
 
 </div>
 
@@ -76,7 +76,7 @@ If you want to build LeviLauncher from source or contribute to development, foll
 - Git installed on your system
 - Android Studio (latest version recommended)
 - Java Development Kit (JDK) 21 or higher
-- Android SDK with API level 24 or higher
+- Android SDK with API level 28 or higher
 
 ### Setup Instructions
 
@@ -92,7 +92,7 @@ If you want to build LeviLauncher from source or contribute to development, foll
 
 4. Wait for Gradle to complete the initial sync process
 
-5. Connect your Android device or start an emulator (API 24+)
+5. Connect your Android device or start an emulator (API 28+)
 
 6. Click the "Run" button in Android Studio to build and deploy to your device
 
@@ -191,7 +191,7 @@ LeviLauncher would not be possible without the contributions and support of many
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Issues](https://img.shields.io/github/issues/LiteLDev/LeviLaunchroid?style=flat-square&color=red)](https://github.com/LiteLDev/LeviLaunchroid/issues)
 [![Stars](https://img.shields.io/github/stars/LiteLDev/LeviLaunchroid?style=flat-square&color=yellow)](https://github.com/LiteLDev/LeviLaunchroid)
-[![Android](https://img.shields.io/badge/Android-7.0%2B-green?style=flat-square&logo=android)](https://www.android.com/)
+[![Android](https://img.shields.io/badge/Android-9.0%2B-green?style=flat-square&logo=android)](https://www.android.com/)
 
 **Made with ❤️ by the LeviMC Community**
 
