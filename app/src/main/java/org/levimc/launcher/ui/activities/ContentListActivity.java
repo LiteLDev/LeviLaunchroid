@@ -87,6 +87,22 @@ public class ContentListActivity extends BaseActivity {
     private List<WorldItem> allWorlds = new ArrayList<>();
     private List<ResourcePackItem> allPacks = new ArrayList<>();
     private List<ServerItem> allServers = new ArrayList<>();
+    
+    private org.levimc.launcher.ui.dialogs.LoadingDialog progressDialog;
+
+    private void showProgressDialog(String message) {
+        if (progressDialog == null) {
+            progressDialog = new org.levimc.launcher.ui.dialogs.LoadingDialog(this);
+        }
+        progressDialog.show();
+        progressDialog.setMessage(message);
+    }
+
+    private void hideProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -463,15 +479,22 @@ public class ContentListActivity extends BaseActivity {
     }
 
     private void exportWorld(WorldItem world, Uri uri) {
+        showProgressDialog(getString(R.string.exporting_world));
         contentManager.exportWorld(world, uri, new WorldManager.WorldOperationCallback() {
             @Override
             public void onSuccess(String message) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show();
+                });
             }
 
             @Override
             public void onError(String error) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show();
+                });
             }
 
             @Override
@@ -489,15 +512,22 @@ public class ContentListActivity extends BaseActivity {
     }
 
     private void exportPack(ResourcePackItem pack, Uri uri) {
+        showProgressDialog(getString(R.string.exporting_pack));
         contentManager.exportResourcePack(pack, uri, new ResourcePackManager.PackOperationCallback() {
             @Override
             public void onSuccess(String message) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show();
+                });
             }
 
             @Override
             public void onError(String error) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show();
+                });
             }
 
             @Override
@@ -506,15 +536,22 @@ public class ContentListActivity extends BaseActivity {
     }
 
     private void backupWorld(WorldItem world) {
+        showProgressDialog(getString(R.string.backing_up_world));
         contentManager.backupWorld(world, new WorldManager.WorldOperationCallback() {
             @Override
             public void onSuccess(String message) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show();
+                });
             }
 
             @Override
             public void onError(String error) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show();
+                });
             }
 
             @Override
@@ -532,15 +569,22 @@ public class ContentListActivity extends BaseActivity {
     }
 
     private void deleteWorld(WorldItem world) {
+        showProgressDialog(getString(R.string.deleting_world));
         contentManager.deleteWorld(world, new WorldManager.WorldOperationCallback() {
             @Override
             public void onSuccess(String message) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show();
+                });
             }
 
             @Override
             public void onError(String error) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show();
+                });
             }
 
             @Override
@@ -572,15 +616,22 @@ public class ContentListActivity extends BaseActivity {
     }
 
     private void deletePack(ResourcePackItem pack) {
+        showProgressDialog(getString(R.string.deleting_pack));
         contentManager.deleteResourcePack(pack, new ResourcePackManager.PackOperationCallback() {
             @Override
             public void onSuccess(String message) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show();
+                });
             }
 
             @Override
             public void onError(String error) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show();
+                });
             }
 
             @Override
@@ -667,29 +718,43 @@ public class ContentListActivity extends BaseActivity {
     }
 
     private void addServer(org.levimc.launcher.core.content.ServerItem server) {
+        showProgressDialog(getString(R.string.adding_server));
         contentManager.addServer(server, new ContentManager.ContentOperationCallback() {
             @Override
             public void onSuccess(String message) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show();
+                });
             }
 
             @Override
             public void onError(String error) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show();
+                });
             }
         });
     }
 
     private void deleteScreenshot(org.levimc.launcher.core.content.ScreenshotItem screenshot) {
+        showProgressDialog(getString(R.string.deleting_screenshot));
         contentManager.deleteScreenshot(screenshot, new ContentManager.ContentOperationCallback() {
             @Override
             public void onSuccess(String message) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show();
+                });
             }
 
             @Override
             public void onError(String error) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show();
+                });
             }
         });
     }
@@ -704,15 +769,22 @@ public class ContentListActivity extends BaseActivity {
     }
 
     private void deleteServer(org.levimc.launcher.core.content.ServerItem server) {
+        showProgressDialog(getString(R.string.deleting_server));
         contentManager.deleteServer(server, new ContentManager.ContentOperationCallback() {
             @Override
             public void onSuccess(String message) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, message, Toast.LENGTH_SHORT).show();
+                });
             }
 
             @Override
             public void onError(String error) {
-                runOnUiThread(() -> Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> {
+                    hideProgressDialog();
+                    Toast.makeText(ContentListActivity.this, error, Toast.LENGTH_LONG).show();
+                });
             }
         });
     }

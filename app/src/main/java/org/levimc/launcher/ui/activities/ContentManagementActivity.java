@@ -36,6 +36,21 @@ public class ContentManagementActivity extends BaseActivity {
     private FeatureSettings.StorageType currentStorageType = FeatureSettings.StorageType.INTERNAL;
     private SharedPreferences prefs;
     private ActivityResultLauncher<Intent> importLauncher;
+    private org.levimc.launcher.ui.dialogs.LoadingDialog progressDialog;
+
+    private void showProgressDialog(String message) {
+        if (progressDialog == null) {
+            progressDialog = new org.levimc.launcher.ui.dialogs.LoadingDialog(this);
+        }
+        progressDialog.show();
+        progressDialog.setMessage(message);
+    }
+
+    private void hideProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,11 +134,14 @@ public class ContentManagementActivity extends BaseActivity {
         File behaviorPacksDir = getPackDirectory("behavior_packs");
         File skinPacksDir = getPackDirectory("skin_packs");
 
+        showProgressDialog(getString(R.string.importing_content));
+
         contentImporter.importContent(uris, resourcePacksDir, behaviorPacksDir, skinPacksDir, worldsDir,
             new ContentImporter.ImportCallback() {
                 @Override
                 public void onSuccess(String message) {
                     runOnUiThread(() -> {
+                        hideProgressDialog();
                         Toast.makeText(ContentManagementActivity.this, message, Toast.LENGTH_SHORT).show();
                         contentManager.refreshContent();
                     });
@@ -131,7 +149,10 @@ public class ContentManagementActivity extends BaseActivity {
 
                 @Override
                 public void onError(String error) {
-                    runOnUiThread(() -> Toast.makeText(ContentManagementActivity.this, error, Toast.LENGTH_LONG).show());
+                    runOnUiThread(() -> {
+                        hideProgressDialog();
+                        Toast.makeText(ContentManagementActivity.this, error, Toast.LENGTH_LONG).show();
+                    });
                 }
 
                 @Override
