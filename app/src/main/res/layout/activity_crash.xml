@@ -131,14 +131,14 @@
                 android:paddingHorizontal="20dp"
                 android:text="@string/crash_share_log"
                 android:textAllCaps="false"
-                android:textColor="@color/on_primary"
+                android:textColor="@color/white"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 app:icon="@drawable/ic_upload"
                 app:iconGravity="textStart"
                 app:iconPadding="6dp"
                 app:iconSize="18dp"
-                app:iconTint="@color/on_primary" />
+                app:iconTint="@color/white" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
