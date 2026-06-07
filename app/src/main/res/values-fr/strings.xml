@@ -352,11 +352,17 @@
     <string name="label_other_accounts">Autres comptes</string>
 
     <string name="crash_title">L\'application s\'est arrêtée</string>
+    <string name="crash_upload">Téléverser le rapport de plantage</string>
+    <string name="crash_details_title">Détails du plantage</string>
     <string name="crash_back_to_main">Retour à l\'accueil</string>
     <string name="crash_share_log">Partager le journal</string>
     <string name="crash_log_file_label">Fichier journal :</string>
     <string name="crash_log_file_missing">Fichier journal introuvable ou illisible.</string>
     <string name="crash_read_failed">Échec de la lecture du journal : %1$s</string>
+    <string name="crash_loading_details">Chargement des détails du plantage...</string>
+    <string name="crash_type_label">Type de plantage :</string>
+    <string name="crash_summary_label">Résumé du plantage :</string>
+    <string name="crash_stack_label">Détails et pile du plantage :</string>
     <string name="crash_emergency_label">Urgence :</string>
     <string name="crash_no_details">Aucun détail disponible.</string>
     <string name="dialog_title_exit_app">Quitter l\'application</string>

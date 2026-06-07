@@ -6,36 +6,52 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import org.levimc.launcher.R
-import java.io.File
 import androidx.core.content.FileProvider
+import org.levimc.launcher.R
+import org.levimc.launcher.core.crash.CrashReporter
+import org.levimc.launcher.ui.animation.DynamicAnim
+import java.io.File
 import java.util.concurrent.Executors
 
-class CrashActivity : AppCompatActivity() {
-    
+class CrashActivity : BaseActivity() {
+
     private var executor = Executors.newSingleThreadExecutor()
     private var logPath: String? = null
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        CrashReporter.disarmRecovery(this)
+        CrashReporter.refreshPendingCrashFromPreviousExit(this)
+        CrashReporter.pendingCrashIntent(this)?.let { pendingIntent ->
+            intent = pendingIntent
+        }
 
         setContentView(R.layout.activity_crash)
 
         logPath = intent.getStringExtra("LOG_PATH")
-        val emergency = intent.getStringExtra("EMERGENCY")
+        val summary = intent.getStringExtra("SUMMARY")
+            ?: intent.getStringExtra("EMERGENCY")
+        val crashType = intent.getStringExtra("CRASH_TYPE")
+        CrashReporter.clearPendingCrash(this)
+        CrashReporter.sendUnsentReports()
 
         val tvTitle = findViewById<TextView>(R.id.crash_title)
         val tvDetails = findViewById<TextView>(R.id.crash_details)
         val btnBack = findViewById<Button>(R.id.btn_back_to_main)
         val btnShare = findViewById<Button>(R.id.btn_share_log)
+        DynamicAnim.applyPressScale(btnBack)
+        DynamicAnim.applyPressScale(btnShare)
 
         tvTitle.text = getString(R.string.crash_title)
 
         tvDetails.text = buildString {
-            append(getString(R.string.crash_log_file_label)).append("\n")
-            append(logPath ?: "").append("\n\n")
-            append("Loading crash details...")
+            appendHeader(crashType, summary)
+            if (!logPath.isNullOrBlank()) {
+                append(getString(R.string.crash_log_file_label)).append("\n")
+                append(logPath).append("\n\n")
+            }
+            append(getString(R.string.crash_loading_details))
         }
 
         btnBack.setOnClickListener {
@@ -47,18 +63,26 @@ class CrashActivity : AppCompatActivity() {
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            loadCrashDetails(tvDetails, emergency)
+            loadCrashDetails(tvDetails, crashType, summary)
         }, 100)
+        Handler(Looper.getMainLooper()).postDelayed({
+            CrashReporter.sendUnsentReports()
+        }, 2000)
     }
-    
-    private fun loadCrashDetails(tvDetails: TextView, emergency: String?) {
+
+    override fun shouldSkipNavBar(): Boolean = true
+
+    private fun loadCrashDetails(tvDetails: TextView, crashType: String?, summary: String?) {
         if (isFinishing || isDestroyed) return
-        
+
         executor.execute {
             val detailsText = buildString {
+                appendHeader(crashType, summary)
+
                 if (!logPath.isNullOrEmpty()) {
                     append(getString(R.string.crash_log_file_label)).append("\n")
                     append(logPath).append("\n\n")
+                    append(getString(R.string.crash_stack_label)).append("\n")
                     try {
                         val f = File(logPath!!)
                         if (f.exists() && f.isFile) {
@@ -77,16 +101,11 @@ class CrashActivity : AppCompatActivity() {
                         append(getString(R.string.crash_read_failed, e.message)).append("\n")
                     }
                 }
-                if (!emergency.isNullOrEmpty()) {
-                    append("\n")
-                    append(getString(R.string.crash_emergency_label)).append("\n")
-                    append(emergency)
-                }
                 if (isEmpty()) {
                     append(getString(R.string.crash_no_details))
                 }
             }
-            
+
             if (!isFinishing && !isDestroyed) {
                 runOnUiThread {
                     tvDetails.text = detailsText
@@ -94,33 +113,43 @@ class CrashActivity : AppCompatActivity() {
             }
         }
     }
-    
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        CrashReporter.disarmRecovery(this)
+    }
+
+    private fun StringBuilder.appendHeader(crashType: String?, summary: String?) {
+        if (!crashType.isNullOrBlank()) {
+            append(getString(R.string.crash_type_label)).append("\n")
+            append(crashType).append("\n\n")
+        }
+        if (!summary.isNullOrBlank()) {
+            append(getString(R.string.crash_summary_label)).append("\n")
+            append(summary).append("\n\n")
+        }
+    }
+
     private fun navigateToMain() {
         try {
-            val intent = Intent(this, SplashActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
             finish()
-        } catch (e: Exception) {
-            try {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                startActivity(intent)
-                finish()
-            } catch (ignored: Exception) {
-                finish()
-            }
+        } catch (ignored: Exception) {
+            finish()
         }
     }
-    
+
     private fun shareLogFile() {
         val path = logPath ?: return
         try {
             val logFile = File(path)
             if (logFile.exists()) {
                 val logFileUri = FileProvider.getUriForFile(
-                    this, 
-                    packageName + ".fileprovider", 
+                    this,
+                    packageName + ".fileprovider",
                     logFile
                 )
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -133,7 +162,7 @@ class CrashActivity : AppCompatActivity() {
         } catch (e: Exception) {
         }
     }
-    
+
     override fun onDestroy() {
         super.onDestroy()
         try {

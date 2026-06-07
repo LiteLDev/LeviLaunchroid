@@ -52,7 +52,7 @@ captures/
 .externalNativeBuild/
 .cxx/
 
-# Google Services (optional, ignore if not needed)
+# Google Services
 **/google-services.json
 **/google-services.xml
 

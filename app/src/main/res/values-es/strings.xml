@@ -352,11 +352,17 @@
     <string name="label_other_accounts">Otras Cuentas</string>
 
     <string name="crash_title">La aplicación se bloqueó</string>
+    <string name="crash_upload">Subir informe de bloqueo</string>
+    <string name="crash_details_title">Detalles del bloqueo</string>
     <string name="crash_back_to_main">Volver al Inicio</string>
     <string name="crash_share_log">Compartir Registro</string>
     <string name="crash_log_file_label">Archivo de registro:</string>
     <string name="crash_log_file_missing">Archivo no encontrado o ilegible.</string>
     <string name="crash_read_failed">Fallo al leer registro: %1$s</string>
+    <string name="crash_loading_details">Cargando detalles del bloqueo...</string>
+    <string name="crash_type_label">Tipo de bloqueo:</string>
+    <string name="crash_summary_label">Resumen del bloqueo:</string>
+    <string name="crash_stack_label">Detalles y pila del bloqueo:</string>
     <string name="crash_emergency_label">Emergencia:</string>
     <string name="crash_no_details">Sin detalles de error disponibles.</string>
     <string name="dialog_title_exit_app">Salir de la aplicación</string>

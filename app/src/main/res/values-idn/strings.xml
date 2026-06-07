@@ -328,11 +328,17 @@
     <string name="label_other_accounts">Akun Lain</string>
 
     <string name="crash_title">Aplikasi mengalami kerusakan.</string>
+    <string name="crash_upload">Unggah laporan kerusakan</string>
+    <string name="crash_details_title">Detail kerusakan</string>
     <string name="crash_back_to_main">Kembali ke Beranda</string>
     <string name="crash_share_log">Bagikan Log</string>
     <string name="crash_log_file_label">Berkas log:</string>
     <string name="crash_log_file_missing">Berkas log tidak ditemukan atau tidak dapat dibaca.</string>
     <string name="crash_read_failed">Gagal membaca log: %1$s</string>
+    <string name="crash_loading_details">Memuat detail kerusakan...</string>
+    <string name="crash_type_label">Jenis kerusakan:</string>
+    <string name="crash_summary_label">Ringkasan kerusakan:</string>
+    <string name="crash_stack_label">Detail dan stack kerusakan:</string>
     <string name="crash_emergency_label">Kerusakan darurat:</string>
     <string name="crash_no_details">Tidak ada detail kecelakaan yang tersedia..</string>
     <string name="dialog_title_exit_app">Keluar dari Aplikasi</string>

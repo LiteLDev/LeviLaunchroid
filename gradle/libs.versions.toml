@@ -11,8 +11,11 @@ conscryptAndroid = "2.5.3"
 constraintlayout = "2.2.1"
 core = "1.58.0.0"
 coreSplashscreen = "1.2.0"
+firebase-bom = "34.14.0"
+firebase-crashlytics-gradle = "3.0.7"
 firebase-iid = "21.1.0"
 firebase-messaging = "25.0.1"
+google-services = "4.4.4"
 fragmentKtx = "1.8.9"
 gamesActivity = "4.0.0"
 glide = "5.0.5"
@@ -32,8 +35,6 @@ simpleXml = "2.7.1"
 billing = "8.3.0"
 sqliteFramework = "2.6.2"
 dynamicanimation = "1.1.0"
-xcrash = "3.1.2"
-xcrashAndroidLib = "3.1.0"
 
 [libraries]
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
@@ -60,6 +61,10 @@ core = { module = "com.madgag.spongycastle:core", version.ref = "core" }
 core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-crashlytics-ndk = { module = "com.google.firebase:firebase-crashlytics-ndk" }
 firebase-iid = { module = "com.google.firebase:firebase-iid", version.ref = "firebase-iid" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging", version.ref = "firebase-messaging" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
@@ -74,11 +79,10 @@ prov = { module = "com.madgag.spongycastle:prov", version.ref = "core" }
 simple-xml = { group = "org.simpleframework", name = "simple-xml", version.ref = "simpleXml" }
 billing = { group = "com.android.billingclient", name = "billing", version.ref = "billing" }
 androidx-dynamicanimation = { module = "androidx.dynamicanimation:dynamicanimation", version.ref = "dynamicanimation" }
-xcrash = { module = "com.github.RadiantByte:xCrash", version.ref = "xcrash" }
-xcrash-android-lib = { module = "com.iqiyi.xcrash:xcrash-android-lib", version.ref = "xcrashAndroidLib" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }

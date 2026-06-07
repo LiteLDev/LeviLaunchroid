@@ -366,11 +366,17 @@
     <string name="label_other_accounts">अन्य खाते</string>
 
     <string name="crash_title">एप्लिकेशन क्रैश हो गया</string>
+    <string name="crash_upload">क्रैश रिपोर्ट अपलोड करें</string>
+    <string name="crash_details_title">क्रैश विवरण</string>
     <string name="crash_back_to_main">होम पर वापस जाएं</string>
     <string name="crash_share_log">लॉग साझा करें</string>
     <string name="crash_log_file_label">लॉग फ़ाइल:</string>
     <string name="crash_log_file_missing">लॉग फ़ाइल नहीं मिली या अपठनीय है।</string>
     <string name="crash_read_failed">लॉग पढ़ने में विफल: %1$s</string>
+    <string name="crash_loading_details">क्रैश विवरण लोड हो रहे हैं...</string>
+    <string name="crash_type_label">क्रैश प्रकार:</string>
+    <string name="crash_summary_label">क्रैश सारांश:</string>
+    <string name="crash_stack_label">क्रैश विवरण और स्टैक:</string>
     <string name="crash_emergency_label">आपातकालीन:</string>
     <string name="crash_no_details">कोई क्रैश विवरण उपलब्ध नहीं है।</string>
     <string name="dialog_title_exit_app">ऐप से बाहर निकलें</string>

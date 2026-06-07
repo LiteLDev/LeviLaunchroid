@@ -7,6 +7,7 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.Toast
 import com.mojang.minecraftpe.MainActivity
+import org.levimc.launcher.core.crash.CrashReporter
 import org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager
 import org.levimc.launcher.core.versions.GameVersion
 import org.levimc.launcher.settings.FeatureSettings
@@ -180,7 +181,8 @@ class MinecraftActivity : MainActivity() {
         stopInbuiltModServices()
         super.onDestroy()
 
-        if (isFinishing) {
+        if (isFinishing && !CrashReporter.isHandlingCrash() && !CrashReporter.hasPendingCrash(this)) {
+            CrashReporter.disarmRecovery(this)
             val intent = Intent(applicationContext, org.levimc.launcher.ui.activities.MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)

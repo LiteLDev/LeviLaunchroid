@@ -3,15 +3,9 @@ package org.levimc.launcher.core.minecraft
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Environment
 import androidx.preference.PreferenceManager
-import org.levimc.launcher.BuildConfig
+import org.levimc.launcher.core.crash.CrashReporter
 import org.levimc.launcher.settings.FeatureSettings
-import xcrash.ICrashCallback
-import xcrash.XCrash
-import java.io.File
-import android.content.Intent
-import org.levimc.launcher.ui.activities.CrashActivity
 import org.levimc.launcher.ui.dialogs.LogcatOverlayManager
 
 class LauncherApplication : Application() {
@@ -20,33 +14,11 @@ class LauncherApplication : Application() {
         super.onCreate()
         context = applicationContext
         FeatureSettings.init(applicationContext)
+        CrashReporter.init(this)
+        if (Application.getProcessName().endsWith(":crash")) return
+
         LogcatOverlayManager.init(this)
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
-
-        val callback: ICrashCallback = ICrashCallback { logPath, emergency ->
-            try {
-                val i = Intent(applicationContext, CrashActivity::class.java).apply {
-                    putExtra("LOG_PATH", logPath)
-                    putExtra("EMERGENCY", emergency)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                }
-                applicationContext.startActivity(i)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-
-        XCrash.init(this, XCrash.InitParameters().apply {
-            setAppVersion(BuildConfig.VERSION_NAME)
-            setLogDir(File( Environment.getExternalStorageDirectory(), "games/org.levimc/crash_logs").absolutePath)
-            setNativeCallback(callback)
-            setJavaCallback(callback)
-            setAnrCallback(callback)
-            setJavaRethrow(false)
-            setNativeRethrow(false)
-            setAnrRethrow(false)
-        })
-
     }
 
     companion object {

@@ -352,11 +352,17 @@
     <string name="label_other_accounts">Outras Contas</string>
 
     <string name="crash_title">O aplicativo falhou</string>
+    <string name="crash_upload">Enviar relatório de falha</string>
+    <string name="crash_details_title">Detalhes da falha</string>
     <string name="crash_back_to_main">Voltar ao Início</string>
     <string name="crash_share_log">Compartilhar Log</string>
     <string name="crash_log_file_label">Arquivo de log:</string>
     <string name="crash_log_file_missing">Arquivo de log não encontrado.</string>
     <string name="crash_read_failed">Falha ao ler o log: %1$s</string>
+    <string name="crash_loading_details">Carregando detalhes da falha...</string>
+    <string name="crash_type_label">Tipo de falha:</string>
+    <string name="crash_summary_label">Resumo da falha:</string>
+    <string name="crash_stack_label">Detalhes e pilha da falha:</string>
     <string name="crash_emergency_label">Emergência:</string>
     <string name="crash_no_details">Sem detalhes de falha disponíveis.</string>
     <string name="dialog_title_exit_app">Sair do App</string>

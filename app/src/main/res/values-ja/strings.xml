@@ -352,11 +352,17 @@
     <string name="label_other_accounts">その他のアカウント</string>
 
     <string name="crash_title">アプリがクラッシュしました</string>
+    <string name="crash_upload">クラッシュレポートをアップロード</string>
+    <string name="crash_details_title">クラッシュの詳細</string>
     <string name="crash_back_to_main">ホームに戻る</string>
     <string name="crash_share_log">ログを共有</string>
     <string name="crash_log_file_label">ログファイル:</string>
     <string name="crash_log_file_missing">ログファイルが見つかりません。</string>
     <string name="crash_read_failed">ログの読み取りに失敗しました: %1$s</string>
+    <string name="crash_loading_details">クラッシュの詳細を読み込み中...</string>
+    <string name="crash_type_label">クラッシュの種類:</string>
+    <string name="crash_summary_label">クラッシュの概要:</string>
+    <string name="crash_stack_label">クラッシュの詳細とスタック:</string>
     <string name="crash_emergency_label">緊急:</string>
     <string name="crash_no_details">詳細情報はありません。</string>
     <string name="dialog_title_exit_app">アプリを終了</string>

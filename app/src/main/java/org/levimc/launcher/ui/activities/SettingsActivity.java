@@ -29,6 +29,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import org.levimc.launcher.R;
+import org.levimc.launcher.core.crash.CrashReporter;
 import org.levimc.launcher.settings.FeatureSettings;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.dialogs.LogcatOverlayManager;
@@ -114,6 +115,9 @@ public class SettingsActivity extends BaseActivity {
         setupAboutSection();
 
         TextView[] tabs = {tabBasic, tabPersonalize, tabUpdates, tabAbout};
+        if (selectedTabIndex >= tabs.length) {
+            selectedTabIndex = 0;
+        }
         selectTab(tabs[selectedTabIndex]);
     }
 
@@ -247,6 +251,13 @@ public class SettingsActivity extends BaseActivity {
                 LogcatOverlayManager mgr = LogcatOverlayManager.getInstance();
                 if (mgr != null) mgr.refreshVisibility();
             } catch (Throwable ignored) {}
+        });
+
+        SwitchMaterial switchCrashUpload = findViewById(R.id.switch_crash_upload);
+        switchCrashUpload.setChecked(fs.isCrashUploadEnabled());
+        switchCrashUpload.setOnCheckedChangeListener((btn, checked) -> {
+            fs.setCrashUploadEnabled(checked);
+            CrashReporter.refreshCrashlyticsCollection(this);
         });
 
         SwitchMaterial switchManagedLogin = findViewById(R.id.switch_managed_login);
@@ -455,6 +466,14 @@ public class SettingsActivity extends BaseActivity {
             switchManagedLogin.setThumbTintList(new ColorStateList(states, new int[]{accent, 0xFFAAAAAA}));
             int trackChecked = Color.argb(100, Color.red(accent), Color.green(accent), Color.blue(accent));
             switchManagedLogin.setTrackTintList(new ColorStateList(states, new int[]{trackChecked, 0xFF555555}));
+        }
+
+        SwitchMaterial switchCrashUpload = findViewById(R.id.switch_crash_upload);
+        if (switchCrashUpload != null && accent != 0) {
+            int[][] states = {{android.R.attr.state_checked}, {}};
+            switchCrashUpload.setThumbTintList(new ColorStateList(states, new int[]{accent, 0xFFAAAAAA}));
+            int trackChecked = Color.argb(100, Color.red(accent), Color.green(accent), Color.blue(accent));
+            switchCrashUpload.setTrackTintList(new ColorStateList(states, new int[]{trackChecked, 0xFF555555}));
         }
         
         TextView navAppName = findViewById(R.id.nav_app_name);
