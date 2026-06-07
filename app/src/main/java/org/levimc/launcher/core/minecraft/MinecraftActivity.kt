@@ -114,14 +114,15 @@ class MinecraftActivity : MainActivity() {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (event.action == KeyEvent.ACTION_DOWN) {
-            val unicodeChar = event.unicodeChar
-            if (unicodeChar != 0) {
-                if (org.levimc.launcher.preloader.PreloaderInput.onKeyChar(unicodeChar)) {
-                    return true
-                }
+        val unicodeChar = event.unicodeChar
+        if (event.action == KeyEvent.ACTION_UP) {
+            if (org.levimc.launcher.preloader.PreloaderInput.onKeyEvent(event.keyCode, unicodeChar, false)) {
+                return true
             }
-            if (org.levimc.launcher.preloader.PreloaderInput.onKeyDown(event.keyCode)) {
+        }
+
+        if (event.action == KeyEvent.ACTION_DOWN) {
+            if (org.levimc.launcher.preloader.PreloaderInput.onKeyEvent(event.keyCode, unicodeChar, true)) {
                 return true
             }
         }
