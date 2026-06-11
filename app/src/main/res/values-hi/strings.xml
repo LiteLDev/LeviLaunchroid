@@ -204,6 +204,7 @@
     <string name="french">Français</string>
     <string name="japanese">日本語</string>
     <string name="hindi">हिन्दी</string>
+    <string name="turkish">Türkçe</string>
 
     <!-- Version Rename -->
     <string name="rename_version_title">संस्करण का नाम बदलें</string>
