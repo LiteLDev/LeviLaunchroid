@@ -27,4 +27,7 @@
     <item
         android:id="@+id/action_hindi"
         android:title="@string/hindi"/>
+    <item
+        android:id="@+id/action_turkish"
+        android:title="@string/turkish"/>
 </menu>
