@@ -77,7 +77,6 @@ public class LanguageManager {
         } else if (itemId == R.id.action_hindi) {
             setAppLanguage("hi");
             return true;
-        }
         } else if (itemId == R.id.action_turkish) {
             setAppLanguage("tr");
             return true;
