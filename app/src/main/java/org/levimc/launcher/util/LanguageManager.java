@@ -78,6 +78,10 @@ public class LanguageManager {
             setAppLanguage("hi");
             return true;
         }
+        } else if (itemId == R.id.action_turkish) {
+            setAppLanguage("tr");
+            return true;
+        }
         return false;
     });
 
