@@ -203,7 +203,8 @@
     <string name="french">Français</string>
     <string name="japanese">日本語</string>
     <string name="hindi">हिन्दी</string>
-
+    <string name="turkish">Türkçe</string>
+    
     <string name="rename_version_title">Renommer la version</string>
     <string name="rename_version_message">Entrez un nouveau nom pour cette version :</string>
     <string name="new_version_name">Nouveau nom de version</string>
