@@ -207,7 +207,7 @@ public class SettingsActivity extends BaseActivity {
             case "fr" -> 6;
             case "ja" -> 7;
             case "hi" -> 8;
-            case "tr" -> 9;
+            case "tr", "tr-TR" -> 9;
             default -> 0;
         };
 
