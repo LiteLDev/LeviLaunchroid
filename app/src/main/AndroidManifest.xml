@@ -237,6 +237,11 @@
                 <data android:pathPattern=".*\\..*\\..*\\.zip" />
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.zip" />
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.zip" />
+                <data android:pathPattern=".*\\.levipack" />
+                <data android:pathPattern=".*\\..*\\.levipack" />
+                <data android:pathPattern=".*\\..*\\..*\\.levipack" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.levipack" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.levipack" />
                 <data android:pathPattern=".*\\.so" />
                 <data android:pathPattern=".*\\..*\\.so" />
                 <data android:pathPattern=".*\\..*\\..*\\.so" />
