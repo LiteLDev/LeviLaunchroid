@@ -232,6 +232,11 @@
                 <data android:host="*" />
                 <data android:scheme="file" />
                 <data android:scheme="content" />
+                <data android:pathPattern=".*\\.zip" />
+                <data android:pathPattern=".*\\..*\\.zip" />
+                <data android:pathPattern=".*\\..*\\..*\\.zip" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.zip" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.zip" />
                 <data android:pathPattern=".*\\.so" />
                 <data android:pathPattern=".*\\..*\\.so" />
                 <data android:pathPattern=".*\\..*\\..*\\.so" />
