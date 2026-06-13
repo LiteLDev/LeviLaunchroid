@@ -196,7 +196,8 @@ public class SettingsActivity extends BaseActivity {
                 getString(R.string.portuguese),
                 getString(R.string.french),
                 getString(R.string.japanese),
-                getString(R.string.hindi)
+                getString(R.string.hindi),
+                getString(R.string.turkish)
         };
 
         String currentCode = languageManager.getCurrentLanguage();
@@ -209,6 +210,7 @@ public class SettingsActivity extends BaseActivity {
             case "fr" -> 6;
             case "ja" -> 7;
             case "hi" -> 8;
+            case "tr", "tr-TR" -> 9;
             default -> 0;
         };
 
@@ -233,6 +235,7 @@ public class SettingsActivity extends BaseActivity {
                     case 6 -> "fr";
                     case 7 -> "ja";
                     case 8 -> "hi";
+                    case 9 -> "tr";
                     default -> "en";
                 };
                 if (!code.equals(languageManager.getCurrentLanguage())) {

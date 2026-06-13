@@ -173,7 +173,8 @@
     <string name="french">Français</string>
     <string name="japanese">日本語</string>
     <string name="hindi">हिन्दी</string>
-
+    <string name="turkish">Türkçe</string>
+    
     <!-- Переименовать версию -->
     <string name="rename_version_title">Переименовать версию</string>
     <string name="rename_version_message">Введите новое имя для этой версии:</string>
