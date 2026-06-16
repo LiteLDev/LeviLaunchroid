@@ -122,9 +122,9 @@
     <string name="dialog_positive_ok">ठीक है</string>
 
     <string name="new_version_found">नया संस्करण मिला: %1$s</string>
-    <string name="update_question">क्या आप नवीनतम संस्करण डाउनलोड और इंस्टॉल करना चाहते हैं?</string>
-    <string name="download_update">अपडेट डाउनलोड करें</string>
-    <string name="ignore_this_version">इस संस्करण को अनदेखा करें</string>
+    <string name="update_question">⚠️ संस्करण माइग्रेशन सूचना\n\nअगला संस्करण (v1.5.0) डेटा माइग्रेशन करेगा। LeviLauncher को games/org.levimc से android/data में डेटा माइग्रेट करना होगा।\n\nयह स्टोरेज परिवर्तन Google Play लिस्टिंग अनुपालन के लिए आवश्यक है। पुरानी डायरेक्टरी अछूती रहेगी, लेकिन माइग्रेशन के बाद उसका उपयोग नहीं होगा।\n\nक्या आप अभी डाउनलोड और इंस्टॉल करना चाहते हैं?</string>
+    <string name="download_update">अपडेट</string>
+    <string name="ignore_this_version">अनदेखा</string>
     <string name="update_progress">डाउनलोड प्रगति: %1$d%%</string>
     <string name="update_failed">डाउनलोड विफल: %1$s</string>
     <string name="install_failed">अपडेट इंस्टॉल करने में असमर्थ: %1$s</string>

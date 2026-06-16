@@ -124,9 +124,9 @@
 
 
     <string name="new_version_found">New version found: %1$s</string>
-    <string name="update_question">Do you want to download and install the latest version?</string>
-    <string name="download_update">Download Update</string>
-    <string name="ignore_this_version">Ignore this version</string>
+    <string name="update_question">⚠️ Version Migration Notice\n\nThe next version (v1.5.0) will perform a version migration. LeviLauncher must migrate data from games/org.levimc to android/data.\n\nThis storage change is required for Google Play listing compliance. The old directory will be kept untouched, but it will no longer be used after migration.\n\nDo you want to download and install now?</string>
+    <string name="download_update">Update</string>
+    <string name="ignore_this_version">Ignore</string>
     <string name="update_progress">Download progress: %1$d%%</string>
     <string name="update_failed">Download failed: %1$s</string>
     <string name="install_failed">Unable to install update: %1$s</string>

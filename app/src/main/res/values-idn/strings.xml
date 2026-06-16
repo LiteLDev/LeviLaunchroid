@@ -106,9 +106,9 @@
 
 
     <string name="new_version_found">Versi baru ditemukan: %1$s</string>
-    <string name="update_question">Apakah Anda ingin mengunduh dan menginstal versi terbaru?</string>
-    <string name="download_update">Unduh Pembaruan</string>
-    <string name="ignore_this_version">Abaikan versi ini</string>
+    <string name="update_question">⚠️ Pemberitahuan Migrasi\n\nVersi berikutnya (v1.5.0) akan melakukan migrasi data. LeviLauncher harus memigrasikan data dari games/org.levimc ke android/data.\n\nPerubahan penyimpanan ini diperlukan untuk kepatuhan Google Play. Direktori lama akan tetap utuh, tetapi tidak akan digunakan lagi setelah migrasi.\n\nApakah Anda ingin mengunduh dan menginstal sekarang?</string>
+    <string name="download_update">Perbarui</string>
+    <string name="ignore_this_version">Abaikan</string>
     <string name="update_progress">Kemajuan pengunduhan: %1$d%%</string>
     <string name="update_failed">Pengunduhan gagal: %1$s</string>
     <string name="install_failed">Tidak dapat menginstal pembaruan: %1$s</string>

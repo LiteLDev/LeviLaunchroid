@@ -4,8 +4,7 @@
     android:padding="24dp"
     android:background="@drawable/bg_rounded_card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:maxHeight="500dp">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_title"
@@ -24,10 +23,11 @@
 
         <TextView
             android:id="@+id/tv_message"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="40dp" />
+            android:minHeight="40dp"
+            android:lineSpacingExtra="3dp" />
     </ScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -60,8 +60,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:textSize="14sp"
+            android:minHeight="40dp"
+            android:textSize="13sp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="?attr/colorOnSurfaceVariant"
@@ -79,8 +79,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:textSize="14sp"
+            android:minHeight="40dp"
+            android:textSize="13sp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="?attr/colorOnSurfaceVariant"
@@ -98,8 +98,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:textSize="14sp"
+            android:minHeight="40dp"
+            android:textSize="13sp"
             android:ellipsize="end"
             android:maxLines="1"
             android:backgroundTint="?attr/colorPrimary"

@@ -90,9 +90,9 @@
     <string name="unknown_sources_permission_message">请授予安装未知来源应用的权限，否则无法完成应用更新/安装。点击“授权”前往系统设置开启后返回本应用继续操作。</string>
 
     <string name="new_version_found">发现新版本：%1$s</string>
-    <string name="update_question">是否下载并安装最新版本？</string>
-    <string name="download_update">下载更新</string>
-    <string name="ignore_this_version">忽略此版本</string>
+    <string name="update_question">⚠️ 版本迁移通知\n\n下一版本 (v1.5.0) 将执行版本迁移。LeviLauncher 需要将数据从 games/org.levimc 迁移到 android/data。\n\n此存储更改是 Google Play 上架合规要求。旧目录将保留不变，但迁移后将不再使用。\n\n是否立即下载并安装？</string>
+    <string name="download_update">更新</string>
+    <string name="ignore_this_version">忽略</string>
     <string name="update_progress">下载进度: %1$d%%</string>
     <string name="update_failed">下载失败: %1$s</string>
     <string name="install_failed">无法安装更新: %1$s</string>

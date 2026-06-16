@@ -122,9 +122,9 @@
     <string name="dialog_positive_ok">OK</string>
 
     <string name="new_version_found">新しいバージョンが見つかりました: %1$s</string>
-    <string name="update_question">最新バージョンをダウンロードしてインストールしますか？</string>
-    <string name="download_update">アップデートをダウンロード</string>
-    <string name="ignore_this_version">このバージョンを無視する</string>
+    <string name="update_question">⚠️ バージョン移行のお知らせ\n\n次のバージョン (v1.5.0) ではデータ移行が行われます。LeviLauncher は games/org.levimc から android/data にデータを移行する必要があります。\n\nこのストレージ変更は Google Play 掲載要件への準拠のために必要です。旧ディレクトリはそのまま残りますが、移行後は使用されなくなります。\n\n今すぐダウンロードしてインストールしますか？</string>
+    <string name="download_update">更新</string>
+    <string name="ignore_this_version">無視</string>
     <string name="update_progress">ダウンロードの進行状況: %1$d%%</string>
     <string name="update_failed">ダウンロードに失敗しました: %1$s</string>
     <string name="install_failed">アップデートをインストールできません: %1$s</string>

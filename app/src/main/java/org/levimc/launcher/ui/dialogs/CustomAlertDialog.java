@@ -166,26 +166,24 @@ public class CustomAlertDialog extends Dialog {
         LinearLayout btnContainer = findViewById(R.id.btn_container);
 
         if (hasThreeButtons && btnContainer != null) {
-            btnContainer.setOrientation(LinearLayout.VERTICAL);
+            btnContainer.setOrientation(LinearLayout.HORIZONTAL);
 
             LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            btnParams.topMargin = (int) (8 * getContext().getResources().getDisplayMetrics().density);
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
 
-            LinearLayout.LayoutParams firstBtnParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            btnPositive.setLayoutParams(firstBtnParams);
-            btnNeutral.setLayoutParams(btnParams);
             btnNegative.setLayoutParams(btnParams);
+            btnNeutral.setLayoutParams(btnParams);
+            btnPositive.setLayoutParams(btnParams);
 
-            if (spacingNegNeu != null) spacingNegNeu.setVisibility(View.GONE);
-            if (spacingNeuPos != null) spacingNeuPos.setVisibility(View.GONE);
+            if (spacingNegNeu != null) spacingNegNeu.setVisibility(View.VISIBLE);
+            if (spacingNeuPos != null) spacingNeuPos.setVisibility(View.VISIBLE);
 
             btnContainer.removeAllViews();
-            btnContainer.addView(btnPositive);
-            btnContainer.addView(btnNeutral);
             btnContainer.addView(btnNegative);
+            btnContainer.addView(spacingNegNeu);
+            btnContainer.addView(btnNeutral);
+            btnContainer.addView(spacingNeuPos);
+            btnContainer.addView(btnPositive);
         }
 
         if (mNegativeText != null) {
@@ -235,7 +233,7 @@ public class CustomAlertDialog extends Dialog {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             float density = getContext().getResources().getDisplayMetrics().density;
             int screenWidth = getContext().getResources().getDisplayMetrics().widthPixels;
-            int maxWidth = (int) (400 * density);
+            int maxWidth = (int) (520 * density);
             int dialogWidth = Math.min((int) (screenWidth * 0.9), maxWidth);
             window.setLayout(dialogWidth, WindowManager.LayoutParams.WRAP_CONTENT);
 
