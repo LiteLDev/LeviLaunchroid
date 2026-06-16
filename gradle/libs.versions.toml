@@ -29,6 +29,7 @@ lifecycle = "2.10.0"
 material = "1.13.0"
 okhttp = "5.3.2"
 pkix = "1.54.0.0"
+playServicesGamesV2 = "21.0.0"
 preference-ktx = "1.2.1"
 roomRuntime = "2.8.4"
 simpleXml = "2.7.1"
@@ -76,6 +77,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 pkix = { module = "com.madgag.spongycastle:pkix", version.ref = "pkix" }
+play-services-games-v2-v2100 = { module = "com.google.android.gms:play-services-games-v2", version.ref = "playServicesGamesV2" }
 prov = { module = "com.madgag.spongycastle:prov", version.ref = "core" }
 simple-xml = { group = "org.simpleframework", name = "simple-xml", version.ref = "simpleXml" }
 billing = { group = "com.android.billingclient", name = "billing", version.ref = "billing" }
