@@ -80,6 +80,9 @@ public class LanguageManager {
             } else if (itemId == R.id.action_turkish) {
                 setAppLanguage("tr");
                 return true;
+            } else if (itemId == R.id.action_vietnamese) {
+                setAppLanguage("vi");
+                return true;
             }
             return false;
         });
