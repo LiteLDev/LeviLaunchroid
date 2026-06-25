@@ -269,6 +269,7 @@ La migración debe completarse antes de continuar con LeviLauncher.</string>
     <string name="japanese">日本語</string>
     <string name="hindi">हिन्दी</string>
     <string name="turkish">Türkçe</string>
+    <string name="vietnamese">Tiếng Việt</string>
 
     <string name="rename_version_title">Renombrar Versión</string>
     <string name="rename_version_message">Introduce un nuevo nombre para esta versión:</string>
