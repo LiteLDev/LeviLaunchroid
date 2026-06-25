@@ -1,0 +1,51 @@
+<resources>
+
+    <style name="Base.Theme.FullScreen" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:fontFamily">@font/misans</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorTertiary">@color/tertiary</item>
+        <item name="colorOnTertiary">@color/on_tertiary</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorOnBackground">@color/on_background</item>
+        <item name="colorOutline">@color/outline</item>
+
+        <item name="android:windowBackground">@color/background</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+
+    </style>
+
+    <style name="MinecraftLoadingTheme" parent="Base.Theme.FullScreen">
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+
+    <style name="MainActivityTheme" parent="Base.Theme.FullScreen">
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+
+    <style name="LauncherRestartTheme" parent="Base.Theme.FullScreen">
+        <item name="android:fontFamily">@font/misans</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowContentTransitions">false</item>
+    </style>
+
+</resources>
+
