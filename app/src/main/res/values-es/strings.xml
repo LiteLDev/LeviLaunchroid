@@ -10,7 +10,7 @@
     <string name="bedrock_edition">Bedrock Edition</string>
     <string name="current_instance">Instancia actual</string>
 
-    <!-- Mods --> 
+    <!-- Mods -->
     <string name="mods_title">Mods (%d)</string>
     <string name="mods_section_title">Mods</string>
     <string name="external_mods_label">Mods externos</string>
