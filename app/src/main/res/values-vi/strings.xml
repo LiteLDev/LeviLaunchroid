@@ -1,0 +1,765 @@
+<resources>
+    <!-- Common -->
+    <string name="app_name">LeviLauncher</string>
+    <string name="minecraft">Minecraft</string>
+    <string name="launch">Khởi Chạy</string>
+    <string name="beta_badge">Thử Nghiệm</string>
+    <string name="debug_badge">Gỡ lỗi</string>
+    <string name="cursor">Con trỏ</string>
+    <string name="bedrock_edition">Bedrock Edition</string>
+    <string name="current_instance">Phiên bản hiện tại</string>
+
+    <!-- Mods -->
+    <string name="mods_title">Mods (%d)</string>
+    <string name="mods_section_title">Mods</string>
+    <string name="external_mods_label">Mods bên ngoài</string>
+    <string name="inbuilt_mods_label">Mods có sẵn</string>
+    <string name="manage_mods">Quản lý Mods</string>
+    <string name="no_mods_found">Không tìm thấy Mods</string>
+    <string name="mod_load_order">Thứ tự tải: %d</string>
+    <string name="drag_to_reorder">Kéo để sắp xếp</string>
+    <string name="mod_reordered">Đã sắp xếp lại Mod</string>
+
+    <!-- About -->
+    <string name="about_title">☕ Về</string>
+    <string name="copyright">©2024–2026 LeviMC. Mọi quyền được bảo lưu.</string>
+    <string name="font_license">Ứng dụng đang sử dụng phông chữ Misans.</string>
+    <string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
+    <string name="quick_actions_title">Thao tác nhanh</string>
+    <string name="content_mgmt_section_title">Quản lý nội dung</string>
+    <string name="misc_section_title">Khác</string>
+    <string name="view_all">Xem tất cả →</string>
+    <string name="content_management_subtitle">Quản lý các thế giới, gói tài nguyên và gói hành vi</string>
+    <string name="import_apk_subtitle">Cài đặt Minecraft từ file APK hoặc APKS.</string>
+    <string name="ms_add_account">Thêm tài khoản</string>
+    <string name="ms_add_account_subtitle">Đăng nhập bằng Microsoft</string>
+
+    <!-- Dialogs -->
+    <string name="content_detected_title">Đã phát hiện nội dung</string>
+    <string name="content_detected_message">Bạn muốn mở trò chơi ngay bây giờ không?\n\nFile: %s</string>
+    <string name="launch_now">Mở ngay</string>
+    <string name="launch_later">Để lần sau</string>
+    <string name="loading">Đang tải…</string>
+
+    <string name="import_confirmation_title">Nhập Mods</string>
+    <string name="import_confirmation_message">Bạn có chắc chắn muốn nhập Mod %d đã chọn không? </string>
+    <string name="import_so_plugin_title">Nhập Plugin SO</string>
+    <string name="plugin_name_label">Tên Plugin</string>
+    <string name="plugin_type_label">Loại</string>
+    <string name="plugin_version_label">Phiên Bản</string>
+    <string name="import_button">Nhập</string>
+    <string name="overwrite_file_title">File này đã tồn tại</string>
+    <string name="overwrite_file_message">File %s đã tồn tại. Bạn có muốn ghi đè lên nó không?</string>
+    <string name="overwrite">Ghi đè</string>
+    <string name="skip">Bỏ qua</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="retry">Thử lại</string>
+
+    <string name="installed_packages">Đã cài đặt các gói</string>
+    <string name="local_custom">Chỉnh sửa cục bộ</string>
+
+    <!-- Permissions -->
+    <string name="storage_permission_title">Quyền truy cập bộ nhớ </string>
+    <string name="storage_permission_message">Vui lòng cấp quyền truy cập bộ nhớ để LeviLauncher có thể sao chép dữ liệu từ thư mục games/org.levimc cũ. Quyền này chỉ cần thiết cho bước di chuyển dữ liệu.</string>
+    <string name="grant_permission">Cấp quyền</string>
+    <string name="cancel">Hủy</string>
+
+    <!-- Feedback -->
+    <string name="files_processed">Đã xử lý thành công file Mod %d</string>
+    <string name="user_cancelled">Hành động đã bị hủy bởi người dùng</string>
+
+
+    <string name="exit">Thoát</string>
+
+    <string name="overlay_permission_message">Vui lòng cấp quyền hiển thị lớp phủ.</string>
+    <string name="overlay_permission_denied_message">Vui lòng cấp quyền hiển thị lớp phủ, nếu không cửa sổ nhật ký sẽ không thể hiển thị. </string>
+    <string name="overlay_permission_not_granted">Quyền hiển thị lớp phủ đã bị từ chối</string>
+    <string name="storage_permission_not_granted">Quyền truy cập bộ nhớ đã bị từ chối</string>
+
+    <string name="import_apk">Nhập file APK</string>
+    <string name="install">Cài đặt</string>
+    <string name="version_name">Tên phiên bản</string>
+    <string name="name_invalid">Tên này không thể sử dụng hoặc đã được sử dụng rồi!</string>
+    <string name="install_done">Cài đặt thành công, phiên bản: %1$s</string>
+
+    <string name="illegal_apk_title">File APK không hợp pháp</string>
+    <string name="not_mc_apk">Không phải file Minecraft APK</string>
+    <string name="not_apk_or_apks">Vui lòng chọn file APK hoặc APKS.</string>
+
+    <string name="not_found_version">Không tìm thấy phiên bản</string>
+
+    <string name="installing_title">Đang cài đặt…</string>
+    <string name="installing_message">Vui lòng chờ, Minecraft đang được cài đặt</string>
+
+    <string name="enable_debug_log">Bật nhật ký gỡ lỗi</string>
+
+    <string name="settings_title">Cài đặt</string>
+    <string name="settings_desc">Cài đặt Launcher của bạn</string>
+    <string name="settings_subtitle">Cấu hình các tùy chọn Launcher</string>
+    <string name="settings_tab_basic">Cài đặt cơ bản</string>
+    <string name="settings_tab_personalize">Cá nhân hóa</string>
+    <string name="settings_tab_updates">Cập nhật</string>
+    <string name="settings_tab_about">Về</string>
+    <string name="settings_theme_desc">Chọn chủ đề cho ứng dụng</string>
+
+
+    <string name="unknown_sources_permission_title">Quyền cài đặt</string>
+    <string name="unknown_sources_permission_message">Để cài đặt hoặc cập nhật ứng dụng này, vui lòng cấp quyền cài đặt ứng dụng không rõ nguồn gốc. Nhấp vào "Cấp quyền" để mở cài đặt hệ thống, bật quyền cho ứng dụng này và quay lại để tiếp tục.</string>
+
+    <string name="check_update">Kiểm tra cập nhật</string>
+    <string name="version_prefix">Phiên bản: </string>
+
+    <string name="dialog_title_no_version">Chưa chọn phiên bản</string>
+    <string name="dialog_message_no_version">Vui lòng chọn phiên bản trò chơi trước khi khởi chạy.</string>
+    <string name="dialog_title_version_isolation">Yêu cầu chia phiên bản</string>
+    <string name="dialog_message_version_isolation">Đây là phiên bản được nhập. Vui lòng bật tính năng chia phiên bản trong cài đặt để khởi chạy phiên bản này. </string>
+    <string name="dialog_positive_enable">Bật</string>
+    <string name="dialog_title_launch_failed">Khởi chạy không thành công</string>
+    <string name="dialog_message_launch_failed">Không thể khởi chạy Minecraft: %1$s</string>
+    <string name="dialog_title_incompatible_mods">Các bản mod không tương thích đã bị bỏ qua</string>
+    <string name="dialog_message_incompatible_mods">Một số bản mod không tương thích với phiên bản Minecraft hiện tại của bạn %1$s và đã bị bỏ qua:\n\n%2$s</string>
+    <string name="dialog_title_disable_version_isolation">Tắt tính năng chia phiên bản</string>
+    <string name="dialog_message_disable_version_isolation">Bạn đang cố gắng khởi chạy một phiên bản đã cài đặt với tính năng chia phiên bản được bật. Vui lòng tắt tính năng này để tiếp tục. </string>
+    <string name="dialog_positive_disable">Tắt</string>
+    <string name="dialog_positive_ok">OK</string>
+
+
+    <string name="new_version_found">Đã tìm thấy phiên bản mới: %1$s</string>
+    <string name="update_question">Bạn có muốn tải xuống và cài đặt phiên bản mới nhất không?</string>
+    <string name="download_update">Tải xuống bản cập nhật</string>
+    <string name="ignore_this_version">Bỏ qua phiên bản này</string>
+    <string name="update_progress">Tiến trình tải xuống: %1$d%%</string>
+    <string name="update_failed">Tải xuống không thành công: %1$s</string>
+    <string name="install_failed">Không thể cài đặt bản cập nhật: %1$s</string>
+    <string name="already_latest_version">Đang ở phiên bản mới nhất (%1$s)</string>
+    <string name="version_ignored">Phiên bản này đã bị bỏ qua</string>
+    <string name="downloading_update">Đang tải bản cập nhật…</string>
+
+    <string name="repair_libs_in_progress">Sửa chữa các file thư viện trò chơi…</string>
+    <string name="repair_completed">Sửa chữa hoàn tất.</string>
+    <string name="repair_libs_success_message">Các file thư viện trò chơi đã được sửa chữa thành công. Giờ bạn có thể khởi động trò chơi.</string>
+    <string name="repair_failed">Sửa chữa thất bại</string>
+    <string name="repair_libs_failed_message">Không thể sửa chữa các file thư viện trò chơi. Vui lòng kiểm tra tính toàn vẹn của file.</string>
+    <string name="repair_error">Sửa lỗi</string>
+    <string name="repair_libs_error_message">Đã xảy ra lỗi trong quá trình sửa chữa: %s</string>
+    <string name="missing_libs_title">Thiếu các file thư viện trò chơi - %s</string>
+    <string name="missing_libs_message">Các file thư viện trò chơi cần thiết đang bị thiếu. Bạn có muốn sửa chữa chúng ngay bây giờ không?</string>
+    <string name="repair">Sửa</string>
+    <string name="repair_libs_dialog_title">Đang sửa chữa thư viện trò chơi</string>
+    <string name="repair_libs_dialog_subtitle">Đang chuẩn bị các file thư viện trò chơi</string>
+    <string name="repair_preparing">Đang chuẩn bị…</string>
+    <string name="repair_processing">Đang trích xuất thư viện…</string>
+    <string name="repair_finalizing">Hoàn tất sửa chữa…</string>
+
+    <string name="storage_migration_title">Cần có quyền chỉnh sửa kho lưu trữ</string>
+    <string name="storage_migration_message">LeviLauncher phải di chuyển dữ liệu từ games/org.levimc sang %1$s trước khi tiếp tục.
+
+Việc thay đổi thư mục lưu trữ này là cần thiết để tuân thủ các quy định về hiển thị danh sách trên Google Play. Thư mục cũ sẽ được giữ nguyên, nhưng sẽ không còn được sử dụng sau khi chuyển đổi. 
+
+Quá trình chuyển đổi có thể mất một lúc. Bạn có thể để ứng dụng chạy ngầm trong khi nó thực hiện; điện thoại có thể nóng lên trong quá trình sao chép tập tin lớn. Cảm ơn sự thông cảm của bạn.</string>
+    <string name="storage_migration_start">Di chuyển</string>
+    <string name="storage_migration_permission_denied">Cần có quyền truy cập bộ nhớ để đọc thư mục cũ phục vụ cho quá trình di chuyển.</string>
+    <string name="storage_migration_progress_title">Di chuyển dữ liệu</string>
+    <string name="storage_migration_progress_subtitle">Đang sao chép dữ liệu Launcher vào thư mục Android/media</string>
+    <string name="storage_migration_scanning">Đang quét thư mục cũ…</string>
+    <string name="storage_migration_progress_detail">%1$d/%2$d files · %3$s</string>
+    <string name="storage_migration_eta_pending">Ước tính thời gian còn lại…</string>
+    <string name="storage_migration_eta_detail">Về %1$s còn lại · hoàn thành khoảng %2$s</string>
+    <string name="storage_migration_duration_hours_minutes">%1$d giờ %2$d phút</string>
+    <string name="storage_migration_duration_minutes_seconds">%1$d phút %2$d giây</string>
+    <string name="storage_migration_duration_seconds">%1$d giây</string>
+    <string name="storage_migration_background_hint">Quá trình chuyển dữ liệu có thể tiếp tục chạy ngầm. Nên sạc đầy pin điện thoại; điện thoại có thể nóng lên trong quá trình sao chép tập tin. Cảm ơn sự thông cảm của bạn.</string>
+    <string name="storage_migration_completed_title">Quá trình chuyển đổi đã hoàn tất.</string>
+    <string name="storage_migration_completed_message">Đã di chuyển %1$d files (%2$s). %3$d files đã được cập nhật.
+
+Thư mục games/org.levimc cũ không bị xóa và không còn được sử dụng nữa.</string>
+    <string name="storage_migration_partial_title">Di chuyển chưa hoàn tất</string>
+    <string name="storage_migration_partial_message">Không thể sao chép tập tin %1$d trong %2$d. Quá trình di chuyển phải hoàn tất trước khi LeviLauncher có thể tiếp tục. </string>
+    <string name="storage_migration_failed_title">Quá trình di chuyển thất bại</string>
+    <string name="storage_migration_failed_message">Quá trình di chuyển không thể tiếp tục: %1$s
+
+Quá trình chuyển đổi phải hoàn tất trước khi LeviLauncher có thể tiếp tục.</string>
+
+    <string name="theme_title">Chế độ chủ đề</string>
+    <string name="theme_follow_system">Theo hệ thống</string>
+    <string name="theme_light">Sáng</string>
+    <string name="theme_dark">Tối</string>
+
+    <string name="error_no_browser">Không có trình duyệt nào khả dụng</string>
+
+    <string name="eula_title">Thỏa thuận cấp phép LeviLauncher</string>
+    <string name="eula_message"><b>Chào mừng bạn đến với LeviLauncher</b>\n\nBằng cách sử dụng phần mềm này, bạn đồng ý với các điều khoản sau:\n\n• Đây là trình khởi chạy Minecraft  <b>không chính thức</b>\n• Bạn phải sở hữu một bản sao Minecraft <b>được cấp phép</b> \n• Mọi hình thức vi phạm bản quyền hoặc gian lận đều bị nghiêm cấm\n• Việc sử dụng các bản Mods/gói tài nguyên là do bạn tự chịu rủi ro\n• Không liên kết với Mojang/Microsoft\n\nViệc tiếp tục sử dụng đồng nghĩa với việc bạn đồng ý</string>
+    <string name="eula_agree">Đồng ý</string>
+    <string name="eula_exit">Từ chối</string>
+
+    <string name="allow_unknown_sources">Vui lòng cho phép cài đặt từ nguồn không xác định trước khi tiếp tục. </string>
+
+    <string name="dialog_title_delete_version">Xóa phiên bản</string>
+    <string name="dialog_message_delete_version">Bạn có chắc chắn muốn xóa phiên bản tùy chỉnh này không? Thao tác này không thể hoàn tác.</string>
+    <string name="dialog_positive_delete">Xóa</string>
+    <string name="dialog_negative_cancel">Hủy</string>
+    <string name="toast_delete_success">Đã xóa thành công</string>
+    <string name="toast_delete_failed">Xóa không thành công: %1$s</string>
+    <string name="error_delete_builtin_version">Không thể xóa phiên bản tích hợp sẵn</string>
+    <string name="invalid_mod_file">Không thành công</string>
+    <string name="invalid_mod_file_reason">Chỉ cho phép files .so, gói mod .zip, hoặc gói mod .levipack | File đã chọn không phải là gói nhập mod hợp lệ. </string>
+    <string name="invalid_zip_mod_package_title">Gói mod ZIP không hợp lệ</string>
+    <string name="invalid_zip_mod_package_message">Gói mod ZIP phải chứa file manifest.json và file .so. </string>
+    <string name="error_versions">Phiên bản lỗi</string>
+
+    <string name="dialog_title_delete_mod">Xóa Mod</string>
+    <string name="dialog_message_delete_mod">Bạn có chắc chắn muốn xóa bản mod này không?</string>
+
+    <string name="version_isolation">Chia phiên bản</string>
+    <string name="launch_vertically">Khởi chạy theo chiều dọc</string>
+    <string name="launch_vertically_desc">Buộc trò chơi khởi chạy ở chế độ dọc.</string>
+
+    <string name="instance_settings_title">Cài đặt cho phiên bản</string>
+    <string name="instance_tab_general">Chung</string>
+    <string name="instance_tab_launch_options">Tùy chọn khởi chạy</string>
+    <string name="instance_tab_management">Quản lý</string>
+    <string name="instance_new_name">Tên mới</string>
+    <string name="instance_rename_hint">Chỉ đổi tên thư mục. Phiên bản và loại trò chơi không bị ảnh hưởng.</string>
+    <string name="instance_custom_icon">Icon tùy chỉnh (khuyến khích hình vuông)</string>
+    <string name="instance_clear_icon">Xóa</string>
+    <string name="instance_icon_hint">Sẽ được lưu dưới dạng LargeLogo.png trong thư mục version. Nhấp vào biểu tượng để thay đổi.</string>
+    <string name="instance_isolation_desc">Chỉ hiển thị dữ liệu trò chơi riêng cho phiên bản này. Các phiên bản khác sẽ không bị ảnh hưởng.</string>
+    <string name="instance_danger_zone">Khu vực nguy hiểm</string>
+    <string name="instance_danger_zone_desc">Các thao tác này ảnh hưởng đến việc đăng ký phiên bản hoặc các file cục bộ. Hãy kiểm tra kỹ trước khi tiếp tục.</string>
+    <string name="instance_delete_desc">Thao tác này sẽ xóa vĩnh viễn phiên bản này khỏi thiết bị của bạn, bao gồm cả thế giới, cấu hình và nội dung đã cài đặt.</string>
+    <string name="instance_delete_warning">Hành động này không thể đảo ngược.</string>
+    <string name="instance_delete_confirm_title">Xóa phiên bản</string>
+    <string name="instance_delete_confirm_msg">Bạn có chắc chắn muốn xóa phiên bản này không? Tất cả dữ liệu, bao gồm cả thế giới, sẽ bị xóa vĩnh viễn.</string>
+    <string name="instance_backup_title">Sao lưu phiên bản</string>
+    <string name="instance_backup_desc">Tạo bản sao lưu đầy đủ của phiên bản này trong Download/LeviLauncher/Backups.</string>
+    <string name="instance_backup_button">Sao lưu phiên bản</string>
+    <string name="instance_backup_confirm_message">Tạo bản sao lưu đầy đủ của phiên bản này ngay bây giờ? Nếu Minecraft đang chạy, hãy thoát trước để tránh làm thay đổi các file trong quá trình sao lưu.</string>
+    <string name="instance_backup_in_progress">Đang sao lưu phiên bản…</string>
+    <string name="instance_backup_success_title">Bản sao lưu đã được tạo</string>
+    <string name="instance_backup_success_message">Bản sao lưu đã được lưu vào:\n%1$s</string>
+    <string name="instance_backup_failed_title">Sao lưu thất bại</string>
+    <string name="instance_backup_failed_message">Không thể tạo bản sao lưu:\n%1$s</string>
+    <string name="instance_import_backup_button">Nhập bản sao lưu</string>
+    <string name="instance_batch_backup_button">Sao lưu hàng loạt</string>
+    <string name="instance_batch_backup_title">Các phiên bản sao lưu hàng loạt</string>
+    <string name="instance_batch_backup_select_message">Chọn các phiên bản cần sao lưu. Nếu Minecraft đang chạy, hãy thoát trước để tránh làm thay đổi các tập tin trong quá trình sao lưu.</string>
+    <string name="instance_batch_backup_select_all">Chọn tất cả các phiên bản</string>
+    <string name="instance_batch_backup_no_instances">Hiện không có bản sao lưu nào khả dụng.</string>
+    <string name="instance_batch_backup_no_selection">Chọn ít nhất một phiên bản.</string>
+    <string name="instance_batch_backup_in_progress">Sao lưu %1$s (%2$d/%3$d)…</string>
+    <string name="instance_batch_backup_success_title">Đã tạo bản sao lưu</string>
+    <string name="instance_batch_backup_success_message">Đã tạo %1$d sao lưu:\n%2$s</string>
+    <string name="instance_batch_backup_partial_title">Quá trình sao lưu chưa hoàn tất.</string>
+    <string name="instance_batch_backup_partial_message">Đã tạo %1$d sao lưu, %2$d không thành công.\n\nSaved:\n%3$s\n\nFailed:\n%4$s</string>
+    <string name="instance_batch_backup_failed_title">Sao lưu hàng loạt thất bại</string>
+    <string name="instance_batch_backup_failed_message">Không thể tạo bất kỳ bản sao lưu nào:\n%1$s</string>
+    <string name="instance_restore_title">Khôi phục bản sao lưu</string>
+    <string name="instance_restore_in_progress">Khôi phục bản sao lưu phiên bản…</string>
+    <string name="instance_restore_success_title">Khôi phục hoàn tất</string>
+    <string name="instance_restore_success_message">Khôi phục: %1$s</string>
+    <string name="instance_restore_failed_title">Khôi phục thất bại</string>
+    <string name="instance_restore_failed_message">Không thể khôi phục bản sao lưu:\n%1$s</string>
+
+    <!-- Language Setting -->
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="chinese">简体中文</string>
+    <string name="russian">Русский</string>
+    <string name="indonesian">Bahasa Indonesia</string>
+    <string name="spanish">Español</string>
+    <string name="portuguese">Português</string>
+    <string name="french">Français</string>
+    <string name="japanese">日本語</string>
+    <string name="hindi">हिन्दी</string>
+    <string name="vietnamese">Tiếng Việt</string>
+
+
+    <!-- Version Rename -->
+    <string name="rename_version_title">Đổi tên phiên bản</string>
+    <string name="rename_version_message">Nhập tên mới cho phiên bản này:</string>
+    <string name="new_version_name">Tên phiên bản mới</string>
+    <string name="rename">Đổi tên</string>
+    <string name="rename_success">Phiên bản đã được đổi tên thành công.</string>
+    <string name="rename_failed">Đổi tên thất bại: %1$s</string>
+    <string name="cannot_rename_installed">Không thể đổi tên các phiên bản đã cài đặt.</string>
+
+    <!-- Content Management -->
+    <string name="content_management">Quản lý nội dung</string>
+    <string name="worlds_title">Thế giới</string>
+    <string name="resource_packs_title">Gói tài nguyên</string>
+    <string name="behavior_packs_title">Gói hành vi</string>
+    <string name="skin_packs_title">Gói ngoại hình</string>
+    <string name="worlds_category">Thế giới</string>
+    <string name="resource_packs_category">Gói tài nguyên</string>
+    <string name="behavior_packs_category">Gói hành vi</string>
+    <string name="skin_packs_category">Gói ngoại hình</string>
+    <string name="screenshots_category">Ảnh chụp màn hình</string>
+    <string name="servers_category">Máy chủ</string>
+    <string name="storage_internal">Internal</string>
+    <string name="storage_external">External</string>
+    <string name="storage_version_isolation">Chia phiên bản</string>
+    <string name="select_storage_label">Chọn kho lưu trữ:</string>
+    <string name="search_hint">Tìm kiếm…</string>
+    <string name="search_properties_hint">Tìm kiếm thuộc tính…</string>
+    <string name="no_matching_properties">Không tìm thấy kết quả phù hợp.</string>
+    <string name="transfer">Chuyển đổi</string>
+    <string name="transfer_content">Chuyển đổi nội dung</string>
+    <string name="transfer_to">Chuyển tới:</string>
+    <string name="transfer_success">Chuyển đổi đã hoàn tất</string>
+    <string name="transfer_failed">Chuyển đổi thất bại</string>
+    <string name="transfer_same_location">Nội dung đã có sẵn tại vị trí này</string>
+    <string name="import_content">Nhập</string>
+    <string name="import_content_title">Nhập nội dung</string>
+    <string name="import_content_message">Chọn file .mcworld, .mcpack, hoặc .mcaddon để nhập</string>
+    <string name="import_success">Nhập đã hoàn tất</string>
+    <string name="import_failed">Nhập thất bại</string>
+    <string name="import_addon_success">Addon đã được nhập: %1$d gói tài nguyên, %2$d gói hành vi</string>
+
+    <!-- World Management -->
+    <string name="world_size">Kích thước: %s</string>
+    <string name="world_last_played">Lần chơi trước: %s</string>
+    <string name="import_world">Nhập thế giới</string>
+    <string name="export_world">Xuất thế giới</string>
+    <string name="delete_world">Xóa thế giới</string>
+    <string name="backup_world">Sao lưu thế giới</string>
+    <string name="export">Xuất</string>
+    <string name="backup">Sao lưu</string>
+    <string name="delete">Xóa</string>
+    <string name="delete_pack">Xóa</string>
+
+    <!-- Resource Pack Management -->
+    <string name="import_resource_pack">Nhập Gói Tài Nguyên</string>
+    <string name="import_behavior_pack">Nhập Gói Hành Vi</string>
+    <string name="import_skin_pack">Nhập Gói Ngoại Hình</string>
+    <string name="delete_resource_pack">Xóa Gói Tài Nguyên</string>
+    <string name="delete_skin_pack">Xóa Gói Ngoại Hình</string>
+    <string name="delete_behavior_pack">Xóa Gói Hành Vi</string>
+
+    <!-- Content Operations -->
+    <string name="confirm_delete_world">Bạn có chắc chắn muốn xóa thế giới này không? Hành động này không thể hoàn tác.</string>
+    <string name="confirm_delete_resource_pack">Bạn có chắc chắn muốn xóa gói tài nguyên này không? Thao tác này không thể hoàn tác.</string>
+    <string name="confirm_delete_behavior_pack">Bạn có chắc chắn muốn xóa gói hành vi này không? Thao tác này không thể hoàn tác.</string>
+    <string name="confirm_delete_skin_pack">Bạn có chắc chắn muốn xóa gói giao diện này không? Thao tác này không thể hoàn tác.</string>
+    <string name="importing_content">Đang nhập nội dung…</string>
+    <string name="exporting_world">Đang xuất thế giới…</string>
+    <string name="exporting_pack">Đang xuất pack…</string>
+    <string name="backing_up_world">Đang sao lưu thế giới…</string>
+    <string name="deleting_world">Đang xóa thế giới…</string>
+    <string name="deleting_pack">Đang xóa pack…</string>
+    <string name="adding_server">Đang thêm máy chủ…</string>
+    <string name="deleting_screenshot">Đang xóa ảnh chụp màn hình…</string>
+    <string name="deleting_server">Đang xóa máy chủ…</string>
+
+    <!-- World Editor -->
+    <string name="edit_world">Chỉnh sửa thế giới</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="save">Lưu</string>
+    <string name="saved_to_gallery">Đã lưu vào thư viện ảnh</string>
+    <string name="level_dat_not_found">Không tìm thấy file level.dat</string>
+    <string name="no_editable_properties">Không tìm thấy thuộc tính nào có thể chỉnh sửa.</string>
+    <string name="no_data">Không có dữ liệu</string>
+    <string name="error_loading_world">Lỗi khi tải thế giới</string>
+    <string name="world_saved">Thế giới đã được lưu thành công</string>
+    <string name="save_failed">Lưu thất bại</string>
+    <string name="unsaved_changes">Thay đổi chưa được lưu</string>
+    <string name="discard_changes_message">Bạn có những thay đổi chưa được lưu. Bạn có muốn hủy bỏ chúng không?</string>
+    <string name="discard">Loại bỏ</string>
+
+    <!-- Custom Flat World -->
+    <string name="custom_flat_world">Tùy chỉnh thế giới phẳng</string>
+    <string name="world_name">Tên thế giới</string>
+    <string name="enter_world_name">Nhập tên thế giới</string>
+    <string name="biome">Biome</string>
+    <string name="game_mode">Chế độ chơi</string>
+    <string name="layers">Lớp (từ dưới lên trên)</string>
+    <string name="layers_hint">Kéo để sắp xếp lại, vuốt sang trái để xóa.</string>
+    <string name="add_layer">+ Thêm Lớp</string>
+    <string name="create_world">Tạo thế giới</string>
+    <string name="add_at_least_one_layer">Thêm ít nhất một lớp</string>
+    <string name="world_created_successfully">Thế giới đã được tạo thành công</string>
+    <string name="failed_to_create_world">Tạo thế giới thất bại</string>
+
+    <!-- Play Store Validation -->
+    <string name="minecraft_playstore_required_title">Cần có phiên bản Play Store</string>
+    <string name="minecraft_playstore_required_message">Trình khởi chạy này chỉ hoạt động với ứng dụng Minecraft chính thức từ Google Play Store. Vui lòng cài đặt phiên bản từ Play Store để tiếp tục.</string>
+    <string name="buy_minecraft">Lấy Minecraft</string>
+    <string name="minecraft_not_installed_title">Minecraft chưa được cài đặt</string>
+    <string name="minecraft_not_installed_message">Minecraft chưa được cài đặt trên thiết bị của bạn. Vui lòng cài đặt trò chơi từ Google Play Store để sử dụng launcher này.</string>
+    <string name="install_minecraft">Cài đặt Minecraft</string>
+    <string name="genuine_badge_label">Giấy phép chưa được xác minh</string>
+    <string name="invalid_license_detected_toast">Đã phát hiện Minecraft không phải bản chính hãng. Hãy đảm bảo Minecraft của bạn được tải từ Google Play Store.</string>
+
+    <string name="full_mods_title">Mods </string>
+    <string name="total_mods">Tổng các Mods:</string>
+    <string name="enabled_mods">Đã bật:</string>
+    <string name="add_mod">Thêm Mod</string>
+
+    <!-- Mod Detail -->
+    <string name="mod_detail_title">Chi tiết bản Mod</string>
+    <string name="delete_mod">Xóa Mod</string>
+    <string name="error_loading_mod">Lỗi khi tải chi tiết Mod</string>
+    <string name="mod_enabled">Mod đã bật</string>
+    <string name="mod_disabled">Mod chưa bật</string>
+    <string name="mod_filename_format">File: %s</string>
+    <string name="mod_enable_status">Trạng thái kích hoạt</string>
+    <string name="mod_icon_content_description">Biểu tượng Mod</string>
+    <string name="mod_author_byline">bởi %s</string>
+    <string name="mod_version_chip">Phiên bản %s</string>
+    <string name="mod_metadata_title">Thông tin</string>
+    <string name="mod_actions_title">Hành động</string>
+    <string name="mod_author_label">Tác giả</string>
+    <string name="mod_version_label">Phiên bản</string>
+    <string name="mod_minecraft_versions_label">Các phiên bản Minecraft</string>
+    <string name="mod_entry_label">Entry File</string>
+    <string name="mod_id_label">Mod ID</string>
+    <string name="mod_config_files_label">Cấu hình Files</string>
+    <string name="mod_unknown_author">Không rõ Tác giả</string>
+    <string name="mod_unknown_version">Không rõ phiên bản</string>
+    <string name="mod_all_versions">Tất cả các phiên bản được hỗ trợ</string>
+    <string name="mod_no_config_files">Không có cấu hình có thể chỉnh sửa</string>
+    <string name="mod_config_badge">CẤU HÌNH</string>
+    <string name="mod_config_badge_with_count">CẤU HÌNH · %d</string>
+    <string name="mod_config_title_format">%s Cấu hình</string>
+    <string name="mod_config_not_found">Không tìm thấy cấu hình có thể chỉnh sửa.</string>
+    <string name="mod_config_load_failed">Không thể tải cấu hình: %s</string>
+    <string name="mod_config_save_failed">Không thể lưu cấu hình</string>
+    <string name="mod_config_saved">Cấu hình đã được lưu</string>
+    <string name="mod_config_restart_hint">File cấu hình đã được lưu và một file .backup đã được giữ lại. Khởi động lại hoặc tải lại trò chơi để các thay đổi có hiệu lực. </string>
+    <string name="mod_config_validation_failed">Xác thực cấu hình thất bại</string>
+    <string name="mod_config_invalid_json">JSON không hợp lệ</string>
+    <string name="mod_config_expand">Mở rộng</string>
+    <string name="mod_config_collapse">Thu gọn</string>
+    <string name="mod_config_raw_json">Chỉnh sửa JSON thô</string>
+    <string name="mod_config_raw_json_short">JSON</string>
+    <string name="mod_config_item_label">Item %1$s</string>
+    <string name="mod_config_object_desc">Nhóm các thiết lập liên quan</string>
+    <string name="mod_config_array_desc">Danh sách các giá trị</string>
+    <string name="mod_config_range_prefix">Phạm vi</string>
+    <string name="mod_config_error_number">%1$s phải là một số</string>
+    <string name="mod_config_error_minimum">%1$s phải ít nhất là %2$s</string>
+    <string name="mod_config_error_maximum">%1$s tối đa phải là %2$s</string>
+    <string name="mod_config_error_boolean">%1$s phải bật hoặc tắt</string>
+    <string name="mod_config_error_string">%1$s phải là văn bản</string>
+
+    <plurals name="mod_config_files_count">
+        <item quantity="one">%d cấu hình có thể chỉnh sửa</item>
+        <item quantity="other">%d các cấu hình có thể chỉnh sửa</item>
+    </plurals>
+    <plurals name="mod_config_choices_count">
+        <item quantity="one">%d lựa chọn</item>
+        <item quantity="other">%d các lựa chọn</item>
+    </plurals>
+    <plurals name="mod_config_items_count">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
+
+    <!-- Game Version Select Dialog -->
+    <string name="game_version_select_title">Chọn phiên bản trò chơi</string>
+    <string name="back">Quay về</string>
+
+    <!-- Splash -->
+    <string name="splash_logo_desc">Logo chiếc lá</string>
+    <string name="minecraft_loading_title">Đang mở Minecraft</string>
+    <string name="minecraft_loading_subtitle">Đang chuẩn bị các file trò chơi và bật các bản Mod</string>
+    <string name="minecraft_loading_status_preparing">Đang chuẩn bị game</string>
+    <string name="minecraft_loading_log_title">Nhật ký khởi chạy</string>
+    <string name="minecraft_loading_complete">Game đã sẵn sàng</string>
+    <string name="minecraft_loading_entering_game">Đang vào Minecraft</string>
+    <string name="minecraft_loading_failed">Khởi chạy thất bại</string>
+    <string name="minecraft_loading_return">Quay về Launcher</string>
+    <string name="launcher_restart_title">Quay về Launcher</string>
+    <string name="launcher_restart_subtitle">Chờ một chút trong khi chúng tôi đưa bạn trở lại</string>
+    <string name="launcher_restart_status">Gần đến rồi…</string>
+
+    <!-- Accounts & Microsoft Login -->
+    <string name="accounts_title">Các tài khoản</string>
+    <string name="microsoft_accounts">Các tài khoản Microsoft</string>
+    <string name="manage_accounts">Quản lý các tài khoản</string>
+    <string name="not_signed_in">Chưa đăng nhập</string>
+    <string name="xuid">XUID</string>
+    <string name="sign_in">Đăng nhập</string>
+    <string name="sign_out">Đăng xuất</string>
+    <string name="accounts_active_privilege">Đã đăng nhập</string>
+
+    <string name="ms_login_title">Đăng nhập Microsoft</string>
+    <string name="ms_login_starting">Đang bắt đầu đăng nhập Microsoft…</string>
+    <string name="ms_login_exchanging">Đang trao đổi token…</string>
+    <string name="ms_login_auth_xbox_device">Đang xác thực thiết bị Xbox…</string>
+    <string name="ms_login_fetch_minecraft_identity">Đang lấy thông tin nhận dạng Minecraft…</string>
+    <string name="ms_login_success">Đăng nhập với tư cách %1$s</string>
+    <string name="ms_login_failed">Đăng nhập Microsoft thất bại</string>
+    <string name="ms_login_failed_detail">Đăng nhập thất bại: %1$s</string>
+
+    <string name="ms_set_active">Đặt trạng thái hoạt động</string>
+    <string name="ms_delete">Xóa</string>
+    <string name="ms_active_badge">Bật</string>
+    <string name="ms_account_subtitle_format">ID người dùng: %1$s • Đã cập nhật: %2$s</string>
+    <string name="xbox_avatar">Ảnh đại diện Xbox</string>
+    <string name="launcher_managed_mc_login">Đăng nhập vào Minecraft bằng LeviLauncher</string>
+    <string name="dialog_title_login_required">Cần đăng nhập</string>
+    <string name="dialog_message_login_required">Tính năng đăng nhập do launcher quản lý đã được bật, nhưng chưa có tài khoản nào được đăng nhập. Vui lòng vào mục Tài khoản để đăng nhập.</string>
+    <string name="go_to_accounts">Tài khoản</string>
+    <string name="disable_launcher_login_and_continue">Đóng</string>
+
+    <!-- Popup labels -->
+    <string name="label_current_account">Tài khoản hiện tại</string>
+    <string name="label_other_accounts">Các tài khoản khác</string>
+
+    <string name="crash_title">Ứng dụng bị lỗi</string>
+    <string name="crash_upload">Tải lên báo cáo sự cố</string>
+    <string name="crash_details_title">Chi tiết lỗi</string>
+    <string name="crash_back_to_main">Trở về Trang chủ</string>
+    <string name="crash_share_log">Chia sẻ nhật ký</string>
+    <string name="crash_log_file_label">File nhật ký:</string>
+    <string name="crash_log_file_missing">Không tìm thấy hoặc không thể đọc được file nhật ký.</string>
+    <string name="crash_read_failed">Không thể đọc nhật ký: %1$s</string>
+    <string name="crash_loading_details">Đang tải chi tiết lỗi...</string>
+    <string name="crash_type_label">Loại sự cố:</string>
+    <string name="crash_summary_label">Tóm tắt sự cố:</string>
+    <string name="crash_stack_label">Chi tiết sự cố và ngăn xếp:</string>
+    <string name="crash_emergency_label">Emergency:</string>
+    <string name="crash_no_details">Không có thông tin chi tiết về lỗi.</string>
+    <string name="dialog_title_exit_app">Thoát ứng dụng</string>
+    <string name="dialog_message_exit_app">Bạn có chắc chắn muốn thoát ra không?</string>
+    <string name="dialog_positive_exit">Thoát</string>
+    <string name="show_logcat_overlay">Lớp phủ Logcat</string>
+    <string name="logcat_live">Logcat: <b>trực tiếp</b></string>
+    <string name="logcat_paused">Logcat: đã tạm dừng</string>
+    <!-- Logcat Overlay i18n -->
+    <string name="logcat_filter_hint">Bộ lọc từ khóa</string>
+    <string name="logcat_blacklist_hint">Danh sách đen (phân cách bằng dấu phẩy)</string>
+    <string name="logcat_filter_clear">Xóa bộ lọc</string>
+    <string name="logcat_filter">Bộ lọc</string>
+    <string name="logcat_autoscroll">Tự động cuộn</string>
+    <string name="logcat_pause">Dừng</string>
+    <string name="logcat_clear">Xóa</string>
+    <string name="logcat_close">Đóng</string>
+    <string name="logcat_corner_bottom_left">Thay đổi kích thước: góc dưới bên trái</string>
+    <string name="logcat_corner_bottom_right">Thay đổi kích thước: góc dưới bên phải</string>
+
+    <!-- Inbuilt Mods -->
+    <string name="inbuilt_mods">Mods có sẵn</string>
+    <string name="inbuilt_mods_title">Mods có sẵn</string>
+    <string name="inbuilt_mods_subtitle">Mods có sẵn, sẵn sàng sử dụng.</string>
+    <string name="no_inbuilt_mods_available">Tất cả Mods có sẵn đã được thêm vào.</string>
+    <string name="inbuilt_mod_added">%s đã thêm vào mods</string>
+    <string name="inbuilt_mod_removed">%s đã xóa khỏi mods</string>
+    <string name="add">Thêm</string>
+    <string name="remove">Xóa</string>
+    
+    <!-- Inbuilt Mods -->
+    <string name="inbuilt_mod_quick_drop">Thả Nhanh</string>
+    <string name="inbuilt_mod_quick_drop_desc">Thả vật phẩm nhanh</string>
+    <string name="inbuilt_mod_camera">Đổi góc nhìn nhanh</string>
+    <string name="inbuilt_mod_camera_desc">Chuyển đổi chế độ xem camera</string>
+    <string name="inbuilt_mod_hud">Ẩn HUD</string>
+    <string name="inbuilt_mod_hud_desc">Ẩn hotbar và UI</string>
+    <string name="inbuilt_mod_autosprint">Tự động chạy nhanh</string>
+    <string name="inbuilt_mod_autosprint_desc">Bật/tắt chế độ chạy nhanh</string>
+    <string name="inbuilt_mod_chick_pet">Gà Con</string>
+    <string name="inbuilt_mod_chick_pet_desc">Một chú gà con dễ thương được tạo hình bằng pixel, biết đi lại, ngủ và chạy khi được chạm vào! UwU</string>
+    <string name="inbuilt_mod_zoom">Zoom</string>
+    <string name="inbuilt_mod_zoom_desc">Nhấn giữ để phóng to, tương tự OptiFine zoom</string>
+    <string name="zoom_level_label">Mức độ Zoom:</string>
+    <string name="zoom_keybind_label">Phím tắt Zoom:</string>
+    <string name="zoom_keybind_press">Nhấn phím bất kỳ…</string>
+    <string name="zoom_keybind_tap_to_change">Chạm để thay đổi</string>
+    <string name="inbuilt_mod_fps_display">Hiển thị FPS</string>
+    <string name="inbuilt_mod_fps_display_desc">Hiển thị số khung hình hiện tại mỗi giây.</string>
+    <string name="inbuilt_mod_cps_display">Hiển thị CPS</string>
+    <string name="inbuilt_mod_cps_display_desc">Hiển thị số lần nhấp chuột mỗi giây</string>
+    <string name="inbuilt_mod_snaplook">Snaplook</string>
+    <string name="inbuilt_mod_snaplook_desc">Giữ nút để nhanh chóng nhìn ra phía sau. (third person front)</string>
+    <string name="inbuilt_mod_virtual_cursor">Con trỏ ảo</string>
+    <string name="inbuilt_mod_virtual_cursor_desc">Sử dụng virtual trackpad để điều khiển chuột. </string>
+    <string name="virtual_cursor_enabled">Con trỏ đã được bật</string>
+    <string name="virtual_cursor_disabled">Con trỏ chuột đã tắt</string>
+    <string name="cursor_sensitivity_label">Độ nhạy của con trỏ:</string>
+    <string name="inbuilt_badge">TÍCH HỢP SẴN</string>
+    <string name="autosprint_keybind_label">Phím tắt tự động chạy nhanh:</string>
+    <string name="autosprint_keybind_press">Nhấn bất kỳ phím nào…</string>
+    <string name="configure">Cấu hình</string>
+    <string name="overlay_button_size">Kích thước nút</string>
+    <string name="overlay_button_opacity">Độ mờ của nút</string>
+    <string name="overlay_button_lock">Khóa vị trí</string>
+    <string name="overlay_button_lock_desc">Ngăn chặn việc kéo lê và kích hoạt ngoài ý muốn.</string>
+    <string name="settings">Cài đặt</string>
+
+    <!-- Extract Structures -->
+    <string name="extract_structures">Trích xuất cấu trúc</string>
+    <string name="no_structures_found">Không tìm thấy cấu trúc nào trên thế giới này.</string>
+    <string name="no_structures_found_title">Không tìm thấy cấu trúc nào</string>
+    <string name="no_structures_found_message">Không tìm thấy cấu trúc nào trên thế giới này.\n\Để trích xuất một cấu trúc:\n1. Mở thế giới này trong Minecraft bằng launcher này.\n2. Đặt một khối cấu trúc (Structure Block) và chỉnh thành chế độ Lưu.\n3. Đặt tên cho cấu trúc của bạn và nhấn Lưu.\n4. Rời khỏi thế giới và trở lại đây.\n5. Nhấn \"Extract Structures\" lại lần nữa</string>
+    <string name="structures_exported">Đã xuất %1$d cấu trúc tới %2$s</string>
+    <string name="structures_exported_zip">Đã xuất %d cấu trúc tới ZIP</string>
+    <string name="structure_found">Tìm thấy cấu trúc</string>
+    <string name="structure_found_with_size">%1$s (%2$s)</string>
+    <string name="structure_exported">Đã xuất: %s</string>
+    <string name="extract">Xuất</string>
+    <string name="structures_found_title">Tìm thấy cấu trúc</string>
+    <string name="structures_found_count">Tìm thấy %d cấu trúc trên thế giới này</string>
+
+    <!-- Mod Menu -->
+    <string name="mod_menu">Mod Menu</string>
+    <string name="mod_menu_modules">Mô-đun</string>
+    <string name="mod_menu_search_hint">Tìm mods…</string>
+    <string name="mod_menu_no_mods">Không có bản mods nào được thêm vào.</string>
+    <string name="mod_menu_settings_coming">Các cài đặt sẽ sớm được cập nhật.</string>
+    <string name="mod_menu_notifications">Thông báo</string>
+    <string name="mod_menu_notifications_desc">Hiển thị thông báo khi bật mods</string>
+    <string name="mod_menu_opacity">Độ mờ của Mod Menu</string>
+    <string name="mod_menu_button_opacity">Độ mờ của nút Mod Menu</string>
+    <string name="mod_menu_version">v1.0</string>
+    <string name="mod_menu_enabled">Mod Menu đã bật</string>
+    <string name="mod_menu_disabled">Mod Menu đã tắt</string>
+    <string name="mod_menu_active_title">Mod Menu đang hoạt động</string>
+    <string name="mod_menu_active_desc">Tất cả các mod tích hợp sẵn giờ đây đều có thể truy cập thông qua Menu Mod trong game. Vô hiệu hóa Menu Mod để thêm các nút điều khiển riêng lẻ.</string>
+    <string name="mod_status_enabled">Đã bật</string>
+    <string name="mod_status_disabled">Đã tắt</string>
+    <string name="mod_notification_enabled">%s đã bật</string>
+
+    <!-- Options Editor -->
+    <string name="edit_options">Chỉnh sửa tùy chọn</string>
+    <string name="options_file_not_found">Không tìm thấy file tùy chọn</string>
+    <string name="no_options_found">Không tìm thấy tùy chọn nào.</string>
+    <string name="search_options_hint">Tìm kiếm tùy chọn…</string>
+    <string name="no_matching_options">Không tìm thấy tùy chọn phù hợp.</string>
+    <string name="error_loading_options">Lỗi khi tải tùy chọn</string>
+    <string name="options_saved">Các tùy chọn đã được lưu thành công</string>
+
+    <!-- Quick Launch -->
+    <string name="quick_launch_title">Khởi chạy nhanh</string>
+    <string name="quick_launch_subtitle">Khởi chạy Minecraft với các hành động cụ thể bằng giao thức URI.</string>
+    <string name="quick_launch_how_to_play">Cách chơi</string>
+    <string name="quick_launch_how_to_play_desc">Mở hướng dẫn chơi</string>
+    <string name="quick_launch_servers_tab">Tab Máy chủ</string>
+    <string name="quick_launch_servers_tab_desc">Mở tab máy chủ trong menu trò chơi.</string>
+    <string name="quick_launch_profile">Hồ sơ / Phòng thay đồ</string>
+    <string name="quick_launch_profile_desc">Mở màn hình tùy chỉnh nhân vật của bạn </string>
+    <string name="quick_launch_store_home">Trang chủ Marketplace</string>
+    <string name="quick_launch_store_home_desc">Mở màn hình chính của Marketplace</string>
+    <string name="quick_launch_minecoins">Minecoins</string>
+    <string name="quick_launch_minecoins_desc">Mở màn hình mua Minecoins</string>
+    <string name="quick_launch_marketplace_pass">Marketplace Pass</string>
+    <string name="quick_launch_marketplace_pass_desc">Mở màn hình đăng ký Marketplace Pass</string>
+    <string name="quick_launch_connect_server">Kết nối với máy chủ</string>
+    <string name="quick_launch_connect_server_desc">Kết nối trực tiếp với máy chủ Bedrock</string>
+    <string name="quick_launch_add_server">Thêm máy chủ bên ngoài</string>
+    <string name="quick_launch_add_server_desc">Thêm máy chủ mới vào danh sách máy chủ của bạn</string>
+    <string name="quick_launch_realm_invite">Tham gia Realm</string>
+    <string name="quick_launch_realm_invite_desc">Chấp nhận mã mời Realm</string>
+    <string name="quick_launch_load_world">Tải thế giới</string>
+    <string name="quick_launch_load_world_desc">Tải thế giới cục bộ theo tên</string>
+    <string name="quick_launch_command">Thực thi lệnh</string>
+    <string name="quick_launch_command_desc">Thực thi lệnh gạch chéo trong trò chơi</string>
+    <string name="quick_launch_custom_uri">URI tùy chỉnh</string>
+    <string name="quick_launch_custom_uri_desc">Nhập một URI minecraft:// tùy chỉnh</string>
+
+    <!-- Quick Launch Dialogs -->
+    <string name="server_ip_hint">Địa chỉ IP máy chủ</string>
+    <string name="server_port_hint">Cổng (mặc định: 19132)</string>
+    <string name="server_name_hint">Tên máy chủ</string>
+    <string name="realm_invite_code_hint">Mã mời tham gia Realms</string>
+    <string name="world_name_hint">Tên thế giới</string>
+    <string name="command_hint">Lệnh (không cần dấu /)</string>
+    <string name="command_warning">Lưu ý: Thao tác này sẽ ngắt kết nối bạn nếu sử dụng trong Thế Giới Chơi Đơn</string>
+    <string name="uri_hint">minecraft://…</string>
+    <string name="custom_uri_hint">Nhập đầy đủ URI minecraft://. Ví dụ:\nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
+    <string name="select_tab">Chọn tab:</string>
+
+    <!-- Quick Launch Validation -->
+    <string name="server_ip_required">Cần có địa chỉ IP máy chủ.</string>
+    <string name="server_details_required">Cần có tên máy chủ và địa chỉ IP.</string>
+    <string name="invalid_port">Số cổng không hợp lệ</string>
+    <string name="invite_code_required">Cần có mã mời.</string>
+    <string name="world_name_required">Tên thế giới là bắt buộc</string>
+    <string name="command_required">Lệnh này là bắt buộc</string>
+    <string name="invalid_minecraft_uri">URI minecraft:// không hợp lệ </string>
+
+    <!-- Quick Launch Actions -->
+    <string name="connect">Kết nối</string>
+    <string name="join">Tham gia</string>
+    <string name="load">Tải</string>
+    <string name="execute">Thực thi</string>
+
+    <!-- Quick Actions Menu -->
+    <string name="quick_launch">Khởi chạy nhanh</string>
+    <string name="quick_launch_menu_subtitle">Khởi chạy với các hành động URI</string>
+
+    <!-- CurseForge -->
+    <string name="curseforge_title">CurseForge</string>
+    <string name="curseforge_subtitle">Duyệt và tải xuống nội dung</string>
+    <string name="curseforge_search_hint">Tìm kiếm nội dung…</string>
+    <string name="curseforge_download">Tải xuống</string>
+    <string name="curseforge_downloading">Đang tải xuống…</string>
+    <string name="curseforge_importing">Đang nhập…</string>
+    <string name="curseforge_download_failed">Tải xuống thất bại</string>
+    <string name="curseforge_available_files">Các file có sẵn </string>
+
+    <!-- Navigation Bar -->
+    <string name="nav_launch">Khởi chạy</string>
+    <string name="nav_import">Nhập</string>
+    <string name="nav_instances">Các phiên bản</string>
+    <string name="nav_about">Về</string>
+    <string name="nav_settings">Cài đặt</string>
+
+    <string name="search_instances_hint">Tìm kiếm…</string>
+    <string name="instances_label">Các phiên bản</string>
+    <string name="select_instance_title">Chọn phiên bản</string>
+    <string name="filter_all">Tất cả</string>
+    <string name="filter_custom">Tùy chỉnh</string>
+    <string name="sort_version_newest">Phiên bản (Mới nhất)</string>
+    <string name="tag_installed">Đã cài đặt</string>
+    <string name="tag_custom">Tùy chỉnh</string>
+    <string name="vanilla_prefix">Vanilla %s</string>
+
+    <string name="about_page_title">Về</string>
+    <string name="about_subtitle">LeviLauncher — Một Launcher Hiện Đại Cho Minecraft Bedrock</string>
+    <string name="about_authors_title">👥 Tác giả &amp; Người bảo trì</string>
+    <string name="about_author_name">DreamGuXiang</string>
+    <string name="about_author_badge">Tác giả</string>
+    <string name="about_author_role">Tác giả LeviLauncher</string>
+    <string name="about_afdian">Afdian</string>
+    <string name="about_patreon">Patreon</string>
+    <string name="about_source_title">Mã nguồn &amp; Mã nguồn mở</string>
+    <string name="about_github_repo">GitHub · LeviLauncher</string>
+    <string name="about_github_org">LiteLDev</string>
+    <string name="about_license_note">Xem file LICENSE trong kho lưu trữ để biết chi tiết về giấy phép.</string>
+    <string name="about_contribute_title">Đóng góp</string>
+    <string name="about_contribute_desc">Chúng tôi hoan nghênh các đóng góp thông qua Issues hoặc Pull Requests để cải thiện LeviLauncher.</string>
+    <string name="about_issues">Issue</string>
+    <string name="about_star_fork">Star / Fork</string>
+
+    <string-array name="launcher_tips">
+       <item>Phần Cài đặt cho phép bạn điều chỉnh chủ đề, màu sắc, hình nền và các tùy chọn hiển thị khác sao cho phù hợp với thiết lập của mình.</item>
+        <item>LeviLauncher là mã nguồn mở. Vui lòng sử dụng GitHub Issues để báo cáo sự cố hoặc đề xuất cải tiến.</item>
+        <item>Sử dụng menu thả xuống phiên bản để nhanh chóng chuyển đổi giữa các phiên bản hiện tại.</item>
+        <item>Liệu mọi người có thực sự đọc những thứ này không:)?</item>
+        <item>Bạn có thể kéo các mod để thay đổi thứ tự ưu tiên tải của chúng.</item>
+        <item>Hãy Thử Chia Phiên Bản!</item>
+        <item>Sử dụng chức năng Khởi chạy nhanh để kết nối trực tiếp với máy chủ mà không cần mở trò chơi trước.</item>
+        <item>Bạn có thể nhập các file .mcworld, .mcpack và .mcaddon từ trang Quản lý nội dung.</item>
+        <item>Quản lý nhiều tài khoản Xbox ngay trong trình khởi chạy và chuyển đổi giữa chúng một cách liền mạch.</item>
+        <item>CurseForge cho phép bạn duyệt và tải xuống nội dung do cộng đồng trực tiếp thực hiện.</item>
+        <item>Nhập các bản mod để mở rộng hoặc nâng cao các tính năng và hiệu năng của Minecraft.</item>
+    </string-array>
+
+    <string name="theme_color_title">Màu chủ đề</string>
+    <string name="theme_color_desc">Màu nhấn chủ đạo của ứng dụng</string>
+    <string name="preset_colors">MÀU SẮC CÀI SẴN</string>
+    <string name="more_colors">NHIỀU MÀU SẮC HƠN</string>
+    <string name="bg_image_title">Hình nền</string>
+    <string name="bg_image_desc">Chọn một hình ảnh để sử dụng làm hình nền</string>
+    <string name="bg_image_none">Chưa chọn hình ảnh nào</string>
+    <string name="bg_image_selected">Hình nền tùy chỉnh đang hoạt động</string>
+    <string name="bg_image_blur">Mờ</string>
+    <string name="bg_image_blur_value">%1$dpx</string>
+    <string name="bg_image_brightness">Độ sáng</string>
+    <string name="bg_image_brightness_value">%1$d%%</string>
+    <string name="select_image">Chọn hình ảnh</string>
+    <string name="clear">Xóa</string>
+
+    <string name="unsupported_version_title">Phiên bản không được hỗ trợ</string>
+    <string name="unsupported_version_msg">Trình khởi chạy này không hỗ trợ các phiên bản Minecraft cũ hơn 1.21.80</string>
+</resources>
