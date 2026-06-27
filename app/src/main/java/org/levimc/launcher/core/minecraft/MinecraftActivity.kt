@@ -172,8 +172,14 @@ class MinecraftActivity : MainActivity() {
     }
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_BUTTON_PRESS ||
-            event.action == MotionEvent.ACTION_BUTTON_RELEASE) {
+        if (event.actionMasked == MotionEvent.ACTION_BUTTON_PRESS ||
+            event.actionMasked == MotionEvent.ACTION_BUTTON_RELEASE) {
+            
+            val isDown = event.actionMasked == MotionEvent.ACTION_BUTTON_PRESS
+            if (org.levimc.launcher.preloader.PreloaderInput.onMouse(event.actionButton, isDown)) {
+                return true
+            }
+            
             overlayManager?.handleMouseEvent(event)
         }
 

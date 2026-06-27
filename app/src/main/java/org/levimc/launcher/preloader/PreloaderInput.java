@@ -3,6 +3,7 @@ package org.levimc.launcher.preloader;
 public class PreloaderInput {
     public static native boolean nativeOnTouch(int action, int pointerId, float x, float y);
     public static native boolean nativeOnKeyEvent(int keyCode, int unicodeChar, boolean isKeyDown);
+    public static native boolean nativeOnMouse(int button, boolean isDown);
     public static native void nativeSetActivity(Object activity);
     public static native void nativeClearActivity();
 
@@ -17,6 +18,14 @@ public class PreloaderInput {
     public static boolean onKeyEvent(int keyCode, int unicodeChar, boolean isKeyDown) {
         try {
             return nativeOnKeyEvent(keyCode, unicodeChar, isKeyDown);
+        } catch (UnsatisfiedLinkError e) {
+            return false;
+        }
+    }
+
+    public static boolean onMouse(int button, boolean isDown) {
+        try {
+            return nativeOnMouse(button, isDown);
         } catch (UnsatisfiedLinkError e) {
             return false;
         }
