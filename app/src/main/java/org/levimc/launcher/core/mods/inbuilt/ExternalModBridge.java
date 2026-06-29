@@ -56,9 +56,13 @@ public class ExternalModBridge {
         public static final int TYPE_TEXT = 0;
         public static final int TYPE_RECT = 1;
         public static final int TYPE_LINE = 2;
+        public static final int TYPE_RECT_FILLED = 3;
+        public static final int TYPE_CIRCLE_FILLED = 4;
+        public static final int TYPE_TRIANGLE_FILLED = 5;
 
         public int type;
         public float x, y, w, h;
+        public float x3, y3;
         public int color;
         public float size;
         public String text;
@@ -85,10 +89,12 @@ public class ExternalModBridge {
             for (int i = 0; i < n; i++) {
                 DrawCommand cmd = new DrawCommand();
                 cmd.type = types[i];
-                cmd.x = rects[i * 4 + 0];
-                cmd.y = rects[i * 4 + 1];
-                cmd.w = rects[i * 4 + 2];
-                cmd.h = rects[i * 4 + 3];
+                cmd.x = rects[i * 6 + 0];
+                cmd.y = rects[i * 6 + 1];
+                cmd.w = rects[i * 6 + 2];
+                cmd.h = rects[i * 6 + 3];
+                cmd.x3 = rects[i * 6 + 4];
+                cmd.y3 = rects[i * 6 + 5];
                 cmd.color = colors[i];
                 cmd.size = sizes[i];
                 cmd.text = texts != null ? texts[i] : null;

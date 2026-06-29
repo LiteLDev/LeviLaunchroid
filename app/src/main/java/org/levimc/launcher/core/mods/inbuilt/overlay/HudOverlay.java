@@ -139,6 +139,9 @@ public class HudOverlay extends View {
                 if (cmds != null) {
                     for (DrawCommand cmd : cmds) {
                         if (cmd.moduleId != null) {
+                            if (cmd.type == DrawCommand.TYPE_LINE || cmd.type == DrawCommand.TYPE_CIRCLE_FILLED || cmd.type == DrawCommand.TYPE_TRIANGLE_FILLED) {
+                                continue;
+                            }
                             if (cmd.type == DrawCommand.TYPE_TEXT) {
                                 paint.setTextSize(cmd.size);
                             }
@@ -147,8 +150,21 @@ public class HudOverlay extends View {
                             if (event.getRawX() >= cmd.x && event.getRawX() <= cmd.x + w &&
                                 event.getRawY() >= cmd.y && event.getRawY() <= cmd.y + h) {
                                 draggingModule = cmd.moduleId;
-                                dragOffsetX = event.getRawX() - cmd.x;
-                                dragOffsetY = event.getRawY() - cmd.y;
+                                
+                                float minX = Float.MAX_VALUE;
+                                float minY = Float.MAX_VALUE;
+                                for (DrawCommand c : cmds) {
+                                    if (draggingModule.equals(c.moduleId)) {
+                                        if (c.type == DrawCommand.TYPE_LINE || c.type == DrawCommand.TYPE_CIRCLE_FILLED || c.type == DrawCommand.TYPE_TRIANGLE_FILLED) {
+                                            continue;
+                                        }
+                                        if (c.x < minX) minX = c.x;
+                                        if (c.y < minY) minY = c.y;
+                                    }
+                                }
+                                
+                                dragOffsetX = event.getRawX() - minX;
+                                dragOffsetY = event.getRawY() - minY;
                                 return true;
                             }
                         }
@@ -159,10 +175,8 @@ public class HudOverlay extends View {
                 if (draggingModule != null) {
                     float newX = event.getRawX() - dragOffsetX;
                     float newY = event.getRawY() - dragOffsetY;
-                    ExternalModBridge.setExternalModConfig(draggingModule, "m_posX", String.valueOf((int)newX));
-                    ExternalModBridge.setExternalModConfig(draggingModule, "m_posY", String.valueOf((int)newY));
-                    ExternalModBridge.setExternalModConfig(draggingModule, "posX", String.valueOf((int)newX));
-                    ExternalModBridge.setExternalModConfig(draggingModule, "posY", String.valueOf((int)newY));
+                    ExternalModBridge.setExternalModConfig(draggingModule, "hudPosX", String.valueOf((int)newX));
+                    ExternalModBridge.setExternalModConfig(draggingModule, "hudPosY", String.valueOf((int)newY));
                     return true;
                 }
                 break;
@@ -204,15 +218,32 @@ public class HudOverlay extends View {
                     }
                     paint.clearShadowLayer();
                 } else if (cmd.type == DrawCommand.TYPE_RECT) {
+                    paint.setStyle(Paint.Style.STROKE);
+                    canvas.drawRect(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, paint);
+                } else if (cmd.type == DrawCommand.TYPE_RECT_FILLED) {
                     paint.setStyle(Paint.Style.FILL);
                     canvas.drawRect(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, paint);
                 } else if (cmd.type == DrawCommand.TYPE_LINE) {
                     paint.setStrokeWidth(cmd.size);
                     paint.setStyle(Paint.Style.STROKE);
                     canvas.drawLine(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, paint);
+                } else if (cmd.type == DrawCommand.TYPE_CIRCLE_FILLED) {
+                    paint.setStyle(Paint.Style.FILL);
+                    canvas.drawCircle(cmd.x, cmd.y, cmd.size, paint);
+                } else if (cmd.type == DrawCommand.TYPE_TRIANGLE_FILLED) {
+                    paint.setStyle(Paint.Style.FILL);
+                    android.graphics.Path path = new android.graphics.Path();
+                    path.moveTo(cmd.x, cmd.y);
+                    path.lineTo(cmd.w, cmd.h);
+                    path.lineTo(cmd.x3, cmd.y3);
+                    path.close();
+                    canvas.drawPath(path, paint);
                 }
 
                 if (isHudEditorMode && cmd.moduleId != null) {
+                    if (cmd.type == DrawCommand.TYPE_LINE || cmd.type == DrawCommand.TYPE_CIRCLE_FILLED || cmd.type == DrawCommand.TYPE_TRIANGLE_FILLED) {
+                        continue;
+                    }
                     if (cmd.type == DrawCommand.TYPE_TEXT) {
                         paint.setTextSize(cmd.size);
                     }

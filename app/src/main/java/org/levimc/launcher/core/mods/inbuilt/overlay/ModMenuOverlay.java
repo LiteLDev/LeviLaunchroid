@@ -156,9 +156,9 @@ public class ModMenuOverlay {
                 hudEditorTools.setVisibility(View.VISIBLE);
                 overlayView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
                 if (wmParams != null && windowManager != null) {
-                    wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    wmParams.height = (int) (80 * activity.getResources().getDisplayMetrics().density);
-                    wmParams.gravity = Gravity.TOP;
+                    wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                    wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                    wmParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
                     windowManager.updateViewLayout(overlayView, wmParams);
                 }
                 InbuiltOverlayManager.getInstance().setHudEditorMode(true);
