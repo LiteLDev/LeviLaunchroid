@@ -50,15 +50,52 @@ public class ExternalModBridge {
         }
     }
 
-    public static native float[] nativeGetHudState();
+    public static native Object[] nativeGetDrawCommands();
 
-    public static float[] getHudState() {
-        if (!ModManager.ensurePreloaderLoaded()) return null;
+    public static class DrawCommand {
+        public static final int TYPE_TEXT = 0;
+        public static final int TYPE_RECT = 1;
+        public static final int TYPE_LINE = 2;
+
+        public int type;
+        public float x, y, w, h;
+        public int color;
+        public float size;
+        public String text;
+    }
+
+    public static DrawCommand[] getDrawCommands() {
+        if (!ModManager.ensurePreloaderLoaded()) return new DrawCommand[0];
         try {
-            return nativeGetHudState();
+            Object[] arrays = nativeGetDrawCommands();
+            if (arrays == null || arrays.length < 5) return new DrawCommand[0];
+
+            int[] types = (int[]) arrays[0];
+            float[] rects = (float[]) arrays[1];
+            int[] colors = (int[]) arrays[2];
+            float[] sizes = (float[]) arrays[3];
+            String[] texts = (String[]) arrays[4];
+
+            if (types == null) return new DrawCommand[0];
+
+            int n = types.length;
+            DrawCommand[] cmds = new DrawCommand[n];
+            for (int i = 0; i < n; i++) {
+                DrawCommand cmd = new DrawCommand();
+                cmd.type = types[i];
+                cmd.x = rects[i * 4 + 0];
+                cmd.y = rects[i * 4 + 1];
+                cmd.w = rects[i * 4 + 2];
+                cmd.h = rects[i * 4 + 3];
+                cmd.color = colors[i];
+                cmd.size = sizes[i];
+                cmd.text = texts != null ? texts[i] : null;
+                cmds[i] = cmd;
+            }
+            return cmds;
         } catch (UnsatisfiedLinkError e) {
-            Log.e(TAG, "nativeGetHudState not available", e);
-            return null;
+            Log.e(TAG, "nativeGetDrawCommands not available", e);
+            return new DrawCommand[0];
         }
     }
 }

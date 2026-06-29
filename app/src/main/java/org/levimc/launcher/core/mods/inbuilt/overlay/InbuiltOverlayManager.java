@@ -24,6 +24,7 @@ public class InbuiltOverlayManager {
     private FpsDisplayOverlay fpsDisplayOverlay;
     private CpsDisplayOverlay cpsDisplayOverlay;
     private ModMenuButton modMenuButton;
+    private HudOverlay hudOverlay;
     private int baseY = 150;
     private static final int SPACING = 70;
     private static final int START_X = 50;
@@ -76,6 +77,11 @@ public class InbuiltOverlayManager {
 
         modMenuButton = new ModMenuButton(activity);
         modMenuButton.show(START_X, nextY);
+
+        if (hudOverlay == null) {
+            hudOverlay = new HudOverlay(activity);
+        }
+        hudOverlay.show();
     }
 
     public void handleModToggle(String modId, boolean enabled) {
@@ -255,6 +261,10 @@ public class InbuiltOverlayManager {
         if (modMenuButton != null) {
             modMenuButton.hide();
             modMenuButton = null;
+        }
+        if (hudOverlay != null) {
+            hudOverlay.hide();
+            hudOverlay = null;
         }
         instance = null;
     }
