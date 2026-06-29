@@ -21,7 +21,11 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.levimc.launcher.R;
+import org.levimc.launcher.core.mods.inbuilt.ExternalModBridge;
+import org.levimc.launcher.core.mods.inbuilt.UnifiedMod;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod;
 
@@ -50,8 +54,8 @@ public class ModMenuOverlay {
     private SeekBar modMenuButtonOpacitySeekBar;
     private TextView modMenuButtonOpacityText;
     
-    private List<InbuiltMod> allMods = new ArrayList<>();
-    private List<InbuiltMod> filteredMods = new ArrayList<>();
+    private List<UnifiedMod> allMods = new ArrayList<>();
+    private List<UnifiedMod> filteredMods = new ArrayList<>();
     
     private ModMenuCallback callback;
     private ModNotificationManager notificationManager;
@@ -77,7 +81,6 @@ public class ModMenuOverlay {
     
     public void show() {
         if (isShowing) {
-            // If already showing, just refresh the mods
             refreshMods();
             return;
         }
@@ -225,22 +228,40 @@ public class ModMenuOverlay {
         adapter = new ModMenuAdapter();
         adapter.setOnModActionListener(new ModMenuAdapter.OnModActionListener() {
             @Override
-            public void onToggle(InbuiltMod mod, boolean enabled) {
-                InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
-                if (manager != null) {
-                    manager.handleModToggle(mod.getId(), enabled);
-                }
-                if (enabled && InbuiltModManager.getInstance(activity).isNotificationsEnabled()) {
-                    notificationManager.show(mod.getName(), mod.getId());
-                }
-                if (callback != null) {
-                    callback.onModToggled(mod.getId(), enabled);
+            public void onToggle(UnifiedMod mod, boolean enabled) {
+                if (mod.getSource() == UnifiedMod.Source.INBUILT) {
+                    InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+                    if (manager != null) {
+                        manager.handleModToggle(mod.getId(), enabled);
+                    }
+                    if (enabled && InbuiltModManager.getInstance(activity).isNotificationsEnabled()) {
+                        notificationManager.show(mod.getName(), mod.getId());
+                    }
+                    if (callback != null) {
+                        callback.onModToggled(mod.getId(), enabled);
+                    }
+                } else {
+                    ExternalModBridge.toggleExternalMod(mod.getId(), enabled);
+                    if (enabled && InbuiltModManager.getInstance(activity).isNotificationsEnabled()) {
+                        notificationManager.show(mod.getName(), mod.getId());
+                    }
                 }
             }
             @Override
-            public void onConfig(InbuiltMod mod) {
-                if (callback != null) {
-                    callback.onModConfigRequested(mod);
+            public void onConfig(UnifiedMod mod) {
+                if (mod.getSource() == UnifiedMod.Source.INBUILT) {
+                    if (callback != null) {
+                        InbuiltModManager mgr = InbuiltModManager.getInstance(activity);
+                        List<InbuiltMod> inbuiltMods = mgr.getAllMods(activity);
+                        for (InbuiltMod im : inbuiltMods) {
+                            if (im.getId().equals(mod.getId())) {
+                                callback.onModConfigRequested(im);
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    ExternalModConfigDialog.show(activity, mod);
                 }
             }
         });
@@ -268,11 +289,73 @@ public class ModMenuOverlay {
     }
     
     private void loadMods() {
+        allMods.clear();
+
+        // Add inbuilt mods
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
-        allMods = manager.getAllMods(activity);
+        InbuiltOverlayManager overlayMgr = InbuiltOverlayManager.getInstance();
+        for (InbuiltMod im : manager.getAllMods(activity)) {
+            boolean active = overlayMgr != null && overlayMgr.isModActive(im.getId());
+            allMods.add(new UnifiedMod(
+                im.getId(), im.getName(), im.getDescription(), "inbuilt",
+                UnifiedMod.Source.INBUILT, active, null, true));
+        }
+
+        // Add external mods from native registry
+        int extCount = ExternalModBridge.getExternalModCount();
+        for (int i = 0; i < extCount; i++) {
+            String json = ExternalModBridge.getExternalModInfo(i);
+            UnifiedMod extMod = parseExternalMod(json);
+            if (extMod != null) {
+                allMods.add(extMod);
+            }
+        }
+
         filteredMods = new ArrayList<>(allMods);
         adapter.updateMods(filteredMods);
         updateEmptyState();
+    }
+
+    private UnifiedMod parseExternalMod(String json) {
+        try {
+            JSONObject obj = new JSONObject(json);
+            String moduleId = obj.optString("module_id", "");
+            if (moduleId.isEmpty()) return null;
+
+            String displayName = obj.optString("display_name", moduleId);
+            String description = obj.optString("description", "");
+            String modId = obj.optString("mod_id", "");
+            boolean enabled = obj.optBoolean("enabled", false);
+
+            List<UnifiedMod.ConfigEntry> configs = new ArrayList<>();
+            JSONArray cfgArray = obj.optJSONArray("configs");
+            if (cfgArray != null) {
+                for (int j = 0; j < cfgArray.length(); j++) {
+                    JSONObject cfgObj = cfgArray.getJSONObject(j);
+                    int typeInt = cfgObj.optInt("type", 0);
+                    UnifiedMod.ConfigType type;
+                    switch (typeInt) {
+                        case 1: type = UnifiedMod.ConfigType.SLIDER_INT; break;
+                        case 2: type = UnifiedMod.ConfigType.SLIDER_FLOAT; break;
+                        default: type = UnifiedMod.ConfigType.TOGGLE; break;
+                    }
+                    configs.add(new UnifiedMod.ConfigEntry(
+                        cfgObj.optString("key", ""),
+                        cfgObj.optString("display_name", ""),
+                        type,
+                        cfgObj.optString("default_value", ""),
+                        cfgObj.optString("min_value", ""),
+                        cfgObj.optString("max_value", ""),
+                        cfgObj.optString("current_value", "")
+                    ));
+                }
+            }
+
+            return new UnifiedMod(moduleId, displayName, description, modId,
+                    UnifiedMod.Source.EXTERNAL, enabled, configs);
+        } catch (Exception e) {
+            return null;
+        }
     }
     
     private void filterMods(String query) {
@@ -281,7 +364,7 @@ public class ModMenuOverlay {
             filteredMods.addAll(allMods);
         } else {
             String lowerQuery = query.toLowerCase();
-            for (InbuiltMod mod : allMods) {
+            for (UnifiedMod mod : allMods) {
                 if (mod.getName().toLowerCase().contains(lowerQuery)) {
                     filteredMods.add(mod);
                 }

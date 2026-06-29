@@ -11,8 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.levimc.launcher.R;
-import org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod;
-import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
+import org.levimc.launcher.core.mods.inbuilt.UnifiedMod;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,27 +20,23 @@ import java.util.Map;
 
 public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHolder> {
 
-    private List<InbuiltMod> mods = new ArrayList<>();
+    private List<UnifiedMod> mods = new ArrayList<>();
     private final Map<String, Boolean> toggleStates = new HashMap<>();
     private OnModActionListener listener;
 
     public interface OnModActionListener {
-        void onToggle(InbuiltMod mod, boolean enabled);
-        void onConfig(InbuiltMod mod);
+        void onToggle(UnifiedMod mod, boolean enabled);
+        void onConfig(UnifiedMod mod);
     }
 
     public void setOnModActionListener(OnModActionListener listener) {
         this.listener = listener;
     }
 
-    public void updateMods(List<InbuiltMod> mods) {
+    public void updateMods(List<UnifiedMod> mods) {
         this.mods = new ArrayList<>(mods);
-        InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
-        if (manager != null) {
-            for (InbuiltMod mod : mods) {
-                boolean isActive = manager.isModActive(mod.getId());
-                toggleStates.put(mod.getId(), isActive);
-            }
+        for (UnifiedMod mod : mods) {
+            toggleStates.put(mod.getId(), mod.isEnabled());
         }
         notifyDataSetChanged();
     }
@@ -56,12 +51,20 @@ public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        InbuiltMod mod = mods.get(position);
+        UnifiedMod mod = mods.get(position);
 
         holder.name.setText(mod.getName());
-        holder.icon.setImageResource(org.levimc.launcher.ui.util.InbuiltModConfigHelper.getModIcon(mod.getId()));
-        holder.icon.setImageTintList(null);
-        holder.icon.setColorFilter(null);
+
+        if (mod.getSource() == UnifiedMod.Source.INBUILT) {
+            holder.icon.setImageResource(
+                org.levimc.launcher.ui.util.InbuiltModConfigHelper.getModIcon(mod.getId()));
+            holder.icon.setImageTintList(null);
+            holder.icon.setColorFilter(null);
+        } else {
+            holder.icon.setImageResource(R.drawable.ic_modules);
+            holder.icon.setImageTintList(null);
+            holder.icon.setColorFilter(null);
+        }
 
         boolean isEnabled = toggleStates.getOrDefault(mod.getId(), false);
         updateStatusView(holder, isEnabled);
@@ -79,11 +82,16 @@ public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHold
         holder.statusText.setOnClickListener(toggleClick);
         holder.icon.setOnClickListener(toggleClick);
 
-        holder.configBtn.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onConfig(mod);
-            }
-        });
+        if (mod.hasConfig()) {
+            holder.configBtn.setVisibility(View.VISIBLE);
+            holder.configBtn.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onConfig(mod);
+                }
+            });
+        } else {
+            holder.configBtn.setVisibility(View.GONE);
+        }
 
         updateCardState(holder, isEnabled);
     }
