@@ -13,7 +13,9 @@ public class UnifiedMod {
     public enum ConfigType {
         TOGGLE,
         SLIDER_INT,
-        SLIDER_FLOAT
+        SLIDER_FLOAT,
+        RADIO,
+        COLOR
     }
 
     public static class ConfigEntry {

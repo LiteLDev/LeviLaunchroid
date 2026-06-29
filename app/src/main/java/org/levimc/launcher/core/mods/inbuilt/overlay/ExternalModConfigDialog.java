@@ -183,6 +183,76 @@ public class ExternalModConfigDialog {
                     row.addView(seekBar, seekParams);
                     break;
                 }
+                case RADIO: {
+                    android.widget.RadioGroup radioGroup = new android.widget.RadioGroup(themedContext);
+                    radioGroup.setOrientation(LinearLayout.VERTICAL);
+
+                    String[] options = cfg.minValue != null ? cfg.minValue.split(",") : new String[0];
+                    int selectedIndex = parseIntSafe(cfg.currentValue, parseIntSafe(cfg.defaultValue, 0));
+
+                    for (int i = 0; i < options.length; i++) {
+                        android.widget.RadioButton rb = new android.widget.RadioButton(themedContext);
+                        rb.setText(options[i]);
+                        rb.setTextColor(Color.WHITE);
+                        rb.setId(android.view.View.generateViewId());
+                        int currentIndex = i;
+                        if (i == selectedIndex) {
+                            rb.setChecked(true);
+                        }
+                        
+                        rb.setOnCheckedChangeListener((btn, isChecked) -> {
+                            if (isChecked) {
+                                cfg.currentValue = String.valueOf(currentIndex);
+                                ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
+                            }
+                        });
+                        
+                        radioGroup.addView(rb);
+                    }
+                    
+                    LinearLayout.LayoutParams rgParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    rgParams.topMargin = (int)(4*density);
+                    row.addView(radioGroup, rgParams);
+                    break;
+                }
+                case COLOR: {
+                    android.widget.EditText hexInput = new android.widget.EditText(themedContext);
+                    hexInput.setText(cfg.currentValue.isEmpty() ? cfg.defaultValue : cfg.currentValue);
+                    hexInput.setTextColor(0xFF4AE0A0);
+                    hexInput.setHint("#AARRGGBB");
+                    hexInput.setHintTextColor(0xFF888888);
+                    
+                    android.view.View colorPreview = new android.view.View(themedContext);
+                    LinearLayout.LayoutParams previewParams = new LinearLayout.LayoutParams(
+                        (int)(30*density), (int)(30*density)
+                    );
+                    previewParams.topMargin = (int)(4*density);
+                    
+                    try {
+                        colorPreview.setBackgroundColor(Color.parseColor(hexInput.getText().toString()));
+                    } catch (Exception e) {}
+
+                    hexInput.addTextChangedListener(new android.text.TextWatcher() {
+                        @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                        @Override public void afterTextChanged(android.text.Editable s) {
+                            String hex = s.toString();
+                            if (hex.length() >= 7 && hex.startsWith("#")) {
+                                try {
+                                    int color = Color.parseColor(hex);
+                                    colorPreview.setBackgroundColor(color);
+                                    cfg.currentValue = hex;
+                                    ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
+                                } catch (Exception e) {}
+                            }
+                        }
+                    });
+
+                    row.addView(hexInput);
+                    row.addView(colorPreview, previewParams);
+                    break;
+                }
             }
             root.addView(row, rowParams);
         }

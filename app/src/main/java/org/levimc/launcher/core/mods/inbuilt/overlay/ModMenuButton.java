@@ -244,6 +244,12 @@ public class ModMenuButton {
         });
     }
     
+    public void setVisibility(int visibility) {
+        if (buttonView != null) {
+            buttonView.setVisibility(visibility);
+        }
+    }
+    
     public boolean isShowing() {
         return isShowing;
     }

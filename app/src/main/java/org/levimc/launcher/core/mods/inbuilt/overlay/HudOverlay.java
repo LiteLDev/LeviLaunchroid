@@ -50,7 +50,7 @@ public class HudOverlay extends View {
                     return;
                 }
 
-                WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams(
+                wmParams = new WindowManager.LayoutParams(
                         WindowManager.LayoutParams.MATCH_PARENT,
                         WindowManager.LayoutParams.MATCH_PARENT,
                         WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
@@ -104,10 +104,84 @@ public class HudOverlay extends View {
         isShowing = false;
     }
 
+    private boolean isHudEditorMode = false;
+    private WindowManager.LayoutParams wmParams;
+    
+    private String draggingModule = null;
+    private float dragOffsetX = 0;
+    private float dragOffsetY = 0;
+
+    public void setHudEditorMode(boolean active) {
+        isHudEditorMode = active;
+        if (wmParams != null && isShowing) {
+            if (active) {
+                wmParams.flags &= ~WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+            } else {
+                wmParams.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+            }
+            try {
+                WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+                windowManager.updateViewLayout(this, wmParams);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        invalidate();
+    }
+
+    @Override
+    public boolean onTouchEvent(android.view.MotionEvent event) {
+        if (!isHudEditorMode) return false;
+
+        switch (event.getActionMasked()) {
+            case android.view.MotionEvent.ACTION_DOWN:
+                DrawCommand[] cmds = ExternalModBridge.getDrawCommands();
+                if (cmds != null) {
+                    for (DrawCommand cmd : cmds) {
+                        if (cmd.moduleId != null) {
+                            if (cmd.type == DrawCommand.TYPE_TEXT) {
+                                paint.setTextSize(cmd.size);
+                            }
+                            float w = cmd.w > 0 ? cmd.w : (cmd.text != null ? paint.measureText(cmd.text) : 100);
+                            float h = cmd.h > 0 ? cmd.h : (cmd.size > 0 ? cmd.size : 30);
+                            if (event.getRawX() >= cmd.x && event.getRawX() <= cmd.x + w &&
+                                event.getRawY() >= cmd.y && event.getRawY() <= cmd.y + h) {
+                                draggingModule = cmd.moduleId;
+                                dragOffsetX = event.getRawX() - cmd.x;
+                                dragOffsetY = event.getRawY() - cmd.y;
+                                return true;
+                            }
+                        }
+                    }
+                }
+                break;
+            case android.view.MotionEvent.ACTION_MOVE:
+                if (draggingModule != null) {
+                    float newX = event.getRawX() - dragOffsetX;
+                    float newY = event.getRawY() - dragOffsetY;
+                    ExternalModBridge.setExternalModConfig(draggingModule, "m_posX", String.valueOf((int)newX));
+                    ExternalModBridge.setExternalModConfig(draggingModule, "m_posY", String.valueOf((int)newY));
+                    ExternalModBridge.setExternalModConfig(draggingModule, "posX", String.valueOf((int)newX));
+                    ExternalModBridge.setExternalModConfig(draggingModule, "posY", String.valueOf((int)newY));
+                    return true;
+                }
+                break;
+            case android.view.MotionEvent.ACTION_UP:
+            case android.view.MotionEvent.ACTION_CANCEL:
+                draggingModule = null;
+                return true;
+        }
+        return super.onTouchEvent(event);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (!isShowing) return;
+
+        if (isHudEditorMode) {
+            canvas.drawColor(0x88000000);
+        }
 
         DrawCommand[] cmds = ExternalModBridge.getDrawCommands();
         if (cmds != null) {
@@ -119,7 +193,14 @@ public class HudOverlay extends View {
                     paint.setStyle(Paint.Style.FILL);
                     paint.setShadowLayer(3f, 1f, 1f, 0xFF000000);
                     if (cmd.text != null) {
-                        canvas.drawText(cmd.text, cmd.x, cmd.y, paint);
+                        if (cmd.w > 0 && cmd.h > 0) {
+                            paint.setTextAlign(Paint.Align.CENTER);
+                            float textY = cmd.y + (cmd.h / 2f) - ((paint.descent() + paint.ascent()) / 2f);
+                            canvas.drawText(cmd.text, cmd.x + (cmd.w / 2f), textY, paint);
+                        } else {
+                            paint.setTextAlign(Paint.Align.LEFT);
+                            canvas.drawText(cmd.text, cmd.x, cmd.y - paint.ascent(), paint);
+                        }
                     }
                     paint.clearShadowLayer();
                 } else if (cmd.type == DrawCommand.TYPE_RECT) {
@@ -129,6 +210,18 @@ public class HudOverlay extends View {
                     paint.setStrokeWidth(cmd.size);
                     paint.setStyle(Paint.Style.STROKE);
                     canvas.drawLine(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, paint);
+                }
+
+                if (isHudEditorMode && cmd.moduleId != null) {
+                    if (cmd.type == DrawCommand.TYPE_TEXT) {
+                        paint.setTextSize(cmd.size);
+                    }
+                    float w = cmd.w > 0 ? cmd.w : (cmd.text != null ? paint.measureText(cmd.text) : 100);
+                    float h = cmd.h > 0 ? cmd.h : (cmd.size > 0 ? cmd.size : 30);
+                    paint.setStyle(Paint.Style.STROKE);
+                    paint.setStrokeWidth(2f);
+                    paint.setColor(0xFF4AE0A0);
+                    canvas.drawRect(cmd.x - 2, cmd.y - 2, cmd.x + w + 2, cmd.y + h + 2, paint);
                 }
             }
         }

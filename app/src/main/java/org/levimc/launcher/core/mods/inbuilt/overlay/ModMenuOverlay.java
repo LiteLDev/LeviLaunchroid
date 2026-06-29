@@ -139,14 +139,78 @@ public class ModMenuOverlay {
         modsRecycler = overlayView.findViewById(R.id.mods_grid_recycler);
         navModules = overlayView.findViewById(R.id.nav_modules);
         navSettings = overlayView.findViewById(R.id.nav_settings);
+        View navHudEditor = overlayView.findViewById(R.id.nav_hud_editor);
         settingsContainer = overlayView.findViewById(R.id.settings_container);
         modulesContainer = overlayView.findViewById(R.id.modules_container);
         emptyState = overlayView.findViewById(R.id.empty_state);
         notificationsSwitch = overlayView.findViewById(R.id.switch_notifications);
+
+        View hudEditorTools = overlayView.findViewById(R.id.hud_editor_tools);
+        View btnHudSave = overlayView.findViewById(R.id.btn_hud_save);
+        View btnHudCancel = overlayView.findViewById(R.id.btn_hud_cancel);
+        View modMenuContainer = overlayView.findViewById(R.id.mod_menu_container);
+
+        if (navHudEditor != null) {
+            navHudEditor.setOnClickListener(v -> {
+                modMenuContainer.setVisibility(View.GONE);
+                hudEditorTools.setVisibility(View.VISIBLE);
+                overlayView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+                if (wmParams != null && windowManager != null) {
+                    wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    wmParams.height = (int) (80 * activity.getResources().getDisplayMetrics().density);
+                    wmParams.gravity = Gravity.TOP;
+                    windowManager.updateViewLayout(overlayView, wmParams);
+                }
+                InbuiltOverlayManager.getInstance().setHudEditorMode(true);
+            });
+        }
+        
+        if (btnHudSave != null) {
+            btnHudSave.setOnClickListener(v -> {
+                modMenuContainer.setVisibility(View.VISIBLE);
+                hudEditorTools.setVisibility(View.GONE);
+                overlayView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+                if (wmParams != null && windowManager != null) {
+                    wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    wmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+                    wmParams.gravity = Gravity.CENTER;
+                    windowManager.updateViewLayout(overlayView, wmParams);
+                }
+                InbuiltOverlayManager.getInstance().setHudEditorMode(false);
+            });
+        }
+        
+        View btnHudReset = overlayView.findViewById(R.id.btn_hud_reset);
+        if (btnHudReset != null) {
+            btnHudReset.setOnClickListener(v -> {
+                InbuiltOverlayManager.getInstance().resetAllPositionsToCenter();
+            });
+        }
+
+        if (btnHudCancel != null) {
+            btnHudCancel.setOnClickListener(v -> {
+                modMenuContainer.setVisibility(View.VISIBLE);
+                hudEditorTools.setVisibility(View.GONE);
+                overlayView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+                if (wmParams != null && windowManager != null) {
+                    wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    wmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+                    wmParams.gravity = Gravity.CENTER;
+                    windowManager.updateViewLayout(overlayView, wmParams);
+                }
+                InbuiltOverlayManager.getInstance().setHudEditorMode(false);
+            });
+        }
         
         // Close on background tap
-        overlayView.setOnClickListener(v -> hide());
+        overlayView.setOnClickListener(v -> {
+            // Only hide if not in HUD editor mode
+            if (hudEditorTools.getVisibility() != View.VISIBLE) {
+                hide();
+            }
+        });
         menuContainer.setOnClickListener(v -> {}); // Consume clicks
+        hudEditorTools.setOnClickListener(v -> {}); // Consume clicks
         
         closeBtn.setOnClickListener(v -> hide());
         
@@ -337,6 +401,8 @@ public class ModMenuOverlay {
                     switch (typeInt) {
                         case 1: type = UnifiedMod.ConfigType.SLIDER_INT; break;
                         case 2: type = UnifiedMod.ConfigType.SLIDER_FLOAT; break;
+                        case 3: type = UnifiedMod.ConfigType.RADIO; break;
+                        case 4: type = UnifiedMod.ConfigType.COLOR; break;
                         default: type = UnifiedMod.ConfigType.TOGGLE; break;
                     }
                     configs.add(new UnifiedMod.ConfigEntry(

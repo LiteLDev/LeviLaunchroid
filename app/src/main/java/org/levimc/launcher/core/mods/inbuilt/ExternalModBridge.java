@@ -62,19 +62,21 @@ public class ExternalModBridge {
         public int color;
         public float size;
         public String text;
+        public String moduleId;
     }
 
     public static DrawCommand[] getDrawCommands() {
         if (!ModManager.ensurePreloaderLoaded()) return new DrawCommand[0];
         try {
             Object[] arrays = nativeGetDrawCommands();
-            if (arrays == null || arrays.length < 5) return new DrawCommand[0];
+            if (arrays == null || arrays.length < 6) return new DrawCommand[0];
 
             int[] types = (int[]) arrays[0];
             float[] rects = (float[]) arrays[1];
             int[] colors = (int[]) arrays[2];
             float[] sizes = (float[]) arrays[3];
             String[] texts = (String[]) arrays[4];
+            String[] moduleIds = (String[]) arrays[5];
 
             if (types == null) return new DrawCommand[0];
 
@@ -90,6 +92,7 @@ public class ExternalModBridge {
                 cmd.color = colors[i];
                 cmd.size = sizes[i];
                 cmd.text = texts != null ? texts[i] : null;
+                cmd.moduleId = moduleIds != null ? moduleIds[i] : null;
                 cmds[i] = cmd;
             }
             return cmds;

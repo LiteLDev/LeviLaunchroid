@@ -42,6 +42,11 @@ public class InbuiltOverlayManager {
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
         if (!manager.isModMenuEnabled()) return;
 
+        if (hudOverlay == null) {
+            hudOverlay = new HudOverlay(activity);
+        }
+        hudOverlay.show();
+
         int nextY = baseY;
 
         modActiveStates.put(ModIds.QUICK_DROP, false);
@@ -77,11 +82,6 @@ public class InbuiltOverlayManager {
 
         modMenuButton = new ModMenuButton(activity);
         modMenuButton.show(START_X, nextY);
-
-        if (hudOverlay == null) {
-            hudOverlay = new HudOverlay(activity);
-        }
-        hudOverlay.show();
     }
 
     public void handleModToggle(String modId, boolean enabled) {
@@ -101,10 +101,13 @@ public class InbuiltOverlayManager {
         }
 
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
-        int posY = modPositionMap.getOrDefault(modId, baseY + SPACING);
+        
+        android.util.DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
+        int centerX = metrics.widthPixels / 2 - (int)(26 * metrics.density);
+        int centerY = metrics.heightPixels / 2 - (int)(26 * metrics.density);
 
-        int savedX = manager.getOverlayPositionX(modId, START_X);
-        int savedY = manager.getOverlayPositionY(modId, posY);
+        int savedX = manager.getOverlayPositionX(modId, centerX);
+        int savedY = manager.getOverlayPositionY(modId, centerY);
 
         switch (modId) {
             case ModIds.QUICK_DROP:
@@ -343,6 +346,68 @@ public class InbuiltOverlayManager {
         }
         if (modId.equals(ModIds.CPS_DISPLAY) && cpsDisplayOverlay != null) {
             cpsDisplayOverlay.applyConfigurationChanges();
+        }
+    }
+
+    public void setHudEditorMode(boolean active) {
+        for (BaseOverlayButton overlay : overlays) {
+            overlay.setHudEditorMode(active);
+        }
+        if (fpsDisplayOverlay != null) {
+            fpsDisplayOverlay.setHudEditorMode(active);
+        }
+        if (cpsDisplayOverlay != null) {
+            cpsDisplayOverlay.setHudEditorMode(active);
+        }
+        if (hudOverlay != null) {
+            hudOverlay.setHudEditorMode(active);
+        }
+
+        if (modMenuButton != null) {
+            if (active) {
+                modMenuButton.setVisibility(android.view.View.GONE);
+            } else {
+                modMenuButton.setVisibility(android.view.View.VISIBLE);
+                int savedX = InbuiltModManager.getInstance(activity).getOverlayPositionX(ModIds.MOD_MENU, START_X);
+                int savedY = InbuiltModManager.getInstance(activity).getOverlayPositionY(ModIds.MOD_MENU, baseY);
+                modMenuButton.show(savedX, savedY);
+            }
+        }
+    }
+
+    public void resetAllPositionsToCenter() {
+        android.util.DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
+        int centerX = metrics.widthPixels / 2 - (int)(26 * metrics.density);
+        int centerY = metrics.heightPixels / 2 - (int)(26 * metrics.density);
+
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        
+        for (java.util.Map.Entry<String, BaseOverlayButton> entry : modOverlayMap.entrySet()) {
+            manager.setOverlayPosition(entry.getKey(), centerX, centerY);
+            entry.getValue().updatePosition(centerX, centerY);
+        }
+        
+        if (fpsDisplayOverlay != null) {
+            manager.setOverlayPosition(ModIds.FPS_DISPLAY, centerX, centerY);
+            fpsDisplayOverlay.updatePosition(centerX, centerY);
+        }
+        if (cpsDisplayOverlay != null) {
+            manager.setOverlayPosition(ModIds.CPS_DISPLAY, centerX, centerY);
+            cpsDisplayOverlay.updatePosition(centerX, centerY);
+        }
+        
+        org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.DrawCommand[] cmds = org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.getDrawCommands();
+        if (cmds != null) {
+            java.util.Set<String> processed = new java.util.HashSet<>();
+            for (org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.DrawCommand cmd : cmds) {
+                if (cmd.moduleId != null && !processed.contains(cmd.moduleId)) {
+                    processed.add(cmd.moduleId);
+                    org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.setExternalModConfig(cmd.moduleId, "m_posX", String.valueOf(centerX));
+                    org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.setExternalModConfig(cmd.moduleId, "m_posY", String.valueOf(centerY));
+                    org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.setExternalModConfig(cmd.moduleId, "posX", String.valueOf(centerX));
+                    org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.setExternalModConfig(cmd.moduleId, "posY", String.valueOf(centerY));
+                }
+            }
         }
     }
 
