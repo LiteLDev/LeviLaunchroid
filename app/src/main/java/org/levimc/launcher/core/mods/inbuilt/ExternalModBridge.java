@@ -49,4 +49,16 @@ public class ExternalModBridge {
             Log.e(TAG, "nativeSetExternalModConfig not available", e);
         }
     }
+
+    public static native float[] nativeGetHudState();
+
+    public static float[] getHudState() {
+        if (!ModManager.ensurePreloaderLoaded()) return null;
+        try {
+            return nativeGetHudState();
+        } catch (UnsatisfiedLinkError e) {
+            Log.e(TAG, "nativeGetHudState not available", e);
+            return null;
+        }
+    }
 }
