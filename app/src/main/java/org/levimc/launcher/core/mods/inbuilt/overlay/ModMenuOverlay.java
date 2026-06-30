@@ -137,7 +137,7 @@ public class ModMenuOverlay {
             refreshMods();
             return;
         }
-        handler.postDelayed(this::showInternal, 100);
+        showInternal();
     }
     
     private void showInternal() {

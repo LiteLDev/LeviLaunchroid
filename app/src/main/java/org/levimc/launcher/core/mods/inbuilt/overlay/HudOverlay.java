@@ -44,45 +44,19 @@ public class HudOverlay extends View {
             public void run() {
                 if (isShowing) return;
                 
-                android.os.IBinder token = ((Activity) getContext()).getWindow().getDecorView().getWindowToken();
-                if (token == null) {
-                    handler.postDelayed(this, 100);
-                    return;
-                }
-
-                wmParams = new WindowManager.LayoutParams(
-                        WindowManager.LayoutParams.MATCH_PARENT,
-                        WindowManager.LayoutParams.MATCH_PARENT,
-                        WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
-                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                                | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                        PixelFormat.TRANSLUCENT
-                );
-                wmParams.token = token;
-                wmParams.gravity = android.view.Gravity.TOP | android.view.Gravity.START;
-
                 try {
-                    WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-                    windowManager.addView(HudOverlay.this, wmParams);
-                    isShowing = true;
-                    android.view.Choreographer.getInstance().postFrameCallback(frameCallback);
+                    ViewGroup rootView = ((Activity) getContext()).findViewById(android.R.id.content);
+                    if (rootView != null) {
+                        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                                FrameLayout.LayoutParams.MATCH_PARENT,
+                                FrameLayout.LayoutParams.MATCH_PARENT
+                        );
+                        rootView.addView(HudOverlay.this, params);
+                        isShowing = true;
+                        android.view.Choreographer.getInstance().postFrameCallback(frameCallback);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    try {
-                        ViewGroup rootView = ((Activity) getContext()).findViewById(android.R.id.content);
-                        if (rootView != null) {
-                            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                                    FrameLayout.LayoutParams.MATCH_PARENT,
-                                    FrameLayout.LayoutParams.MATCH_PARENT
-                            );
-                            rootView.addView(HudOverlay.this, params);
-                            isShowing = true;
-                            android.view.Choreographer.getInstance().postFrameCallback(frameCallback);
-                        }
-                    } catch (Exception e2) {
-                        e2.printStackTrace();
-                    }
                 }
             }
         }, 100);
@@ -91,15 +65,12 @@ public class HudOverlay extends View {
     public void hide() {
         if (!isShowing) return;
         try {
-            WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-            windowManager.removeView(this);
+            ViewGroup rootView = ((Activity) getContext()).findViewById(android.R.id.content);
+            if (rootView != null) {
+                rootView.removeView(this);
+            }
         } catch (Exception e) {
-            try {
-                ViewGroup rootView = ((Activity) getContext()).findViewById(android.R.id.content);
-                if (rootView != null) {
-                    rootView.removeView(this);
-                }
-            } catch (Exception e2) {}
+            e.printStackTrace();
         }
         isShowing = false;
     }
@@ -113,19 +84,6 @@ public class HudOverlay extends View {
 
     public void setHudEditorMode(boolean active) {
         isHudEditorMode = active;
-        if (wmParams != null && isShowing) {
-            if (active) {
-                wmParams.flags &= ~WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-            } else {
-                wmParams.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-            }
-            try {
-                WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-                windowManager.updateViewLayout(this, wmParams);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         invalidate();
     }
 
@@ -185,7 +143,7 @@ public class HudOverlay extends View {
                 draggingModule = null;
                 return true;
         }
-        return super.onTouchEvent(event);
+        return true;
     }
 
     @Override
