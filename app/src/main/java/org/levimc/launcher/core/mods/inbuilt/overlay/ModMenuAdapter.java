@@ -56,8 +56,7 @@ public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHold
         holder.name.setText(mod.getName());
 
         if (mod.getSource() == UnifiedMod.Source.INBUILT) {
-            holder.icon.setImageResource(
-                org.levimc.launcher.ui.util.InbuiltModConfigHelper.getModIcon(mod.getId()));
+            holder.icon.setImageResource(ModIconHelper.getModIcon(mod.getId()));
             holder.icon.setImageTintList(null);
             holder.icon.setColorFilter(null);
         } else {
@@ -97,21 +96,45 @@ public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHold
     }
 
     private void updateStatusView(ViewHolder holder, boolean enabled) {
+        int accent = 0xFF4AE0A0;
+
         if (enabled) {
             holder.statusText.setText(R.string.mod_status_enabled);
-            holder.statusText.setTextColor(0xFF4AE0A0);
+            holder.statusText.setTextColor(accent);
             holder.statusText.setBackgroundResource(R.drawable.bg_mod_status_enabled);
+            holder.statusText.getBackground().setTint(android.graphics.Color.argb(40, 
+                android.graphics.Color.red(accent), 
+                android.graphics.Color.green(accent), 
+                android.graphics.Color.blue(accent)));
         } else {
             holder.statusText.setText(R.string.mod_status_disabled);
             holder.statusText.setTextColor(0xFF888888);
             holder.statusText.setBackgroundResource(R.drawable.bg_mod_status_disabled);
+            holder.statusText.getBackground().setTintList(null);
         }
         updateCardState(holder, enabled);
     }
 
     private void updateCardState(ViewHolder holder, boolean enabled) {
-        holder.itemView.setAlpha(enabled ? 1f : 0.6f);
+        holder.itemView.setAlpha(enabled ? 1f : 0.7f);
         holder.icon.setAlpha(enabled ? 1f : 0.5f);
+        
+        if (holder.itemView instanceof androidx.cardview.widget.CardView) {
+            androidx.cardview.widget.CardView cv = (androidx.cardview.widget.CardView) holder.itemView;
+            org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(cv.getContext());
+            
+            if (enabled) {
+                cv.setCardBackgroundColor(0xFF242424);
+                cv.setCardElevation(6f);
+            } else {
+                if (pm.hasBackgroundImage()) {
+                    cv.setCardBackgroundColor(android.graphics.Color.argb(50, 25, 25, 25)); // Dark glass
+                } else {
+                    cv.setCardBackgroundColor(pm.getEffectiveSurfaceColor());
+                }
+                cv.setCardElevation(2f);
+            }
+        }
     }
 
 

@@ -189,15 +189,9 @@ public class ModMenuButton {
     private void onButtonClick() {
         if (menuOverlay == null) {
             menuOverlay = new ModMenuOverlay(activity);
-            menuOverlay.setCallback(new ModMenuOverlay.ModMenuButtonCallback() {
+            menuOverlay.setCallback(new ModMenuOverlay.ModMenuCallback() {
                 @Override
                 public void onModToggled(String modId, boolean enabled) {
-                }
-                @Override
-                public void onModConfigRequested(InbuiltMod mod) {
-                    org.levimc.launcher.ui.util.InbuiltModConfigHelper.showConfigDialog(activity, mod, modId -> {
-                        applyConfigurationChanges(modId);
-                    });
                 }
                 @Override
                 public void onButtonOpacityChanged(int opacity) {

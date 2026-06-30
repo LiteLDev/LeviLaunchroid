@@ -121,7 +121,7 @@ public class ModNotificationManager {
         TextView title = notificationView.findViewById(R.id.notification_title);
         TextView message = notificationView.findViewById(R.id.notification_message);
 
-        icon.setImageResource(org.levimc.launcher.ui.util.InbuiltModConfigHelper.getModIcon(modId));
+        icon.setImageResource(ModIconHelper.getModIcon(modId));
         icon.setImageTintList(null);
         icon.setColorFilter(null);
         title.setText(modName);

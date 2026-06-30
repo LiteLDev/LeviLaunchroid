@@ -28,6 +28,7 @@ import org.levimc.launcher.core.mods.inbuilt.ExternalModBridge;
 import org.levimc.launcher.core.mods.inbuilt.UnifiedMod;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod;
+import org.levimc.launcher.ui.animation.DynamicAnim;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,12 +61,64 @@ public class ModMenuOverlay {
     private ModMenuCallback callback;
     private ModNotificationManager notificationManager;
     
-    public interface ModMenuCallback {
-        void onModToggled(String modId, boolean enabled);
-        void onModConfigRequested(InbuiltMod mod);
+    private void crossfade(View view) {
+        view.setAlpha(0f);
+        view.setTranslationX(30f);
+        view.animate()
+            .alpha(1f)
+            .translationX(0f)
+            .setDuration(250)
+            .setInterpolator(new android.view.animation.DecelerateInterpolator(1.5f))
+            .start();
     }
 
-    public interface ModMenuButtonCallback extends ModMenuCallback {
+    private void animateMenuEnter(final View menuContainer) {
+        menuContainer.setAlpha(0f);
+        menuContainer.setScaleX(0.85f);
+        menuContainer.setScaleY(0.85f);
+        
+        menuContainer.post(() -> {
+            menuContainer.setPivotX(menuContainer.getWidth() / 2f);
+            menuContainer.setPivotY(menuContainer.getHeight() / 2f);
+            
+            menuContainer.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(220)
+                .setInterpolator(new android.view.animation.DecelerateInterpolator(1.5f))
+                .withLayer()
+                .start();
+        });
+    }
+    
+    private void animateMenuExit(final View menuContainer, Runnable onEnd) {
+        menuContainer.setPivotX(menuContainer.getWidth() / 2f);
+        menuContainer.setPivotY(menuContainer.getHeight() / 2f);
+        
+        menuContainer.animate()
+            .alpha(0f)
+            .scaleX(0.85f)
+            .scaleY(0.85f)
+            .setDuration(180)
+            .setInterpolator(new android.view.animation.AccelerateInterpolator(1.5f))
+            .withLayer()
+            .setListener(new android.animation.AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(android.animation.Animator animation) {
+                    menuContainer.animate().setListener(null);
+                    onEnd.run();
+                }
+            })
+            .start();
+    }
+
+    private int getAccentColor() {
+        return 0xFF4AE0A0;
+    }
+    
+    public interface ModMenuCallback {
+        void onModToggled(String modId, boolean enabled);
         void onButtonOpacityChanged(int opacity);
     }
     
@@ -108,6 +161,14 @@ public class ModMenuOverlay {
             
             windowManager.addView(overlayView, wmParams);
             isShowing = true;
+            
+            overlayView.setAlpha(0f);
+            overlayView.animate().alpha(1f).setDuration(220).start();
+            
+            View menuContainer = overlayView.findViewById(R.id.mod_menu_container);
+            if (menuContainer != null) {
+                animateMenuEnter(menuContainer);
+            }
         } catch (Exception e) {
             showFallback();
         }
@@ -129,6 +190,14 @@ public class ModMenuOverlay {
         rootView.addView(overlayView, params);
         isShowing = true;
         wmParams = null;
+        
+        overlayView.setAlpha(0f);
+        overlayView.animate().alpha(1f).setDuration(220).start();
+        
+        View menuContainer = overlayView.findViewById(R.id.mod_menu_container);
+        if (menuContainer != null) {
+            animateMenuEnter(menuContainer);
+        }
     }
     
     private void setupViews() {
@@ -232,6 +301,11 @@ public class ModMenuOverlay {
             clearSearchBtn.setVisibility(View.GONE);
         });
         
+        View btnBackToModules = overlayView.findViewById(R.id.btn_back_to_modules);
+        if (btnBackToModules != null) {
+            btnBackToModules.setOnClickListener(v -> showModulesSection());
+        }
+        
         // Navigation
         navModules.setOnClickListener(v -> showModulesSection());
         navSettings.setOnClickListener(v -> showSettingsSection());
@@ -274,8 +348,8 @@ public class ModMenuOverlay {
                 if (fromUser) {
                     modMenuButtonOpacityText.setText(progress + "%");
                     modManager.setModMenuButtonOpacity(progress);
-                    if (callback != null && callback instanceof ModMenuButtonCallback) {
-                        ((ModMenuButtonCallback) callback).onButtonOpacityChanged(progress);
+                    if (callback != null) {
+                        callback.onButtonOpacityChanged(progress);
                     }
                 }
             }
@@ -313,20 +387,7 @@ public class ModMenuOverlay {
             }
             @Override
             public void onConfig(UnifiedMod mod) {
-                if (mod.getSource() == UnifiedMod.Source.INBUILT) {
-                    if (callback != null) {
-                        InbuiltModManager mgr = InbuiltModManager.getInstance(activity);
-                        List<InbuiltMod> inbuiltMods = mgr.getAllMods(activity);
-                        for (InbuiltMod im : inbuiltMods) {
-                            if (im.getId().equals(mod.getId())) {
-                                callback.onModConfigRequested(im);
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    ExternalModConfigDialog.show(activity, mod);
-                }
+                showConfigSection(mod);
             }
         });
         modsRecycler.setAdapter(adapter);
@@ -335,21 +396,82 @@ public class ModMenuOverlay {
     }
     
     private void showModulesSection() {
-        navModules.setTextColor(0xFF4AE0A0);
+        navModules.setTextColor(getAccentColor());
         navModules.setAlpha(1f);
         navSettings.setTextColor(0xFFAAAAAA);
         navSettings.setAlpha(0.6f);
-        modulesContainer.setVisibility(View.VISIBLE);
+        
+        if (modulesContainer.getVisibility() != View.VISIBLE) {
+            modulesContainer.setVisibility(View.VISIBLE);
+            crossfade(modulesContainer);
+        }
         settingsContainer.setVisibility(View.GONE);
+        
+        if (overlayView != null) {
+            View modConfigContainer = overlayView.findViewById(R.id.mod_config_container);
+            View searchContainer = overlayView.findViewById(R.id.search_container);
+            View configHeader = overlayView.findViewById(R.id.config_header);
+            if (modConfigContainer != null) modConfigContainer.setVisibility(View.GONE);
+            if (searchContainer != null) searchContainer.setVisibility(View.VISIBLE);
+            if (configHeader != null) configHeader.setVisibility(View.GONE);
+        }
     }
     
     private void showSettingsSection() {
-        navSettings.setTextColor(0xFF4AE0A0);
+        navSettings.setTextColor(getAccentColor());
         navSettings.setAlpha(1f);
         navModules.setTextColor(0xFFAAAAAA);
         navModules.setAlpha(0.6f);
+        
         modulesContainer.setVisibility(View.GONE);
-        settingsContainer.setVisibility(View.VISIBLE);
+        if (settingsContainer.getVisibility() != View.VISIBLE) {
+            settingsContainer.setVisibility(View.VISIBLE);
+            crossfade(settingsContainer);
+        }
+        
+        if (overlayView != null) {
+            View modConfigContainer = overlayView.findViewById(R.id.mod_config_container);
+            View searchContainer = overlayView.findViewById(R.id.search_container);
+            View configHeader = overlayView.findViewById(R.id.config_header);
+            if (modConfigContainer != null) modConfigContainer.setVisibility(View.GONE);
+            if (searchContainer != null) searchContainer.setVisibility(View.VISIBLE);
+            if (configHeader != null) configHeader.setVisibility(View.GONE);
+        }
+    }
+    
+    private void showConfigSection(UnifiedMod mod) {
+        navModules.setTextColor(0xFFAAAAAA);
+        navModules.setAlpha(0.6f);
+        navSettings.setTextColor(0xFFAAAAAA);
+        navSettings.setAlpha(0.6f);
+        
+        modulesContainer.setVisibility(View.GONE);
+        settingsContainer.setVisibility(View.GONE);
+        
+        if (overlayView != null) {
+            View modConfigContainer = overlayView.findViewById(R.id.mod_config_container);
+            View searchContainer = overlayView.findViewById(R.id.search_container);
+            View configHeader = overlayView.findViewById(R.id.config_header);
+            ViewGroup modConfigContent = overlayView.findViewById(R.id.mod_config_content);
+            TextView configTitle = overlayView.findViewById(R.id.config_title);
+            
+            if (modConfigContainer != null) {
+                modConfigContainer.setVisibility(View.VISIBLE);
+                crossfade(modConfigContainer);
+            }
+            if (searchContainer != null) searchContainer.setVisibility(View.GONE);
+            if (configHeader != null) configHeader.setVisibility(View.VISIBLE);
+            if (configTitle != null) configTitle.setText(mod.getName());
+            
+            if (modConfigContent != null) {
+                ModConfigView.render(activity, modConfigContent, mod, () -> {
+                    InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
+                    if (overlayManager != null) {
+                        overlayManager.applyConfigurationChanges(mod.getId());
+                    }
+                });
+            }
+        }
     }
     
     private void loadMods() {
@@ -466,20 +588,31 @@ public class ModMenuOverlay {
     
     public void hide() {
         if (!isShowing || overlayView == null) return;
-        handler.post(() -> {
-            try {
-                if (wmParams != null && windowManager != null) {
-                    windowManager.removeView(overlayView);
-                } else {
-                    ViewGroup rootView = activity.findViewById(android.R.id.content);
-                    if (rootView != null) {
-                        rootView.removeView(overlayView);
+        
+        Runnable performHide = () -> {
+            handler.post(() -> {
+                try {
+                    if (wmParams != null && windowManager != null) {
+                        windowManager.removeView(overlayView);
+                    } else {
+                        ViewGroup rootView = activity.findViewById(android.R.id.content);
+                        if (rootView != null) {
+                            rootView.removeView(overlayView);
+                        }
                     }
-                }
-            } catch (Exception ignored) {}
-            overlayView = null;
-            isShowing = false;
-        });
+                } catch (Exception ignored) {}
+                overlayView = null;
+                isShowing = false;
+            });
+        };
+        
+        View menuContainer = overlayView.findViewById(R.id.mod_menu_container);
+        if (menuContainer != null) {
+            animateMenuExit(menuContainer, performHide);
+        } else {
+            performHide.run();
+        }
+        overlayView.animate().alpha(0f).setDuration(180).start();
     }
     
     public boolean isShowing() {

@@ -109,6 +109,7 @@
 
                     <!-- Search Bar -->
                     <LinearLayout
+                        android:id="@+id/search_container"
                         android:layout_width="0dp"
                         android:layout_height="32dp"
                         android:layout_weight="1"
@@ -150,6 +151,36 @@
                             android:visibility="gone"
                             android:padding="2dp" />
 
+                    </LinearLayout>
+
+                    <!-- Config Header (Hidden by default) -->
+                    <LinearLayout
+                        android:id="@+id/config_header"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:visibility="gone">
+                        
+                        <ImageButton
+                            android:id="@+id/btn_back_to_modules"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_arrow_back"
+                            android:tint="#FFFFFF"
+                            android:padding="6dp" />
+
+                        <TextView
+                            android:id="@+id/config_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <!-- Close Button -->
@@ -380,6 +411,27 @@
 
                     </LinearLayout>
 
+                </LinearLayout>
+
+                <!-- Mod Config Container -->
+                <LinearLayout
+                    android:id="@+id/mod_config_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true">
+                        <LinearLayout
+                            android:id="@+id/mod_config_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp"/>
+                    </ScrollView>
                 </LinearLayout>
 
             </LinearLayout>
