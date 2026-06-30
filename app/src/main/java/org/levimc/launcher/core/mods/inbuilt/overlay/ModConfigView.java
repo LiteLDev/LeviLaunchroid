@@ -153,9 +153,13 @@ public class ModConfigView {
                     break;
                 }
                 case RADIO: {
-                    container.addView(createLabel(context, cfg.displayName, density));
+                    LinearLayout row = createRow(context, container, density);
+                    row.addView(createLabel(context, cfg.displayName, density));
+                    container.addView(row);
+
                     RadioGroup radioGroup = new RadioGroup(context);
                     radioGroup.setOrientation(LinearLayout.VERTICAL);
+                    
                     String[] options = cfg.minValue != null ? cfg.minValue.split(",") : new String[0];
                     int selectedIndex = parseIntSafe(cfg.currentValue, parseIntSafe(cfg.defaultValue, 0));
 
@@ -163,9 +167,14 @@ public class ModConfigView {
                         RadioButton rb = new RadioButton(context);
                         rb.setText(options[i]);
                         rb.setTextColor(Color.WHITE);
+                        rb.setTextSize(14);
                         int[][] states = {{android.R.attr.state_checked}, {}};
                         rb.setButtonTintList(new ColorStateList(states, new int[]{accent, 0xFFAAAAAA}));
                         if (i == selectedIndex) rb.setChecked(true);
+                        
+                        LinearLayout.LayoutParams rbParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        rb.setLayoutParams(rbParams);
                         
                         int currentIndex = i;
                         rb.setOnCheckedChangeListener((btn, isChecked) -> {
@@ -177,7 +186,12 @@ public class ModConfigView {
                         });
                         radioGroup.addView(rb);
                     }
-                    addWithMargin(container, radioGroup, density);
+                    
+                    LinearLayout.LayoutParams rgParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    rgParams.leftMargin = (int)(4 * density);
+                    rgParams.topMargin = (int)(4 * density);
+                    container.addView(radioGroup, rgParams);
                     break;
                 }
                 case COLOR: {
