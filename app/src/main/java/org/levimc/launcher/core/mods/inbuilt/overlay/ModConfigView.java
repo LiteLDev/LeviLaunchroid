@@ -94,14 +94,38 @@ public class ModConfigView {
 
     private static void renderExternalConfig(Context context, ViewGroup container, UnifiedMod mod, int accent, float density, Runnable onConfigChanged) {
         List<UnifiedMod.ConfigEntry> configs = mod.getConfigEntries();
+        
+        java.util.Map<String, java.util.List<View>> configViews = new java.util.HashMap<>();
+        Runnable applyDependencies = () -> {
+            for (UnifiedMod.ConfigEntry cfg : configs) {
+                if (cfg.dependsOn != null && !cfg.dependsOn.isEmpty() && configViews.containsKey(cfg.key)) {
+                    boolean isParentEnabled = false;
+                    for (UnifiedMod.ConfigEntry parentCfg : configs) {
+                        if (parentCfg.key.equals(cfg.dependsOn)) {
+                            isParentEnabled = "true".equalsIgnoreCase(parentCfg.currentValue) || "1".equals(parentCfg.currentValue);
+                            break;
+                        }
+                    }
+                    for (View v : configViews.get(cfg.key)) {
+                        v.setVisibility(isParentEnabled ? View.VISIBLE : View.GONE);
+                    }
+                }
+            }
+        };
+        Runnable wrappedOnConfigChanged = () -> {
+            applyDependencies.run();
+            onConfigChanged.run();
+        };
+
         for (UnifiedMod.ConfigEntry cfg : configs) {
+            int startIndex = container.getChildCount();
             switch (cfg.type) {
                 case TOGGLE:
                     boolean checked = "true".equalsIgnoreCase(cfg.currentValue) || "1".equals(cfg.currentValue);
                     addToggle(context, container, cfg.displayName, checked, accent, density, isChecked -> {
                         cfg.currentValue = isChecked ? "true" : "false";
                         ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
-                        onConfigChanged.run();
+                        wrappedOnConfigChanged.run();
                     });
                     break;
                 case SLIDER_INT: {
@@ -111,7 +135,7 @@ public class ModConfigView {
                     addSlider(context, container, cfg.displayName, cur, min, max, accent, density, progress -> {
                         cfg.currentValue = String.valueOf(progress);
                         ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
-                        onConfigChanged.run();
+                        wrappedOnConfigChanged.run();
                     });
                     break;
                 }
@@ -143,7 +167,7 @@ public class ModConfigView {
                                 valText.setText(String.format("%.2f", val));
                                 cfg.currentValue = String.valueOf(val);
                                 ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
-                                onConfigChanged.run();
+                                wrappedOnConfigChanged.run();
                             }
                         }
                         @Override public void onStartTrackingTouch(SeekBar sb) {}
@@ -181,7 +205,7 @@ public class ModConfigView {
                             if (isChecked) {
                                 cfg.currentValue = String.valueOf(currentIndex);
                                 ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
-                                onConfigChanged.run();
+                                wrappedOnConfigChanged.run();
                             }
                         });
                         radioGroup.addView(rb);
@@ -195,51 +219,89 @@ public class ModConfigView {
                     break;
                 }
                 case COLOR: {
-                    LinearLayout row = createRow(context, container, density);
-                    row.addView(createLabel(context, cfg.displayName, density));
-                    container.addView(row);
+                    LinearLayout headerRow = new LinearLayout(context);
+                    headerRow.setOrientation(LinearLayout.HORIZONTAL);
+                    headerRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
+                    LinearLayout.LayoutParams headerParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    headerParams.topMargin = (int)(12 * density);
+                    headerRow.setLayoutParams(headerParams);
 
-                    LinearLayout inputRow = new LinearLayout(context);
-                    inputRow.setOrientation(LinearLayout.HORIZONTAL);
-                    inputRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
-                    
-                    EditText hexInput = new EditText(context);
-                    hexInput.setText(cfg.currentValue.isEmpty() ? cfg.defaultValue : cfg.currentValue);
-                    hexInput.setTextColor(accent);
-                    hexInput.setHint("#AARRGGBB");
-                    hexInput.setHintTextColor(0xFF888888);
-                    hexInput.setBackgroundTintList(ColorStateList.valueOf(accent));
-                    
+                    TextView label = createLabel(context, cfg.displayName, density);
+                    headerRow.addView(label);
+
                     View colorPreview = new View(context);
-                    LinearLayout.LayoutParams previewParams = new LinearLayout.LayoutParams((int)(30*density), (int)(30*density));
-                    previewParams.leftMargin = (int)(12*density);
+                    LinearLayout.LayoutParams previewParams = new LinearLayout.LayoutParams(
+                        (int)(40 * density), (int)(20 * density));
                     
-                    try { colorPreview.setBackgroundColor(Color.parseColor(hexInput.getText().toString())); } catch (Exception ignored) {}
+                    String currentHex = cfg.currentValue.isEmpty() ? cfg.defaultValue : cfg.currentValue;
+                    int initialColor = Color.WHITE;
+                    try { initialColor = Color.parseColor(currentHex); } catch (Exception ignored) {}
+                    
+                    android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+                    gd.setColor(initialColor);
+                    gd.setCornerRadius(4 * density);
+                    gd.setStroke((int)(1 * density), 0xFF555555);
+                    colorPreview.setBackground(gd);
+                    headerRow.addView(colorPreview, previewParams);
+                    container.addView(headerRow);
 
-                    hexInput.addTextChangedListener(new android.text.TextWatcher() {
-                        @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                        @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                        @Override public void afterTextChanged(android.text.Editable s) {
-                            String hex = s.toString();
-                            if (hex.length() >= 7 && hex.startsWith("#")) {
-                                try {
-                                    int color = Color.parseColor(hex);
-                                    colorPreview.setBackgroundColor(color);
-                                    cfg.currentValue = hex;
-                                    ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
-                                    onConfigChanged.run();
-                                } catch (Exception ignored) {}
-                            }
-                        }
-                    });
+                    LinearLayout slidersContainer = new LinearLayout(context);
+                    slidersContainer.setOrientation(LinearLayout.VERTICAL);
+                    slidersContainer.setVisibility(View.GONE);
+                    slidersContainer.setPadding((int)(12 * density), (int)(8 * density), 0, (int)(8 * density));
+
+                    final int[] currentColor = {initialColor};
                     
-                    inputRow.addView(hexInput, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
-                    inputRow.addView(colorPreview, previewParams);
-                    addWithMargin(container, inputRow, density);
+                    ValueChangeListener onSliderChange = val -> {
+                        gd.setColor(currentColor[0]);
+                        colorPreview.setBackground(gd);
+                        cfg.currentValue = String.format("#%08X", currentColor[0]);
+                        ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
+                        wrappedOnConfigChanged.run();
+                    };
+
+                    int a = Color.alpha(initialColor);
+                    int r = Color.red(initialColor);
+                    int g = Color.green(initialColor);
+                    int b = Color.blue(initialColor);
+
+                    SeekBar alphaSlider = addColorSliderInline(context, slidersContainer, "A", a, 0xFFFFFFFF, density, progress -> {
+                        currentColor[0] = Color.argb(progress, Color.red(currentColor[0]), Color.green(currentColor[0]), Color.blue(currentColor[0]));
+                        onSliderChange.onValueChanged(progress);
+                    });
+                    SeekBar redSlider = addColorSliderInline(context, slidersContainer, "R", r, 0xFFFF4444, density, progress -> {
+                        currentColor[0] = Color.argb(Color.alpha(currentColor[0]), progress, Color.green(currentColor[0]), Color.blue(currentColor[0]));
+                        onSliderChange.onValueChanged(progress);
+                    });
+                    SeekBar greenSlider = addColorSliderInline(context, slidersContainer, "G", g, 0xFF44FF44, density, progress -> {
+                        currentColor[0] = Color.argb(Color.alpha(currentColor[0]), Color.red(currentColor[0]), progress, Color.blue(currentColor[0]));
+                        onSliderChange.onValueChanged(progress);
+                    });
+                    SeekBar blueSlider = addColorSliderInline(context, slidersContainer, "B", b, 0xFF4444FF, density, progress -> {
+                        currentColor[0] = Color.argb(Color.alpha(currentColor[0]), Color.red(currentColor[0]), Color.green(currentColor[0]), progress);
+                        onSliderChange.onValueChanged(progress);
+                    });
+
+                    container.addView(slidersContainer, new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                    headerRow.setOnClickListener(v -> {
+                        boolean isVisible = slidersContainer.getVisibility() == View.VISIBLE;
+                        slidersContainer.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+                    });
                     break;
                 }
             }
+
+            int endIndex = container.getChildCount();
+            java.util.List<View> viewsAdded = new java.util.ArrayList<>();
+            for (int i = startIndex; i < endIndex; i++) {
+                viewsAdded.add(container.getChildAt(i));
+            }
+            configViews.put(cfg.key, viewsAdded);
         }
+        applyDependencies.run();
     }
 
     private static void addSlider(Context context, ViewGroup container, String labelText, int cur, int min, int max, int accent, float density, ValueChangeListener listener) {
@@ -332,6 +394,43 @@ public class ModConfigView {
         params.topMargin = (int)(12 * density);
         row.setLayoutParams(params);
         return row;
+    }
+
+    private static SeekBar addColorSliderInline(Context context, ViewGroup container, String labelText, int value, int tint, float density, ValueChangeListener listener) {
+        LinearLayout row = new LinearLayout(context);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        
+        TextView tv = new TextView(context);
+        tv.setText(labelText);
+        tv.setTextColor(Color.WHITE);
+        tv.setTextSize(12);
+        tv.setTypeface(null, android.graphics.Typeface.BOLD);
+        tv.setLayoutParams(new LinearLayout.LayoutParams((int)(20 * density), LinearLayout.LayoutParams.WRAP_CONTENT));
+        
+        SeekBar sb = new SeekBar(context);
+        sb.setMax(255);
+        sb.setProgress(value);
+        sb.setProgressTintList(ColorStateList.valueOf(tint));
+        sb.setThumbTintList(ColorStateList.valueOf(tint));
+        sb.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+        
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) listener.onValueChanged(progress);
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        
+        row.addView(tv);
+        row.addView(sb);
+        
+        LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        rowParams.topMargin = (int)(4 * density);
+        container.addView(row, rowParams);
+        return sb;
     }
 
     private static TextView createLabel(Context context, String text, float density) {

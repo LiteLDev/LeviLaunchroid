@@ -26,10 +26,11 @@ public class UnifiedMod {
         public final String minValue;
         public final String maxValue;
         public String currentValue;
+        public final String dependsOn;
 
         public ConfigEntry(String key, String displayName, ConfigType type,
                            String defaultValue, String minValue, String maxValue,
-                           String currentValue) {
+                           String currentValue, String dependsOn) {
             this.key = key;
             this.displayName = displayName;
             this.type = type;
@@ -37,6 +38,7 @@ public class UnifiedMod {
             this.minValue = minValue;
             this.maxValue = maxValue;
             this.currentValue = currentValue;
+            this.dependsOn = dependsOn;
         }
     }
 

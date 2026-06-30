@@ -534,7 +534,8 @@ public class ModMenuOverlay {
                         cfgObj.optString("default_value", ""),
                         cfgObj.optString("min_value", ""),
                         cfgObj.optString("max_value", ""),
-                        cfgObj.optString("current_value", "")
+                        cfgObj.optString("current_value", ""),
+                        cfgObj.optString("depends_on", "")
                     ));
                 }
             }
