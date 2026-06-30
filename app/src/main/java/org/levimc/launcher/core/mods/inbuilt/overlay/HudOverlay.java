@@ -219,10 +219,18 @@ public class HudOverlay extends View {
                     paint.clearShadowLayer();
                 } else if (cmd.type == DrawCommand.TYPE_RECT) {
                     paint.setStyle(Paint.Style.STROKE);
-                    canvas.drawRect(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, paint);
+                    if (cmd.x3 > 0) {
+                        canvas.drawRoundRect(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, cmd.x3, cmd.x3, paint);
+                    } else {
+                        canvas.drawRect(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, paint);
+                    }
                 } else if (cmd.type == DrawCommand.TYPE_RECT_FILLED) {
                     paint.setStyle(Paint.Style.FILL);
-                    canvas.drawRect(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, paint);
+                    if (cmd.x3 > 0) {
+                        canvas.drawRoundRect(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, cmd.x3, cmd.x3, paint);
+                    } else {
+                        canvas.drawRect(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, paint);
+                    }
                 } else if (cmd.type == DrawCommand.TYPE_LINE) {
                     paint.setStrokeWidth(cmd.size);
                     paint.setStyle(Paint.Style.STROKE);
