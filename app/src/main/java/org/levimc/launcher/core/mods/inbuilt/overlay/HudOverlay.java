@@ -219,6 +219,11 @@ public class HudOverlay extends View {
                 if (drawY <= -19000f) drawY = (getHeight() / 2f) + (drawY + 20000f);
                 else if (drawY <= -9000f) drawY = getHeight() + (drawY + 10000f);
 
+                if (isHudEditorMode && dragOffsetX != 0 && cmd.moduleId != null && cmd.moduleId.equals(draggingModule)) {
+                    drawX += dragOffsetX;
+                    drawY += dragOffsetY;
+                }
+
                 if (cmd.type == DrawCommand.TYPE_TEXT) {
                     android.graphics.Typeface tf = getFont(cmd.fontId);
                     if (tf != null) {
@@ -234,10 +239,6 @@ public class HudOverlay extends View {
                         txt = txt.replace("{DISPLAY_SIZE}", getWidth() + "x" + getHeight());
                     }
                     
-                    if (cmd.w == 0f) paint.setTextAlign(Paint.Align.LEFT);
-                    else if (cmd.w == -1f) paint.setTextAlign(Paint.Align.RIGHT);
-                    else if (cmd.w == -2f) paint.setTextAlign(Paint.Align.CENTER);
-                    
                     int bgColor = Float.floatToRawIntBits(cmd.x3);
                     if (bgColor != 0 && txt != null && !txt.isEmpty()) {
                         float textWidth = paint.measureText(txt);
@@ -248,7 +249,7 @@ public class HudOverlay extends View {
 
                         float top = drawY - cmd.size * 0.9f; 
                         float right = left + textWidth;
-                        float bottom = drawY + (cmd.size + 4f - cmd.size * 0.9f); // height = cmd.size + 4f
+                        float bottom = drawY + (cmd.size + 4f - cmd.size * 0.9f); 
                         
                         int oldColor = paint.getColor();
                         paint.setColor(bgColor);
@@ -258,7 +259,17 @@ public class HudOverlay extends View {
 
                     if (txt != null) {
                         paint.setShadowLayer(3f, 1f, 1f, 0xFF000000);
-                        canvas.drawText(txt, drawX, drawY, paint);
+                        if (cmd.w > 0 && cmd.h > 0) {
+                            paint.setTextAlign(Paint.Align.CENTER);
+                            float textY = drawY + (cmd.h / 2f) - ((paint.descent() + paint.ascent()) / 2f);
+                            canvas.drawText(txt, drawX + (cmd.w / 2f), textY, paint);
+                        } else {
+                            if (cmd.w == 0f) paint.setTextAlign(Paint.Align.LEFT);
+                            else if (cmd.w == -1f) paint.setTextAlign(Paint.Align.RIGHT);
+                            else if (cmd.w == -2f) paint.setTextAlign(Paint.Align.CENTER);
+                            
+                            canvas.drawText(txt, drawX, drawY, paint);
+                        }
                         paint.clearShadowLayer();
                     }
                 } else if (cmd.type == DrawCommand.TYPE_RECT) {
