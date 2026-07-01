@@ -248,4 +248,13 @@ public class ModMenuButton {
         return isShowing;
     }
 
+    public boolean isMenuShowing() {
+        return menuOverlay != null && menuOverlay.isShowing();
+    }
+
+    public void hideMenu() {
+        if (menuOverlay != null && menuOverlay.isShowing()) {
+            menuOverlay.hide();
+        }
+    }
 }

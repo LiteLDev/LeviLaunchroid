@@ -22,6 +22,7 @@ public class InbuiltModManager {
     private static final String KEY_NOTIFICATIONS_ENABLED = "notifications_enabled";
     private static final String KEY_MOD_MENU_OPACITY = "mod_menu_opacity";
     private static final String KEY_MOD_MENU_BUTTON_OPACITY = "mod_menu_button_opacity";
+    private static final String KEY_PAUSE_MENU_ONLY = "pause_menu_only";
     private static final String KEY_ZOOM_LEVEL = "zoom_level";
     private static final String KEY_ZOOM_KEYBIND = "zoom_keybind";
     private static final String KEY_CURSOR_SENSITIVITY = "cursor_sensitivity";
@@ -140,6 +141,14 @@ public class InbuiltModManager {
 
     public void setModMenuButtonOpacity(int opacity) {
         prefs.edit().putInt(KEY_MOD_MENU_BUTTON_OPACITY, Math.max(0, Math.min(100, opacity))).apply();
+    }
+
+    public boolean isPauseMenuOnly() {
+        return prefs.getBoolean(KEY_PAUSE_MENU_ONLY, false);
+    }
+
+    public void setPauseMenuOnly(boolean enabled) {
+        prefs.edit().putBoolean(KEY_PAUSE_MENU_ONLY, enabled).apply();
     }
 
     public int getZoomLevel() {

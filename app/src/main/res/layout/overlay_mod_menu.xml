@@ -243,14 +243,31 @@
                 </FrameLayout>
 
                 <!-- Settings Container -->
-                <LinearLayout
+                <ScrollView
                     android:id="@+id/settings_container"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="16dp"
+                    android:fillViewport="true"
                     android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- General Settings Header -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="General Settings"
+                            android:textColor="#4AE0A0"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:textAllCaps="true"
+                            android:layout_marginBottom="12dp"
+                            android:alpha="0.8" />
 
                     <LinearLayout
                         android:id="@+id/setting_notifications"
@@ -300,6 +317,75 @@
                             android:trackTint="@color/switch_track_color" />
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/setting_pause_menu_only"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_mod_status_disabled"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_search"
+                            android:tint="#888888" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pause Menu Only"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Only show mod menu in pause screen"
+                                android:textColor="#888888"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <Switch
+                            android:id="@+id/switch_pause_menu_only"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumbTint="#4AE0A0"
+                            android:trackTint="@color/switch_track_color" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#2A2A2A"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Appearance Header -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Appearance"
+                        android:textColor="#4AE0A0"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:layout_marginBottom="12dp"
+                        android:alpha="0.8" />
 
                     <LinearLayout
                         android:id="@+id/setting_mod_menu_opacity"
@@ -398,20 +484,21 @@
 
                         </LinearLayout>
 
-                        <SeekBar
-                            android:id="@+id/seekbar_mod_menu_button_opacity"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:max="100"
-                            android:min="0"
-                            android:progress="100"
-                            android:progressTint="#4AE0A0"
-                            android:thumbTint="#4AE0A0" />
+                            <SeekBar
+                                android:id="@+id/seekbar_mod_menu_button_opacity"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:max="100"
+                                android:min="0"
+                                android:progress="100"
+                                android:progressTint="#4AE0A0"
+                                android:thumbTint="#4AE0A0" />
 
+                        </LinearLayout>
+                        
                     </LinearLayout>
-
-                </LinearLayout>
+                </ScrollView>
 
                 <!-- Mod Config Container -->
                 <LinearLayout

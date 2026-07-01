@@ -50,6 +50,7 @@ public class ModMenuOverlay {
     private View modulesContainer;
     private View emptyState;
     private Switch notificationsSwitch;
+    private Switch pauseMenuOnlySwitch;
     private SeekBar modMenuOpacitySeekBar;
     private TextView modMenuOpacityText;
     private SeekBar modMenuButtonOpacitySeekBar;
@@ -234,6 +235,7 @@ public class ModMenuOverlay {
         modulesContainer = overlayView.findViewById(R.id.modules_container);
         emptyState = overlayView.findViewById(R.id.empty_state);
         notificationsSwitch = overlayView.findViewById(R.id.switch_notifications);
+        pauseMenuOnlySwitch = overlayView.findViewById(R.id.switch_pause_menu_only);
 
         View hudEditorTools = overlayView.findViewById(R.id.hud_editor_tools);
         View btnHudSave = overlayView.findViewById(R.id.btn_hud_save);
@@ -337,6 +339,13 @@ public class ModMenuOverlay {
         notificationsSwitch.setOnCheckedChangeListener((btn, checked) -> {
             modManager.setNotificationsEnabled(checked);
         });
+
+        if (pauseMenuOnlySwitch != null) {
+            pauseMenuOnlySwitch.setChecked(modManager.isPauseMenuOnly());
+            pauseMenuOnlySwitch.setOnCheckedChangeListener((btn, checked) -> {
+                modManager.setPauseMenuOnly(checked);
+            });
+        }
 
         modMenuOpacitySeekBar = overlayView.findViewById(R.id.seekbar_mod_menu_opacity);
         modMenuOpacityText = overlayView.findViewById(R.id.text_mod_menu_opacity);

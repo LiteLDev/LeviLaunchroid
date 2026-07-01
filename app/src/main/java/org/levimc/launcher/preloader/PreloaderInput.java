@@ -6,6 +6,15 @@ public class PreloaderInput {
     public static native boolean nativeOnMouse(int button, boolean isDown);
     public static native void nativeSetActivity(Object activity);
     public static native void nativeClearActivity();
+    public static native boolean nativeIsPauseMenuOpen();
+
+    public static boolean isPauseMenuOpen() {
+        try {
+            return nativeIsPauseMenuOpen();
+        } catch (UnsatisfiedLinkError e) {
+            return false;
+        }
+    }
 
     public static boolean onTouch(int action, int pointerId, float x, float y) {
         try {

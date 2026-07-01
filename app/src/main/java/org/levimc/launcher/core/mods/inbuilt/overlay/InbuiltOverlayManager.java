@@ -413,5 +413,26 @@ public class InbuiltOverlayManager {
         for (BaseOverlayButton overlay : overlays) {
             overlay.tick();
         }
+
+        if (modMenuButton != null) {
+            InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+            boolean isPauseOnly = manager.isPauseMenuOnly();
+            boolean isPauseOpen = org.levimc.launcher.preloader.PreloaderInput.isPauseMenuOpen();
+
+            activity.runOnUiThread(() -> {
+                if (isPauseOnly) {
+                    if (isPauseOpen) {
+                        modMenuButton.setVisibility(android.view.View.VISIBLE);
+                    } else {
+                        modMenuButton.setVisibility(android.view.View.GONE);
+                        if (modMenuButton.isMenuShowing()) {
+                            modMenuButton.hideMenu();
+                        }
+                    }
+                } else {
+                    modMenuButton.setVisibility(android.view.View.VISIBLE);
+                }
+            });
+        }
     }
 }
