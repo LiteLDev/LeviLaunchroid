@@ -414,23 +414,37 @@ public class InbuiltOverlayManager {
             overlay.tick();
         }
 
-        if (modMenuButton != null) {
+        if (modMenuButton != null || hudOverlay != null) {
             InbuiltModManager manager = InbuiltModManager.getInstance(activity);
             boolean isPauseOnly = manager.isPauseMenuOnly();
             boolean isPauseOpen = org.levimc.launcher.preloader.PreloaderInput.isPauseMenuOpen();
+            boolean isHudScreenOpen = org.levimc.launcher.preloader.PreloaderInput.isHudScreenOpen();
+            boolean isShowingMenu = org.levimc.launcher.preloader.PreloaderInput.isShowingMenu();
 
             activity.runOnUiThread(() -> {
-                if (isPauseOnly) {
-                    if (isPauseOpen) {
-                        modMenuButton.setVisibility(android.view.View.VISIBLE);
-                    } else {
-                        modMenuButton.setVisibility(android.view.View.GONE);
-                        if (modMenuButton.isMenuShowing()) {
-                            modMenuButton.hideMenu();
+                if (modMenuButton != null) {
+                    if (isPauseOnly) {
+                        if (isPauseOpen) {
+                            modMenuButton.setVisibility(android.view.View.VISIBLE);
+                        } else {
+                            modMenuButton.setVisibility(android.view.View.GONE);
+                            if (modMenuButton.isMenuShowing()) {
+                                modMenuButton.hideMenu();
+                            }
                         }
+                    } else {
+                        modMenuButton.setVisibility(android.view.View.VISIBLE);
                     }
-                } else {
-                    modMenuButton.setVisibility(android.view.View.VISIBLE);
+                }
+                
+                if (hudOverlay != null) {
+                    if (hudOverlay.isHudEditorMode()) {
+                        hudOverlay.setVisibility(android.view.View.VISIBLE);
+                    } else if (isHudScreenOpen && !isShowingMenu) {
+                        hudOverlay.setVisibility(android.view.View.VISIBLE);
+                    } else {
+                        hudOverlay.setVisibility(android.view.View.GONE);
+                    }
                 }
             });
         }

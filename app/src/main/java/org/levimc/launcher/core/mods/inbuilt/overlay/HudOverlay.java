@@ -134,6 +134,10 @@ public class HudOverlay extends View {
         invalidate();
     }
 
+    public boolean isHudEditorMode() {
+        return isHudEditorMode;
+    }
+
     @Override
     public boolean onTouchEvent(android.view.MotionEvent event) {
         if (!isHudEditorMode) return false;

@@ -7,10 +7,28 @@ public class PreloaderInput {
     public static native void nativeSetActivity(Object activity);
     public static native void nativeClearActivity();
     public static native boolean nativeIsPauseMenuOpen();
+    public static native boolean nativeIsHudScreenOpen();
+    public static native boolean nativeIsShowingMenu();
 
     public static boolean isPauseMenuOpen() {
         try {
             return nativeIsPauseMenuOpen();
+        } catch (UnsatisfiedLinkError e) {
+            return false;
+        }
+    }
+
+    public static boolean isHudScreenOpen() {
+        try {
+            return nativeIsHudScreenOpen();
+        } catch (UnsatisfiedLinkError e) {
+            return false;
+        }
+    }
+
+    public static boolean isShowingMenu() {
+        try {
+            return nativeIsShowingMenu();
         } catch (UnsatisfiedLinkError e) {
             return false;
         }
