@@ -128,9 +128,9 @@ public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHold
                 cv.setCardElevation(6f);
             } else {
                 if (pm.hasBackgroundImage()) {
-                    cv.setCardBackgroundColor(android.graphics.Color.argb(50, 25, 25, 25)); // Dark glass
+                    cv.setCardBackgroundColor(android.graphics.Color.argb(50, 25, 25, 25));
                 } else {
-                    cv.setCardBackgroundColor(pm.getEffectiveSurfaceColor());
+                    cv.setCardBackgroundColor(0xFF1A1A1A);
                 }
                 cv.setCardElevation(2f);
             }
