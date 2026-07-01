@@ -16,6 +16,29 @@ import org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.DrawCommand;
 public class HudOverlay extends View {
     private boolean isShowing = false;
     private final Paint paint = new Paint();
+    private final java.util.Map<String, android.graphics.Typeface> typefaceCache = new java.util.HashMap<>();
+
+    private android.graphics.Typeface getFont(String fontId) {
+        if (fontId == null || fontId.isEmpty()) return null;
+        if (typefaceCache.containsKey(fontId)) return typefaceCache.get(fontId);
+        
+        byte[] fontBytes = ExternalModBridge.nativeGetRegisteredFontBytes(fontId);
+        if (fontBytes != null && fontBytes.length > 0) {
+            try {
+                java.io.File tempFile = java.io.File.createTempFile("font_" + fontId, ".ttf", getContext().getCacheDir());
+                java.io.FileOutputStream fos = new java.io.FileOutputStream(tempFile);
+                fos.write(fontBytes);
+                fos.close();
+                android.graphics.Typeface tf = android.graphics.Typeface.createFromFile(tempFile);
+                typefaceCache.put(fontId, tf);
+                return tf;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        typefaceCache.put(fontId, null);
+        return null;
+    }
 
     public HudOverlay(Activity activity) {
         super(activity);
@@ -79,11 +102,35 @@ public class HudOverlay extends View {
     private WindowManager.LayoutParams wmParams;
     
     private String draggingModule = null;
-    private float dragOffsetX = 0;
-    private float dragOffsetY = 0;
+    private float dragOffsetX = 0f;
+    private float dragOffsetY = 0f;
+
+    private java.util.Map<String, Boolean> hiddenInHudCache = new java.util.HashMap<>();
+
+    private boolean isHiddenInHudEditor(String moduleId) {
+        if (moduleId == null) return false;
+        if (hiddenInHudCache.containsKey(moduleId)) {
+            return hiddenInHudCache.get(moduleId);
+        }
+        boolean hidden = false;
+        int extCount = ExternalModBridge.getExternalModCount();
+        for (int i = 0; i < extCount; i++) {
+            String json = ExternalModBridge.getExternalModInfo(i);
+            try {
+                org.json.JSONObject obj = new org.json.JSONObject(json);
+                if (moduleId.equals(obj.optString("module_id", ""))) {
+                    hidden = obj.optBoolean("hide_in_hud_editor", false);
+                    break;
+                }
+            } catch (Exception e) {}
+        }
+        hiddenInHudCache.put(moduleId, hidden);
+        return hidden;
+    }
 
     public void setHudEditorMode(boolean active) {
         isHudEditorMode = active;
+        hiddenInHudCache.clear();
         invalidate();
     }
 
@@ -97,6 +144,9 @@ public class HudOverlay extends View {
                 if (cmds != null) {
                     for (DrawCommand cmd : cmds) {
                         if (cmd.moduleId != null) {
+                            if (isHiddenInHudEditor(cmd.moduleId)) {
+                                continue;
+                            }
                             if (cmd.type == DrawCommand.TYPE_LINE || cmd.type == DrawCommand.TYPE_CIRCLE_FILLED || cmd.type == DrawCommand.TYPE_TRIANGLE_FILLED) {
                                 continue;
                             }
@@ -158,50 +208,107 @@ public class HudOverlay extends View {
         DrawCommand[] cmds = ExternalModBridge.getDrawCommands();
         if (cmds != null) {
             for (DrawCommand cmd : cmds) {
+                if (isHudEditorMode && isHiddenInHudEditor(cmd.moduleId)) continue;
                 paint.setColor(cmd.color);
                 
+                float drawX = cmd.x;
+                if (drawX <= -19000f) drawX = (getWidth() / 2f) + (drawX + 20000f);
+                else if (drawX <= -9000f) drawX = getWidth() + (drawX + 10000f);
+                
+                float drawY = cmd.y;
+                if (drawY <= -19000f) drawY = (getHeight() / 2f) + (drawY + 20000f);
+                else if (drawY <= -9000f) drawY = getHeight() + (drawY + 10000f);
+
                 if (cmd.type == DrawCommand.TYPE_TEXT) {
+                    android.graphics.Typeface tf = getFont(cmd.fontId);
+                    if (tf != null) {
+                        paint.setTypeface(tf);
+                    } else {
+                        paint.setTypeface(android.graphics.Typeface.DEFAULT);
+                    }
                     paint.setTextSize(cmd.size);
                     paint.setStyle(Paint.Style.FILL);
-                    paint.setShadowLayer(3f, 1f, 1f, 0xFF000000);
-                    if (cmd.text != null) {
-                        if (cmd.w > 0 && cmd.h > 0) {
-                            paint.setTextAlign(Paint.Align.CENTER);
-                            float textY = cmd.y + (cmd.h / 2f) - ((paint.descent() + paint.ascent()) / 2f);
-                            canvas.drawText(cmd.text, cmd.x + (cmd.w / 2f), textY, paint);
-                        } else {
-                            paint.setTextAlign(Paint.Align.LEFT);
-                            canvas.drawText(cmd.text, cmd.x, cmd.y - paint.ascent(), paint);
-                        }
+                    
+                    String txt = cmd.text;
+                    if (txt != null && txt.contains("{DISPLAY_SIZE}")) {
+                        txt = txt.replace("{DISPLAY_SIZE}", getWidth() + "x" + getHeight());
                     }
-                    paint.clearShadowLayer();
+                    
+                    if (cmd.w == 0f) paint.setTextAlign(Paint.Align.LEFT);
+                    else if (cmd.w == -1f) paint.setTextAlign(Paint.Align.RIGHT);
+                    else if (cmd.w == -2f) paint.setTextAlign(Paint.Align.CENTER);
+                    
+                    int bgColor = Float.floatToRawIntBits(cmd.x3);
+                    if (bgColor != 0 && txt != null && !txt.isEmpty()) {
+                        float textWidth = paint.measureText(txt);
+                        float paddingX = 4f;
+                        float left = drawX;
+                        if (cmd.w == -1f) left = drawX - textWidth;
+                        else if (cmd.w == -2f) left = drawX - textWidth / 2f;
+
+                        float top = drawY - cmd.size * 0.9f; 
+                        float right = left + textWidth;
+                        float bottom = drawY + (cmd.size + 4f - cmd.size * 0.9f); // height = cmd.size + 4f
+                        
+                        int oldColor = paint.getColor();
+                        paint.setColor(bgColor);
+                        canvas.drawRect(left - paddingX, top, right + paddingX, bottom, paint);
+                        paint.setColor(oldColor);
+                    }
+
+                    if (txt != null) {
+                        paint.setShadowLayer(3f, 1f, 1f, 0xFF000000);
+                        canvas.drawText(txt, drawX, drawY, paint);
+                        paint.clearShadowLayer();
+                    }
                 } else if (cmd.type == DrawCommand.TYPE_RECT) {
                     paint.setStyle(Paint.Style.STROKE);
                     if (cmd.x3 > 0) {
-                        canvas.drawRoundRect(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, cmd.x3, cmd.x3, paint);
+                        canvas.drawRoundRect(drawX, drawY, drawX + cmd.w, drawY + cmd.h, cmd.x3, cmd.x3, paint);
                     } else {
-                        canvas.drawRect(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, paint);
+                        canvas.drawRect(drawX, drawY, drawX + cmd.w, drawY + cmd.h, paint);
                     }
                 } else if (cmd.type == DrawCommand.TYPE_RECT_FILLED) {
                     paint.setStyle(Paint.Style.FILL);
                     if (cmd.x3 > 0) {
-                        canvas.drawRoundRect(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, cmd.x3, cmd.x3, paint);
+                        canvas.drawRoundRect(drawX, drawY, drawX + cmd.w, drawY + cmd.h, cmd.x3, cmd.x3, paint);
                     } else {
-                        canvas.drawRect(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, paint);
+                        canvas.drawRect(drawX, drawY, drawX + cmd.w, drawY + cmd.h, paint);
                     }
                 } else if (cmd.type == DrawCommand.TYPE_LINE) {
                     paint.setStrokeWidth(cmd.size);
                     paint.setStyle(Paint.Style.STROKE);
-                    canvas.drawLine(cmd.x, cmd.y, cmd.x + cmd.w, cmd.y + cmd.h, paint);
+                    float endX = cmd.x + cmd.w;
+                    if (endX <= -19000f) endX = (getWidth() / 2f) + (endX + 20000f);
+                    else if (endX <= -9000f) endX = getWidth() + (endX + 10000f);
+                    float endY = cmd.y + cmd.h;
+                    if (endY <= -19000f) endY = (getHeight() / 2f) + (endY + 20000f);
+                    else if (endY <= -9000f) endY = getHeight() + (endY + 10000f);
+                    canvas.drawLine(drawX, drawY, endX, endY, paint);
                 } else if (cmd.type == DrawCommand.TYPE_CIRCLE_FILLED) {
                     paint.setStyle(Paint.Style.FILL);
-                    canvas.drawCircle(cmd.x, cmd.y, cmd.size, paint);
+                    canvas.drawCircle(drawX, drawY, cmd.size, paint);
                 } else if (cmd.type == DrawCommand.TYPE_TRIANGLE_FILLED) {
                     paint.setStyle(Paint.Style.FILL);
                     android.graphics.Path path = new android.graphics.Path();
-                    path.moveTo(cmd.x, cmd.y);
-                    path.lineTo(cmd.w, cmd.h);
-                    path.lineTo(cmd.x3, cmd.y3);
+                    path.moveTo(drawX, drawY);
+                    
+                    float pt2X = cmd.w;
+                    if (pt2X <= -19000f) pt2X = (getWidth() / 2f) + (pt2X + 20000f);
+                    else if (pt2X <= -9000f) pt2X = getWidth() + (pt2X + 10000f);
+                    float pt2Y = cmd.h;
+                    if (pt2Y <= -19000f) pt2Y = (getHeight() / 2f) + (pt2Y + 20000f);
+                    else if (pt2Y <= -9000f) pt2Y = getHeight() + (pt2Y + 10000f);
+                    path.lineTo(pt2X, pt2Y);
+                    
+                    float pt3X = cmd.x3;
+                    if (pt3X <= -19000f) pt3X = (getWidth() / 2f) + (pt3X + 20000f);
+                    else if (pt3X <= -9000f) pt3X = getWidth() + (pt3X + 10000f);
+                    float pt3Y = cmd.y3;
+                    if (pt3Y <= -19000f) pt3Y = (getHeight() / 2f) + (pt3Y + 20000f);
+                    else if (pt3Y <= -9000f) pt3Y = getHeight() + (pt3Y + 10000f);
+                    path.lineTo(pt3X, pt3Y);
+                    
                     path.close();
                     canvas.drawPath(path, paint);
                 }
