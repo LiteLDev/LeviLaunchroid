@@ -1,116 +1,272 @@
-# Native Mod Quick Start
+# Full C++ Native Mod Development
 
-This page is for developers building native mods for LeviLauncher. Regular
-launcher users should start with [Getting Started](/guide/getting-started).
+This page describes the recommended C++ path for LeviLaunchroid native mods.
+Use `examples/full-cpp-mod` as the reference implementation: it is a complete
+preloader `cpp_lifecycle` mod with registration, typed config, generated
+schema, runtime persistence, Mod Menu integration, and `.levipack` packaging.
 
-## Recommended Template
+## Start From The Example
 
-Start from the LeviLauncher Android mod template. It provides a ready-to-build
-CMake project, a sample `MyMod` class, manifest configuration, packaging script,
-and CI workflow.
-
-Your mod logic normally lives in `src/mod/MyMod.cpp`.
-
-## Directory Layout
+The example lives at:
 
 ```text
-example-mod/
-├── manifest.json
-├── config/
-│   ├── config.json
-│   └── config.schema.json
-└── libexample.so
+examples/full-cpp-mod/
 ```
+
+It contains:
+
+| File | Purpose |
+| --- | --- |
+| `manifest.json` | Native mod metadata consumed by LeviLaunchroid. |
+| `src/ExampleConfig.hpp` | Shared C++ config type and schema metadata. |
+| `src/FullCppMod.cpp` | Runtime lifecycle mod implementation. |
+| `src/GenerateConfig.cpp` | Host-side default config/schema generator. |
+| `CMakeLists.txt` | Builds both the host generator and Android shared library. |
+| `build.ps1` | Builds, generates config files, and packages the mod. |
+
+Build it from the repository root:
+
+```powershell
+.\examples\full-cpp-mod\build.ps1 -Clean
+```
+
+The output is:
+
+```text
+examples\full-cpp-mod\dist\arm64-v8a\full-cpp-mod\
+examples\full-cpp-mod\dist\arm64-v8a\full-cpp-mod.levipack
+```
+
+Import the `.levipack`, or copy the `full-cpp-mod` directory as a native mod
+directory.
+
+## Package Layout
+
+A native mod directory should look like this:
+
+```text
+full-cpp-mod/
+├── manifest.json
+├── libfull_cpp_mod.so
+└── config/
+    ├── config.json
+    └── config.schema.json
+```
+
+The directory name is the runtime mod id. For lifecycle mods this id is also
+used as the default Mod Menu owner group. Keep it stable once users have
+installed the mod.
 
 ## manifest.json
 
 ```json
 {
   "type": "preload-native",
-  "name": "Example Mod",
+  "name": "Full C++ Lifecycle Mod Example",
   "author": "LiteLDev",
   "version": "1.0.0",
-  "entry": "libexample.so",
-  "minecraft_versions": ["1.26.20", "1.26.2*", "1.26.*"]
+  "entry": "libfull_cpp_mod.so",
+  "minecraft_versions": []
 }
 ```
 
-| Field | Purpose | Required |
-| --- | --- | --- |
-| `type` | Must be `preload-native`. | Yes |
-| `entry` | Relative path to the mod library. | Yes |
-| `name` | Display name. | No |
-| `author` | Author. | No |
-| `version` | Mod version. | No |
-| `icon` | Relative icon path. | No |
-| `minecraft_versions` | Compatible Minecraft versions. Exact strings and `*` prefix wildcards are supported. Missing or empty means all versions. | No |
+| Field | Notes |
+| --- | --- |
+| `type` | Must be `preload-native`. |
+| `entry` | Relative path to the Android `.so` inside the mod directory. |
+| `name` | Display name shown by the launcher. |
+| `author` | Author text shown by the launcher. |
+| `version` | Mod version. |
+| `icon` | Optional relative path to an icon. |
+| `minecraft_versions` | Exact versions and `*` prefix wildcards are supported. Missing or empty means all versions. |
 
-## MyMod Example
+## C++ Lifecycle Shape
+
+Use `PL_REGISTER_MOD` with a long-lived C++ object:
 
 ```cpp
-bool MyMod::load() {
-  getSelf().getLogger().info("Loaded {}", getSelf().getName());
-  return true;
+#include <pl/cpp/mod/RegisterHelper.hpp>
+
+class FullCppMod {
+public:
+  static FullCppMod &instance();
+
+  bool load();
+  bool enable();
+  bool disable();
+  bool unload();
+};
+
+PL_REGISTER_MOD(FullCppMod, FullCppMod::instance())
+```
+
+Lifecycle responsibilities:
+
+| Method | Recommended work |
+| --- | --- |
+| `load()` | Load and normalize config. Create files needed before game startup. |
+| `enable()` | Register Mod Menu modules and apply runtime state. |
+| `disable()` | Stop runtime behavior and unregister menu modules if needed. |
+| `unload()` | Release owned C++ state after `disable()`. |
+
+Use the current mod object only while a lifecycle callback is active:
+
+```cpp
+const auto self = pl::mod::NativeMod::current();
+if (!self) {
+  return false;
 }
 
-bool MyMod::enable() {
-  return true;
-}
+self->getLogger().info("Loaded {}", self->getName());
+```
 
-bool MyMod::disable() {
-  return true;
-}
+Useful paths are available from `self`: `getModDir()`, `getDataDir()`,
+`getConfigDir()`, `getResourceDir()`, `getManifestPath()`, and
+`getLibraryPath()`.
 
-bool MyMod::unload() {
-  return true;
+## Typed Config
+
+Define config as a simple aggregate with public fields and default member
+initializers:
+
+```cpp
+enum class DisplayMode {
+  Compact,
+  Detailed,
+  Debug,
+};
+
+struct ExampleConfig {
+  int version = 1;
+  bool moduleEnabled = true;
+  bool showOverlay = true;
+  int opacity = 80;
+  double scale = 1.0;
+  DisplayMode mode = DisplayMode::Compact;
+  std::string accentColor = "#4AE0A0";
+};
+```
+
+Then specialize `pl::config::Schema<T>` for launcher UI metadata:
+
+```cpp
+template <> struct pl::config::Schema<fullcppmod::ExampleConfig> {
+  static constexpr std::string_view title = "Full C++ Lifecycle Mod Example";
+
+  static constexpr FieldSchema field(std::string_view name) {
+    if (name == "opacity") {
+      return {"Opacity", "Overlay opacity percentage.", 0, 100, false};
+    }
+    return {};
+  }
+};
+```
+
+At runtime, keep a `pl::config::ConfigFile<ExampleConfig>` in mod-owned state
+instead of constructing a throwaway object for every callback. This keeps the
+config path, schema path, defaults, and current value together:
+
+```cpp
+std::optional<pl::config::ConfigFile<ExampleConfig>> configFile;
+
+bool FullCppMod::load() {
+  configFile.emplace(ExampleConfig{});
+  if (!configFile->load()) {
+    return false;
+  }
+
+  normalizeConfig(configFile->value());
+  return configFile->save();
 }
 ```
 
-Lifecycle timing:
+Use the host generator pattern from `GenerateConfig.cpp` with
+`PL_CONFIG_NO_RUNTIME` to create `config.json` and `config.schema.json` before
+the mod is imported. That lets the launcher show editable config even before
+the native library is loaded for the first time.
 
-1. `load()` runs when the mod is loaded.
-2. `enable()` runs before the game starts.
-3. `disable()` runs when the game is closing.
-4. `unload()` runs during final mod cleanup.
+## Mod Menu And Config Persistence
 
-## Useful APIs
+For lifecycle mods, prefer `pl::modmenu::ModuleBuilder`. It automatically uses
+the current native mod id as the owner group when called from `enable()`:
 
-- `getLogger()`
-- `getId()`
-- `getName()`
-- `getModDir()`
-- `getDataDir()`
-- `getConfigDir()`
-- `getResourceDir()`
-- `getManifestPath()`
-- `getLibraryPath()`
-- `getJavaVM()`
+```cpp
+return pl::modmenu::ModuleBuilder("full_cpp_mod.hud", "Full C++ Config Demo")
+    .description("Pure C++ lifecycle module with persistent typed config.")
+    .defaultEnabled(config.moduleEnabled)
+    .onToggle(onModuleToggle)
+    .config("showOverlay", "Show Overlay", PL_CONFIG_TOGGLE, "true")
+    .config("opacity", "Opacity", PL_CONFIG_SLIDER_INT, "80", "0", "100")
+    .config("scale", "Scale", PL_CONFIG_SLIDER_FLOAT, "1.0", "0.5", "2.0")
+    .config("mode", "Display Mode", PL_CONFIG_RADIO, "0",
+            "Compact,Detailed,Debug")
+    .config("accentColor", "Accent Color", PL_CONFIG_COLOR, "#4AE0A0")
+    .onConfigChanged(onConfigChanged)
+    .registerModule();
+```
 
-Use `getDataDir()` and `getConfigDir()` for mod-owned files.
+Menu callbacks receive strings. Parse them defensively, clamp numeric values to
+the same ranges as the menu/schema, then call `save()`:
 
-For user-editable JSON settings, prefer `pl::config::ConfigFile<T>`. The
-template demonstrates a typed aggregate config, automatic default
-`config.json` generation, and `config.schema.json` generation for the launcher
-config editor.
+```cpp
+void FullCppMod::handleConfigChanged(const char *moduleId,
+                                     const char *key,
+                                     const char *value) {
+  if (!matchesModule(moduleId) || !key || !configFile) {
+    return;
+  }
 
-## Build a Mod
+  auto &config = configFile->value();
+  if (std::string_view(key) == "opacity") {
+    config.opacity = clampOpacity(value);
+  }
 
-Use the Android NDK toolchain and build for `arm64-v8a` or `armeabi-v7a`.
+  configFile->save();
+}
+```
 
-The template package script builds the mod, generates config files, and packages
-them into the `.levipack`:
+Keep callback functions static or otherwise valid until the module is
+unregistered or the mod is unloaded. `RegisterModule()` copies module strings
+and config entries, but it does not own your callback code.
+
+## Build And Package
+
+`build.ps1` intentionally has two CMake passes. This project only supports
+`arm64-v8a`, so the example always builds that ABI.
+
+1. Host build: compile `full_cpp_mod_config_gen`.
+2. Android build: compile `libfull_cpp_mod.so` for `arm64-v8a`.
+3. Staging: copy `manifest.json`, `.so`, `config.json`, and
+   `config.schema.json` into `dist/<Abi>/full-cpp-mod/`.
+4. Packaging: zip the staged files as `full-cpp-mod.levipack`.
+
+Useful options:
 
 ```powershell
-./scripts/package.ps1 -Abi arm64-v8a
+.\examples\full-cpp-mod\build.ps1
+.\examples\full-cpp-mod\build.ps1 -Ndk <path-to-android-ndk>
+.\examples\full-cpp-mod\build.ps1 -PreloaderRoot <path-to-preloader-android>
+.\examples\full-cpp-mod\build.ps1 -NoLinkPreloader
 ```
 
-Import the generated `.levipack` into LeviLauncher.
+If `-Ndk` is omitted, the script resolves the NDK from `ANDROID_NDK_HOME`,
+`ANDROID_NDK_ROOT`, `ANDROID_HOME`, or `ANDROID_SDK_ROOT`.
 
-## Common Errors
+Use `-NoLinkPreloader` when you want the example `.so` to leave preloader
+symbols for runtime resolution instead of linking a local `libpreloader.so`.
 
-- `manifest.json` has a `type` other than `preload-native`.
-- `entry` is empty, absolute, or does not point to a `.so`.
-- The mod was built for an unsupported Android architecture.
-- The selected Minecraft version is not listed in `minecraft_versions`.
+## Checklist
 
-Continue with the [Mod API Reference](/api/mod) when the minimal mod loads correctly.
+- Keep the mod directory name stable; it is the runtime mod id.
+- Build only `arm64-v8a`; other Android ABIs are not supported by this project.
+- Use `PL_REGISTER_MOD` for C++ lifecycle mods.
+- Load config before registering menu modules.
+- Use menu default values from the loaded config.
+- Persist every menu change that should survive restart.
+- Validate and clamp callback values; menu values are strings.
+- Keep callbacks static or tied to a long-lived singleton.
+- Generate `config.json` and `config.schema.json` during packaging.
+- Verify the `.levipack` root contains `manifest.json`, `.so`, and `config/`.
+
+Continue with the [Mod API Reference](/api/mod) and
+[Config API Reference](/api/config) for lower-level details.
