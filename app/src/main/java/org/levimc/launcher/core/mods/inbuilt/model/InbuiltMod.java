@@ -5,19 +5,16 @@ public class InbuiltMod {
     private final String name;
     private final String description;
     private final boolean hasConfig;
-    private boolean added;
 
-    public InbuiltMod(String id, String name, String description, boolean hasConfig, boolean added) {
+    public InbuiltMod(String id, String name, String description, boolean hasConfig) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.hasConfig = hasConfig;
-        this.added = added;
     }
 
     public String getId() { return id; }
     public String getName() { return name; }
     public String getDescription() { return description; }
-    public boolean isAdded() { return added; }
-    public void setAdded(boolean added) { this.added = added; }
+    public boolean hasConfig() { return hasConfig; }
 }

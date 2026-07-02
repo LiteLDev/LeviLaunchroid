@@ -87,7 +87,7 @@ public class FpsDisplayOverlay {
         try {
             overlayView = LayoutInflater.from(activity).inflate(R.layout.overlay_stats_display, null);
             statsText = overlayView.findViewById(R.id.stats_text);
-            statsText.setText("FPS: --");
+            statsText.setText(activity.getString(R.string.mod_overlay_fps_unknown));
 
             wmParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -123,7 +123,7 @@ public class FpsDisplayOverlay {
 
         overlayView = LayoutInflater.from(activity).inflate(R.layout.overlay_stats_display, null);
         statsText = overlayView.findViewById(R.id.stats_text);
-        statsText.setText("FPS: --");
+        statsText.setText(activity.getString(R.string.mod_overlay_fps_unknown));
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -148,9 +148,9 @@ public class FpsDisplayOverlay {
         if (statsText != null) {
             if (initialized && FpsMod.nativeIsInitialized()) {
                 int fps = FpsMod.nativeGetFps();
-                statsText.setText("FPS: " + fps);
+                statsText.setText(activity.getString(R.string.mod_overlay_fps_value, fps));
             } else {
-                statsText.setText("FPS: --");
+                statsText.setText(activity.getString(R.string.mod_overlay_fps_unknown));
             }
         }
     }
@@ -187,6 +187,23 @@ public class FpsDisplayOverlay {
         isLocked = InbuiltModManager.getInstance(activity).isOverlayLocked(ModIds.FPS_DISPLAY);
     }
 
+    private boolean isHudEditorMode = false;
+    
+    public void setHudEditorMode(boolean active) {
+        this.isHudEditorMode = active;
+        if (overlayView != null) {
+            overlayView.setBackgroundColor(active ? 0x44FFFFFF : android.graphics.Color.TRANSPARENT);
+        }
+    }
+
+    public void updatePosition(int x, int y) {
+        if (wmParams != null && windowManager != null && overlayView != null && isShowing) {
+            wmParams.x = x;
+            wmParams.y = y;
+            windowManager.updateViewLayout(overlayView, wmParams);
+        }
+    }
+
     private boolean handleTouch(View v, MotionEvent event) {
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
@@ -196,25 +213,25 @@ public class FpsDisplayOverlay {
                 initialTouchY = event.getRawY();
                 isDragging = false;
                 touchDownTime = SystemClock.uptimeMillis();
-                v.getParent().requestDisallowInterceptTouchEvent(!isLocked);
+                v.getParent().requestDisallowInterceptTouchEvent(isHudEditorMode);
                 return true;
             case MotionEvent.ACTION_MOVE:
                 float dx = event.getRawX() - initialTouchX;
                 float dy = event.getRawY() - initialTouchY;
                 if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-                    if (!isLocked) {
+                    if (isHudEditorMode) {
                         isDragging = true;
                     }
                 }
-                if (isDragging && !isLocked && windowManager != null && overlayView != null) {
+                if (isDragging && isHudEditorMode && windowManager != null && overlayView != null) {
                     wmParams.x = (int) (initialX + dx);
                     wmParams.y = (int) (initialY + dy);
                     windowManager.updateViewLayout(overlayView, wmParams);
                 }
-                return !isLocked || !isDragging;
+                return isHudEditorMode || !isDragging;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (isDragging && !isLocked) {
+                if (isDragging && isHudEditorMode) {
                     savePosition(wmParams.x, wmParams.y);
                 }
                 isDragging = false;
@@ -238,25 +255,25 @@ public class FpsDisplayOverlay {
                 initialTouchY = event.getRawY();
                 isDragging = false;
                 touchDownTime = SystemClock.uptimeMillis();
-                v.getParent().requestDisallowInterceptTouchEvent(!isLocked);
+                v.getParent().requestDisallowInterceptTouchEvent(isHudEditorMode);
                 return true;
             case MotionEvent.ACTION_MOVE:
                 float dx = event.getRawX() - initialTouchX;
                 float dy = event.getRawY() - initialTouchY;
                 if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-                    if (!isLocked) {
+                    if (isHudEditorMode) {
                         isDragging = true;
                     }
                 }
-                if (isDragging && !isLocked) {
+                if (isDragging && isHudEditorMode) {
                     params.leftMargin = (int) (initialX + dx);
                     params.topMargin = (int) (initialY + dy);
                     overlayView.setLayoutParams(params);
                 }
-                return !isLocked || !isDragging;
+                return isHudEditorMode || !isDragging;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (isDragging && !isLocked) {
+                if (isDragging && isHudEditorMode) {
                     savePosition((int) (initialX + (event.getRawX() - initialTouchX)), 
                                  (int) (initialY + (event.getRawY() - initialTouchY)));
                 }

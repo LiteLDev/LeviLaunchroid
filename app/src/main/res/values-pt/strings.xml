@@ -719,4 +719,37 @@ A migração deve ser concluída antes que o LeviLauncher continue.</string>
         <item quantity="other">%d itens</item>
     </plurals>
 
+    <!-- Mod Menu synced translations -->
+    <string name="mod_menu_favorites">Favoritos</string>
+    <string name="mod_menu_favorite">Adicionar aos favoritos</string>
+    <string name="mod_menu_unfavorite">Remover dos favoritos</string>
+    <string name="mod_menu_hud_editor">Editor de HUD</string>
+    <string name="mod_menu_no_favorites">Ainda não há mods favoritos</string>
+    <string name="mod_menu_no_matches">Nenhum mod correspondente</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">Configurações gerais</string>
+    <string name="mod_menu_appearance">Aparência</string>
+    <string name="mod_menu_pause_menu_only">Apenas no menu de pausa</string>
+    <string name="mod_menu_pause_menu_only_desc">Mostrar o menu de mods apenas na tela de pausa</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">Tamanho do botão de sobreposição (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">Opacidade da sobreposição (%)</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">Sensibilidade do cursor (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">Nível de zoom (%)</string>
+    <string name="mod_config_auto_sprint_keybind">Atalho de corrida automática</string>
+    <string name="mod_config_zoom_keybind">Atalho de zoom</string>
+    <string name="mod_config_press_any_key">Pressione qualquer tecla para atribuir...</string>
+    <string name="mod_config_key_unknown">DESCONHECIDO</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="overlay_button_size_value">Tamanho: %1$ddp</string>
+    <string name="overlay_button_opacity_value">Opacidade: %1$d%%</string>
+    <string name="reset">Redefinir</string>
 </resources>

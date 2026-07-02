@@ -8,12 +8,15 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/mod_menu_container"
-        android:layout_width="620dp"
-        android:layout_height="340dp"
-        android:layout_gravity="center_vertical|start"
-        android:layout_marginStart="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="20dp"
         app:cardBackgroundColor="#F0121212"
-        app:cardCornerRadius="16dp"
+        app:cardCornerRadius="14dp"
         app:cardElevation="12dp">
 
         <LinearLayout
@@ -21,85 +24,105 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <!-- Sidebar -->
             <LinearLayout
-                android:layout_width="120dp"
+                android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:background="#1A1A1A"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp">
+                android:orientation="vertical"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp">
 
-                <!-- App Logo -->
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="16dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:contentDescription="@string/app_name" />
+                    android:layout_marginBottom="14dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@mipmap/ic_launcher" />
 
-                <!-- Navigation Items -->
                 <TextView
                     android:id="@+id/nav_modules"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="44dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:defaultFocusHighlightEnabled="false"
+                    android:drawableStart="@drawable/ic_modules"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="#4AE0A0"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:gravity="center_vertical"
                     android:paddingStart="16dp"
                     android:paddingEnd="12dp"
                     android:text="@string/mod_menu_modules"
                     android:textColor="#4AE0A0"
                     android:textSize="13sp"
-                    android:textStyle="bold"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/nav_hud_editor"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:alpha="0.6"
                     android:background="?attr/selectableItemBackground"
-                    android:drawableStart="@drawable/ic_modules"
+                    android:defaultFocusHighlightEnabled="false"
+                    android:drawableStart="@drawable/ic_edit"
                     android:drawablePadding="8dp"
-                    android:drawableTint="#4AE0A0" />
+                    android:drawableTint="#AAAAAA"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="12dp"
+                    android:singleLine="true"
+                    android:text="@string/mod_menu_hud_editor"
+                    android:textColor="#AAAAAA"
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/nav_settings"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="44dp"
+                    android:alpha="0.6"
+                    android:background="?attr/selectableItemBackground"
+                    android:defaultFocusHighlightEnabled="false"
+                    android:drawableStart="@drawable/ic_settings"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="#AAAAAA"
+                    android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:paddingStart="16dp"
                     android:paddingEnd="12dp"
+                    android:singleLine="true"
                     android:text="@string/settings"
                     android:textColor="#AAAAAA"
-                    android:textSize="13sp"
-                    android:alpha="0.6"
-                    android:background="?attr/selectableItemBackground"
-                    android:drawableStart="@drawable/ic_settings"
-                    android:drawablePadding="8dp"
-                    android:drawableTint="#AAAAAA" />
+                    android:textSize="13sp" />
 
             </LinearLayout>
 
-            <!-- Main Content -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <!-- Header -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:orientation="horizontal"
+                    android:layout_height="50dp"
+                    android:background="#0D0D0D"
                     android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:paddingStart="12dp"
-                    android:paddingEnd="8dp"
-                    android:background="#0D0D0D">
+                    android:paddingEnd="8dp">
 
-                    <!-- Search Bar -->
                     <LinearLayout
+                        android:id="@+id/search_container"
                         android:layout_width="0dp"
-                        android:layout_height="32dp"
-                        android:layout_weight="1"
+                        android:layout_height="34dp"
                         android:layout_marginEnd="8dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
+                        android:layout_weight="1"
                         android:background="@drawable/bg_search_field"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:paddingStart="10dp"
                         android:paddingEnd="6dp">
 
@@ -113,47 +136,132 @@
                             android:id="@+id/search_input"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:layout_marginStart="6dp"
+                            android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:hint="@string/mod_menu_search_hint"
-                            android:textColorHint="#555555"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp"
-                            android:singleLine="true"
                             android:imeOptions="actionSearch"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:singleLine="true"
+                            android:textColor="#FFFFFF"
+                            android:textColorHint="#555555"
+                            android:textSize="12sp" />
 
                         <ImageButton
                             android:id="@+id/btn_clear_search"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="3dp"
                             android:src="@drawable/ic_close"
                             android:tint="#666666"
-                            android:visibility="gone"
-                            android:padding="2dp" />
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
-                    <!-- Close Button -->
+                    <LinearLayout
+                        android:id="@+id/config_header"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <ImageButton
+                            android:id="@+id/btn_back_to_modules"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="6dp"
+                            android:src="@drawable/ic_arrow_back"
+                            android:tint="#FFFFFF" />
+
+                        <TextView
+                            android:id="@+id/config_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
                     <ImageButton
                         android:id="@+id/btn_close_menu"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:background="@drawable/bg_close_button"
+                        android:padding="8dp"
                         android:src="@drawable/ic_close"
-                        android:tint="#FFFFFF"
-                        android:padding="8dp" />
+                        android:tint="#FFFFFF" />
 
                 </LinearLayout>
+
+                <HorizontalScrollView
+                    android:id="@+id/filter_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="#0D0D0D"
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp">
+
+                        <TextView
+                            android:id="@+id/filter_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/bg_search_field"
+                            android:defaultFocusHighlightEnabled="false"
+                            android:gravity="center"
+                            android:minWidth="58dp"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:text="@string/filter_all"
+                            android:textColor="#4AE0A0"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/filter_favorites"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/bg_search_field"
+                            android:defaultFocusHighlightEnabled="false"
+                            android:gravity="center"
+                            android:minWidth="72dp"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:text="@string/mod_menu_favorites"
+                            android:textColor="#AAAAAA"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/module_count_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="center"
+                            android:textColor="#666666"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+                </HorizontalScrollView>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#2A2A2A" />
 
-                <!-- Modules Container -->
                 <FrameLayout
                     android:id="@+id/modules_container"
                     android:layout_width="match_parent"
@@ -164,17 +272,18 @@
                         android:id="@+id/mods_grid_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="8dp"
-                        android:clipToPadding="false" />
+                        android:defaultFocusHighlightEnabled="false"
+                        android:focusable="false"
+                        android:clipToPadding="false"
+                        android:padding="14dp" />
 
-                    <!-- Empty State -->
                     <LinearLayout
                         android:id="@+id/empty_state"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:orientation="vertical"
                         android:gravity="center"
+                        android:orientation="vertical"
                         android:visibility="gone">
 
                         <ImageView
@@ -184,6 +293,7 @@
                             android:tint="#333333" />
 
                         <TextView
+                            android:id="@+id/empty_state_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
@@ -195,181 +305,356 @@
 
                 </FrameLayout>
 
-                <!-- Settings Container -->
-                <LinearLayout
+                <ScrollView
                     android:id="@+id/settings_container"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="16dp"
+                    android:fillViewport="true"
                     android:visibility="gone">
 
                     <LinearLayout
-                        android:id="@+id/setting_notifications"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/bg_mod_status_disabled"
-                        android:padding="12dp">
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_notifications"
-                            android:tint="#888888" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="12dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/mod_menu_notifications"
-                                android:textColor="#FFFFFF"
-                                android:textSize="13sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="@string/mod_menu_notifications_desc"
-                                android:textColor="#888888"
-                                android:textSize="11sp" />
-
-                        </LinearLayout>
-
-                        <Switch
-                            android:id="@+id/switch_notifications"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:thumbTint="#4AE0A0"
-                            android:trackTint="@color/switch_track_color" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/setting_mod_menu_opacity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:orientation="vertical"
-                        android:background="@drawable/bg_mod_status_disabled"
-                        android:padding="12dp">
+                            android:layout_marginBottom="12dp"
+                            android:alpha="0.8"
+                            android:text="@string/mod_menu_general_settings"
+                            android:textAllCaps="true"
+                            android:textColor="#4AE0A0"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <LinearLayout
+                            android:id="@+id/setting_notifications"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/bg_mod_status_disabled"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:gravity="center_vertical">
+                            android:padding="12dp">
 
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
-                                android:src="@drawable/ic_modules"
+                                android:src="@drawable/ic_notifications"
                                 android:tint="#888888" />
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:layout_marginStart="12dp"
-                                android:text="@string/mod_menu_opacity"
-                                android:textColor="#FFFFFF"
-                                android:textSize="13sp"
-                                android:textStyle="bold" />
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/text_mod_menu_opacity"
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/mod_menu_notifications"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/mod_menu_notifications_desc"
+                                    android:textColor="#888888"
+                                    android:textSize="11sp" />
+
+                            </LinearLayout>
+
+                            <Switch
+                                android:id="@+id/switch_notifications"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="100%"
-                                android:textColor="#4AE0A0"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:thumbTint="#4AE0A0"
+                                android:trackTint="@color/switch_track_color" />
 
                         </LinearLayout>
 
-                        <SeekBar
-                            android:id="@+id/seekbar_mod_menu_opacity"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:max="100"
-                            android:min="10"
-                            android:progress="100"
-                            android:progressTint="#4AE0A0"
-                            android:thumbTint="#4AE0A0" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/setting_mod_menu_button_opacity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:orientation="vertical"
-                        android:background="@drawable/bg_mod_status_disabled"
-                        android:padding="12dp">
-
                         <LinearLayout
+                            android:id="@+id/setting_pause_menu_only"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/bg_mod_status_disabled"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:gravity="center_vertical">
+                            android:padding="12dp">
 
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
-                                android:src="@drawable/ic_leaf_logo"
+                                android:src="@drawable/ic_hud"
                                 android:tint="#888888" />
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:layout_marginStart="12dp"
-                                android:text="@string/mod_menu_button_opacity"
-                                android:textColor="#FFFFFF"
-                                android:textSize="13sp"
-                                android:textStyle="bold" />
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/text_mod_menu_button_opacity"
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/mod_menu_pause_menu_only"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/mod_menu_pause_menu_only_desc"
+                                    android:textColor="#888888"
+                                    android:textSize="11sp" />
+
+                            </LinearLayout>
+
+                            <Switch
+                                android:id="@+id/switch_pause_menu_only"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="100%"
-                                android:textColor="#4AE0A0"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:thumbTint="#4AE0A0"
+                                android:trackTint="@color/switch_track_color" />
 
                         </LinearLayout>
 
-                        <SeekBar
-                            android:id="@+id/seekbar_mod_menu_button_opacity"
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="#2A2A2A" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:alpha="0.8"
+                            android:text="@string/mod_menu_appearance"
+                            android:textAllCaps="true"
+                            android:textColor="#4AE0A0"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:id="@+id/setting_mod_menu_opacity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:max="100"
-                            android:min="0"
-                            android:progress="100"
-                            android:progressTint="#4AE0A0"
-                            android:thumbTint="#4AE0A0" />
+                            android:background="@drawable/bg_mod_status_disabled"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_modules"
+                                    android:tint="#888888" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/mod_menu_opacity"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/text_mod_menu_opacity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/mod_menu_default_percent"
+                                    android:textColor="#4AE0A0"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <SeekBar
+                                android:id="@+id/seekbar_mod_menu_opacity"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:max="100"
+                                android:min="10"
+                                android:progress="100"
+                                android:progressTint="#4AE0A0"
+                                android:thumbTint="#4AE0A0" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/setting_mod_menu_button_opacity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/bg_mod_status_disabled"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_leaf_logo"
+                                    android:tint="#888888" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/mod_menu_button_opacity"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/text_mod_menu_button_opacity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/mod_menu_default_percent"
+                                    android:textColor="#4AE0A0"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <SeekBar
+                                android:id="@+id/seekbar_mod_menu_button_opacity"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:max="100"
+                                android:min="0"
+                                android:progress="100"
+                                android:progressTint="#4AE0A0"
+                                android:thumbTint="#4AE0A0" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
+                </ScrollView>
 
+                <LinearLayout
+                    android:id="@+id/mod_config_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true">
+
+                        <LinearLayout
+                            android:id="@+id/mod_config_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp" />
+                    </ScrollView>
                 </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
 
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/hud_editor_tools"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="#F0121212"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="8dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_hud"
+                android:tint="#4AE0A0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:text="@string/mod_menu_hud_editor"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btn_hud_save"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_mod_status_disabled"
+                android:contentDescription="@string/save"
+                android:padding="8dp"
+                android:src="@drawable/ic_check"
+                android:tint="#4AE0A0" />
+
+            <ImageButton
+                android:id="@+id/btn_hud_reset"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_mod_status_disabled"
+                android:contentDescription="@string/reset"
+                android:padding="8dp"
+                android:src="@drawable/ic_delete"
+                android:tint="#FF6B6B" />
+
+            <ImageButton
+                android:id="@+id/btn_hud_cancel"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_close_button"
+                android:contentDescription="@string/cancel"
+                android:padding="8dp"
+                android:src="@drawable/ic_close"
+                android:tint="#FFFFFF" />
+
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 </FrameLayout>

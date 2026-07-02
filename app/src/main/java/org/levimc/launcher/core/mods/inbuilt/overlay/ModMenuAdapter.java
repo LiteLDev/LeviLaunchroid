@@ -1,5 +1,6 @@
 package org.levimc.launcher.core.mods.inbuilt.overlay;
 
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,37 +12,37 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.levimc.launcher.R;
-import org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod;
-import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
+import org.levimc.launcher.core.mods.inbuilt.UnifiedMod;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHolder> {
 
-    private List<InbuiltMod> mods = new ArrayList<>();
+    private List<UnifiedMod> mods = new ArrayList<>();
     private final Map<String, Boolean> toggleStates = new HashMap<>();
+    private final Map<String, Boolean> favoriteStates = new HashMap<>();
     private OnModActionListener listener;
 
     public interface OnModActionListener {
-        void onToggle(InbuiltMod mod, boolean enabled);
-        void onConfig(InbuiltMod mod);
+        void onToggle(UnifiedMod mod, boolean enabled);
+        void onConfig(UnifiedMod mod);
+        void onFavoriteChanged(UnifiedMod mod, boolean favorite);
     }
 
     public void setOnModActionListener(OnModActionListener listener) {
         this.listener = listener;
     }
 
-    public void updateMods(List<InbuiltMod> mods) {
+    public void updateMods(List<UnifiedMod> mods, Set<String> favoriteKeys) {
         this.mods = new ArrayList<>(mods);
-        InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
-        if (manager != null) {
-            for (InbuiltMod mod : mods) {
-                boolean isActive = manager.isModActive(mod.getId());
-                toggleStates.put(mod.getId(), isActive);
-            }
+        for (UnifiedMod mod : mods) {
+            toggleStates.put(mod.getId(), mod.isEnabled());
+            favoriteStates.put(mod.getFavoriteKey(),
+                favoriteKeys != null && favoriteKeys.contains(mod.getFavoriteKey()));
         }
         notifyDataSetChanged();
     }
@@ -56,19 +57,28 @@ public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        InbuiltMod mod = mods.get(position);
+        UnifiedMod mod = mods.get(position);
 
         holder.name.setText(mod.getName());
-        holder.icon.setImageResource(org.levimc.launcher.ui.util.InbuiltModConfigHelper.getModIcon(mod.getId()));
-        holder.icon.setImageTintList(null);
-        holder.icon.setColorFilter(null);
+
+        if (mod.getSource() == UnifiedMod.Source.INBUILT) {
+            holder.icon.setImageResource(ModIconHelper.getModIcon(mod.getId()));
+            holder.icon.setImageTintList(null);
+            holder.icon.setColorFilter(null);
+        } else {
+            holder.icon.setImageResource(R.drawable.ic_modules);
+            holder.icon.setImageTintList(null);
+            holder.icon.setColorFilter(null);
+        }
 
         boolean isEnabled = toggleStates.getOrDefault(mod.getId(), false);
         updateStatusView(holder, isEnabled);
+        updateFavoriteView(holder, favoriteStates.getOrDefault(mod.getFavoriteKey(), false));
 
         View.OnClickListener toggleClick = v -> {
             boolean newState = !toggleStates.getOrDefault(mod.getId(), false);
             toggleStates.put(mod.getId(), newState);
+            mod.setEnabled(newState);
             updateStatusView(holder, newState);
             if (listener != null) {
                 listener.onToggle(mod, newState);
@@ -79,31 +89,72 @@ public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHold
         holder.statusText.setOnClickListener(toggleClick);
         holder.icon.setOnClickListener(toggleClick);
 
-        holder.configBtn.setOnClickListener(v -> {
+        holder.favoriteBtn.setOnClickListener(v -> {
+            boolean favorite = !favoriteStates.getOrDefault(mod.getFavoriteKey(), false);
+            favoriteStates.put(mod.getFavoriteKey(), favorite);
+            updateFavoriteView(holder, favorite);
             if (listener != null) {
-                listener.onConfig(mod);
+                listener.onFavoriteChanged(mod, favorite);
             }
         });
+
+        if (mod.hasConfig()) {
+            holder.configBtn.setVisibility(View.VISIBLE);
+            holder.configBtn.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onConfig(mod);
+                }
+            });
+        } else {
+            holder.configBtn.setVisibility(View.GONE);
+        }
 
         updateCardState(holder, isEnabled);
     }
 
+    private void updateFavoriteView(ViewHolder holder, boolean favorite) {
+        int color = favorite ? 0xFFFFC107 : 0xFF666666;
+        holder.favoriteBtn.setImageTintList(ColorStateList.valueOf(color));
+        holder.favoriteBtn.setAlpha(favorite ? 1f : 0.65f);
+        holder.favoriteBtn.setContentDescription(holder.favoriteBtn.getContext().getString(
+            favorite ? R.string.mod_menu_unfavorite : R.string.mod_menu_favorite));
+    }
+
     private void updateStatusView(ViewHolder holder, boolean enabled) {
+        int accent = 0xFF4AE0A0;
+
         if (enabled) {
             holder.statusText.setText(R.string.mod_status_enabled);
-            holder.statusText.setTextColor(0xFF4AE0A0);
+            holder.statusText.setTextColor(accent);
             holder.statusText.setBackgroundResource(R.drawable.bg_mod_status_enabled);
+            holder.statusText.getBackground().setTint(android.graphics.Color.argb(40, 
+                android.graphics.Color.red(accent), 
+                android.graphics.Color.green(accent), 
+                android.graphics.Color.blue(accent)));
         } else {
             holder.statusText.setText(R.string.mod_status_disabled);
             holder.statusText.setTextColor(0xFF888888);
             holder.statusText.setBackgroundResource(R.drawable.bg_mod_status_disabled);
+            holder.statusText.getBackground().setTintList(null);
         }
         updateCardState(holder, enabled);
     }
 
     private void updateCardState(ViewHolder holder, boolean enabled) {
-        holder.itemView.setAlpha(enabled ? 1f : 0.6f);
+        holder.itemView.setAlpha(enabled ? 1f : 0.7f);
         holder.icon.setAlpha(enabled ? 1f : 0.5f);
+        
+        if (holder.itemView instanceof androidx.cardview.widget.CardView) {
+            androidx.cardview.widget.CardView cv = (androidx.cardview.widget.CardView) holder.itemView;
+            
+            if (enabled) {
+                cv.setCardBackgroundColor(0xFF242424);
+                cv.setCardElevation(6f);
+            } else {
+                cv.setCardBackgroundColor(0xFF1A1A1A);
+                cv.setCardElevation(2f);
+            }
+        }
     }
 
 
@@ -116,6 +167,7 @@ public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHold
         ImageView icon;
         TextView name;
         TextView statusText;
+        ImageButton favoriteBtn;
         ImageButton configBtn;
 
         ViewHolder(View itemView) {
@@ -123,6 +175,7 @@ public class ModMenuAdapter extends RecyclerView.Adapter<ModMenuAdapter.ViewHold
             icon = itemView.findViewById(R.id.mod_card_icon);
             name = itemView.findViewById(R.id.mod_card_name);
             statusText = itemView.findViewById(R.id.mod_card_status);
+            favoriteBtn = itemView.findViewById(R.id.mod_card_favorite);
             configBtn = itemView.findViewById(R.id.mod_card_config);
         }
     }

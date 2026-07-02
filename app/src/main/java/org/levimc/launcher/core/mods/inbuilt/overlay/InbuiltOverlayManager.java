@@ -24,10 +24,10 @@ public class InbuiltOverlayManager {
     private FpsDisplayOverlay fpsDisplayOverlay;
     private CpsDisplayOverlay cpsDisplayOverlay;
     private ModMenuButton modMenuButton;
+    private HudOverlay hudOverlay;
     private int baseY = 150;
     private static final int SPACING = 70;
     private static final int START_X = 50;
-    private boolean isModMenuMode = false;
 
     public InbuiltOverlayManager(Activity activity) {
         this.activity = activity;
@@ -40,19 +40,15 @@ public class InbuiltOverlayManager {
 
     public void showEnabledOverlays() {
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        if (!manager.isModMenuEnabled()) return;
+
+        if (hudOverlay == null) {
+            hudOverlay = new HudOverlay(activity);
+        }
+        hudOverlay.show();
+
         int nextY = baseY;
 
-        isModMenuMode = manager.isModMenuEnabled();
-
-        if (isModMenuMode) {
-            nextY = showModMenuMode(manager, nextY);
-        } else {
-            nextY = showIndividualOverlays(manager, nextY);
-        }
-
-    }
-
-    private int showModMenuMode(InbuiltModManager manager, int nextY) {
         modActiveStates.put(ModIds.QUICK_DROP, false);
         modActiveStates.put(ModIds.CAMERA_PERSPECTIVE, false);
         modActiveStates.put(ModIds.TOGGLE_HUD, false);
@@ -86,7 +82,6 @@ public class InbuiltOverlayManager {
 
         modMenuButton = new ModMenuButton(activity);
         modMenuButton.show(START_X, nextY);
-        return nextY + SPACING;
     }
 
     public void handleModToggle(String modId, boolean enabled) {
@@ -106,10 +101,13 @@ public class InbuiltOverlayManager {
         }
 
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
-        int posY = modPositionMap.getOrDefault(modId, baseY + SPACING);
+        
+        android.util.DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
+        int centerX = metrics.widthPixels / 2 - (int)(26 * metrics.density);
+        int centerY = metrics.heightPixels / 2 - (int)(26 * metrics.density);
 
-        int savedX = manager.getOverlayPositionX(modId, START_X);
-        int savedY = manager.getOverlayPositionY(modId, posY);
+        int savedX = manager.getOverlayPositionX(modId, centerX);
+        int savedY = manager.getOverlayPositionY(modId, centerY);
 
         switch (modId) {
             case ModIds.QUICK_DROP:
@@ -193,10 +191,6 @@ public class InbuiltOverlayManager {
                 zoomOverlay.hide();
                 overlays.remove(zoomOverlay);
                 modOverlayMap.remove(modId);
-
-                if (!isModMenuMode) {
-                    zoomOverlay = null;
-                }
             }
             return;
         }
@@ -222,10 +216,6 @@ public class InbuiltOverlayManager {
                 snaplookOverlay.hide();
                 overlays.remove(snaplookOverlay);
                 modOverlayMap.remove(modId);
-
-                if (!isModMenuMode) {
-                    snaplookOverlay = null;
-                }
             }
             return;
         }
@@ -240,91 +230,6 @@ public class InbuiltOverlayManager {
 
     public boolean isModActive(String modId) {
         return modActiveStates.getOrDefault(modId, false);
-    }
-
-    private int showIndividualOverlays(InbuiltModManager manager, int nextY) {
-        if (manager.isModAdded(ModIds.QUICK_DROP)) {
-            int x = manager.getOverlayPositionX(ModIds.QUICK_DROP, START_X);
-            int y = manager.getOverlayPositionY(ModIds.QUICK_DROP, nextY);
-            QuickDropOverlay overlay = new QuickDropOverlay(activity);
-            overlay.show(x, y);
-            overlays.add(overlay);
-            nextY += SPACING;
-        }
-        if (manager.isModAdded(ModIds.CAMERA_PERSPECTIVE)) {
-            int x = manager.getOverlayPositionX(ModIds.CAMERA_PERSPECTIVE, START_X);
-            int y = manager.getOverlayPositionY(ModIds.CAMERA_PERSPECTIVE, nextY);
-            CameraPerspectiveOverlay overlay = new CameraPerspectiveOverlay(activity);
-            overlay.show(x, y);
-            overlays.add(overlay);
-            nextY += SPACING;
-        }
-        if (manager.isModAdded(ModIds.TOGGLE_HUD)) {
-            int x = manager.getOverlayPositionX(ModIds.TOGGLE_HUD, START_X);
-            int y = manager.getOverlayPositionY(ModIds.TOGGLE_HUD, nextY);
-            ToggleHudOverlay overlay = new ToggleHudOverlay(activity);
-            overlay.show(x, y);
-            overlays.add(overlay);
-            nextY += SPACING;
-        }
-        if (manager.isModAdded(ModIds.AUTO_SPRINT)) {
-            int x = manager.getOverlayPositionX(ModIds.AUTO_SPRINT, START_X);
-            int y = manager.getOverlayPositionY(ModIds.AUTO_SPRINT, nextY);
-            AutoSprintOverlay overlay = new AutoSprintOverlay(activity, manager.getAutoSprintKeybind());
-            overlay.show(x, y);
-            overlays.add(overlay);
-            nextY += SPACING;
-        }
-
-        if (manager.isModAdded(ModIds.CHICK_PET)) {
-            chickPetOverlay = new ChickPetOverlay(activity);
-            chickPetOverlay.show();
-        }
-
-        if (manager.isModAdded(ModIds.ZOOM)) {
-            int x = manager.getOverlayPositionX(ModIds.ZOOM, START_X);
-            int y = manager.getOverlayPositionY(ModIds.ZOOM, nextY);
-            zoomOverlay = new ZoomOverlay(activity);
-            zoomOverlay.show(x, y);
-            overlays.add(zoomOverlay);
-            modOverlayMap.put(ModIds.ZOOM, zoomOverlay);
-            nextY += SPACING;
-        }
-
-        if (manager.isModAdded(ModIds.FPS_DISPLAY)) {
-            int x = manager.getOverlayPositionX(ModIds.FPS_DISPLAY, START_X);
-            int y = manager.getOverlayPositionY(ModIds.FPS_DISPLAY, nextY);
-            fpsDisplayOverlay = new FpsDisplayOverlay(activity);
-            fpsDisplayOverlay.show(x, y);
-            nextY += SPACING;
-        }
-
-        if (manager.isModAdded(ModIds.CPS_DISPLAY)) {
-            int x = manager.getOverlayPositionX(ModIds.CPS_DISPLAY, START_X);
-            int y = manager.getOverlayPositionY(ModIds.CPS_DISPLAY, nextY);
-            cpsDisplayOverlay = new CpsDisplayOverlay(activity);
-            cpsDisplayOverlay.show(x, y);
-            nextY += SPACING;
-        }
-
-        if (manager.isModAdded(ModIds.SNAPLOOK)) {
-            int x = manager.getOverlayPositionX(ModIds.SNAPLOOK, START_X);
-            int y = manager.getOverlayPositionY(ModIds.SNAPLOOK, nextY);
-            snaplookOverlay = new SnaplookOverlay(activity);
-            snaplookOverlay.show(x, y);
-            overlays.add(snaplookOverlay);
-            modOverlayMap.put(ModIds.SNAPLOOK, snaplookOverlay);
-            nextY += SPACING;
-        }
-        if (manager.isModAdded(ModIds.VIRTUAL_CURSOR)) {
-            int x = manager.getOverlayPositionX(ModIds.VIRTUAL_CURSOR, START_X);
-            int y = manager.getOverlayPositionY(ModIds.VIRTUAL_CURSOR, nextY);
-            VirtualCursorOverlay overlay = new VirtualCursorOverlay(activity);
-            overlay.show(x, y);
-            overlays.add(overlay);
-            nextY += SPACING;
-        }
-        return nextY;
     }
 
 
@@ -360,15 +265,17 @@ public class InbuiltOverlayManager {
             modMenuButton.hide();
             modMenuButton = null;
         }
+        if (hudOverlay != null) {
+            hudOverlay.hide();
+            hudOverlay = null;
+        }
         instance = null;
     }
 
     public boolean handleKeyEvent(int keyCode, int action) {
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
         
-        boolean zoomEnabled = isModMenuMode 
-            ? modActiveStates.getOrDefault(ModIds.ZOOM, false)
-            : manager.isModAdded(ModIds.ZOOM);
+        boolean zoomEnabled = modActiveStates.getOrDefault(ModIds.ZOOM, false);
         
         int zoomKeybind = manager.getZoomKeybind();
         if (zoomEnabled && keyCode == zoomKeybind) {
@@ -383,9 +290,7 @@ public class InbuiltOverlayManager {
             }
         }
 
-        boolean snaplookEnabled = isModMenuMode
-            ? modActiveStates.getOrDefault(ModIds.SNAPLOOK, false)
-            : manager.isModAdded(ModIds.SNAPLOOK);
+        boolean snaplookEnabled = modActiveStates.getOrDefault(ModIds.SNAPLOOK, false);
 
         if (snaplookEnabled && keyCode == android.view.KeyEvent.KEYCODE_X) {
             if (snaplookOverlay != null) {
@@ -444,9 +349,104 @@ public class InbuiltOverlayManager {
         }
     }
 
+    public void setHudEditorMode(boolean active) {
+        for (BaseOverlayButton overlay : overlays) {
+            overlay.setHudEditorMode(active);
+        }
+        if (fpsDisplayOverlay != null) {
+            fpsDisplayOverlay.setHudEditorMode(active);
+        }
+        if (cpsDisplayOverlay != null) {
+            cpsDisplayOverlay.setHudEditorMode(active);
+        }
+        if (hudOverlay != null) {
+            hudOverlay.setHudEditorMode(active);
+        }
+
+        if (modMenuButton != null) {
+            if (active) {
+                modMenuButton.setVisibility(android.view.View.GONE);
+            } else {
+                modMenuButton.setVisibility(android.view.View.VISIBLE);
+                int savedX = InbuiltModManager.getInstance(activity).getOverlayPositionX(ModIds.MOD_MENU, START_X);
+                int savedY = InbuiltModManager.getInstance(activity).getOverlayPositionY(ModIds.MOD_MENU, baseY);
+                modMenuButton.show(savedX, savedY);
+            }
+        }
+    }
+
+    public void resetAllPositionsToCenter() {
+        android.util.DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
+        int centerX = metrics.widthPixels / 2 - (int)(26 * metrics.density);
+        int centerY = metrics.heightPixels / 2 - (int)(26 * metrics.density);
+
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        
+        for (java.util.Map.Entry<String, BaseOverlayButton> entry : modOverlayMap.entrySet()) {
+            manager.setOverlayPosition(entry.getKey(), centerX, centerY);
+            entry.getValue().updatePosition(centerX, centerY);
+        }
+        
+        if (fpsDisplayOverlay != null) {
+            manager.setOverlayPosition(ModIds.FPS_DISPLAY, centerX, centerY);
+            fpsDisplayOverlay.updatePosition(centerX, centerY);
+        }
+        if (cpsDisplayOverlay != null) {
+            manager.setOverlayPosition(ModIds.CPS_DISPLAY, centerX, centerY);
+            cpsDisplayOverlay.updatePosition(centerX, centerY);
+        }
+        
+        org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.DrawCommand[] cmds = org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.getDrawCommands();
+        if (cmds != null) {
+            java.util.Set<String> processed = new java.util.HashSet<>();
+            for (org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.DrawCommand cmd : cmds) {
+                if (cmd.moduleId != null && !processed.contains(cmd.moduleId)) {
+                    processed.add(cmd.moduleId);
+                    org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.setExternalModConfig(cmd.moduleId, "hudPosX", String.valueOf(centerX));
+                    org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.setExternalModConfig(cmd.moduleId, "hudPosY", String.valueOf(centerY));
+                }
+            }
+        }
+    }
+
     public void tick() {
         for (BaseOverlayButton overlay : overlays) {
             overlay.tick();
+        }
+
+        if (modMenuButton != null || hudOverlay != null) {
+            InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+            boolean isPauseOnly = manager.isPauseMenuOnly();
+            boolean isPauseOpen = org.levimc.launcher.preloader.PreloaderInput.isPauseMenuOpen();
+            boolean isHudScreenOpen = org.levimc.launcher.preloader.PreloaderInput.isHudScreenOpen();
+            boolean isShowingMenu = org.levimc.launcher.preloader.PreloaderInput.isShowingMenu();
+
+            activity.runOnUiThread(() -> {
+                if (modMenuButton != null) {
+                    if (isPauseOnly) {
+                        if (isPauseOpen) {
+                            modMenuButton.setVisibility(android.view.View.VISIBLE);
+                        } else {
+                            modMenuButton.setVisibility(android.view.View.GONE);
+                            if (modMenuButton.isMenuShowing()) {
+                                modMenuButton.hideMenu();
+                            }
+                        }
+                    } else {
+                        modMenuButton.setVisibility(android.view.View.VISIBLE);
+                    }
+                }
+                
+                if (hudOverlay != null) {
+                    if (hudOverlay.isHudEditorMode()) {
+                        hudOverlay.setVisibility(android.view.View.VISIBLE);
+                    } else if (isHudScreenOpen && !isShowingMenu) {
+                        hudOverlay.setVisibility(android.view.View.VISIBLE);
+                    } else {
+                        hudOverlay.setVisibility(android.view.View.GONE);
+                    }
+                }
+            });
         }
     }
 }
