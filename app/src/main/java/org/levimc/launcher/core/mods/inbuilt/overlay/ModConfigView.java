@@ -186,30 +186,36 @@ public class ModConfigView {
                     
                     String[] options = cfg.minValue != null ? cfg.minValue.split(",") : new String[0];
                     int selectedIndex = parseIntSafe(cfg.currentValue, parseIntSafe(cfg.defaultValue, 0));
+                    final java.util.Map<Integer, Integer> optionIds = new java.util.HashMap<>();
 
                     for (int i = 0; i < options.length; i++) {
                         RadioButton rb = new RadioButton(context);
+                        int optionId = View.generateViewId();
+                        rb.setId(optionId);
                         rb.setText(options[i]);
                         rb.setTextColor(0xFFF1F4F6);
                         rb.setTextSize(14);
                         int[][] states = {{android.R.attr.state_checked}, {}};
                         rb.setButtonTintList(new ColorStateList(states, new int[]{accent, 0xFFA8B0B8}));
-                        if (i == selectedIndex) rb.setChecked(true);
+                        optionIds.put(optionId, i);
                         
                         LinearLayout.LayoutParams rbParams = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         rb.setLayoutParams(rbParams);
-                        
-                        int currentIndex = i;
-                        rb.setOnCheckedChangeListener((btn, isChecked) -> {
-                            if (isChecked) {
-                                cfg.currentValue = String.valueOf(currentIndex);
-                                ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
-                                wrappedOnConfigChanged.run();
-                            }
-                        });
                         radioGroup.addView(rb);
+                        if (i == selectedIndex) rb.setChecked(true);
                     }
+
+                    radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+                        Integer currentIndex = optionIds.get(checkedId);
+                        if (currentIndex == null) return;
+                        String newValue = String.valueOf(currentIndex);
+                        if (newValue.equals(cfg.currentValue)) return;
+
+                        cfg.currentValue = newValue;
+                        ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
+                        wrappedOnConfigChanged.run();
+                    });
                     
                     LinearLayout.LayoutParams rgParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
