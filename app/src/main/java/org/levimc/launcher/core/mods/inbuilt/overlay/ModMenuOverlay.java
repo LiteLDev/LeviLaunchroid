@@ -1,7 +1,9 @@
 package org.levimc.launcher.core.mods.inbuilt.overlay;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
@@ -28,12 +30,18 @@ import org.levimc.launcher.core.mods.inbuilt.ExternalModBridge;
 import org.levimc.launcher.core.mods.inbuilt.UnifiedMod;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod;
-import org.levimc.launcher.ui.animation.DynamicAnim;
-
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 public class ModMenuOverlay {
+    private enum ModuleFilter {
+        ALL,
+        FAVORITES
+    }
+
     private final Activity activity;
     private View overlayView;
     private WindowManager windowManager;
@@ -45,7 +53,9 @@ public class ModMenuOverlay {
     private ModMenuAdapter adapter;
     private EditText searchInput;
     private ImageButton clearSearchBtn;
-    private TextView navModules, navSettings;
+    private TextView navModules, navSettings, navHudEditor;
+    private TextView filterAll, filterFavorites;
+    private TextView moduleCountText, emptyStateText;
     private View settingsContainer;
     private View modulesContainer;
     private View emptyState;
@@ -58,6 +68,8 @@ public class ModMenuOverlay {
     
     private List<UnifiedMod> allMods = new ArrayList<>();
     private List<UnifiedMod> filteredMods = new ArrayList<>();
+    private final Set<String> favoriteKeys = new HashSet<>();
+    private ModuleFilter activeFilter = ModuleFilter.ALL;
     
     private ModMenuCallback callback;
     private ModNotificationManager notificationManager;
@@ -230,10 +242,14 @@ public class ModMenuOverlay {
         modsRecycler = overlayView.findViewById(R.id.mods_grid_recycler);
         navModules = overlayView.findViewById(R.id.nav_modules);
         navSettings = overlayView.findViewById(R.id.nav_settings);
-        View navHudEditor = overlayView.findViewById(R.id.nav_hud_editor);
+        navHudEditor = overlayView.findViewById(R.id.nav_hud_editor);
+        filterAll = overlayView.findViewById(R.id.filter_all);
+        filterFavorites = overlayView.findViewById(R.id.filter_favorites);
+        moduleCountText = overlayView.findViewById(R.id.module_count_text);
         settingsContainer = overlayView.findViewById(R.id.settings_container);
         modulesContainer = overlayView.findViewById(R.id.modules_container);
         emptyState = overlayView.findViewById(R.id.empty_state);
+        emptyStateText = overlayView.findViewById(R.id.empty_state_text);
         notificationsSwitch = overlayView.findViewById(R.id.switch_notifications);
         pauseMenuOnlySwitch = overlayView.findViewById(R.id.switch_pause_menu_only);
 
@@ -244,31 +260,13 @@ public class ModMenuOverlay {
 
         if (navHudEditor != null) {
             navHudEditor.setOnClickListener(v -> {
-                modMenuContainer.setVisibility(View.GONE);
-                hudEditorTools.setVisibility(View.VISIBLE);
-                overlayView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
-                if (wmParams != null && windowManager != null) {
-                    wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
-                    wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-                    wmParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-                    windowManager.updateViewLayout(overlayView, wmParams);
-                }
-                InbuiltOverlayManager.getInstance().setHudEditorMode(true);
+                enterHudEditorMode(modMenuContainer, hudEditorTools);
             });
         }
         
         if (btnHudSave != null) {
             btnHudSave.setOnClickListener(v -> {
-                modMenuContainer.setVisibility(View.VISIBLE);
-                hudEditorTools.setVisibility(View.GONE);
-                overlayView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
-                if (wmParams != null && windowManager != null) {
-                    wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    wmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
-                    wmParams.gravity = Gravity.CENTER;
-                    windowManager.updateViewLayout(overlayView, wmParams);
-                }
-                InbuiltOverlayManager.getInstance().setHudEditorMode(false);
+                exitHudEditorMode(modMenuContainer, hudEditorTools);
             });
         }
         
@@ -281,28 +279,21 @@ public class ModMenuOverlay {
 
         if (btnHudCancel != null) {
             btnHudCancel.setOnClickListener(v -> {
-                modMenuContainer.setVisibility(View.VISIBLE);
-                hudEditorTools.setVisibility(View.GONE);
-                overlayView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
-                if (wmParams != null && windowManager != null) {
-                    wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    wmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
-                    wmParams.gravity = Gravity.CENTER;
-                    windowManager.updateViewLayout(overlayView, wmParams);
-                }
-                InbuiltOverlayManager.getInstance().setHudEditorMode(false);
+                exitHudEditorMode(modMenuContainer, hudEditorTools);
             });
         }
         
         // Close on background tap
         overlayView.setOnClickListener(v -> {
             // Only hide if not in HUD editor mode
-            if (hudEditorTools.getVisibility() != View.VISIBLE) {
+            if (hudEditorTools == null || hudEditorTools.getVisibility() != View.VISIBLE) {
                 hide();
             }
         });
         menuContainer.setOnClickListener(v -> {}); // Consume clicks
-        hudEditorTools.setOnClickListener(v -> {}); // Consume clicks
+        if (hudEditorTools != null) {
+            hudEditorTools.setOnClickListener(v -> {}); // Consume clicks
+        }
         
         closeBtn.setOnClickListener(v -> hide());
         
@@ -323,6 +314,7 @@ public class ModMenuOverlay {
             searchInput.setText("");
             clearSearchBtn.setVisibility(View.GONE);
         });
+        setupFilterButtons();
         
         View btnBackToModules = overlayView.findViewById(R.id.btn_back_to_modules);
         if (btnBackToModules != null) {
@@ -351,12 +343,12 @@ public class ModMenuOverlay {
         modMenuOpacityText = overlayView.findViewById(R.id.text_mod_menu_opacity);
         int currentMenuOpacity = modManager.getModMenuOpacity();
         modMenuOpacitySeekBar.setProgress(currentMenuOpacity);
-        modMenuOpacityText.setText(currentMenuOpacity + "%");
+        modMenuOpacityText.setText(activity.getString(R.string.mod_menu_percent_value, currentMenuOpacity));
         modMenuOpacitySeekBar.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(android.widget.SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    modMenuOpacityText.setText(progress + "%");
+                    modMenuOpacityText.setText(activity.getString(R.string.mod_menu_percent_value, progress));
                     modManager.setModMenuOpacity(progress);
                     applyMenuOpacity();
                 }
@@ -371,12 +363,12 @@ public class ModMenuOverlay {
         modMenuButtonOpacityText = overlayView.findViewById(R.id.text_mod_menu_button_opacity);
         int currentButtonOpacity = modManager.getModMenuButtonOpacity();
         modMenuButtonOpacitySeekBar.setProgress(currentButtonOpacity);
-        modMenuButtonOpacityText.setText(currentButtonOpacity + "%");
+        modMenuButtonOpacityText.setText(activity.getString(R.string.mod_menu_percent_value, currentButtonOpacity));
         modMenuButtonOpacitySeekBar.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(android.widget.SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    modMenuButtonOpacityText.setText(progress + "%");
+                    modMenuButtonOpacityText.setText(activity.getString(R.string.mod_menu_percent_value, progress));
                     modManager.setModMenuButtonOpacity(progress);
                     if (callback != null) {
                         callback.onButtonOpacityChanged(progress);
@@ -392,11 +384,12 @@ public class ModMenuOverlay {
         applyMenuOpacity();
         
         // Setup RecyclerView
-        modsRecycler.setLayoutManager(new GridLayoutManager(activity, 3));
+        modsRecycler.setLayoutManager(new GridLayoutManager(activity, 4));
         adapter = new ModMenuAdapter();
         adapter.setOnModActionListener(new ModMenuAdapter.OnModActionListener() {
             @Override
             public void onToggle(UnifiedMod mod, boolean enabled) {
+                mod.setEnabled(enabled);
                 if (mod.getSource() == UnifiedMod.Source.INBUILT) {
                     InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
                     if (manager != null) {
@@ -414,10 +407,21 @@ public class ModMenuOverlay {
                         notificationManager.show(mod.getName(), mod.getId());
                     }
                 }
+                applyFilters();
             }
             @Override
             public void onConfig(UnifiedMod mod) {
                 showConfigSection(mod);
+            }
+            @Override
+            public void onFavoriteChanged(UnifiedMod mod, boolean favorite) {
+                InbuiltModManager.getInstance(activity).setModFavorite(mod.getFavoriteKey(), favorite);
+                if (favorite) {
+                    favoriteKeys.add(mod.getFavoriteKey());
+                } else {
+                    favoriteKeys.remove(mod.getFavoriteKey());
+                }
+                applyFilters();
             }
         });
         modsRecycler.setAdapter(adapter);
@@ -426,10 +430,9 @@ public class ModMenuOverlay {
     }
     
     private void showModulesSection() {
-        navModules.setTextColor(getAccentColor());
-        navModules.setAlpha(1f);
-        navSettings.setTextColor(0xFFAAAAAA);
-        navSettings.setAlpha(0.6f);
+        updateNavItem(navModules, true);
+        updateNavItem(navSettings, false);
+        updateNavItem(navHudEditor, false);
         
         if (modulesContainer.getVisibility() != View.VISIBLE) {
             modulesContainer.setVisibility(View.VISIBLE);
@@ -441,17 +444,18 @@ public class ModMenuOverlay {
             View modConfigContainer = overlayView.findViewById(R.id.mod_config_container);
             View searchContainer = overlayView.findViewById(R.id.search_container);
             View configHeader = overlayView.findViewById(R.id.config_header);
+            View filterBar = overlayView.findViewById(R.id.filter_bar);
             if (modConfigContainer != null) modConfigContainer.setVisibility(View.GONE);
             if (searchContainer != null) searchContainer.setVisibility(View.VISIBLE);
             if (configHeader != null) configHeader.setVisibility(View.GONE);
+            if (filterBar != null) filterBar.setVisibility(View.VISIBLE);
         }
     }
     
     private void showSettingsSection() {
-        navSettings.setTextColor(getAccentColor());
-        navSettings.setAlpha(1f);
-        navModules.setTextColor(0xFFAAAAAA);
-        navModules.setAlpha(0.6f);
+        updateNavItem(navSettings, true);
+        updateNavItem(navModules, false);
+        updateNavItem(navHudEditor, false);
         
         modulesContainer.setVisibility(View.GONE);
         if (settingsContainer.getVisibility() != View.VISIBLE) {
@@ -463,17 +467,18 @@ public class ModMenuOverlay {
             View modConfigContainer = overlayView.findViewById(R.id.mod_config_container);
             View searchContainer = overlayView.findViewById(R.id.search_container);
             View configHeader = overlayView.findViewById(R.id.config_header);
+            View filterBar = overlayView.findViewById(R.id.filter_bar);
             if (modConfigContainer != null) modConfigContainer.setVisibility(View.GONE);
             if (searchContainer != null) searchContainer.setVisibility(View.VISIBLE);
             if (configHeader != null) configHeader.setVisibility(View.GONE);
+            if (filterBar != null) filterBar.setVisibility(View.GONE);
         }
     }
     
     private void showConfigSection(UnifiedMod mod) {
-        navModules.setTextColor(0xFFAAAAAA);
-        navModules.setAlpha(0.6f);
-        navSettings.setTextColor(0xFFAAAAAA);
-        navSettings.setAlpha(0.6f);
+        updateNavItem(navModules, false);
+        updateNavItem(navSettings, false);
+        updateNavItem(navHudEditor, false);
         
         modulesContainer.setVisibility(View.GONE);
         settingsContainer.setVisibility(View.GONE);
@@ -482,6 +487,7 @@ public class ModMenuOverlay {
             View modConfigContainer = overlayView.findViewById(R.id.mod_config_container);
             View searchContainer = overlayView.findViewById(R.id.search_container);
             View configHeader = overlayView.findViewById(R.id.config_header);
+            View filterBar = overlayView.findViewById(R.id.filter_bar);
             ViewGroup modConfigContent = overlayView.findViewById(R.id.mod_config_content);
             TextView configTitle = overlayView.findViewById(R.id.config_title);
             
@@ -491,6 +497,7 @@ public class ModMenuOverlay {
             }
             if (searchContainer != null) searchContainer.setVisibility(View.GONE);
             if (configHeader != null) configHeader.setVisibility(View.VISIBLE);
+            if (filterBar != null) filterBar.setVisibility(View.GONE);
             if (configTitle != null) configTitle.setText(mod.getName());
             
             if (modConfigContent != null) {
@@ -503,12 +510,168 @@ public class ModMenuOverlay {
             }
         }
     }
-    
+
+    private void enterHudEditorMode(View modMenuContainer, View hudEditorTools) {
+        updateNavItem(navModules, false);
+        updateNavItem(navSettings, false);
+        updateNavItem(navHudEditor, true);
+
+        if (modMenuContainer != null) {
+            modMenuContainer.setVisibility(View.GONE);
+        }
+        if (hudEditorTools != null) {
+            hudEditorTools.setVisibility(View.VISIBLE);
+            crossfade(hudEditorTools);
+        }
+        if (overlayView != null) {
+            overlayView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+            overlayView.setClickable(false);
+        }
+        if (wmParams != null && windowManager != null) {
+            wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+            wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            wmParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+            windowManager.updateViewLayout(overlayView, wmParams);
+        }
+        InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
+        if (overlayManager != null) {
+            overlayManager.setHudEditorMode(true);
+        }
+    }
+
+    private void exitHudEditorMode(View modMenuContainer, View hudEditorTools) {
+        if (hudEditorTools != null) {
+            hudEditorTools.setVisibility(View.GONE);
+        }
+        if (overlayView != null) {
+            overlayView.setClickable(true);
+        }
+        if (wmParams != null && windowManager != null) {
+            wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+            wmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+            wmParams.gravity = Gravity.CENTER;
+            windowManager.updateViewLayout(overlayView, wmParams);
+        }
+        if (modMenuContainer != null) {
+            modMenuContainer.setVisibility(View.VISIBLE);
+            animateMenuEnter(modMenuContainer);
+        }
+        InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
+        if (overlayManager != null) {
+            overlayManager.setHudEditorMode(false);
+        }
+        showModulesSection();
+    }
+
+    private void setupFilterButtons() {
+        if (filterAll != null) {
+            filterAll.setOnClickListener(v -> setModuleFilter(ModuleFilter.ALL));
+        }
+        if (filterFavorites != null) {
+            filterFavorites.setOnClickListener(v -> setModuleFilter(ModuleFilter.FAVORITES));
+        }
+        updateFilterButtons();
+    }
+
+    private void setModuleFilter(ModuleFilter filter) {
+        activeFilter = filter;
+        updateFilterButtons();
+        applyFilters();
+    }
+
+    private void applyFilters() {
+        filteredMods.clear();
+        String query = searchInput != null
+            ? searchInput.getText().toString().trim().toLowerCase(Locale.ROOT)
+            : "";
+
+        List<UnifiedMod> nonFavoriteMatches = new ArrayList<>();
+        for (UnifiedMod mod : allMods) {
+            if (matchesActiveFilter(mod) && matchesQuery(mod, query)) {
+                if (isFavorite(mod)) {
+                    filteredMods.add(mod);
+                } else {
+                    nonFavoriteMatches.add(mod);
+                }
+            }
+        }
+        filteredMods.addAll(nonFavoriteMatches);
+
+        if (adapter != null) {
+            adapter.updateMods(filteredMods, favoriteKeys);
+        }
+        updateEmptyState();
+        updateModuleCount();
+    }
+
+    private boolean matchesActiveFilter(UnifiedMod mod) {
+        switch (activeFilter) {
+            case FAVORITES:
+                return isFavorite(mod);
+            case ALL:
+            default:
+                return true;
+        }
+    }
+
+    private boolean matchesQuery(UnifiedMod mod, String query) {
+        if (query.isEmpty()) return true;
+        String searchText = (
+            safeString(mod.getName()) + " " +
+            safeString(mod.getDescription()) + " " +
+            safeString(mod.getId()) + " " +
+            safeString(mod.getModId())
+        ).toLowerCase(Locale.ROOT);
+        return searchText.contains(query);
+    }
+
+    private boolean isFavorite(UnifiedMod mod) {
+        return favoriteKeys.contains(mod.getFavoriteKey());
+    }
+
+    private String safeString(String value) {
+        return value != null ? value : "";
+    }
+
+    private void updateFilterButtons() {
+        updateFilterButton(filterAll, activeFilter == ModuleFilter.ALL);
+        updateFilterButton(filterFavorites, activeFilter == ModuleFilter.FAVORITES);
+    }
+
+    private void updateFilterButton(TextView view, boolean selected) {
+        if (view == null) return;
+        view.setTextColor(selected ? getAccentColor() : 0xFFAAAAAA);
+        view.setAlpha(selected ? 1f : 0.72f);
+        Drawable background = view.getBackground();
+        if (background != null) {
+            background.mutate().setTint(selected ? 0x334AE0A0 : 0x1A888888);
+        }
+    }
+
+    private void updateNavItem(TextView view, boolean selected) {
+        if (view == null) return;
+        int color = selected ? getAccentColor() : 0xFFAAAAAA;
+        view.setTextColor(color);
+        view.setAlpha(selected ? 1f : 0.6f);
+        view.setCompoundDrawableTintList(ColorStateList.valueOf(color));
+    }
+
+    private void updateModuleCount() {
+        if (moduleCountText != null) {
+            moduleCountText.setText(activity.getString(
+                R.string.mod_menu_module_count,
+                filteredMods.size(),
+                allMods.size()));
+        }
+    }
+
     private void loadMods() {
         allMods.clear();
 
         // Add inbuilt mods
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        favoriteKeys.clear();
+        favoriteKeys.addAll(manager.getFavoriteModKeys());
         InbuiltOverlayManager overlayMgr = InbuiltOverlayManager.getInstance();
         for (InbuiltMod im : manager.getAllMods(activity)) {
             boolean active = overlayMgr != null && overlayMgr.isModActive(im.getId());
@@ -527,9 +690,7 @@ public class ModMenuOverlay {
             }
         }
 
-        filteredMods = new ArrayList<>(allMods);
-        adapter.updateMods(filteredMods);
-        updateEmptyState();
+        applyFilters();
     }
 
     private UnifiedMod parseExternalMod(String json) {
@@ -578,33 +739,27 @@ public class ModMenuOverlay {
     }
     
     private void filterMods(String query) {
-        filteredMods.clear();
-        if (query.isEmpty()) {
-            filteredMods.addAll(allMods);
-        } else {
-            String lowerQuery = query.toLowerCase();
-            for (UnifiedMod mod : allMods) {
-                if (mod.getName().toLowerCase().contains(lowerQuery)) {
-                    filteredMods.add(mod);
-                }
-            }
-        }
-        adapter.updateMods(filteredMods);
-        updateEmptyState();
+        applyFilters();
     }
     
     private void updateEmptyState() {
         if (emptyState != null) {
             emptyState.setVisibility(filteredMods.isEmpty() ? View.VISIBLE : View.GONE);
         }
+        if (emptyStateText != null) {
+            String query = searchInput != null ? searchInput.getText().toString().trim() : "";
+            if (!query.isEmpty()) {
+                emptyStateText.setText(R.string.mod_menu_no_matches);
+            } else if (activeFilter == ModuleFilter.FAVORITES) {
+                emptyStateText.setText(R.string.mod_menu_no_favorites);
+            } else {
+                emptyStateText.setText(R.string.mod_menu_no_mods);
+            }
+        }
     }
     
     public void refreshMods() {
         loadMods();
-        String currentQuery = searchInput != null ? searchInput.getText().toString() : "";
-        if (!currentQuery.isEmpty()) {
-            filterMods(currentQuery);
-        }
     }
 
     private void applyMenuOpacity() {
@@ -619,6 +774,11 @@ public class ModMenuOverlay {
     
     public void hide() {
         if (!isShowing || overlayView == null) return;
+
+        InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
+        if (overlayManager != null) {
+            overlayManager.setHudEditorMode(false);
+        }
         
         Runnable performHide = () -> {
             handler.post(() -> {

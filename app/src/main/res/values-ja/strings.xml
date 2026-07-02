@@ -716,4 +716,37 @@ LeviLauncher を続行するには移行を完了する必要があります。<
         <item quantity="other">%d 個の項目</item>
     </plurals>
 
+    <!-- Mod Menu synced translations -->
+    <string name="mod_menu_favorites">お気に入り</string>
+    <string name="mod_menu_favorite">お気に入りに追加</string>
+    <string name="mod_menu_unfavorite">お気に入りから削除</string>
+    <string name="mod_menu_hud_editor">HUD エディター</string>
+    <string name="mod_menu_no_favorites">お気に入りのModはまだありません</string>
+    <string name="mod_menu_no_matches">一致するModがありません</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">一般設定</string>
+    <string name="mod_menu_appearance">外観</string>
+    <string name="mod_menu_pause_menu_only">ポーズメニューのみ</string>
+    <string name="mod_menu_pause_menu_only_desc">ポーズ画面でのみModメニューを表示</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">オーバーレイボタンサイズ (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">オーバーレイ透明度 (%)</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">カーソル感度 (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">ズームレベル (%)</string>
+    <string name="mod_config_auto_sprint_keybind">オートスプリントのキー割り当て</string>
+    <string name="mod_config_zoom_keybind">ズームのキー割り当て</string>
+    <string name="mod_config_press_any_key">割り当てるキーを押してください...</string>
+    <string name="mod_config_key_unknown">不明</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="overlay_button_size_value">サイズ: %1$ddp</string>
+    <string name="overlay_button_opacity_value">透明度: %1$d%%</string>
+    <string name="reset">リセット</string>
 </resources>

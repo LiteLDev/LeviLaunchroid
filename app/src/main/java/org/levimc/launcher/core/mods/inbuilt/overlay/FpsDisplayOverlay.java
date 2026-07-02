@@ -87,7 +87,7 @@ public class FpsDisplayOverlay {
         try {
             overlayView = LayoutInflater.from(activity).inflate(R.layout.overlay_stats_display, null);
             statsText = overlayView.findViewById(R.id.stats_text);
-            statsText.setText("FPS: --");
+            statsText.setText(activity.getString(R.string.mod_overlay_fps_unknown));
 
             wmParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -123,7 +123,7 @@ public class FpsDisplayOverlay {
 
         overlayView = LayoutInflater.from(activity).inflate(R.layout.overlay_stats_display, null);
         statsText = overlayView.findViewById(R.id.stats_text);
-        statsText.setText("FPS: --");
+        statsText.setText(activity.getString(R.string.mod_overlay_fps_unknown));
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -148,9 +148,9 @@ public class FpsDisplayOverlay {
         if (statsText != null) {
             if (initialized && FpsMod.nativeIsInitialized()) {
                 int fps = FpsMod.nativeGetFps();
-                statsText.setText("FPS: " + fps);
+                statsText.setText(activity.getString(R.string.mod_overlay_fps_value, fps));
             } else {
-                statsText.setText("FPS: --");
+                statsText.setText(activity.getString(R.string.mod_overlay_fps_unknown));
             }
         }
     }

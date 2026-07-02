@@ -220,7 +220,7 @@ public class ExternalModConfigDialog {
                     android.widget.EditText hexInput = new android.widget.EditText(themedContext);
                     hexInput.setText(cfg.currentValue.isEmpty() ? cfg.defaultValue : cfg.currentValue);
                     hexInput.setTextColor(0xFF4AE0A0);
-                    hexInput.setHint("#AARRGGBB");
+                    hexInput.setHint(R.string.mod_config_color_hex_hint);
                     hexInput.setHintTextColor(0xFF888888);
                     
                     android.view.View colorPreview = new android.view.View(themedContext);

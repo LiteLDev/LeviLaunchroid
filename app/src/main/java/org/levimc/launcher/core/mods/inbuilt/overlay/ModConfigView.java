@@ -44,20 +44,20 @@ public class ModConfigView {
         InbuiltModManager manager = InbuiltModManager.getInstance(context);
 
         // Size slider
-        addSlider(context, container, "Overlay Button Size (dp)", manager.getOverlayButtonSize(mod.getId()), 20, 100, accent, density, progress -> {
+        addSlider(context, container, context.getString(R.string.mod_config_overlay_button_size_dp), manager.getOverlayButtonSize(mod.getId()), 20, 100, accent, density, progress -> {
             manager.setOverlayButtonSize(mod.getId(), progress);
             onConfigChanged.run();
         });
 
         // Opacity slider
-        addSlider(context, container, "Overlay Opacity (%)", manager.getOverlayOpacity(mod.getId()), 10, 100, accent, density, progress -> {
+        addSlider(context, container, context.getString(R.string.mod_config_overlay_opacity_percent), manager.getOverlayOpacity(mod.getId()), 10, 100, accent, density, progress -> {
             manager.setOverlayOpacity(mod.getId(), progress);
             onConfigChanged.run();
         });
 
         // Lock Position switch
         if (!mod.getId().equals(ModIds.CHICK_PET)) {
-            addToggle(context, container, "Lock Position", manager.isOverlayLocked(mod.getId()), accent, density, isChecked -> {
+            addToggle(context, container, context.getString(R.string.overlay_button_lock), manager.isOverlayLocked(mod.getId()), accent, density, isChecked -> {
                 manager.setOverlayLocked(mod.getId(), isChecked);
                 onConfigChanged.run();
             });
@@ -65,7 +65,7 @@ public class ModConfigView {
 
         // Auto Sprint specific
         if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
-            addKeybindCapture(context, container, "Auto Sprint Keybind", manager.getAutoSprintKeybind(), accent, density, keyCode -> {
+            addKeybindCapture(context, container, context.getString(R.string.mod_config_auto_sprint_keybind), manager.getAutoSprintKeybind(), accent, density, keyCode -> {
                 manager.setAutoSprintKeybind(keyCode);
                 onConfigChanged.run();
             });
@@ -73,7 +73,7 @@ public class ModConfigView {
 
         // Virtual Cursor specific
         if (mod.getId().equals(ModIds.VIRTUAL_CURSOR)) {
-            addSlider(context, container, "Cursor Sensitivity (%)", manager.getCursorSensitivity(), 10, 200, accent, density, progress -> {
+            addSlider(context, container, context.getString(R.string.mod_config_cursor_sensitivity_percent), manager.getCursorSensitivity(), 10, 200, accent, density, progress -> {
                 manager.setCursorSensitivity(progress);
                 onConfigChanged.run();
             });
@@ -81,11 +81,11 @@ public class ModConfigView {
 
         // Zoom specific
         if (mod.getId().equals(ModIds.ZOOM)) {
-            addSlider(context, container, "Zoom Level (%)", manager.getZoomLevel(), 10, 100, accent, density, progress -> {
+            addSlider(context, container, context.getString(R.string.mod_config_zoom_level_percent), manager.getZoomLevel(), 10, 100, accent, density, progress -> {
                 manager.setZoomLevel(progress);
                 onConfigChanged.run();
             });
-            addKeybindCapture(context, container, "Zoom Keybind", manager.getZoomKeybind(), accent, density, keyCode -> {
+            addKeybindCapture(context, container, context.getString(R.string.mod_config_zoom_keybind), manager.getZoomKeybind(), accent, density, keyCode -> {
                 manager.setZoomKeybind(keyCode);
                 onConfigChanged.run();
             });
@@ -266,19 +266,19 @@ public class ModConfigView {
                     int g = Color.green(initialColor);
                     int b = Color.blue(initialColor);
 
-                    SeekBar alphaSlider = addColorSliderInline(context, slidersContainer, "A", a, 0xFFFFFFFF, density, progress -> {
+                    SeekBar alphaSlider = addColorSliderInline(context, slidersContainer, context.getString(R.string.mod_config_color_alpha_short), a, 0xFFFFFFFF, density, progress -> {
                         currentColor[0] = Color.argb(progress, Color.red(currentColor[0]), Color.green(currentColor[0]), Color.blue(currentColor[0]));
                         onSliderChange.onValueChanged(progress);
                     });
-                    SeekBar redSlider = addColorSliderInline(context, slidersContainer, "R", r, 0xFFFF4444, density, progress -> {
+                    SeekBar redSlider = addColorSliderInline(context, slidersContainer, context.getString(R.string.mod_config_color_red_short), r, 0xFFFF4444, density, progress -> {
                         currentColor[0] = Color.argb(Color.alpha(currentColor[0]), progress, Color.green(currentColor[0]), Color.blue(currentColor[0]));
                         onSliderChange.onValueChanged(progress);
                     });
-                    SeekBar greenSlider = addColorSliderInline(context, slidersContainer, "G", g, 0xFF44FF44, density, progress -> {
+                    SeekBar greenSlider = addColorSliderInline(context, slidersContainer, context.getString(R.string.mod_config_color_green_short), g, 0xFF44FF44, density, progress -> {
                         currentColor[0] = Color.argb(Color.alpha(currentColor[0]), Color.red(currentColor[0]), progress, Color.blue(currentColor[0]));
                         onSliderChange.onValueChanged(progress);
                     });
-                    SeekBar blueSlider = addColorSliderInline(context, slidersContainer, "B", b, 0xFF4444FF, density, progress -> {
+                    SeekBar blueSlider = addColorSliderInline(context, slidersContainer, context.getString(R.string.mod_config_color_blue_short), b, 0xFF4444FF, density, progress -> {
                         currentColor[0] = Color.argb(Color.alpha(currentColor[0]), Color.red(currentColor[0]), Color.green(currentColor[0]), progress);
                         onSliderChange.onValueChanged(progress);
                     });
@@ -354,16 +354,16 @@ public class ModConfigView {
         LinearLayout row = createRow(context, container, density);
         TextView label = createLabel(context, labelText, density);
         Button btn = new Button(context);
-        btn.setText(getKeyName(currentKey));
+        btn.setText(getKeyName(context, currentKey));
         btn.setBackgroundTintList(ColorStateList.valueOf(0xFF333333));
         btn.setTextColor(accent);
         
         btn.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Base_Theme_FullScreen); // using this to match theme
             builder.setTitle(labelText);
-            builder.setMessage("Press any key to bind...");
+            builder.setMessage(R.string.mod_config_press_any_key);
             builder.setCancelable(true);
-            builder.setNegativeButton("Cancel", null);
+            builder.setNegativeButton(R.string.cancel, null);
             AlertDialog dialog = builder.create();
             dialog.setOnKeyListener((dialogInterface, keyCode, event) -> {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -371,7 +371,7 @@ public class ModConfigView {
                         dialog.dismiss();
                         return true;
                     }
-                    btn.setText(getKeyName(keyCode));
+                    btn.setText(getKeyName(context, keyCode));
                     listener.onValueChanged(keyCode);
                     dialog.dismiss();
                     return true;
@@ -464,12 +464,12 @@ public class ModConfigView {
         container.addView(view, params);
     }
 
-    private static String getKeyName(int keyCode) {
+    private static String getKeyName(Context context, int keyCode) {
         String keyLabel = KeyEvent.keyCodeToString(keyCode);
         if (keyLabel != null && keyLabel.startsWith("KEYCODE_")) {
             keyLabel = keyLabel.substring(8);
         }
-        return keyLabel != null ? keyLabel : "UNKNOWN";
+        return keyLabel != null ? keyLabel : context.getString(R.string.mod_config_key_unknown);
     }
 
     private static int parseIntSafe(String s, int fallback) {

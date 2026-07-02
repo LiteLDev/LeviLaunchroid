@@ -776,4 +776,37 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
 
     <string name="unsupported_version_title">Desteklenmeyen Sürüm</string>
     <string name="unsupported_version_msg">Bu başlatıcı 1.21.80\'den eski Minecraft sürümlerini desteklemiyor.</string>
+    <!-- Mod Menu synced translations -->
+    <string name="mod_menu_favorites">Favoriler</string>
+    <string name="mod_menu_favorite">Favorilere ekle</string>
+    <string name="mod_menu_unfavorite">Favorilerden kaldır</string>
+    <string name="mod_menu_hud_editor">HUD Düzenleyici</string>
+    <string name="mod_menu_no_favorites">Henüz favori mod yok</string>
+    <string name="mod_menu_no_matches">Eşleşen mod yok</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">Genel Ayarlar</string>
+    <string name="mod_menu_appearance">Görünüm</string>
+    <string name="mod_menu_pause_menu_only">Yalnızca Duraklatma Menüsü</string>
+    <string name="mod_menu_pause_menu_only_desc">Mod menüsünü yalnızca duraklatma ekranında göster</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">Yer paylaşımı düğmesi boyutu (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">Yer paylaşımı opaklığı (%)</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">İmleç hassasiyeti (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">Yakınlaştırma seviyesi (%)</string>
+    <string name="mod_config_auto_sprint_keybind">Otomatik koşu tuş ataması</string>
+    <string name="mod_config_zoom_keybind">Yakınlaştırma tuş ataması</string>
+    <string name="mod_config_press_any_key">Atamak için herhangi bir tuşa basın...</string>
+    <string name="mod_config_key_unknown">BİLİNMİYOR</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="overlay_button_size_value">Boyut: %1$ddp</string>
+    <string name="overlay_button_opacity_value">Opaklık: %1$d%%</string>
+    <string name="reset">Sıfırla</string>
 </resources>

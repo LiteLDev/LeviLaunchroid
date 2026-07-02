@@ -150,7 +150,7 @@ public class CpsDisplayOverlay {
         try {
             overlayView = LayoutInflater.from(activity).inflate(R.layout.overlay_stats_display, null);
             statsText = overlayView.findViewById(R.id.stats_text);
-            statsText.setText("CPS: 0");
+            statsText.setText(activity.getString(R.string.mod_overlay_cps_value, 0));
 
             wmParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -186,7 +186,7 @@ public class CpsDisplayOverlay {
 
         overlayView = LayoutInflater.from(activity).inflate(R.layout.overlay_stats_display, null);
         statsText = overlayView.findViewById(R.id.stats_text);
-        statsText.setText("CPS: 0");
+        statsText.setText(activity.getString(R.string.mod_overlay_cps_value, 0));
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -209,7 +209,7 @@ public class CpsDisplayOverlay {
 
     private void updateDisplay() {
         if (statsText != null) {
-            statsText.setText("CPS: " + getCps());
+            statsText.setText(activity.getString(R.string.mod_overlay_cps_value, getCps()));
         }
     }
 

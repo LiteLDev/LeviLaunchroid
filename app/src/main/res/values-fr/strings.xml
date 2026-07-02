@@ -719,4 +719,37 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
         <item quantity="other">%d éléments</item>
     </plurals>
 
+    <!-- Mod Menu synced translations -->
+    <string name="mod_menu_favorites">Favoris</string>
+    <string name="mod_menu_favorite">Ajouter aux favoris</string>
+    <string name="mod_menu_unfavorite">Retirer des favoris</string>
+    <string name="mod_menu_hud_editor">Éditeur HUD</string>
+    <string name="mod_menu_no_favorites">Aucun mod favori pour le moment</string>
+    <string name="mod_menu_no_matches">Aucun mod correspondant</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">Paramètres généraux</string>
+    <string name="mod_menu_appearance">Apparence</string>
+    <string name="mod_menu_pause_menu_only">Menu pause uniquement</string>
+    <string name="mod_menu_pause_menu_only_desc">Afficher le menu des mods uniquement dans le menu de pause</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">Taille du bouton de superposition (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">Opacité de la superposition (%)</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">Sensibilité du curseur (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">Niveau de zoom (%)</string>
+    <string name="mod_config_auto_sprint_keybind">Touche de sprint automatique</string>
+    <string name="mod_config_zoom_keybind">Touche de zoom</string>
+    <string name="mod_config_press_any_key">Appuyez sur une touche pour associer...</string>
+    <string name="mod_config_key_unknown">INCONNU</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="overlay_button_size_value">Taille : %1$ddp</string>
+    <string name="overlay_button_opacity_value">Opacité : %1$d%%</string>
+    <string name="reset">Réinitialiser</string>
 </resources>

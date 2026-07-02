@@ -2,6 +2,7 @@ package org.levimc.launcher.core.mods.inbuilt;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class UnifiedMod {
 
@@ -74,6 +75,9 @@ public class UnifiedMod {
     public String getDescription() { return description; }
     public String getModId() { return modId; }
     public Source getSource() { return source; }
+    public String getFavoriteKey() {
+        return source.name().toLowerCase(Locale.US) + ":" + id;
+    }
     public boolean isEnabled() { return enabled; }
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
     public List<ConfigEntry> getConfigEntries() { return configEntries; }

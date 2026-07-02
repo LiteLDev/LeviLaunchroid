@@ -23,6 +23,7 @@ public class InbuiltModManager {
     private static final String KEY_MOD_MENU_OPACITY = "mod_menu_opacity";
     private static final String KEY_MOD_MENU_BUTTON_OPACITY = "mod_menu_button_opacity";
     private static final String KEY_PAUSE_MENU_ONLY = "pause_menu_only";
+    private static final String KEY_FAVORITE_MODS = "favorite_mods";
     private static final String KEY_ZOOM_LEVEL = "zoom_level";
     private static final String KEY_ZOOM_KEYBIND = "zoom_keybind";
     private static final String KEY_CURSOR_SENSITIVITY = "cursor_sensitivity";
@@ -149,6 +150,25 @@ public class InbuiltModManager {
 
     public void setPauseMenuOnly(boolean enabled) {
         prefs.edit().putBoolean(KEY_PAUSE_MENU_ONLY, enabled).apply();
+    }
+
+    public Set<String> getFavoriteModKeys() {
+        return new HashSet<>(prefs.getStringSet(KEY_FAVORITE_MODS, new HashSet<>()));
+    }
+
+    public boolean isModFavorite(String favoriteKey) {
+        return favoriteKey != null && getFavoriteModKeys().contains(favoriteKey);
+    }
+
+    public void setModFavorite(String favoriteKey, boolean favorite) {
+        if (favoriteKey == null || favoriteKey.isEmpty()) return;
+        Set<String> favorites = getFavoriteModKeys();
+        if (favorite) {
+            favorites.add(favoriteKey);
+        } else {
+            favorites.remove(favoriteKey);
+        }
+        prefs.edit().putStringSet(KEY_FAVORITE_MODS, favorites).apply();
     }
 
     public int getZoomLevel() {

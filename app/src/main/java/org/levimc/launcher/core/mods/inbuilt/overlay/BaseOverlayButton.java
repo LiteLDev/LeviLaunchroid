@@ -459,7 +459,9 @@ public abstract class BaseOverlayButton {
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
         
         TextView sizeLabel = new TextView(activity);
-        sizeLabel.setText("Size: " + manager.getOverlayButtonSize(getModId()) + "dp");
+        sizeLabel.setText(activity.getString(
+            R.string.overlay_button_size_value,
+            manager.getOverlayButtonSize(getModId())));
         sizeLabel.setTextColor(Color.WHITE);
         sizeLabel.setTextSize(12);
         container.addView(sizeLabel);
@@ -472,7 +474,7 @@ public abstract class BaseOverlayButton {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    sizeLabel.setText("Size: " + progress + "dp");
+                    sizeLabel.setText(activity.getString(R.string.overlay_button_size_value, progress));
                     manager.setOverlayButtonSize(getModId(), progress);
                     updateButtonSize(progress);
                     resetSliderHideTimer();
@@ -490,7 +492,9 @@ public abstract class BaseOverlayButton {
         container.addView(sizeSeek);
 
         TextView opacityLabel = new TextView(activity);
-        opacityLabel.setText("Opacity: " + manager.getOverlayOpacity(getModId()) + "%");
+        opacityLabel.setText(activity.getString(
+            R.string.overlay_button_opacity_value,
+            manager.getOverlayOpacity(getModId())));
         opacityLabel.setTextColor(Color.WHITE);
         opacityLabel.setTextSize(12);
         LinearLayout.LayoutParams opacityLabelParams = new LinearLayout.LayoutParams(
@@ -506,7 +510,7 @@ public abstract class BaseOverlayButton {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    opacityLabel.setText("Opacity: " + progress + "%");
+                    opacityLabel.setText(activity.getString(R.string.overlay_button_opacity_value, progress));
                     manager.setOverlayOpacity(getModId(), progress);
                     if (overlayView != null) {
                         overlayView.setAlpha(progress / 100f);
