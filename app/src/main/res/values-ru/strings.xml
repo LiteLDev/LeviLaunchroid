@@ -754,12 +754,13 @@
     <string name="mod_menu_favorite">Добавить в избранное</string>
     <string name="mod_menu_unfavorite">Удалить из избранного</string>
     <string name="mod_menu_hud_editor">Редактор HUD</string>
-    <string name="mod_menu_hud_editor_desc">Перетащите видимые элементы HUD в игре, затем сохраните или сбросьте их позиции.</string>
     <string name="mod_menu_filter_enabled">Включённые</string>
     <string name="mod_menu_filter_inbuilt">Встроенные</string>
     <string name="mod_menu_filter_external">Внешние</string>
     <string name="mod_menu_no_favorites">Избранных модов пока нет</string>
     <string name="mod_menu_no_matches">Подходящих модов нет</string>
+    <string name="mod_menu_group_inbuilt">Встроенные функции</string>
+    <string name="mod_menu_group_external_ungrouped">Несгруппированные внешние моды</string>
     <string name="mod_menu_module_count">%1$d / %2$d</string>
     <string name="mod_menu_general_settings">Общие настройки</string>
     <string name="mod_menu_appearance">Внешний вид</string>

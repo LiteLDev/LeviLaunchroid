@@ -781,12 +781,13 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="mod_menu_favorite">Favorilere ekle</string>
     <string name="mod_menu_unfavorite">Favorilerden kaldır</string>
     <string name="mod_menu_hud_editor">HUD Düzenleyici</string>
-    <string name="mod_menu_hud_editor_desc">Oyunda görünen HUD öğelerini sürükleyin, ardından konumlarını kaydedin veya sıfırlayın.</string>
     <string name="mod_menu_filter_enabled">Etkin</string>
     <string name="mod_menu_filter_inbuilt">Yerleşik</string>
     <string name="mod_menu_filter_external">Harici</string>
     <string name="mod_menu_no_favorites">Henüz favori mod yok</string>
     <string name="mod_menu_no_matches">Eşleşen mod yok</string>
+    <string name="mod_menu_group_inbuilt">Yerleşik Özellikler</string>
+    <string name="mod_menu_group_external_ungrouped">Gruplandırılmamış Harici Modlar</string>
     <string name="mod_menu_module_count">%1$d / %2$d</string>
     <string name="mod_menu_general_settings">Genel Ayarlar</string>
     <string name="mod_menu_appearance">Görünüm</string>

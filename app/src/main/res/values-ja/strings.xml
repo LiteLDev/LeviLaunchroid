@@ -721,12 +721,13 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="mod_menu_favorite">お気に入りに追加</string>
     <string name="mod_menu_unfavorite">お気に入りから削除</string>
     <string name="mod_menu_hud_editor">HUD エディター</string>
-    <string name="mod_menu_hud_editor_desc">ゲーム内に表示されている HUD 要素をドラッグし、位置を保存またはリセットします。</string>
     <string name="mod_menu_filter_enabled">有効</string>
     <string name="mod_menu_filter_inbuilt">内蔵</string>
     <string name="mod_menu_filter_external">外部</string>
     <string name="mod_menu_no_favorites">お気に入りのModはまだありません</string>
     <string name="mod_menu_no_matches">一致するModがありません</string>
+    <string name="mod_menu_group_inbuilt">内蔵機能</string>
+    <string name="mod_menu_group_external_ungrouped">未グループの外部Mod</string>
     <string name="mod_menu_module_count">%1$d / %2$d</string>
     <string name="mod_menu_general_settings">一般設定</string>
     <string name="mod_menu_appearance">外観</string>

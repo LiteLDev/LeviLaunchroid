@@ -190,10 +190,10 @@ public class ModConfigView {
                     for (int i = 0; i < options.length; i++) {
                         RadioButton rb = new RadioButton(context);
                         rb.setText(options[i]);
-                        rb.setTextColor(Color.WHITE);
+                        rb.setTextColor(0xFFF1F4F6);
                         rb.setTextSize(14);
                         int[][] states = {{android.R.attr.state_checked}, {}};
-                        rb.setButtonTintList(new ColorStateList(states, new int[]{accent, 0xFFAAAAAA}));
+                        rb.setButtonTintList(new ColorStateList(states, new int[]{accent, 0xFFA8B0B8}));
                         if (i == selectedIndex) rb.setChecked(true);
                         
                         LinearLayout.LayoutParams rbParams = new LinearLayout.LayoutParams(
@@ -241,7 +241,7 @@ public class ModConfigView {
                     android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
                     gd.setColor(initialColor);
                     gd.setCornerRadius(4 * density);
-                    gd.setStroke((int)(1 * density), 0xFF555555);
+                    gd.setStroke((int)(1 * density), 0xFF343A40);
                     colorPreview.setBackground(gd);
                     headerRow.addView(colorPreview, previewParams);
                     container.addView(headerRow);
@@ -339,9 +339,9 @@ public class ModConfigView {
         toggle.setChecked(isChecked);
         
         int[][] states = {{android.R.attr.state_checked}, {}};
-        toggle.setThumbTintList(new ColorStateList(states, new int[]{accent, 0xFFAAAAAA}));
+        toggle.setThumbTintList(new ColorStateList(states, new int[]{accent, 0xFFA8B0B8}));
         int trackColor = Color.argb(100, Color.red(accent), Color.green(accent), Color.blue(accent));
-        toggle.setTrackTintList(new ColorStateList(states, new int[]{trackColor, 0xFF555555}));
+        toggle.setTrackTintList(new ColorStateList(states, new int[]{trackColor, 0xFF343A40}));
         
         toggle.setOnCheckedChangeListener((btn, checked) -> listener.onToggleChanged(checked));
         
@@ -355,7 +355,7 @@ public class ModConfigView {
         TextView label = createLabel(context, labelText, density);
         Button btn = new Button(context);
         btn.setText(getKeyName(context, currentKey));
-        btn.setBackgroundTintList(ColorStateList.valueOf(0xFF333333));
+        btn.setBackgroundTintList(ColorStateList.valueOf(0xFF24282C));
         btn.setTextColor(accent);
         
         btn.setOnClickListener(v -> {
@@ -403,7 +403,7 @@ public class ModConfigView {
         
         TextView tv = new TextView(context);
         tv.setText(labelText);
-        tv.setTextColor(Color.WHITE);
+        tv.setTextColor(0xFFF1F4F6);
         tv.setTextSize(12);
         tv.setTypeface(null, android.graphics.Typeface.BOLD);
         tv.setLayoutParams(new LinearLayout.LayoutParams((int)(20 * density), LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -436,7 +436,7 @@ public class ModConfigView {
     private static TextView createLabel(Context context, String text, float density) {
         TextView label = new TextView(context);
         label.setText(text);
-        label.setTextColor(Color.WHITE);
+        label.setTextColor(0xFFF1F4F6);
         label.setTextSize(14);
         label.setTypeface(null, android.graphics.Typeface.BOLD);
         label.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));

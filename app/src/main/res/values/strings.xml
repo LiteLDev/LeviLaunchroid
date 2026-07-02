@@ -627,7 +627,6 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_menu_favorite">Add to favorites</string>
     <string name="mod_menu_unfavorite">Remove from favorites</string>
     <string name="mod_menu_hud_editor">HUD Editor</string>
-    <string name="mod_menu_hud_editor_desc">Drag visible HUD elements in game, then save or reset their positions.</string>
     <string name="mod_menu_filter_enabled">Enabled</string>
     <string name="mod_menu_filter_inbuilt">Inbuilt</string>
     <string name="mod_menu_filter_external">External</string>

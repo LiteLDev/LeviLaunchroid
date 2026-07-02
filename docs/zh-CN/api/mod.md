@@ -116,14 +116,106 @@ bool MyMod::unload() {
 
 ## 模组菜单分组
 
-通过 `PLModMenu_Interface::RegisterModule` 注册游戏内模组菜单模块时，native mod
-应把 `PLModMenu_ModuleInfo::mod_id` 设置为所属 manifest 模组 id。
+native mod 可以向游戏内模组菜单注册多个模块。LeviLauncher 使用 `mod_id`
+给外部模块分组，因此同一个 manifest 模组注册的模块应该复用同一个所属
+模组 id。非 lifecycle 接入里 `mod_id` 为空的模块仍然可以加载，但会显示在
+外部模组的未分组区域。
 
-LeviLauncher 会用这个 `mod_id` 把同一个模组注册的所有模块归到该模组显示名称下。
-`mod_id` 为空的模块仍然可以加载，但会显示在外部模组的未分组区域。
+如果你的模组使用 `PL_REGISTER_MOD` 生命周期，优先使用 C++ helper：
+
+```cpp
+#include <pl/cpp/ModMenu.hpp>
+#include <string>
+
+namespace {
+constexpr const char *kModuleId = "example_mod.speed_meter";
+
+bool g_speedMeterEnabled = false;
+int g_refreshRate = 20;
+
+void onModuleToggle(const char *module_id, bool enabled) {
+  if (std::string(module_id) != kModuleId)
+    return;
+
+  g_speedMeterEnabled = enabled;
+}
+
+void onModuleConfigChanged(const char *module_id,
+                           const char *key,
+                           const char *value) {
+  if (std::string(module_id) != kModuleId || std::string(key) != "refreshRate")
+    return;
+
+  g_refreshRate = value ? std::stoi(value) : 20;
+}
+} // namespace
+
+bool MyMod::enable() {
+  return pl::modmenu::ModuleBuilder(kModuleId, "Speed Meter")
+      .description("Shows a small movement speed overlay.")
+      .defaultEnabled(g_speedMeterEnabled)
+      .onToggle(onModuleToggle)
+      .config("refreshRate", "Refresh Rate", PL_CONFIG_SLIDER_INT, "20", "1",
+              "60")
+      .onConfigChanged(onModuleConfigChanged)
+      .registerModule();
+}
+```
+
+helper 在 lifecycle mod 中会自动使用当前 manifest 模组 id。如果你在
+constructor 或其他 `dlsym` 风格路径里注册模块，应显式调用
+`.modId("your_manifest_id")` 指定所属模组。
+
+项目里直接 include 启动器提供的头文件即可，不要在自己的项目里重新定义这些
+Mod Menu 结构体。原始 C API 仍然可用：
 
 ```cpp
 #include <pl/c/PreloaderModMenu.h>
+```
+
+通常在 `enable()` 中，或在 preloader 接口已经可用后注册模块：
+
+```cpp
+#include <pl/c/PreloaderModMenu.h>
+#include <array>
+#include <string>
+
+namespace {
+constexpr const char *kModuleId = "example_mod.speed_meter";
+
+bool g_speedMeterEnabled = false;
+int g_refreshRate = 20;
+
+const std::array<PLModMenu_ConfigEntry, 1> kSpeedMeterConfigs{{
+    {
+        .key = "refreshRate",
+        .display_name = "Refresh Rate",
+        .type = PL_CONFIG_SLIDER_INT,
+        .default_value = "20",
+        .min_value = "1",
+        .max_value = "60",
+        .depends_on = nullptr,
+    },
+}};
+
+void onModuleToggle(const char *module_id, bool enabled) {
+  if (std::string(module_id) != kModuleId)
+    return;
+
+  g_speedMeterEnabled = enabled;
+  // 在这里应用模块启用状态；如果需要，也可以保存自己的配置。
+}
+
+void onModuleConfigChanged(const char *module_id,
+                           const char *key,
+                           const char *value) {
+  if (std::string(module_id) != kModuleId || std::string(key) != "refreshRate")
+    return;
+
+  g_refreshRate = value ? std::stoi(value) : 20;
+  // 在这里应用新的配置值，并按需写入自己的配置文件。
+}
+} // namespace
 
 bool MyMod::enable() {
   auto *menu = GetPreloaderModMenu();
@@ -132,21 +224,43 @@ bool MyMod::enable() {
 
   auto &self = getSelf();
   PLModMenu_ModuleInfo info{
-      .module_id = "my_mod.example_module",
-      .display_name = "Example Module",
-      .description = "Example module shown in the Mod Menu.",
+      .module_id = kModuleId,
+      .display_name = "Speed Meter",
+      .description = "Shows a small movement speed overlay.",
       .mod_id = self.getId().c_str(),
-      .default_enabled = false,
-      .on_toggle = nullptr,
-      .config_count = 0,
-      .configs = nullptr,
-      .on_config_changed = nullptr,
+      .default_enabled = g_speedMeterEnabled,
+      .on_toggle = onModuleToggle,
+      .config_count = static_cast<int>(kSpeedMeterConfigs.size()),
+      .configs = kSpeedMeterConfigs.data(),
+      .on_config_changed = onModuleConfigChanged,
       .hide_in_hud_editor = false,
   };
   menu->RegisterModule(&info);
   return true;
 }
 ```
+
+字段说明：
+
+| 字段 | 说明 |
+| --- | --- |
+| `module_id` | 必须全局唯一。建议使用基于模组 id 的稳定前缀，例如 `example_mod.speed_meter`。 |
+| `display_name` / `description` | 显示在游戏内模组菜单中。preloader 会在注册时复制这些字符串。 |
+| `mod_id` | 使用原始 C API 时设置为 `getSelf().getId().c_str()` 或 manifest 中的准确模组 id。lifecycle mod 传空值会自动使用当前所属模组；传入不匹配的 owner 会被拒绝。 |
+| `default_enabled` | 菜单显示的初始启用状态。如果你自己保存启用状态，应在注册前先加载。 |
+| `on_toggle` | 在模块状态变化的调用线程上执行，应快速返回，并在这里应用运行时状态。 |
+| `configs` / `config_count` | 可选配置项。没有配置时传 `nullptr` 和 `0`。 |
+| `on_config_changed` | 在配置变化的调用线程上执行。需要自行解析字符串值、应用并按需持久化。 |
+| `hide_in_hud_editor` | 不希望出现在 HUD 编辑器里的模块设为 `true`。 |
+
+`RegisterModule()` 返回前会复制模块字符串和配置项，因此注册调用期间有效的
+临时 `std::string`、局部 config 数组都是安全的。回调函数指针不会被复制成
+owned code，必须在模块注销或所属模组卸载前一直有效。
+
+如果一个模组要注册多个菜单模块，为每个模块构造一个 `PLModMenu_ModuleInfo`，
+并使用相同的 `mod_id`。LeviLauncher 会自动把它们分到同一组。lifecycle mod
+成功 unload 后会自动清理已注册模块；constructor 风格接入如果需要主动移除模块，
+应调用 `UnregisterModule()`。
 
 ## 注意事项
 

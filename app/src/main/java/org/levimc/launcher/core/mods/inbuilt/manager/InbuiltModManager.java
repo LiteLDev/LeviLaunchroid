@@ -32,6 +32,7 @@ public class InbuiltModManager {
     private static final String KEY_OVERLAY_LOCK_PREFIX = "overlay_lock_";
     private static final int DEFAULT_OVERLAY_BUTTON_SIZE = 56;
     private static final int DEFAULT_OVERLAY_OPACITY = 100;
+    private static final int MIN_MOD_MENU_OPACITY = 70;
     private static final int DEFAULT_ZOOM_LEVEL = 50;
     private static final int DEFAULT_CURSOR_SENSITIVITY = 120;
 
@@ -129,11 +130,11 @@ public class InbuiltModManager {
     }
 
     public int getModMenuOpacity() {
-        return prefs.getInt(KEY_MOD_MENU_OPACITY, DEFAULT_OVERLAY_OPACITY);
+        return Math.max(MIN_MOD_MENU_OPACITY, prefs.getInt(KEY_MOD_MENU_OPACITY, DEFAULT_OVERLAY_OPACITY));
     }
 
     public void setModMenuOpacity(int opacity) {
-        prefs.edit().putInt(KEY_MOD_MENU_OPACITY, Math.max(0, Math.min(100, opacity))).apply();
+        prefs.edit().putInt(KEY_MOD_MENU_OPACITY, Math.max(MIN_MOD_MENU_OPACITY, Math.min(100, opacity))).apply();
     }
 
     public int getModMenuButtonOpacity() {

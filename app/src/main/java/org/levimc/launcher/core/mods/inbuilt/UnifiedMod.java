@@ -105,11 +105,7 @@ public class UnifiedMod {
     }
 
     private static String defaultGroupName(Source source, String modId) {
-        if (source == Source.INBUILT) {
-            return "Inbuilt";
-        }
-        String normalizedModId = trimToEmpty(modId);
-        return normalizedModId.isEmpty() ? "External" : normalizedModId;
+        return defaultGroupId(source, modId);
     }
 
     private static String normalizeGroupValue(String value, String fallback) {

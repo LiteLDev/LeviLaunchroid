@@ -118,16 +118,107 @@ layout updates, and launcher-editable schema generation. See the
 
 ## Mod Menu Grouping
 
-Native mods that register in-game Mod Menu modules through
-`PLModMenu_Interface::RegisterModule` should set
-`PLModMenu_ModuleInfo::mod_id` to the owning manifest mod id.
+Native mods can expose multiple in-game Mod Menu modules. LeviLauncher groups
+external modules by `mod_id`, so every module from the same manifest mod should
+use the same owner id. Modules with an empty `mod_id` still load outside the
+managed lifecycle path, but they are shown in the ungrouped external-mod section.
 
-LeviLauncher uses that `mod_id` to group all modules registered by the same
-mod under the mod display name. Modules with an empty `mod_id` still load, but
-they are shown in the ungrouped external-mod section.
+Prefer the C++ helper when your mod uses `PL_REGISTER_MOD`:
+
+```cpp
+#include <pl/cpp/ModMenu.hpp>
+#include <string>
+
+namespace {
+constexpr const char *kModuleId = "example_mod.speed_meter";
+
+bool g_speedMeterEnabled = false;
+int g_refreshRate = 20;
+
+void onModuleToggle(const char *module_id, bool enabled) {
+  if (std::string(module_id) != kModuleId)
+    return;
+
+  g_speedMeterEnabled = enabled;
+}
+
+void onModuleConfigChanged(const char *module_id,
+                           const char *key,
+                           const char *value) {
+  if (std::string(module_id) != kModuleId || std::string(key) != "refreshRate")
+    return;
+
+  g_refreshRate = value ? std::stoi(value) : 20;
+}
+} // namespace
+
+bool MyMod::enable() {
+  return pl::modmenu::ModuleBuilder(kModuleId, "Speed Meter")
+      .description("Shows a small movement speed overlay.")
+      .defaultEnabled(g_speedMeterEnabled)
+      .onToggle(onModuleToggle)
+      .config("refreshRate", "Refresh Rate", PL_CONFIG_SLIDER_INT, "20", "1",
+              "60")
+      .onConfigChanged(onModuleConfigChanged)
+      .registerModule();
+}
+```
+
+When the helper is called from a lifecycle mod, it automatically uses the
+current manifest mod id. If you register from a constructor or another
+`dlsym`-based path, set the owner explicitly with `.modId("your_manifest_id")`.
+
+Use the launcher header directly instead of redefining the Mod Menu structs in
+your project. The raw C API is still available:
 
 ```cpp
 #include <pl/c/PreloaderModMenu.h>
+```
+
+Register modules during `enable()` or after the preloader interface is
+available:
+
+```cpp
+#include <pl/c/PreloaderModMenu.h>
+#include <array>
+#include <string>
+
+namespace {
+constexpr const char *kModuleId = "example_mod.speed_meter";
+
+bool g_speedMeterEnabled = false;
+int g_refreshRate = 20;
+
+const std::array<PLModMenu_ConfigEntry, 1> kSpeedMeterConfigs{{
+    {
+        .key = "refreshRate",
+        .display_name = "Refresh Rate",
+        .type = PL_CONFIG_SLIDER_INT,
+        .default_value = "20",
+        .min_value = "1",
+        .max_value = "60",
+        .depends_on = nullptr,
+    },
+}};
+
+void onModuleToggle(const char *module_id, bool enabled) {
+  if (std::string(module_id) != kModuleId)
+    return;
+
+  g_speedMeterEnabled = enabled;
+  // Apply your module state here, then persist your config if needed.
+}
+
+void onModuleConfigChanged(const char *module_id,
+                           const char *key,
+                           const char *value) {
+  if (std::string(module_id) != kModuleId || std::string(key) != "refreshRate")
+    return;
+
+  g_refreshRate = value ? std::stoi(value) : 20;
+  // Apply the new config and save it to your mod config file if needed.
+}
+} // namespace
 
 bool MyMod::enable() {
   auto *menu = GetPreloaderModMenu();
@@ -136,21 +227,45 @@ bool MyMod::enable() {
 
   auto &self = getSelf();
   PLModMenu_ModuleInfo info{
-      .module_id = "my_mod.example_module",
-      .display_name = "Example Module",
-      .description = "Example module shown in the Mod Menu.",
+      .module_id = kModuleId,
+      .display_name = "Speed Meter",
+      .description = "Shows a small movement speed overlay.",
       .mod_id = self.getId().c_str(),
-      .default_enabled = false,
-      .on_toggle = nullptr,
-      .config_count = 0,
-      .configs = nullptr,
-      .on_config_changed = nullptr,
+      .default_enabled = g_speedMeterEnabled,
+      .on_toggle = onModuleToggle,
+      .config_count = static_cast<int>(kSpeedMeterConfigs.size()),
+      .configs = kSpeedMeterConfigs.data(),
+      .on_config_changed = onModuleConfigChanged,
       .hide_in_hud_editor = false,
   };
   menu->RegisterModule(&info);
   return true;
 }
 ```
+
+Field notes:
+
+| Field | Notes |
+| --- | --- |
+| `module_id` | Must be globally unique. Use a stable prefix based on your mod id, such as `example_mod.speed_meter`. |
+| `display_name` / `description` | Shown in the in-game Mod Menu. The preloader copies these strings during registration. |
+| `mod_id` | Set this to `getSelf().getId().c_str()` or the exact manifest mod id when using the raw API. Lifecycle mods with an empty `mod_id` are assigned the current owner automatically; mismatched owner ids are rejected. |
+| `default_enabled` | Initial state shown by the menu. Load your saved state before registering if you persist it yourself. |
+| `on_toggle` | Called on the thread that changes the module state. Keep it fast and apply runtime state here. |
+| `configs` / `config_count` | Optional config entries. Pass `nullptr` and `0` when the module has no config. |
+| `on_config_changed` | Called on the thread that changes a config value. Parse the string value, apply it, and persist it if needed. |
+| `hide_in_hud_editor` | Set `true` for modules that should not appear in the HUD editor. |
+
+`RegisterModule()` copies module strings and config entries before it returns,
+so temporary `std::string` values and local config arrays are safe for the
+registration call itself. Callback function pointers are not copied into owned
+code; they must remain valid until the module is unregistered or the owning mod
+is unloaded.
+
+If you register many modules, build one `PLModMenu_ModuleInfo` per module and
+reuse the same `mod_id`. LeviLauncher will group them together automatically.
+Lifecycle mods are cleaned up on successful unload; constructor-style mods
+should call `UnregisterModule()` if they need to remove modules manually.
 
 ## Notes
 

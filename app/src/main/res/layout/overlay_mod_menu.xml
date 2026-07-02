@@ -539,7 +539,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:max="100"
-                                android:min="10"
+                                android:min="70"
                                 android:progress="100"
                                 android:progressTint="#4AE0A0"
                                 android:thumbTint="#4AE0A0" />
