@@ -1,0 +1,8 @@
+{
+  "type": "preload-native",
+  "name": "Mod Menu API C Lifecycle Example",
+  "author": "LiteLDev",
+  "version": "1.0.0",
+  "entry": "libmodmenu_c_lifecycle.so",
+  "minecraft_versions": []
+}

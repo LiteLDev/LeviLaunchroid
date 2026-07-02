@@ -1,0 +1,8 @@
+{
+  "type": "preload-native",
+  "name": "Mod Menu API Dlsym Constructor Example",
+  "author": "LiteLDev",
+  "version": "1.0.0",
+  "entry": "libmodmenu_dlsym_constructor.so",
+  "minecraft_versions": []
+}
