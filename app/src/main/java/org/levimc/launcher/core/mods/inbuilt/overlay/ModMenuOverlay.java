@@ -26,20 +26,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.levimc.launcher.R;
+import org.levimc.launcher.core.mods.Mod;
+import org.levimc.launcher.core.mods.ModManager;
 import org.levimc.launcher.core.mods.inbuilt.ExternalModBridge;
 import org.levimc.launcher.core.mods.inbuilt.UnifiedMod;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 public class ModMenuOverlay {
+    private static final String INBUILT_GROUP_ID = "inbuilt";
+    private static final String EXTERNAL_GROUP_PREFIX = "external:";
+    private static final String EXTERNAL_UNGROUPED_GROUP_ID = "external:ungrouped";
+
     private enum ModuleFilter {
         ALL,
-        FAVORITES
+        FAVORITES,
+        ENABLED,
+        INBUILT,
+        EXTERNAL
     }
 
     private final Activity activity;
@@ -54,7 +65,7 @@ public class ModMenuOverlay {
     private EditText searchInput;
     private ImageButton clearSearchBtn;
     private TextView navModules, navSettings, navHudEditor;
-    private TextView filterAll, filterFavorites;
+    private TextView filterAll, filterFavorites, filterEnabled, filterInbuilt, filterExternal;
     private TextView moduleCountText, emptyStateText;
     private View settingsContainer;
     private View modulesContainer;
@@ -245,6 +256,9 @@ public class ModMenuOverlay {
         navHudEditor = overlayView.findViewById(R.id.nav_hud_editor);
         filterAll = overlayView.findViewById(R.id.filter_all);
         filterFavorites = overlayView.findViewById(R.id.filter_favorites);
+        filterEnabled = overlayView.findViewById(R.id.filter_enabled);
+        filterInbuilt = overlayView.findViewById(R.id.filter_inbuilt);
+        filterExternal = overlayView.findViewById(R.id.filter_external);
         moduleCountText = overlayView.findViewById(R.id.module_count_text);
         settingsContainer = overlayView.findViewById(R.id.settings_container);
         modulesContainer = overlayView.findViewById(R.id.modules_container);
@@ -383,9 +397,15 @@ public class ModMenuOverlay {
         
         applyMenuOpacity();
         
-        // Setup RecyclerView
-        modsRecycler.setLayoutManager(new GridLayoutManager(activity, 4));
         adapter = new ModMenuAdapter();
+        GridLayoutManager layoutManager = new GridLayoutManager(activity, 4);
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return adapter != null && adapter.isGroupHeader(position) ? 4 : 1;
+            }
+        });
+        modsRecycler.setLayoutManager(layoutManager);
         adapter.setOnModActionListener(new ModMenuAdapter.OnModActionListener() {
             @Override
             public void onToggle(UnifiedMod mod, boolean enabled) {
@@ -570,6 +590,15 @@ public class ModMenuOverlay {
         if (filterFavorites != null) {
             filterFavorites.setOnClickListener(v -> setModuleFilter(ModuleFilter.FAVORITES));
         }
+        if (filterEnabled != null) {
+            filterEnabled.setOnClickListener(v -> setModuleFilter(ModuleFilter.ENABLED));
+        }
+        if (filterInbuilt != null) {
+            filterInbuilt.setOnClickListener(v -> setModuleFilter(ModuleFilter.INBUILT));
+        }
+        if (filterExternal != null) {
+            filterExternal.setOnClickListener(v -> setModuleFilter(ModuleFilter.EXTERNAL));
+        }
         updateFilterButtons();
     }
 
@@ -585,17 +614,17 @@ public class ModMenuOverlay {
             ? searchInput.getText().toString().trim().toLowerCase(Locale.ROOT)
             : "";
 
-        List<UnifiedMod> nonFavoriteMatches = new ArrayList<>();
+        Map<String, GroupedMods> groupedMatches = new LinkedHashMap<>();
         for (UnifiedMod mod : allMods) {
             if (matchesActiveFilter(mod) && matchesQuery(mod, query)) {
-                if (isFavorite(mod)) {
-                    filteredMods.add(mod);
-                } else {
-                    nonFavoriteMatches.add(mod);
-                }
+                GroupedMods group = groupedMatches.computeIfAbsent(
+                    mod.getGroupId(), ignored -> new GroupedMods());
+                group.add(mod, isFavorite(mod));
             }
         }
-        filteredMods.addAll(nonFavoriteMatches);
+        for (GroupedMods group : groupedMatches.values()) {
+            group.appendTo(filteredMods);
+        }
 
         if (adapter != null) {
             adapter.updateMods(filteredMods, favoriteKeys);
@@ -608,6 +637,12 @@ public class ModMenuOverlay {
         switch (activeFilter) {
             case FAVORITES:
                 return isFavorite(mod);
+            case ENABLED:
+                return mod.isEnabled();
+            case INBUILT:
+                return mod.getSource() == UnifiedMod.Source.INBUILT;
+            case EXTERNAL:
+                return mod.getSource() == UnifiedMod.Source.EXTERNAL;
             case ALL:
             default:
                 return true;
@@ -620,7 +655,9 @@ public class ModMenuOverlay {
             safeString(mod.getName()) + " " +
             safeString(mod.getDescription()) + " " +
             safeString(mod.getId()) + " " +
-            safeString(mod.getModId())
+            safeString(mod.getModId()) + " " +
+            safeString(mod.getGroupName()) + " " +
+            safeString(mod.getGroupId())
         ).toLowerCase(Locale.ROOT);
         return searchText.contains(query);
     }
@@ -636,23 +673,26 @@ public class ModMenuOverlay {
     private void updateFilterButtons() {
         updateFilterButton(filterAll, activeFilter == ModuleFilter.ALL);
         updateFilterButton(filterFavorites, activeFilter == ModuleFilter.FAVORITES);
+        updateFilterButton(filterEnabled, activeFilter == ModuleFilter.ENABLED);
+        updateFilterButton(filterInbuilt, activeFilter == ModuleFilter.INBUILT);
+        updateFilterButton(filterExternal, activeFilter == ModuleFilter.EXTERNAL);
     }
 
     private void updateFilterButton(TextView view, boolean selected) {
         if (view == null) return;
-        view.setTextColor(selected ? getAccentColor() : 0xFFAAAAAA);
-        view.setAlpha(selected ? 1f : 0.72f);
+        view.setTextColor(selected ? getAccentColor() : 0xFFA8B0B8);
+        view.setAlpha(1f);
         Drawable background = view.getBackground();
         if (background != null) {
-            background.mutate().setTint(selected ? 0x334AE0A0 : 0x1A888888);
+            background.mutate().setTint(selected ? 0x334AE0A0 : 0xFF24282C);
         }
     }
 
     private void updateNavItem(TextView view, boolean selected) {
         if (view == null) return;
-        int color = selected ? getAccentColor() : 0xFFAAAAAA;
+        int color = selected ? getAccentColor() : 0xFFA8B0B8;
         view.setTextColor(color);
-        view.setAlpha(selected ? 1f : 0.6f);
+        view.setAlpha(selected ? 1f : 0.82f);
         view.setCompoundDrawableTintList(ColorStateList.valueOf(color));
     }
 
@@ -673,18 +713,21 @@ public class ModMenuOverlay {
         favoriteKeys.clear();
         favoriteKeys.addAll(manager.getFavoriteModKeys());
         InbuiltOverlayManager overlayMgr = InbuiltOverlayManager.getInstance();
+        String inbuiltGroupName = activity.getString(R.string.mod_menu_group_inbuilt);
         for (InbuiltMod im : manager.getAllMods(activity)) {
             boolean active = overlayMgr != null && overlayMgr.isModActive(im.getId());
             allMods.add(new UnifiedMod(
                 im.getId(), im.getName(), im.getDescription(), "inbuilt",
-                UnifiedMod.Source.INBUILT, active, null, true));
+                UnifiedMod.Source.INBUILT, active, null, true,
+                INBUILT_GROUP_ID, inbuiltGroupName));
         }
 
         // Add external mods from native registry
+        Map<String, String> externalGroupNames = loadExternalModDisplayNames();
         int extCount = ExternalModBridge.getExternalModCount();
         for (int i = 0; i < extCount; i++) {
             String json = ExternalModBridge.getExternalModInfo(i);
-            UnifiedMod extMod = parseExternalMod(json);
+            UnifiedMod extMod = parseExternalMod(json, externalGroupNames);
             if (extMod != null) {
                 allMods.add(extMod);
             }
@@ -693,7 +736,7 @@ public class ModMenuOverlay {
         applyFilters();
     }
 
-    private UnifiedMod parseExternalMod(String json) {
+    private UnifiedMod parseExternalMod(String json, Map<String, String> externalGroupNames) {
         try {
             JSONObject obj = new JSONObject(json);
             String moduleId = obj.optString("module_id", "");
@@ -701,8 +744,14 @@ public class ModMenuOverlay {
 
             String displayName = obj.optString("display_name", moduleId);
             String description = obj.optString("description", "");
-            String modId = obj.optString("mod_id", "");
+            String modId = obj.optString("mod_id", "").trim();
             boolean enabled = obj.optBoolean("enabled", false);
+            String groupId = modId.isEmpty()
+                ? EXTERNAL_UNGROUPED_GROUP_ID
+                : EXTERNAL_GROUP_PREFIX + modId;
+            String groupName = modId.isEmpty()
+                ? activity.getString(R.string.mod_menu_group_external_ungrouped)
+                : externalGroupNames.getOrDefault(modId, modId);
 
             List<UnifiedMod.ConfigEntry> configs = new ArrayList<>();
             JSONArray cfgArray = obj.optJSONArray("configs");
@@ -732,10 +781,26 @@ public class ModMenuOverlay {
             }
 
             return new UnifiedMod(moduleId, displayName, description, modId,
-                    UnifiedMod.Source.EXTERNAL, enabled, configs);
+                    UnifiedMod.Source.EXTERNAL, enabled, configs, false,
+                    groupId, groupName);
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private Map<String, String> loadExternalModDisplayNames() {
+        Map<String, String> names = new LinkedHashMap<>();
+        try {
+            for (Mod mod : ModManager.getInstance().getMods()) {
+                String displayName = mod.getDisplayName();
+                names.put(mod.getId(),
+                    displayName == null || displayName.trim().isEmpty()
+                        ? mod.getId()
+                        : displayName.trim());
+            }
+        } catch (Exception ignored) {
+        }
+        return names;
     }
     
     private void filterMods(String query) {
@@ -808,5 +873,29 @@ public class ModMenuOverlay {
     
     public boolean isShowing() {
         return isShowing;
+    }
+
+    private static class GroupedMods {
+        private final List<UnifiedMod> favorites = new ArrayList<>();
+        private final List<UnifiedMod> others = new ArrayList<>();
+
+        void add(UnifiedMod mod, boolean favorite) {
+            if (favorite) {
+                favorites.add(mod);
+            } else {
+                others.add(mod);
+            }
+        }
+
+        void appendTo(List<UnifiedMod> target) {
+            sort(favorites);
+            sort(others);
+            target.addAll(favorites);
+            target.addAll(others);
+        }
+
+        private void sort(List<UnifiedMod> mods) {
+            mods.sort((left, right) -> left.getName().compareToIgnoreCase(right.getName()));
+        }
     }
 }

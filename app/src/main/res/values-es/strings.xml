@@ -724,6 +724,10 @@ La migración debe completarse antes de continuar con LeviLauncher.</string>
     <string name="mod_menu_favorite">Añadir a favoritos</string>
     <string name="mod_menu_unfavorite">Quitar de favoritos</string>
     <string name="mod_menu_hud_editor">Editor de HUD</string>
+    <string name="mod_menu_hud_editor_desc">Arrastra los elementos HUD visibles en el juego y luego guarda o restablece sus posiciones.</string>
+    <string name="mod_menu_filter_enabled">Activados</string>
+    <string name="mod_menu_filter_inbuilt">Integrados</string>
+    <string name="mod_menu_filter_external">Externos</string>
     <string name="mod_menu_no_favorites">Aún no hay mods favoritos</string>
     <string name="mod_menu_no_matches">No hay mods coincidentes</string>
     <string name="mod_menu_module_count">%1$d / %2$d</string>

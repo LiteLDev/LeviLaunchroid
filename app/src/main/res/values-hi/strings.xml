@@ -751,6 +751,10 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="mod_menu_favorite">पसंदीदा में जोड़ें</string>
     <string name="mod_menu_unfavorite">पसंदीदा से हटाएं</string>
     <string name="mod_menu_hud_editor">HUD एडिटर</string>
+    <string name="mod_menu_hud_editor_desc">गेम में दिख रहे HUD तत्वों को खींचें, फिर उनकी स्थिति सेव या रीसेट करें।</string>
+    <string name="mod_menu_filter_enabled">सक्षम</string>
+    <string name="mod_menu_filter_inbuilt">अंतर्निर्मित</string>
+    <string name="mod_menu_filter_external">बाहरी</string>
     <string name="mod_menu_no_favorites">अभी कोई पसंदीदा मॉड नहीं</string>
     <string name="mod_menu_no_matches">कोई मेल खाता मॉड नहीं</string>
     <string name="mod_menu_module_count">%1$d / %2$d</string>

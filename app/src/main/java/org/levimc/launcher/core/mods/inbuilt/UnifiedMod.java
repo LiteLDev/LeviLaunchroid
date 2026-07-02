@@ -47,6 +47,8 @@ public class UnifiedMod {
     private final String name;
     private final String description;
     private final String modId;
+    private final String groupId;
+    private final String groupName;
     private final Source source;
     private boolean enabled;
     private final List<ConfigEntry> configEntries;
@@ -60,10 +62,19 @@ public class UnifiedMod {
     public UnifiedMod(String id, String name, String description, String modId,
                       Source source, boolean enabled, List<ConfigEntry> configEntries,
                       boolean forceHasConfig) {
+        this(id, name, description, modId, source, enabled, configEntries,
+                forceHasConfig, defaultGroupId(source, modId), defaultGroupName(source, modId));
+    }
+
+    public UnifiedMod(String id, String name, String description, String modId,
+                      Source source, boolean enabled, List<ConfigEntry> configEntries,
+                      boolean forceHasConfig, String groupId, String groupName) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.modId = modId;
+        this.groupId = normalizeGroupValue(groupId, defaultGroupId(source, modId));
+        this.groupName = normalizeGroupValue(groupName, defaultGroupName(source, modId));
         this.source = source;
         this.enabled = enabled;
         this.configEntries = configEntries != null ? configEntries : Collections.emptyList();
@@ -74,6 +85,8 @@ public class UnifiedMod {
     public String getName() { return name; }
     public String getDescription() { return description; }
     public String getModId() { return modId; }
+    public String getGroupId() { return groupId; }
+    public String getGroupName() { return groupName; }
     public Source getSource() { return source; }
     public String getFavoriteKey() {
         return source.name().toLowerCase(Locale.US) + ":" + id;
@@ -82,4 +95,29 @@ public class UnifiedMod {
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
     public List<ConfigEntry> getConfigEntries() { return configEntries; }
     public boolean hasConfig() { return forceHasConfig || !configEntries.isEmpty(); }
+
+    private static String defaultGroupId(Source source, String modId) {
+        if (source == Source.INBUILT) {
+            return "inbuilt";
+        }
+        String normalizedModId = trimToEmpty(modId);
+        return normalizedModId.isEmpty() ? "external:ungrouped" : "external:" + normalizedModId;
+    }
+
+    private static String defaultGroupName(Source source, String modId) {
+        if (source == Source.INBUILT) {
+            return "Inbuilt";
+        }
+        String normalizedModId = trimToEmpty(modId);
+        return normalizedModId.isEmpty() ? "External" : normalizedModId;
+    }
+
+    private static String normalizeGroupValue(String value, String fallback) {
+        String normalized = trimToEmpty(value);
+        return normalized.isEmpty() ? fallback : normalized;
+    }
+
+    private static String trimToEmpty(String value) {
+        return value == null ? "" : value.trim();
+    }
 }

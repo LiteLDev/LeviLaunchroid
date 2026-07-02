@@ -5,7 +5,7 @@
     android:layout_height="132dp"
     android:layout_margin="8dp"
     android:defaultFocusHighlightEnabled="false"
-    app:cardBackgroundColor="#1A1A1A"
+    app:cardBackgroundColor="#24282C"
     app:cardCornerRadius="8dp"
     app:cardElevation="2dp">
 
@@ -40,7 +40,7 @@
                 android:defaultFocusHighlightEnabled="false"
                 android:padding="5dp"
                 android:src="@drawable/ic_star"
-                android:tint="#666666" />
+                android:tint="#A8B0B8" />
 
         </LinearLayout>
 
@@ -53,7 +53,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:textColor="#FFFFFF"
+            android:textColor="#F1F4F6"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -88,7 +88,7 @@
                 android:defaultFocusHighlightEnabled="false"
                 android:padding="5dp"
                 android:src="@drawable/ic_settings"
-                android:tint="#777777" />
+                android:tint="#A8B0B8" />
 
         </LinearLayout>
 

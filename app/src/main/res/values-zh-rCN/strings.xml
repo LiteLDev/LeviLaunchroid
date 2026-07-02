@@ -540,10 +540,16 @@
     <string name="mod_menu_favorite">加入收藏</string>
     <string name="mod_menu_unfavorite">取消收藏</string>
     <string name="mod_menu_hud_editor">HUD 编辑器</string>
+    <string name="mod_menu_hud_editor_desc">拖动游戏中可见的 HUD 元素，然后保存或重置它们的位置。</string>
+    <string name="mod_menu_filter_enabled">已启用</string>
+    <string name="mod_menu_filter_inbuilt">内置</string>
+    <string name="mod_menu_filter_external">外部</string>
     <string name="mod_menu_search_hint">搜索模组…</string>
     <string name="mod_menu_no_mods">未添加模组</string>
     <string name="mod_menu_no_favorites">还没有收藏的模组</string>
     <string name="mod_menu_no_matches">没有匹配的模组</string>
+    <string name="mod_menu_group_inbuilt">内置功能</string>
+    <string name="mod_menu_group_external_ungrouped">外部模组 / 未分组</string>
     <string name="mod_menu_module_count">%1$d / %2$d</string>
     <string name="mod_menu_general_settings">常规设置</string>
     <string name="mod_menu_appearance">外观</string>

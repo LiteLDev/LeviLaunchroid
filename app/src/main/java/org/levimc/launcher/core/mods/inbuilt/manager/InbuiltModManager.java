@@ -23,7 +23,7 @@ public class InbuiltModManager {
     private static final String KEY_MOD_MENU_OPACITY = "mod_menu_opacity";
     private static final String KEY_MOD_MENU_BUTTON_OPACITY = "mod_menu_button_opacity";
     private static final String KEY_PAUSE_MENU_ONLY = "pause_menu_only";
-    private static final String KEY_FAVORITE_MODS = "favorite_mods";
+    private static final String KEY_FAVORITE_MODS = "favorite_mod_ids";
     private static final String KEY_ZOOM_LEVEL = "zoom_level";
     private static final String KEY_ZOOM_KEYBIND = "zoom_keybind";
     private static final String KEY_CURSOR_SENSITIVITY = "cursor_sensitivity";
@@ -154,6 +154,10 @@ public class InbuiltModManager {
 
     public Set<String> getFavoriteModKeys() {
         return new HashSet<>(prefs.getStringSet(KEY_FAVORITE_MODS, new HashSet<>()));
+    }
+
+    public Set<String> getFavoriteModIds() {
+        return getFavoriteModKeys();
     }
 
     public boolean isModFavorite(String favoriteKey) {

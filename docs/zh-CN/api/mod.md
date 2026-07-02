@@ -114,6 +114,40 @@ bool MyMod::unload() {
 使用 `pl::config::ConfigFile<T>` 可以管理强类型 JSON 配置、自动更新默认布局，
 并生成启动器可编辑的 schema。详情见 [Config API 参考](/zh-CN/api/config)。
 
+## 模组菜单分组
+
+通过 `PLModMenu_Interface::RegisterModule` 注册游戏内模组菜单模块时，native mod
+应把 `PLModMenu_ModuleInfo::mod_id` 设置为所属 manifest 模组 id。
+
+LeviLauncher 会用这个 `mod_id` 把同一个模组注册的所有模块归到该模组显示名称下。
+`mod_id` 为空的模块仍然可以加载，但会显示在外部模组的未分组区域。
+
+```cpp
+#include <pl/c/PreloaderModMenu.h>
+
+bool MyMod::enable() {
+  auto *menu = GetPreloaderModMenu();
+  if (!menu)
+    return true;
+
+  auto &self = getSelf();
+  PLModMenu_ModuleInfo info{
+      .module_id = "my_mod.example_module",
+      .display_name = "Example Module",
+      .description = "Example module shown in the Mod Menu.",
+      .mod_id = self.getId().c_str(),
+      .default_enabled = false,
+      .on_toggle = nullptr,
+      .config_count = 0,
+      .configs = nullptr,
+      .on_config_changed = nullptr,
+      .hide_in_hud_editor = false,
+  };
+  menu->RegisterModule(&info);
+  return true;
+}
+```
+
 ## 注意事项
 
 - 模组数据放到 `getDataDir()`。

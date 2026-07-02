@@ -747,6 +747,10 @@ Migrasi harus selesai sebelum LeviLauncher dapat melanjutkan.</string>
     <string name="mod_menu_favorite">Tambahkan ke favorit</string>
     <string name="mod_menu_unfavorite">Hapus dari favorit</string>
     <string name="mod_menu_hud_editor">Editor HUD</string>
+    <string name="mod_menu_hud_editor_desc">Seret elemen HUD yang terlihat di dalam game, lalu simpan atau reset posisinya.</string>
+    <string name="mod_menu_filter_enabled">Aktif</string>
+    <string name="mod_menu_filter_inbuilt">Bawaan</string>
+    <string name="mod_menu_filter_external">Eksternal</string>
     <string name="mod_menu_no_favorites">Belum ada mod favorit</string>
     <string name="mod_menu_no_matches">Tidak ada mod yang cocok</string>
     <string name="mod_menu_module_count">%1$d / %2$d</string>

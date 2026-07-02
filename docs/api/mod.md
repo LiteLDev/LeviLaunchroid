@@ -116,6 +116,42 @@ Use `pl::config::ConfigFile<T>` for typed JSON config files, automatic default
 layout updates, and launcher-editable schema generation. See the
 [Config API Reference](/api/config).
 
+## Mod Menu Grouping
+
+Native mods that register in-game Mod Menu modules through
+`PLModMenu_Interface::RegisterModule` should set
+`PLModMenu_ModuleInfo::mod_id` to the owning manifest mod id.
+
+LeviLauncher uses that `mod_id` to group all modules registered by the same
+mod under the mod display name. Modules with an empty `mod_id` still load, but
+they are shown in the ungrouped external-mod section.
+
+```cpp
+#include <pl/c/PreloaderModMenu.h>
+
+bool MyMod::enable() {
+  auto *menu = GetPreloaderModMenu();
+  if (!menu)
+    return true;
+
+  auto &self = getSelf();
+  PLModMenu_ModuleInfo info{
+      .module_id = "my_mod.example_module",
+      .display_name = "Example Module",
+      .description = "Example module shown in the Mod Menu.",
+      .mod_id = self.getId().c_str(),
+      .default_enabled = false,
+      .on_toggle = nullptr,
+      .config_count = 0,
+      .configs = nullptr,
+      .on_config_changed = nullptr,
+      .hide_in_hud_editor = false,
+  };
+  menu->RegisterModule(&info);
+  return true;
+}
+```
+
 ## Notes
 
 - Store mod data in `getDataDir()`.
