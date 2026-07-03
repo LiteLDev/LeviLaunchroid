@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/external_overlay_button"
+    android:layout_width="56dp"
+    android:layout_height="56dp"
+    android:alpha="0.85"
+    android:clipToPadding="false"
+    android:contentDescription="@string/inbuilt_mods"
+    android:padding="5dp"
+    tools:ignore="TouchTargetSizeCheck">
+
+    <TextView
+        android:id="@+id/external_overlay_label"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:ellipsize="end"
+        android:fontFamily="sans"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textStyle="bold"
+        tools:text="Q" />
+
+</FrameLayout>

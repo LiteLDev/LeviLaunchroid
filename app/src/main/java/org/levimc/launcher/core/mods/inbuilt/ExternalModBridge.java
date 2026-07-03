@@ -11,6 +11,9 @@ public class ExternalModBridge {
     private static native String nativeGetExternalModInfo(int index);
     private static native void nativeToggleExternalMod(String moduleId, boolean enabled);
     private static native void nativeSetExternalModConfig(String moduleId, String key, String value);
+    private static native int nativeGetExternalButtonCount();
+    private static native String nativeGetExternalButtonInfo(int index);
+    private static native void nativeDispatchExternalButtonEvent(String buttonId, int event, float value);
     public static native byte[] nativeGetRegisteredFontBytes(String fontId);
 
     public static int getExternalModCount() {
@@ -49,6 +52,111 @@ public class ExternalModBridge {
         } catch (UnsatisfiedLinkError e) {
             Log.e(TAG, "nativeSetExternalModConfig not available", e);
         }
+    }
+
+    public static int getExternalButtonCount() {
+        if (!ModManager.ensurePreloaderLoaded()) return 0;
+        try {
+            return nativeGetExternalButtonCount();
+        } catch (UnsatisfiedLinkError e) {
+            Log.e(TAG, "nativeGetExternalButtonCount not available", e);
+            return 0;
+        }
+    }
+
+    public static String getExternalButtonInfo(int index) {
+        if (!ModManager.ensurePreloaderLoaded()) return "{}";
+        try {
+            return nativeGetExternalButtonInfo(index);
+        } catch (UnsatisfiedLinkError e) {
+            Log.e(TAG, "nativeGetExternalButtonInfo not available", e);
+            return "{}";
+        }
+    }
+
+    public static void dispatchExternalButtonEvent(String buttonId, int event, float value) {
+        if (!ModManager.ensurePreloaderLoaded()) return;
+        try {
+            nativeDispatchExternalButtonEvent(buttonId, event, value);
+        } catch (UnsatisfiedLinkError e) {
+            Log.e(TAG, "nativeDispatchExternalButtonEvent not available", e);
+        }
+    }
+
+    public static class ExternalButton {
+        public static final int BEHAVIOR_CLICK = 0;
+        public static final int BEHAVIOR_HOLD = 1;
+        public static final int BEHAVIOR_TOGGLE = 2;
+
+        public static final int EVENT_CLICK = 0;
+        public static final int EVENT_DOWN = 1;
+        public static final int EVENT_UP = 2;
+        public static final int EVENT_STATE_CHANGED = 3;
+        public static final int EVENT_SCROLL = 4;
+
+        public static final int STYLE_KEYCAP = 0;
+        public static final int STYLE_ACCENT = 1;
+
+        public String buttonId;
+        public String moduleId;
+        public String displayName;
+        public String modId;
+        public String label;
+        public int androidKeyCode;
+        public int behavior;
+        public boolean defaultVisible;
+        public boolean moduleEnabled;
+        public int stylePreset = STYLE_KEYCAP;
+        public int normalBgColor;
+        public int activeBgColor;
+        public int borderColor;
+        public int textColor;
+        public int activeTextColor;
+        public float widthScale;
+        public float heightScale;
+
+        public String positionKey() {
+            return "external_button:" + buttonId;
+        }
+    }
+
+    public static ExternalButton getExternalButton(int index) {
+        try {
+            org.json.JSONObject obj = new org.json.JSONObject(getExternalButtonInfo(index));
+            String buttonId = obj.optString("button_id", "");
+            String moduleId = obj.optString("module_id", "");
+            if (buttonId.isEmpty() || moduleId.isEmpty()) return null;
+
+            ExternalButton button = new ExternalButton();
+            button.buttonId = buttonId;
+            button.moduleId = moduleId;
+            button.displayName = obj.optString("display_name", buttonId);
+            button.modId = obj.optString("mod_id", "");
+            button.label = obj.optString("label", "");
+            button.androidKeyCode = obj.optInt("android_key_code", 0);
+            button.behavior = obj.optInt("behavior", ExternalButton.BEHAVIOR_CLICK);
+            button.defaultVisible = obj.optBoolean("default_visible", true);
+            button.moduleEnabled = obj.optBoolean("module_enabled", false);
+            org.json.JSONObject style = obj.optJSONObject("style");
+            if (style != null) {
+                button.stylePreset = style.optInt("preset", ExternalButton.STYLE_KEYCAP);
+                button.normalBgColor = optColor(style, "normal_bg_color");
+                button.activeBgColor = optColor(style, "active_bg_color");
+                button.borderColor = optColor(style, "border_color");
+                button.textColor = optColor(style, "text_color");
+                button.activeTextColor = optColor(style, "active_text_color");
+                button.widthScale = (float) style.optDouble("width_scale", 0.0);
+                button.heightScale = (float) style.optDouble("height_scale", 0.0);
+            }
+            return button;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private static int optColor(org.json.JSONObject obj, String key) {
+        long value = obj.optLong(key, 0L);
+        return (int) (value & 0xFFFFFFFFL);
     }
 
     public static native Object[] nativeGetDrawCommands();

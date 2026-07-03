@@ -76,6 +76,9 @@ public class ModMenuOverlay {
     private TextView modMenuOpacityText;
     private SeekBar modMenuButtonOpacitySeekBar;
     private TextView modMenuButtonOpacityText;
+    private SeekBar hudButtonSizeSeekBar;
+    private TextView hudButtonSizeText;
+    private boolean updatingHudButtonSize = false;
     
     private List<UnifiedMod> allMods = new ArrayList<>();
     private List<UnifiedMod> filteredMods = new ArrayList<>();
@@ -271,6 +274,29 @@ public class ModMenuOverlay {
         View btnHudSave = overlayView.findViewById(R.id.btn_hud_save);
         View btnHudCancel = overlayView.findViewById(R.id.btn_hud_cancel);
         View modMenuContainer = overlayView.findViewById(R.id.mod_menu_container);
+        hudButtonSizeSeekBar = overlayView.findViewById(R.id.seekbar_hud_button_size);
+        hudButtonSizeText = overlayView.findViewById(R.id.text_hud_button_size);
+
+        if (hudButtonSizeSeekBar != null) {
+            hudButtonSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (!fromUser || updatingHudButtonSize) return;
+                    InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+                    if (manager != null) {
+                        manager.setSelectedHudEditorButtonSize(progress);
+                    }
+                    updateHudButtonSizeText(progress);
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+            updateHudEditorSizeControls(null);
+        }
 
         if (navHudEditor != null) {
             navHudEditor.setOnClickListener(v -> {
@@ -423,6 +449,10 @@ public class ModMenuOverlay {
                     }
                 } else {
                     ExternalModBridge.toggleExternalMod(mod.getId(), enabled);
+                    InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+                    if (manager != null) {
+                        manager.handleExternalModuleToggle(mod.getId(), enabled);
+                    }
                     if (enabled && InbuiltModManager.getInstance(activity).isNotificationsEnabled()) {
                         notificationManager.show(mod.getName(), mod.getId());
                     }
@@ -555,6 +585,7 @@ public class ModMenuOverlay {
         }
         InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
         if (overlayManager != null) {
+            overlayManager.setHudEditorSelectionListener(this::updateHudEditorSizeControls);
             overlayManager.setHudEditorMode(true);
         }
     }
@@ -579,8 +610,33 @@ public class ModMenuOverlay {
         InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
         if (overlayManager != null) {
             overlayManager.setHudEditorMode(false);
+            overlayManager.setHudEditorSelectionListener(null);
         }
         showModulesSection();
+    }
+
+    private void updateHudEditorSizeControls(BaseOverlayButton overlay) {
+        if (hudButtonSizeSeekBar == null) return;
+        boolean hasSelection = overlay != null;
+        hudButtonSizeSeekBar.setEnabled(hasSelection);
+        if (!hasSelection) {
+            updateHudButtonSizeText(0);
+            return;
+        }
+        int size = overlay.getCurrentButtonSizeDp();
+        updatingHudButtonSize = true;
+        hudButtonSizeSeekBar.setProgress(size);
+        updatingHudButtonSize = false;
+        updateHudButtonSizeText(size);
+    }
+
+    private void updateHudButtonSizeText(int size) {
+        if (hudButtonSizeText == null) return;
+        if (size <= 0) {
+            hudButtonSizeText.setText(activity.getString(R.string.overlay_button_size));
+        } else {
+            hudButtonSizeText.setText(activity.getString(R.string.overlay_button_size_value, size));
+        }
     }
 
     private void setupFilterButtons() {
@@ -843,6 +899,7 @@ public class ModMenuOverlay {
         InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
         if (overlayManager != null) {
             overlayManager.setHudEditorMode(false);
+            overlayManager.setHudEditorSelectionListener(null);
         }
         
         Runnable performHide = () -> {

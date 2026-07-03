@@ -635,7 +635,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/hud_editor_tools"
         android:layout_width="wrap_content"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="20dp"
         android:visibility="gone"
@@ -645,59 +645,97 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingStart="12dp"
-            android:paddingEnd="8dp">
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_hud"
-                android:tint="#4AE0A0" />
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:text="@string/mod_menu_hud_editor"
-                android:textColor="#F1F4F6"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/btn_hud_save"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_mod_status_disabled"
-                android:contentDescription="@string/save"
-                android:padding="8dp"
-                android:src="@drawable/ic_check"
-                android:tint="#4AE0A0" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_hud"
+                    android:tint="#4AE0A0" />
 
-            <ImageButton
-                android:id="@+id/btn_hud_reset"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_mod_status_disabled"
-                android:contentDescription="@string/reset"
-                android:padding="8dp"
-                android:src="@drawable/ic_delete"
-                android:tint="#FF6B6B" />
+                <TextView
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="@string/mod_menu_hud_editor"
+                    android:textColor="#F1F4F6"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
-            <ImageButton
-                android:id="@+id/btn_hud_cancel"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_close_button"
-                android:contentDescription="@string/cancel"
-                android:padding="8dp"
-                android:src="@drawable/ic_close"
-                android:tint="#FFFFFF" />
+                <ImageButton
+                    android:id="@+id/btn_hud_save"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_mod_status_disabled"
+                    android:contentDescription="@string/save"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_check"
+                    android:tint="#4AE0A0" />
+
+                <ImageButton
+                    android:id="@+id/btn_hud_reset"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_mod_status_disabled"
+                    android:contentDescription="@string/reset"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_delete"
+                    android:tint="#FF6B6B" />
+
+                <ImageButton
+                    android:id="@+id/btn_hud_cancel"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_close_button"
+                    android:contentDescription="@string/cancel"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_close"
+                    android:tint="#FFFFFF" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_hud_button_size"
+                    android:layout_width="82dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/overlay_button_size"
+                    android:textColor="#4AE0A0"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <SeekBar
+                    android:id="@+id/seekbar_hud_button_size"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:max="100"
+                    android:min="20"
+                    android:progress="56"
+                    android:progressTint="#4AE0A0"
+                    android:thumbTint="#4AE0A0" />
+
+            </LinearLayout>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

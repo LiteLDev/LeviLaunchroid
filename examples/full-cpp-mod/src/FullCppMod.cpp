@@ -1,6 +1,7 @@
 #include "ExampleConfig.hpp"
 
 #include <algorithm>
+#include <atomic>
 #include <cerrno>
 #include <cstdlib>
 #include <cstring>
@@ -27,6 +28,10 @@ constexpr const char *kOpacityKey = "opacity";
 constexpr const char *kScaleKey = "scale";
 constexpr const char *kModeKey = "mode";
 constexpr const char *kAccentColorKey = "accentColor";
+constexpr const char *kQuickDropButtonId = "full_cpp_mod.quick_drop_button";
+constexpr const char *kHoldButtonId = "full_cpp_mod.hold_button";
+constexpr const char *kToggleButtonId = "full_cpp_mod.toggle_button";
+constexpr const char *kTakeButtonId = "full_cpp_mod.take_button";
 
 std::string_view viewOrEmpty(const char *value) {
   return value ? std::string_view(value) : std::string_view();
@@ -181,7 +186,7 @@ public:
 
   bool enable() {
     const auto snapshot = snapshotConfig();
-    const bool registered =
+    const bool moduleRegistered =
         pl::modmenu::ModuleBuilder(kModuleId, "Full C++ Config Demo")
             .description(
                 "Pure C++ lifecycle module with persistent typed config.")
@@ -205,12 +210,60 @@ public:
             .onConfigChanged(onConfigChanged)
             .registerModule();
 
+    const bool quickDropButtonRegistered =
+        moduleRegistered &&
+        pl::modmenu::ButtonBuilder(kQuickDropButtonId, "Full C++ Quick Drop")
+            .moduleId(kModuleId)
+            .label("Q")
+            .androidKeyCode(45)
+            .behavior(PL_BUTTON_CLICK)
+            .registerButton();
+
+    const bool holdButtonRegistered =
+        moduleRegistered &&
+        pl::modmenu::ButtonBuilder(kHoldButtonId, "Full C++ Hold Demo")
+            .moduleId(kModuleId)
+            .label("H")
+            .behavior(PL_BUTTON_HOLD)
+            .onEvent(onButtonEvent)
+            .registerButton();
+
+    const bool toggleButtonRegistered =
+        moduleRegistered &&
+        pl::modmenu::ButtonBuilder(kToggleButtonId, "Full C++ Toggle Demo")
+            .moduleId(kModuleId)
+            .label("T")
+            .behavior(PL_BUTTON_TOGGLE)
+            .stylePreset(PL_BUTTON_STYLE_ACCENT)
+            .styleColors(0xCC24282CU, 0xFF4AE0A0U, 0x994AE0A0U)
+            .textColor(0xFFFFFFFFU)
+            .activeTextColor(0xFF000000U)
+            .onEvent(onButtonEvent)
+            .registerButton();
+
+    const bool takeButtonRegistered =
+        moduleRegistered &&
+        pl::modmenu::ButtonBuilder(kTakeButtonId, "Full C++ Take Demo")
+            .moduleId(kModuleId)
+            .label("Take")
+            .behavior(PL_BUTTON_CLICK)
+            .sizeScale(2.0f, 1.0f)
+            .onEvent(onButtonEvent)
+            .registerButton();
+
+    const bool registered = moduleRegistered && quickDropButtonRegistered &&
+                            holdButtonRegistered && toggleButtonRegistered &&
+                            takeButtonRegistered;
     if (const auto self = pl::mod::NativeMod::current()) {
       if (registered) {
-        self->getLogger().info("Registered Mod Menu module {}", kModuleId);
+        self->getLogger().info("Registered Mod Menu module {} and demo buttons",
+                               kModuleId);
       } else {
-        self->getLogger().error("Failed to register Mod Menu module {}",
-                                kModuleId);
+        self->getLogger().error(
+            "Failed to register Mod Menu module/buttons: module={} quickDrop={} "
+            "hold={} toggle={} take={}",
+            moduleRegistered, quickDropButtonRegistered, holdButtonRegistered,
+            toggleButtonRegistered, takeButtonRegistered);
       }
     }
     return registered;
@@ -239,6 +292,8 @@ public:
 private:
   std::mutex configMutex;
   std::optional<pl::config::ConfigFile<ExampleConfig>> configFile;
+  std::atomic_bool holdButtonDown{false};
+  std::atomic_bool toggleButtonActive{false};
 
   ExampleConfig snapshotConfig() {
     std::lock_guard lock(configMutex);
@@ -257,6 +312,11 @@ private:
   static void onConfigChanged(const char *moduleId, const char *key,
                               const char *value) {
     instance().handleConfigChanged(moduleId, key, value);
+  }
+
+  static void onButtonEvent(const char *buttonId, PLModMenu_ButtonEvent event,
+                            float value) {
+    instance().handleButtonEvent(buttonId, event, value);
   }
 
   void handleModuleToggle(const char *moduleId, bool enabled) {
@@ -326,8 +386,44 @@ private:
     return saved;
   }
 
+  void handleButtonEvent(const char *buttonId, PLModMenu_ButtonEvent event,
+                         float value) {
+    if (!buttonId) {
+      return;
+    }
+
+    const std::string_view id(buttonId);
+    if (id == kHoldButtonId) {
+      if (event == PL_BUTTON_EVENT_DOWN) {
+        holdButtonDown = true;
+      } else if (event == PL_BUTTON_EVENT_UP) {
+        holdButtonDown = false;
+      }
+    } else if (id == kToggleButtonId &&
+               event == PL_BUTTON_EVENT_STATE_CHANGED) {
+      toggleButtonActive = value > 0.5f;
+    } else if (id == kTakeButtonId) {
+      // Logged below.
+    } else {
+      return;
+    }
+
+    if (const auto self = pl::mod::NativeMod::current()) {
+      self->getLogger().info(
+          "External button {} event={} value={} holdDown={} toggleActive={}",
+          buttonId, static_cast<int>(event), value, holdButtonDown.load(),
+          toggleButtonActive.load());
+    }
+  }
+
   void unregisterModule() {
     const auto menu = GetPreloaderModMenu();
+    if (menu && menu->UnregisterButton) {
+      menu->UnregisterButton(kQuickDropButtonId);
+      menu->UnregisterButton(kHoldButtonId);
+      menu->UnregisterButton(kToggleButtonId);
+      menu->UnregisterButton(kTakeButtonId);
+    }
     if (menu && menu->UnregisterModule) {
       menu->UnregisterModule(kModuleId);
     }

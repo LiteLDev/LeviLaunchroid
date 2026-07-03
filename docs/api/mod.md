@@ -243,6 +243,88 @@ bool MyMod::enable() {
 }
 ```
 
+## Custom Binding Buttons
+
+After registering a module, a mod can register one or more floating buttons.
+Buttons follow the enabled state of their owning module and reuse HUD editor
+position, size, opacity, and lock controls.
+
+```cpp
+constexpr const char *kQuickDropButton = "example_mod.speed_meter.quick_drop";
+
+void onButtonEvent(const char *button_id, PLModMenu_ButtonEvent event,
+                   float value) {
+  if (event == PL_BUTTON_EVENT_STATE_CHANGED) {
+    const bool active = value > 0.5f;
+    // Apply toggle state.
+  }
+}
+
+bool MyMod::enable() {
+  pl::modmenu::ModuleBuilder(kModuleId, "Speed Meter")
+      .defaultEnabled(true)
+      .registerModule();
+
+  return pl::modmenu::ButtonBuilder(kQuickDropButton, "Quick Drop")
+      .moduleId(kModuleId)
+      .label("Q")
+      .androidKeyCode(45) // Android KEYCODE_Q
+      .behavior(PL_BUTTON_CLICK)
+      .onEvent(onButtonEvent)
+      .registerButton();
+}
+```
+
+Buttons use the default `PL_BUTTON_STYLE_KEYCAP` preset, so labels are rendered
+inside the same keycap surface as the built-in overlay buttons. Short labels
+like `Q` or `H` stay square; multi-letter labels like `Take` or `Drop` are
+automatically widened. The HUD editor size slider controls the base button
+size, and a mod can tune the button shape with `.sizeScale(width, height)`:
+
+```cpp
+pl::modmenu::ButtonBuilder("example_mod.speed_meter.take", "Take")
+    .moduleId(kModuleId)
+    .label("Take")
+    .behavior(PL_BUTTON_CLICK)
+    .sizeScale(2.0f, 1.0f)
+    .onEvent(onButtonEvent)
+    .registerButton();
+```
+
+Use the builder style helpers only when the button needs a different accent;
+style and size can be combined:
+
+```cpp
+pl::modmenu::ButtonBuilder("example_mod.speed_meter.toggle", "Toggle")
+    .moduleId(kModuleId)
+    .label("T")
+    .behavior(PL_BUTTON_TOGGLE)
+    .stylePreset(PL_BUTTON_STYLE_ACCENT)
+    .styleColors(0xCC24282CU, 0xFF4AE0A0U, 0x994AE0A0U)
+    .textColor(0xFFFFFFFFU)
+    .activeTextColor(0xFF000000U)
+    .sizeScale(1.4f, 1.0f)
+    .onEvent(onButtonEvent)
+    .registerButton();
+```
+
+Button behaviors:
+
+| Behavior | Notes |
+| --- | --- |
+| `PL_BUTTON_CLICK` | Taps trigger the optional `android_key_code` and `PL_BUTTON_EVENT_CLICK`. |
+| `PL_BUTTON_HOLD` | Press triggers `PL_BUTTON_EVENT_DOWN`; release or hide triggers `PL_BUTTON_EVENT_UP`. |
+| `PL_BUTTON_TOGGLE` | Each tap toggles state and sends `PL_BUTTON_EVENT_STATE_CHANGED` with `1.0` or `0.0`. |
+
+The raw C API uses `PLModMenu_ButtonInfo` and `RegisterButton()`. To provide
+only colors, pass a `PLModMenu_ButtonStyle` to `RegisterButtonWithStyle()`. To
+also specify shape ratios, pass a `PLModMenu_ButtonStyleV2` to
+`RegisterButtonWithStyleV2()`. Color fields use `0xAARRGGBB`; leave a color as
+`0` to use the preset default. Leave `width_scale` / `height_scale` as `0` to
+use defaults; width then auto-expands from the label length. `button_id` must
+be globally unique, and `module_id` must point to the owning menu module.
+`label` is the text shown inside the keycap and supports multiple letters.
+
 Field notes:
 
 | Field | Notes |

@@ -10,6 +10,7 @@
 
 static const char *kLogTag = "LLMenuCExample";
 static const char *kModuleId = "example.c_lifecycle.raw_api";
+static const char *kQuickDropButtonId = "example.c_lifecycle.quick_drop_button";
 
 static bool g_enabled = false;
 static bool g_visible = true;
@@ -47,6 +48,17 @@ static void on_config_changed(const char *module_id, const char *key,
 
   __android_log_print(ANDROID_LOG_INFO, kLogTag, "config %s.%s = %s",
                       module_id, key, safe_value);
+}
+
+static void on_button_event(const char *button_id,
+                            PLModMenu_ButtonEvent event, float value) {
+  if (!button_id || strcmp(button_id, kQuickDropButtonId) != 0) {
+    return;
+  }
+
+  __android_log_print(ANDROID_LOG_INFO, kLogTag,
+                      "button %s event %d value %.2f", button_id, event,
+                      value);
 }
 
 PL_SHARED_EXPORT bool PLMod_Load(JavaVM *vm, const PLModInfo *mod_info) {
@@ -103,7 +115,45 @@ PL_SHARED_EXPORT bool PLMod_Load(JavaVM *vm, const PLModInfo *mod_info) {
       .hide_in_hud_editor = false,
   };
 
-  return menu->RegisterModule(&info);
+  if (!menu->RegisterModule(&info)) {
+    return false;
+  }
+
+  if (menu->RegisterButton) {
+    PLModMenu_ButtonInfo button = {
+        .button_id = kQuickDropButtonId,
+        .module_id = kModuleId,
+        .display_name = "C Quick Drop Button",
+        .mod_id = NULL,
+        .label = "Drop",
+        .android_key_code = 45,
+        .behavior = PL_BUTTON_CLICK,
+        .default_visible = true,
+        .on_event = on_button_event,
+    };
+    PLModMenu_ButtonStyleV2 style = {
+        .base =
+            {
+                .preset = PL_BUTTON_STYLE_ACCENT,
+                .normal_bg_color = 0xCC24282CU,
+                .active_bg_color = 0xFF4AE0A0U,
+                .border_color = 0x994AE0A0U,
+                .text_color = 0xFFFFFFFFU,
+                .active_text_color = 0xFF000000U,
+            },
+        .width_scale = 1.9f,
+        .height_scale = 1.0f,
+    };
+    if (menu->RegisterButtonWithStyleV2) {
+      return menu->RegisterButtonWithStyleV2(&button, &style);
+    }
+    if (menu->RegisterButtonWithStyle) {
+      return menu->RegisterButtonWithStyle(&button, &style.base);
+    }
+    return menu->RegisterButton(&button);
+  }
+
+  return true;
 }
 
 PL_SHARED_EXPORT bool PLMod_Enable(void) {

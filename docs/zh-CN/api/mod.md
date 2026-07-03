@@ -240,6 +240,84 @@ bool MyMod::enable() {
 }
 ```
 
+## 自定义绑定按钮
+
+模块注册后，可以再注册一个或多个浮层按钮。按钮会跟随所属模块启用状态显示，
+并复用 HUD 编辑器里的拖动、大小、透明度和锁定设置。
+
+```cpp
+constexpr const char *kQuickDropButton = "example_mod.speed_meter.quick_drop";
+
+void onButtonEvent(const char *button_id, PLModMenu_ButtonEvent event,
+                   float value) {
+  if (event == PL_BUTTON_EVENT_STATE_CHANGED) {
+    const bool active = value > 0.5f;
+    // 应用切换状态。
+  }
+}
+
+bool MyMod::enable() {
+  pl::modmenu::ModuleBuilder(kModuleId, "Speed Meter")
+      .defaultEnabled(true)
+      .registerModule();
+
+  return pl::modmenu::ButtonBuilder(kQuickDropButton, "Quick Drop")
+      .moduleId(kModuleId)
+      .label("Q")
+      .androidKeyCode(45) // Android KEYCODE_Q
+      .behavior(PL_BUTTON_CLICK)
+      .onEvent(onButtonEvent)
+      .registerButton();
+}
+```
+
+按钮默认使用 `PL_BUTTON_STYLE_KEYCAP` 预设，label 会渲染在和内置浮层按钮一致的
+keycap 底座里。`Q`、`H` 这类短 label 保持方形；`Take`、`Drop` 这类多字母
+label 会按长度自动拉宽。HUD 编辑器里的大小滑杆控制基础尺寸，按钮自己的宽高
+比例可以由 mod 通过 `.sizeScale(width, height)` 指定：
+
+```cpp
+pl::modmenu::ButtonBuilder("example_mod.speed_meter.take", "Take")
+    .moduleId(kModuleId)
+    .label("Take")
+    .behavior(PL_BUTTON_CLICK)
+    .sizeScale(2.0f, 1.0f)
+    .onEvent(onButtonEvent)
+    .registerButton();
+```
+
+只有需要强调色时才使用样式 helper；样式和尺寸可以组合：
+
+```cpp
+pl::modmenu::ButtonBuilder("example_mod.speed_meter.toggle", "Toggle")
+    .moduleId(kModuleId)
+    .label("T")
+    .behavior(PL_BUTTON_TOGGLE)
+    .stylePreset(PL_BUTTON_STYLE_ACCENT)
+    .styleColors(0xCC24282CU, 0xFF4AE0A0U, 0x994AE0A0U)
+    .textColor(0xFFFFFFFFU)
+    .activeTextColor(0xFF000000U)
+    .sizeScale(1.4f, 1.0f)
+    .onEvent(onButtonEvent)
+    .registerButton();
+```
+
+按钮行为：
+
+| 行为 | 说明 |
+| --- | --- |
+| `PL_BUTTON_CLICK` | 点击时触发可选 `android_key_code` 和 `PL_BUTTON_EVENT_CLICK`。 |
+| `PL_BUTTON_HOLD` | 按下触发 `PL_BUTTON_EVENT_DOWN`，抬起或隐藏时触发 `PL_BUTTON_EVENT_UP`。 |
+| `PL_BUTTON_TOGGLE` | 每次点击切换状态，并用 `PL_BUTTON_EVENT_STATE_CHANGED` 传出 `1.0` 或 `0.0`。 |
+
+原始 C API 使用 `PLModMenu_ButtonInfo` 并调用 `RegisterButton()`。如果只提供
+颜色样式，把 `PLModMenu_ButtonStyle` 传给 `RegisterButtonWithStyle()`；如果还要
+指定宽高比例，把 `PLModMenu_ButtonStyleV2` 传给 `RegisterButtonWithStyleV2()`。
+颜色字段使用 `0xAARRGGBB`；字段为 `0` 时使用预设默认值。`width_scale` /
+`height_scale` 为 `0` 时使用默认逻辑，其中宽度会按 label 自动拉宽。
+`button_id` 必须全局唯一，`module_id` 必须指向所属菜单模块。`label` 是 keycap
+内部文本，支持多字母。
+
 字段说明：
 
 | 字段 | 说明 |
