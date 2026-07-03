@@ -256,13 +256,22 @@ public class InbuiltOverlayManager {
     }
 
     private void refreshExternalButtons() {
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
         java.util.Set<String> enabledModules = new java.util.HashSet<>();
         int extCount = ExternalModBridge.getExternalModCount();
         for (int i = 0; i < extCount; i++) {
             try {
                 org.json.JSONObject obj = new org.json.JSONObject(ExternalModBridge.getExternalModInfo(i));
-                if (obj.optBoolean("enabled", false)) {
-                    enabledModules.add(obj.optString("module_id", ""));
+                String moduleId = obj.optString("module_id", "");
+                if (moduleId.isEmpty()) continue;
+
+                boolean nativeEnabled = obj.optBoolean("enabled", false);
+                boolean enabled = manager.resolveExternalModuleEnabled(moduleId, nativeEnabled);
+                if (enabled != nativeEnabled) {
+                    ExternalModBridge.toggleExternalMod(moduleId, enabled);
+                }
+                if (enabled) {
+                    enabledModules.add(moduleId);
                 }
             } catch (Exception ignored) {}
         }

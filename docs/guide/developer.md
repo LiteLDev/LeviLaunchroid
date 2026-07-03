@@ -138,7 +138,6 @@ enum class DisplayMode {
 
 struct ExampleConfig {
   int version = 1;
-  bool moduleEnabled = true;
   bool showOverlay = true;
   int opacity = 80;
   double scale = 1.0;
@@ -193,7 +192,7 @@ the current native mod id as the owner group when called from `enable()`:
 ```cpp
 return pl::modmenu::ModuleBuilder("full_cpp_mod.hud", "Full C++ Config Demo")
     .description("Pure C++ lifecycle module with persistent typed config.")
-    .defaultEnabled(config.moduleEnabled)
+    .defaultEnabled(true)
     .onToggle(onModuleToggle)
     .config("showOverlay", "Show Overlay", PL_CONFIG_TOGGLE, "true")
     .config("opacity", "Opacity", PL_CONFIG_SLIDER_INT, "80", "0", "100")
@@ -204,6 +203,10 @@ return pl::modmenu::ModuleBuilder("full_cpp_mod.hud", "Full C++ Config Demo")
     .onConfigChanged(onConfigChanged)
     .registerModule();
 ```
+
+LeviLauncher persists the user's Mod Menu enabled state per `module_id`.
+`defaultEnabled()` is only the first-seen default; keep mod-owned config for
+parameters such as overlay visibility, opacity, scale, mode, and colors.
 
 Menu callbacks receive strings. Parse them defensively, clamp numeric values to
 the same ranges as the menu/schema, then call `save()`:

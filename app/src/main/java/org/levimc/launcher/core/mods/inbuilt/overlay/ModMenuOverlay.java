@@ -448,12 +448,14 @@ public class ModMenuOverlay {
                         callback.onModToggled(mod.getId(), enabled);
                     }
                 } else {
+                    InbuiltModManager modManager = InbuiltModManager.getInstance(activity);
+                    modManager.setExternalModuleEnabled(mod.getId(), enabled);
                     ExternalModBridge.toggleExternalMod(mod.getId(), enabled);
                     InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
                     if (manager != null) {
                         manager.handleExternalModuleToggle(mod.getId(), enabled);
                     }
-                    if (enabled && InbuiltModManager.getInstance(activity).isNotificationsEnabled()) {
+                    if (enabled && modManager.isNotificationsEnabled()) {
                         notificationManager.show(mod.getName(), mod.getId());
                     }
                 }
@@ -801,7 +803,8 @@ public class ModMenuOverlay {
             String displayName = obj.optString("display_name", moduleId);
             String description = obj.optString("description", "");
             String modId = obj.optString("mod_id", "").trim();
-            boolean enabled = obj.optBoolean("enabled", false);
+            boolean nativeEnabled = obj.optBoolean("enabled", false);
+            boolean enabled = resolveExternalModuleEnabled(moduleId, nativeEnabled);
             String groupId = modId.isEmpty()
                 ? EXTERNAL_UNGROUPED_GROUP_ID
                 : EXTERNAL_GROUP_PREFIX + modId;
@@ -842,6 +845,19 @@ public class ModMenuOverlay {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private boolean resolveExternalModuleEnabled(String moduleId, boolean nativeEnabled) {
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        boolean enabled = manager.resolveExternalModuleEnabled(moduleId, nativeEnabled);
+        if (enabled != nativeEnabled) {
+            ExternalModBridge.toggleExternalMod(moduleId, enabled);
+            InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
+            if (overlayManager != null) {
+                overlayManager.handleExternalModuleToggle(moduleId, enabled);
+            }
+        }
+        return enabled;
     }
 
     private Map<String, String> loadExternalModDisplayNames() {

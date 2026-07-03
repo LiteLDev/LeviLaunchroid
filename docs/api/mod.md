@@ -332,8 +332,8 @@ Field notes:
 | `module_id` | Must be globally unique. Use a stable prefix based on your mod id, such as `example_mod.speed_meter`. |
 | `display_name` / `description` | Shown in the in-game Mod Menu. The preloader copies these strings during registration. |
 | `mod_id` | Set this to `getSelf().getId().c_str()` or the exact manifest mod id when using the raw API. Lifecycle mods with an empty `mod_id` are assigned the current owner automatically; mismatched owner ids are rejected. |
-| `default_enabled` | Initial state shown by the menu. Load your saved state before registering if you persist it yourself. |
-| `on_toggle` | Called on the thread that changes the module state. Keep it fast and apply runtime state here. |
+| `default_enabled` | First-seen default state. LeviLauncher persists the user's later enabled/disabled choice per `module_id`. |
+| `on_toggle` | Called on the thread that changes the module state. Keep it fast and apply runtime state here; persist only mod-owned parameters. |
 | `configs` / `config_count` | Optional config entries. Pass `nullptr` and `0` when the module has no config. |
 | `on_config_changed` | Called on the thread that changes a config value. Parse the string value, apply it, and persist it if needed. |
 | `hide_in_hud_editor` | Set `true` for modules that should not appear in the HUD editor. |

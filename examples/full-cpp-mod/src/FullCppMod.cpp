@@ -190,7 +190,7 @@ public:
         pl::modmenu::ModuleBuilder(kModuleId, "Full C++ Config Demo")
             .description(
                 "Pure C++ lifecycle module with persistent typed config.")
-            .defaultEnabled(snapshot.moduleEnabled)
+            .defaultEnabled(true)
             .onToggle(onModuleToggle)
             .config(kShowOverlayKey, "Show Overlay", PL_CONFIG_TOGGLE,
                     boolToMenuValue(snapshot.showOverlay))
@@ -324,12 +324,10 @@ private:
       return;
     }
 
-    std::lock_guard lock(configMutex);
-    if (!configFile) {
-      return;
+    if (const auto self = pl::mod::NativeMod::current()) {
+      self->getLogger().info("Module {} {}", moduleId,
+                             enabled ? "enabled" : "disabled");
     }
-    configFile->value().moduleEnabled = enabled;
-    saveConfigLocked("module toggle");
   }
 
   void handleConfigChanged(const char *moduleId, const char *key,

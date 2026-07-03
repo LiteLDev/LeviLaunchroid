@@ -16,7 +16,6 @@ enum class DisplayMode {
 
 struct ExampleConfig {
   int version = 1;
-  bool moduleEnabled = true;
   bool showOverlay = true;
   int opacity = 80;
   double scale = 1.0;
@@ -43,11 +42,6 @@ template <> struct Schema<fullcppmod::ExampleConfig> {
     if (name == "version") {
       return {"Version", "Config schema version managed by the mod.",
               std::nullopt, std::nullopt, true};
-    }
-    if (name == "moduleEnabled") {
-      return {"Module Enabled",
-              "Default enabled state for the Mod Menu module.", std::nullopt,
-              std::nullopt, false};
     }
     if (name == "showOverlay") {
       return {"Show Overlay",

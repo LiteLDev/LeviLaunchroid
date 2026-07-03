@@ -325,8 +325,8 @@ pl::modmenu::ButtonBuilder("example_mod.speed_meter.toggle", "Toggle")
 | `module_id` | 必须全局唯一。建议使用基于模组 id 的稳定前缀，例如 `example_mod.speed_meter`。 |
 | `display_name` / `description` | 显示在游戏内模组菜单中。preloader 会在注册时复制这些字符串。 |
 | `mod_id` | 使用原始 C API 时设置为 `getSelf().getId().c_str()` 或 manifest 中的准确模组 id。lifecycle mod 传空值会自动使用当前所属模组；传入不匹配的 owner 会被拒绝。 |
-| `default_enabled` | 菜单显示的初始启用状态。如果你自己保存启用状态，应在注册前先加载。 |
-| `on_toggle` | 在模块状态变化的调用线程上执行，应快速返回，并在这里应用运行时状态。 |
+| `default_enabled` | 首次发现模块时使用的默认启用状态。LeviLauncher 会按 `module_id` 持久化用户之后的启用/禁用选择。 |
+| `on_toggle` | 在模块状态变化的调用线程上执行，应快速返回，并在这里应用运行时状态；只需要持久化 mod 自己的参数。 |
 | `configs` / `config_count` | 可选配置项。没有配置时传 `nullptr` 和 `0`。 |
 | `on_config_changed` | 在配置变化的调用线程上执行。需要自行解析字符串值、应用并按需持久化。 |
 | `hide_in_hud_editor` | 不希望出现在 HUD 编辑器里的模块设为 `true`。 |
