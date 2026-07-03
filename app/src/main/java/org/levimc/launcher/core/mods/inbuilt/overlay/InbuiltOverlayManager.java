@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class InbuiltOverlayManager {
     public interface HudEditorSelectionListener {
-        void onHudEditorSelectionChanged(BaseOverlayButton overlay);
+        void onHudEditorSelectionChanged(int currentSizeDp);
     }
 
     private static volatile InbuiltOverlayManager instance;
@@ -32,6 +32,7 @@ public class InbuiltOverlayManager {
     private ModMenuButton modMenuButton;
     private HudOverlay hudOverlay;
     private BaseOverlayButton selectedHudEditorOverlay;
+    private String selectedDisplayModId;
     private HudEditorSelectionListener hudEditorSelectionListener;
     private boolean hudEditorMode = false;
     private int baseY = 150;
@@ -503,7 +504,7 @@ public class InbuiltOverlayManager {
     public void setHudEditorSelectionListener(HudEditorSelectionListener listener) {
         hudEditorSelectionListener = listener;
         if (listener != null) {
-            listener.onHudEditorSelectionChanged(selectedHudEditorOverlay);
+            listener.onHudEditorSelectionChanged(getSelectedHudEditorButtonSize());
         }
     }
 
@@ -511,10 +512,9 @@ public class InbuiltOverlayManager {
         if (!hudEditorMode && overlay != null) {
             return;
         }
+        selectedDisplayModId = null;
         if (selectedHudEditorOverlay == overlay) {
-            if (hudEditorSelectionListener != null) {
-                hudEditorSelectionListener.onHudEditorSelectionChanged(selectedHudEditorOverlay);
-            }
+            notifySelectionListener();
             return;
         }
         if (selectedHudEditorOverlay != null) {
@@ -524,31 +524,58 @@ public class InbuiltOverlayManager {
         if (selectedHudEditorOverlay != null) {
             selectedHudEditorOverlay.setHudEditorSelected(true);
         }
+        notifySelectionListener();
+    }
+
+    public void selectHudEditorDisplay(String modId) {
+        if (!hudEditorMode || modId == null) return;
+        if (selectedHudEditorOverlay != null) {
+            selectedHudEditorOverlay.setHudEditorSelected(false);
+            selectedHudEditorOverlay = null;
+        }
+        selectedDisplayModId = modId;
+        notifySelectionListener();
+    }
+
+    private void notifySelectionListener() {
         if (hudEditorSelectionListener != null) {
-            hudEditorSelectionListener.onHudEditorSelectionChanged(selectedHudEditorOverlay);
+            hudEditorSelectionListener.onHudEditorSelectionChanged(getSelectedHudEditorButtonSize());
         }
     }
 
     public int getSelectedHudEditorButtonSize() {
-        if (selectedHudEditorOverlay == null) {
-            return 0;
+        if (selectedHudEditorOverlay != null) {
+            return selectedHudEditorOverlay.getCurrentButtonSizeDp();
         }
-        return selectedHudEditorOverlay.getCurrentButtonSizeDp();
+        if (selectedDisplayModId != null) {
+            return InbuiltModManager.getInstance(activity).getOverlayButtonSize(selectedDisplayModId);
+        }
+        return 0;
     }
 
     public void setSelectedHudEditorButtonSize(int sizeDp) {
-        if (selectedHudEditorOverlay == null) return;
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
-        manager.setOverlayButtonSize(selectedHudEditorOverlay.getOverlayConfigKey(), sizeDp);
-        selectedHudEditorOverlay.applyConfigurationChanges();
+        if (selectedHudEditorOverlay != null) {
+            manager.setOverlayButtonSize(selectedHudEditorOverlay.getOverlayConfigKey(), sizeDp);
+            selectedHudEditorOverlay.applyConfigurationChanges();
+        } else if (selectedDisplayModId != null) {
+            manager.setOverlayButtonSize(selectedDisplayModId, sizeDp);
+            if (selectedDisplayModId.equals(ModIds.FPS_DISPLAY) && fpsDisplayOverlay != null) {
+                fpsDisplayOverlay.applyConfigurationChanges();
+            } else if (selectedDisplayModId.equals(ModIds.CPS_DISPLAY) && cpsDisplayOverlay != null) {
+                cpsDisplayOverlay.applyConfigurationChanges();
+            }
+        }
     }
 
     private void selectFirstHudEditorOverlay() {
         if (selectedHudEditorOverlay != null) {
             selectedHudEditorOverlay.setHudEditorSelected(true);
-            if (hudEditorSelectionListener != null) {
-                hudEditorSelectionListener.onHudEditorSelectionChanged(selectedHudEditorOverlay);
-            }
+            notifySelectionListener();
+            return;
+        }
+        if (selectedDisplayModId != null) {
+            notifySelectionListener();
             return;
         }
         if (!overlays.isEmpty()) {
@@ -597,39 +624,59 @@ public class InbuiltOverlayManager {
             overlay.tick();
         }
 
-        if (modMenuButton != null || hudOverlay != null) {
-            InbuiltModManager manager = InbuiltModManager.getInstance(activity);
-            boolean isPauseOnly = manager.isPauseMenuOnly();
-            boolean isPauseOpen = org.levimc.launcher.preloader.PreloaderInput.isPauseMenuOpen();
-            boolean isHudScreenOpen = org.levimc.launcher.preloader.PreloaderInput.isHudScreenOpen();
-            boolean isShowingMenu = org.levimc.launcher.preloader.PreloaderInput.isShowingMenu();
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        boolean isPauseOnly = manager.isPauseMenuOnly();
+        boolean isPauseOpen = org.levimc.launcher.preloader.PreloaderInput.isPauseMenuOpen();
+        boolean isHudScreenOpen = org.levimc.launcher.preloader.PreloaderInput.isHudScreenOpen();
+        boolean isShowingMenu = org.levimc.launcher.preloader.PreloaderInput.isShowingMenu();
 
-            activity.runOnUiThread(() -> {
-                if (modMenuButton != null) {
-                    if (isPauseOnly) {
-                        if (isPauseOpen) {
-                            modMenuButton.setVisibility(android.view.View.VISIBLE);
-                        } else {
-                            modMenuButton.setVisibility(android.view.View.GONE);
-                            if (modMenuButton.isMenuShowing()) {
-                                modMenuButton.hideMenu();
-                            }
-                        }
-                    } else {
+        boolean inbuiltVisible = hudEditorMode || (isHudScreenOpen && !isShowingMenu);
+
+        activity.runOnUiThread(() -> {
+            if (modMenuButton != null) {
+                if (isPauseOnly) {
+                    if (isPauseOpen) {
                         modMenuButton.setVisibility(android.view.View.VISIBLE);
-                    }
-                }
-                
-                if (hudOverlay != null) {
-                    if (hudOverlay.isHudEditorMode()) {
-                        hudOverlay.setVisibility(android.view.View.VISIBLE);
-                    } else if (isHudScreenOpen && !isShowingMenu) {
-                        hudOverlay.setVisibility(android.view.View.VISIBLE);
                     } else {
-                        hudOverlay.setVisibility(android.view.View.GONE);
+                        modMenuButton.setVisibility(android.view.View.GONE);
+                        if (modMenuButton.isMenuShowing()) {
+                            modMenuButton.hideMenu();
+                        }
                     }
+                } else {
+                    modMenuButton.setVisibility(android.view.View.VISIBLE);
                 }
-            });
-        }
+            }
+
+            if (hudOverlay != null) {
+                if (hudOverlay.isHudEditorMode()) {
+                    hudOverlay.setVisibility(android.view.View.VISIBLE);
+                } else if (isHudScreenOpen && !isShowingMenu) {
+                    hudOverlay.setVisibility(android.view.View.VISIBLE);
+                } else {
+                    hudOverlay.setVisibility(android.view.View.GONE);
+                }
+            }
+
+            int inbuiltVis = inbuiltVisible
+                    ? android.view.View.VISIBLE
+                    : android.view.View.GONE;
+
+            for (BaseOverlayButton overlay : overlays) {
+                if (overlay.overlayView != null) {
+                    overlay.overlayView.setVisibility(inbuiltVis);
+                }
+            }
+
+            if (fpsDisplayOverlay != null) {
+                fpsDisplayOverlay.setVisibility(inbuiltVis);
+            }
+
+            if (cpsDisplayOverlay != null) {
+                cpsDisplayOverlay.setVisibility(inbuiltVis);
+            }
+
+
+        });
     }
 }

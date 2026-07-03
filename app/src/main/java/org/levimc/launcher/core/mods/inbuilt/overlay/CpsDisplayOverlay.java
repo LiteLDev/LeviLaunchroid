@@ -265,6 +265,12 @@ public class CpsDisplayOverlay {
     private boolean handleTouch(View v, MotionEvent event) {
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                if (isHudEditorMode) {
+                    InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+                    if (manager != null) {
+                        manager.selectHudEditorDisplay(ModIds.CPS_DISPLAY);
+                    }
+                }
                 initialX = wmParams.x;
                 initialY = wmParams.y;
                 initialTouchX = event.getRawX();
@@ -307,6 +313,12 @@ public class CpsDisplayOverlay {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) overlayView.getLayoutParams();
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                if (isHudEditorMode) {
+                    InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+                    if (manager != null) {
+                        manager.selectHudEditorDisplay(ModIds.CPS_DISPLAY);
+                    }
+                }
                 initialX = params.leftMargin;
                 initialY = params.topMargin;
                 initialTouchX = event.getRawX();
@@ -372,5 +384,11 @@ public class CpsDisplayOverlay {
         applyOpacity();
         updateLockState();
         applySize();
+    }
+
+    public void setVisibility(int visibility) {
+        if (overlayView != null) {
+            overlayView.setVisibility(visibility);
+        }
     }
 }

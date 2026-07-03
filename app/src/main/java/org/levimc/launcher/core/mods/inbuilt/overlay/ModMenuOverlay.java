@@ -295,7 +295,7 @@ public class ModMenuOverlay {
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
             });
-            updateHudEditorSizeControls(null);
+            updateHudEditorSizeControls(0);
         }
 
         if (navHudEditor != null) {
@@ -617,19 +617,18 @@ public class ModMenuOverlay {
         showModulesSection();
     }
 
-    private void updateHudEditorSizeControls(BaseOverlayButton overlay) {
+    private void updateHudEditorSizeControls(int sizeDp) {
         if (hudButtonSizeSeekBar == null) return;
-        boolean hasSelection = overlay != null;
+        boolean hasSelection = sizeDp > 0;
         hudButtonSizeSeekBar.setEnabled(hasSelection);
         if (!hasSelection) {
             updateHudButtonSizeText(0);
             return;
         }
-        int size = overlay.getCurrentButtonSizeDp();
         updatingHudButtonSize = true;
-        hudButtonSizeSeekBar.setProgress(size);
+        hudButtonSizeSeekBar.setProgress(sizeDp);
         updatingHudButtonSize = false;
-        updateHudButtonSizeText(size);
+        updateHudButtonSizeText(sizeDp);
     }
 
     private void updateHudButtonSizeText(int size) {
