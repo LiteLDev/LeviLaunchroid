@@ -11,6 +11,7 @@ points, constructor-based registration, or ad hoc packaging scripts.
 - A host-side generator for default `config.json` and `config.schema.json`
 - `pl::modmenu::ModuleBuilder` registration for Mod Menu modules
 - `pl::modmenu::ButtonBuilder` registration for external HUD binding buttons
+- PNG, WebP, and SVG custom icons for external HUD buttons
 - Toggle/config callbacks that update and persist the same config file
 - `build.ps1` packaging for the Android `.so` and `.levipack`
 
@@ -105,8 +106,10 @@ After importing the mod into LeviLaunchroid, verify that:
 - The launcher config page reads `config.json` and `config.schema.json`.
 - The in-game Mod Menu shows `Full C++ Config Demo`.
 - Enabling the module shows the external `Q`, `H`, `T`, and `Take` HUD buttons
-  with fixed keycap surfaces; `T` uses the accent style preset, and `Take`
-  demonstrates a wider multi-letter keycap via `.sizeScale(2.0f, 1.0f)`.
+  with fixed keycap surfaces. `Q` demonstrates `.pngIcon(...)`, `H`
+  demonstrates `.webpIcon(...)`, `T` uses the accent style preset with
+  `.svgIcon(...)`, and `Take` demonstrates a wider multi-letter keycap via
+  `.sizeScale(2.0f, 1.0f)`.
 - Tapping `Q` dispatches Android key code `45`, holding `H` logs `DOWN/UP`,
   tapping `T` toggles active state through `STATE_CHANGED`, and tapping `Take`
   logs a click callback.

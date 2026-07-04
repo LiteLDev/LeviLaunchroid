@@ -4,13 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.KeyEvent;
 
-import org.levimc.launcher.R;
-import org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod;
-import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
-
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class InbuiltModManager {
@@ -23,7 +17,7 @@ public class InbuiltModManager {
     private static final String KEY_MOD_MENU_OPACITY = "mod_menu_opacity";
     private static final String KEY_MOD_MENU_BUTTON_OPACITY = "mod_menu_button_opacity";
     private static final String KEY_PAUSE_MENU_ONLY = "pause_menu_only";
-    private static final String KEY_FAVORITE_MODS = "favorite_mod_ids";
+    private static final String KEY_FAVORITE_MOD_KEYS = "favorite_mod_keys";
     private static final String KEY_INBUILT_MOD_ENABLED_PREFIX = "inbuilt_mod_enabled_";
     private static final String KEY_EXTERNAL_MODULE_ENABLED_PREFIX = "external_module_enabled_";
     private static final String KEY_ZOOM_LEVEL = "zoom_level";
@@ -56,41 +50,6 @@ public class InbuiltModManager {
             }
         }
         return instance;
-    }
-
-    public List<InbuiltMod> getAllMods(Context context) {
-        List<InbuiltMod> mods = new ArrayList<>();
-        mods.add(new InbuiltMod(ModIds.QUICK_DROP, 
-            context.getString(R.string.inbuilt_mod_quick_drop),
-            context.getString(R.string.inbuilt_mod_quick_drop_desc), false));
-        mods.add(new InbuiltMod(ModIds.CAMERA_PERSPECTIVE,
-            context.getString(R.string.inbuilt_mod_camera),
-            context.getString(R.string.inbuilt_mod_camera_desc), false));
-        mods.add(new InbuiltMod(ModIds.TOGGLE_HUD,
-            context.getString(R.string.inbuilt_mod_hud),
-            context.getString(R.string.inbuilt_mod_hud_desc), false));
-        mods.add(new InbuiltMod(ModIds.AUTO_SPRINT,
-            context.getString(R.string.inbuilt_mod_autosprint),
-            context.getString(R.string.inbuilt_mod_autosprint_desc), true));
-        mods.add(new InbuiltMod(ModIds.CHICK_PET,
-            context.getString(R.string.inbuilt_mod_chick_pet),
-            context.getString(R.string.inbuilt_mod_chick_pet_desc), false));
-        mods.add(new InbuiltMod(ModIds.ZOOM,
-            context.getString(R.string.inbuilt_mod_zoom),
-            context.getString(R.string.inbuilt_mod_zoom_desc), true));
-        mods.add(new InbuiltMod(ModIds.FPS_DISPLAY,
-            context.getString(R.string.inbuilt_mod_fps_display),
-            context.getString(R.string.inbuilt_mod_fps_display_desc), false));
-        mods.add(new InbuiltMod(ModIds.CPS_DISPLAY,
-            context.getString(R.string.inbuilt_mod_cps_display),
-            context.getString(R.string.inbuilt_mod_cps_display_desc), false));
-        mods.add(new InbuiltMod(ModIds.SNAPLOOK,
-            context.getString(R.string.inbuilt_mod_snaplook),
-            context.getString(R.string.inbuilt_mod_snaplook_desc), false));
-        mods.add(new InbuiltMod(ModIds.VIRTUAL_CURSOR,
-            context.getString(R.string.inbuilt_mod_virtual_cursor),
-            context.getString(R.string.inbuilt_mod_virtual_cursor_desc), false));
-        return mods;
     }
 
     public int getAutoSprintKeybind() {
@@ -158,15 +117,7 @@ public class InbuiltModManager {
     }
 
     public Set<String> getFavoriteModKeys() {
-        return new HashSet<>(prefs.getStringSet(KEY_FAVORITE_MODS, new HashSet<>()));
-    }
-
-    public Set<String> getFavoriteModIds() {
-        return getFavoriteModKeys();
-    }
-
-    public boolean isModFavorite(String favoriteKey) {
-        return favoriteKey != null && getFavoriteModKeys().contains(favoriteKey);
+        return new HashSet<>(prefs.getStringSet(KEY_FAVORITE_MOD_KEYS, new HashSet<>()));
     }
 
     public void setModFavorite(String favoriteKey, boolean favorite) {
@@ -177,7 +128,7 @@ public class InbuiltModManager {
         } else {
             favorites.remove(favoriteKey);
         }
-        prefs.edit().putStringSet(KEY_FAVORITE_MODS, favorites).apply();
+        prefs.edit().putStringSet(KEY_FAVORITE_MOD_KEYS, favorites).apply();
     }
 
     public boolean resolveInbuiltModEnabled(String modId, boolean defaultEnabled) {

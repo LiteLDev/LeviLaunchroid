@@ -1,12 +1,15 @@
 package org.levimc.launcher.core.mods.inbuilt.overlay;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.levimc.launcher.R;
@@ -30,6 +33,8 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
 
     private final ExternalModBridge.ExternalButton button;
     private TextView labelView;
+    private ImageView iconView;
+    private boolean iconVisible = false;
     private boolean active = false;
     private boolean hudEditorMode = false;
 
@@ -80,6 +85,7 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
     @Override
     protected void configureOverlayView(View view) {
         labelView = view.findViewById(R.id.external_overlay_label);
+        iconView = view.findViewById(R.id.external_overlay_icon);
         view.setContentDescription(button.displayName);
         if (labelView != null) {
             labelView.setText(getLabelText());
@@ -89,6 +95,7 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
             labelView.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             updateLabelTextSize();
         }
+        loadIcon();
         updateActiveVisual();
     }
 
@@ -104,6 +111,7 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
     @Override
     public void applyConfigurationChanges() {
         super.applyConfigurationChanges();
+        loadIcon();
         updateLabelTextSize();
         updateActiveVisual();
     }
@@ -242,6 +250,46 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
         if (labelView != null) {
             labelView.setTextColor(resolveTextColor(active));
         }
+    }
+
+    private void loadIcon() {
+        iconVisible = false;
+        if (iconView == null) {
+            return;
+        }
+        iconView.setVisibility(View.GONE);
+        iconView.setImageDrawable(null);
+        if (!button.hasIcon) {
+            updateLabelVisibility();
+            return;
+        }
+
+        byte[] iconBytes = ExternalModBridge.getExternalButtonIconBytes(
+            button.buttonId, getButtonWidthPx(), getButtonHeightPx());
+        if (iconBytes == null || iconBytes.length == 0) {
+            updateLabelVisibility();
+            return;
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);
+        if (bitmap == null) {
+            updateLabelVisibility();
+            return;
+        }
+
+        iconView.setImageBitmap(bitmap);
+        iconView.setContentDescription(button.displayName);
+        iconView.setVisibility(View.VISIBLE);
+        iconVisible = true;
+        updateLabelVisibility();
+    }
+
+    private void updateLabelVisibility() {
+        if (labelView == null) {
+            return;
+        }
+        boolean hideLabel = iconVisible && button.hideLabelWhenIconPresent;
+        labelView.setVisibility(hideLabel ? View.GONE : View.VISIBLE);
     }
 
     private GradientDrawable createButtonBackground(boolean activeState) {

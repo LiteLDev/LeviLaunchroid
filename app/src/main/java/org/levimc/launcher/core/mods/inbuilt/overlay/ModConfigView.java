@@ -7,22 +7,17 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Space;
 
 import androidx.appcompat.app.AlertDialog;
 
 import org.levimc.launcher.R;
-import org.levimc.launcher.core.mods.inbuilt.ExternalModBridge;
 import org.levimc.launcher.core.mods.inbuilt.UnifiedMod;
-import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
-import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
 
 import java.util.List;
 
@@ -33,70 +28,10 @@ public class ModConfigView {
         float density = context.getResources().getDisplayMetrics().density;
         int accent = 0xFF4AE0A0;
 
-        if (mod.getSource() == UnifiedMod.Source.INBUILT) {
-            renderInbuiltConfig(context, container, mod, accent, density, onConfigChanged);
-        } else {
-            renderExternalConfig(context, container, mod, accent, density, onConfigChanged);
-        }
+        renderConfigEntries(context, container, mod, accent, density, onConfigChanged);
     }
 
-    private static void renderInbuiltConfig(Context context, ViewGroup container, UnifiedMod mod, int accent, float density, Runnable onConfigChanged) {
-        InbuiltModManager manager = InbuiltModManager.getInstance(context);
-
-        // Size slider
-        addSlider(context, container, context.getString(R.string.mod_config_overlay_button_size_dp), manager.getOverlayButtonSize(mod.getId()), 20, 100, accent, density, progress -> {
-            manager.setOverlayButtonSize(mod.getId(), progress);
-            onConfigChanged.run();
-        });
-
-        // Opacity slider
-        addSlider(context, container, context.getString(R.string.mod_config_overlay_opacity_percent), manager.getOverlayOpacity(mod.getId()), 10, 100, accent, density, progress -> {
-            manager.setOverlayOpacity(mod.getId(), progress);
-            onConfigChanged.run();
-        });
-
-        // Lock Position switch
-        if (!mod.getId().equals(ModIds.CHICK_PET)) {
-            addToggle(context, container, context.getString(R.string.overlay_button_lock), manager.isOverlayLocked(mod.getId()), accent, density, isChecked -> {
-                manager.setOverlayLocked(mod.getId(), isChecked);
-                onConfigChanged.run();
-            });
-        }
-
-        // Auto Sprint specific
-        if (mod.getId().equals(ModIds.AUTO_SPRINT)) {
-            addKeybindCapture(context, container, context.getString(R.string.mod_config_auto_sprint_keybind), manager.getAutoSprintKeybind(), accent, density, keyCode -> {
-                manager.setAutoSprintKeybind(keyCode);
-                onConfigChanged.run();
-            });
-        }
-
-        // Virtual Cursor specific
-        if (mod.getId().equals(ModIds.VIRTUAL_CURSOR)) {
-            addSlider(context, container, context.getString(R.string.mod_config_cursor_sensitivity_percent), manager.getCursorSensitivity(), 10, 200, accent, density, progress -> {
-                manager.setCursorSensitivity(progress);
-                onConfigChanged.run();
-            });
-        }
-
-        // Zoom specific
-        if (mod.getId().equals(ModIds.ZOOM)) {
-            addSlider(context, container, context.getString(R.string.mod_config_zoom_level_percent), manager.getZoomLevel(), -20, 100, accent, density, progress -> {
-                manager.setZoomLevel(progress);
-                onConfigChanged.run();
-            });
-            addSlider(context, container, context.getString(R.string.mod_config_zoom_transition), manager.getZoomTransitionDuration(), 0, 1000, accent, density, progress -> {
-                manager.setZoomTransitionDuration(progress);
-                onConfigChanged.run();
-            });
-            addKeybindCapture(context, container, context.getString(R.string.mod_config_zoom_keybind), manager.getZoomKeybind(), accent, density, keyCode -> {
-                manager.setZoomKeybind(keyCode);
-                onConfigChanged.run();
-            });
-        }
-    }
-
-    private static void renderExternalConfig(Context context, ViewGroup container, UnifiedMod mod, int accent, float density, Runnable onConfigChanged) {
+    private static void renderConfigEntries(Context context, ViewGroup container, UnifiedMod mod, int accent, float density, Runnable onConfigChanged) {
         List<UnifiedMod.ConfigEntry> configs = mod.getConfigEntries();
         
         java.util.Map<String, java.util.List<View>> configViews = new java.util.HashMap<>();
@@ -127,8 +62,7 @@ public class ModConfigView {
                 case TOGGLE:
                     boolean checked = "true".equalsIgnoreCase(cfg.currentValue) || "1".equals(cfg.currentValue);
                     addToggle(context, container, cfg.displayName, checked, accent, density, isChecked -> {
-                        cfg.currentValue = isChecked ? "true" : "false";
-                        ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
+                        mod.updateConfig(cfg, isChecked ? "true" : "false");
                         wrappedOnConfigChanged.run();
                     });
                     break;
@@ -137,8 +71,7 @@ public class ModConfigView {
                     int max = parseIntSafe(cfg.maxValue, 100);
                     int cur = parseIntSafe(cfg.currentValue, parseIntSafe(cfg.defaultValue, min));
                     addSlider(context, container, cfg.displayName, cur, min, max, accent, density, progress -> {
-                        cfg.currentValue = String.valueOf(progress);
-                        ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
+                        mod.updateConfig(cfg, String.valueOf(progress));
                         wrappedOnConfigChanged.run();
                     });
                     break;
@@ -169,8 +102,7 @@ public class ModConfigView {
                             if (fromUser) {
                                 float val = fMin + (fMax - fMin) * progress / (float) steps;
                                 valText.setText(String.format("%.2f", val));
-                                cfg.currentValue = String.valueOf(val);
-                                ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
+                                mod.updateConfig(cfg, String.valueOf(val));
                                 wrappedOnConfigChanged.run();
                             }
                         }
@@ -216,8 +148,7 @@ public class ModConfigView {
                         String newValue = String.valueOf(currentIndex);
                         if (newValue.equals(cfg.currentValue)) return;
 
-                        cfg.currentValue = newValue;
-                        ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
+                        mod.updateConfig(cfg, newValue);
                         wrappedOnConfigChanged.run();
                     });
                     
@@ -266,8 +197,7 @@ public class ModConfigView {
                     ValueChangeListener onSliderChange = val -> {
                         gd.setColor(currentColor[0]);
                         colorPreview.setBackground(gd);
-                        cfg.currentValue = String.format("#%08X", currentColor[0]);
-                        ExternalModBridge.setExternalModConfig(mod.getId(), cfg.key, cfg.currentValue);
+                        mod.updateConfig(cfg, String.format("#%08X", currentColor[0]));
                         wrappedOnConfigChanged.run();
                     };
 
@@ -299,6 +229,14 @@ public class ModConfigView {
                     headerRow.setOnClickListener(v -> {
                         boolean isVisible = slidersContainer.getVisibility() == View.VISIBLE;
                         slidersContainer.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+                    });
+                    break;
+                }
+                case KEYBIND: {
+                    int currentKey = parseIntSafe(cfg.currentValue, parseIntSafe(cfg.defaultValue, 0));
+                    addKeybindCapture(context, container, cfg.displayName, currentKey, accent, density, keyCode -> {
+                        mod.updateConfig(cfg, String.valueOf(keyCode));
+                        wrappedOnConfigChanged.run();
                     });
                     break;
                 }

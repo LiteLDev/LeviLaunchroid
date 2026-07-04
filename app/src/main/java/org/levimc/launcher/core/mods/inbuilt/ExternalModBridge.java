@@ -13,6 +13,7 @@ public class ExternalModBridge {
     private static native void nativeSetExternalModConfig(String moduleId, String key, String value);
     private static native int nativeGetExternalButtonCount();
     private static native String nativeGetExternalButtonInfo(int index);
+    private static native byte[] nativeGetExternalButtonIconBytes(String buttonId, int width, int height);
     private static native void nativeDispatchExternalButtonEvent(String buttonId, int event, float value);
     public static native byte[] nativeGetRegisteredFontBytes(String fontId);
 
@@ -83,6 +84,16 @@ public class ExternalModBridge {
         }
     }
 
+    public static byte[] getExternalButtonIconBytes(String buttonId, int width, int height) {
+        if (!ModManager.ensurePreloaderLoaded()) return null;
+        try {
+            return nativeGetExternalButtonIconBytes(buttonId, width, height);
+        } catch (UnsatisfiedLinkError e) {
+            Log.e(TAG, "nativeGetExternalButtonIconBytes not available", e);
+            return null;
+        }
+    }
+
     public static class ExternalButton {
         public static final int BEHAVIOR_CLICK = 0;
         public static final int BEHAVIOR_HOLD = 1;
@@ -96,6 +107,11 @@ public class ExternalModBridge {
 
         public static final int STYLE_KEYCAP = 0;
         public static final int STYLE_ACCENT = 1;
+
+        public static final int ICON_AUTO = 0;
+        public static final int ICON_PNG = 1;
+        public static final int ICON_WEBP = 2;
+        public static final int ICON_SVG = 3;
 
         public String buttonId;
         public String moduleId;
@@ -114,6 +130,9 @@ public class ExternalModBridge {
         public int activeTextColor;
         public float widthScale;
         public float heightScale;
+        public boolean hasIcon;
+        public int iconFormat = ICON_AUTO;
+        public boolean hideLabelWhenIconPresent = true;
 
         public String positionKey() {
             return "external_button:" + buttonId;
@@ -137,6 +156,9 @@ public class ExternalModBridge {
             button.behavior = obj.optInt("behavior", ExternalButton.BEHAVIOR_CLICK);
             button.defaultVisible = obj.optBoolean("default_visible", true);
             button.moduleEnabled = obj.optBoolean("module_enabled", false);
+            button.hasIcon = obj.optBoolean("has_icon", false);
+            button.iconFormat = obj.optInt("icon_format", ExternalButton.ICON_AUTO);
+            button.hideLabelWhenIconPresent = obj.optBoolean("hide_label_when_icon_present", true);
             org.json.JSONObject style = obj.optJSONObject("style");
             if (style != null) {
                 button.stylePreset = style.optInt("preset", ExternalButton.STYLE_KEYCAP);

@@ -16,7 +16,16 @@ public class UnifiedMod {
         SLIDER_INT,
         SLIDER_FLOAT,
         RADIO,
-        COLOR
+        COLOR,
+        KEYBIND
+    }
+
+    public interface EnabledHandler {
+        void onEnabledChanged(UnifiedMod mod, boolean enabled);
+    }
+
+    public interface ConfigHandler {
+        void onConfigChanged(UnifiedMod mod, ConfigEntry config, String value);
     }
 
     public static class ConfigEntry {
@@ -49,36 +58,31 @@ public class UnifiedMod {
     private final String modId;
     private final String groupId;
     private final String groupName;
+    private final String stableKey;
     private final Source source;
     private boolean enabled;
     private final List<ConfigEntry> configEntries;
     private final boolean forceHasConfig;
-
-    public UnifiedMod(String id, String name, String description, String modId,
-                      Source source, boolean enabled, List<ConfigEntry> configEntries) {
-        this(id, name, description, modId, source, enabled, configEntries, false);
-    }
+    private final EnabledHandler enabledHandler;
+    private final ConfigHandler configHandler;
 
     public UnifiedMod(String id, String name, String description, String modId,
                       Source source, boolean enabled, List<ConfigEntry> configEntries,
-                      boolean forceHasConfig) {
-        this(id, name, description, modId, source, enabled, configEntries,
-                forceHasConfig, defaultGroupId(source, modId), defaultGroupName(source, modId));
-    }
-
-    public UnifiedMod(String id, String name, String description, String modId,
-                      Source source, boolean enabled, List<ConfigEntry> configEntries,
-                      boolean forceHasConfig, String groupId, String groupName) {
+                      boolean forceHasConfig, String groupId, String groupName,
+                      EnabledHandler enabledHandler, ConfigHandler configHandler) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.modId = modId;
         this.groupId = normalizeGroupValue(groupId, defaultGroupId(source, modId));
         this.groupName = normalizeGroupValue(groupName, defaultGroupName(source, modId));
+        this.stableKey = source.name().toLowerCase(Locale.US) + ":" + id;
         this.source = source;
         this.enabled = enabled;
         this.configEntries = configEntries != null ? configEntries : Collections.emptyList();
         this.forceHasConfig = forceHasConfig;
+        this.enabledHandler = enabledHandler;
+        this.configHandler = configHandler;
     }
 
     public String getId() { return id; }
@@ -88,13 +92,27 @@ public class UnifiedMod {
     public String getGroupId() { return groupId; }
     public String getGroupName() { return groupName; }
     public Source getSource() { return source; }
-    public String getFavoriteKey() {
-        return source.name().toLowerCase(Locale.US) + ":" + id;
-    }
+    public String getStableKey() { return stableKey; }
     public boolean isEnabled() { return enabled; }
-    public void setEnabled(boolean enabled) { this.enabled = enabled; }
     public List<ConfigEntry> getConfigEntries() { return configEntries; }
     public boolean hasConfig() { return forceHasConfig || !configEntries.isEmpty(); }
+
+    public void applyEnabled(boolean enabled) {
+        this.enabled = enabled;
+        if (enabledHandler != null) {
+            enabledHandler.onEnabledChanged(this, enabled);
+        }
+    }
+
+    public void updateConfig(ConfigEntry config, String value) {
+        if (config == null) {
+            return;
+        }
+        config.currentValue = value == null ? "" : value;
+        if (configHandler != null) {
+            configHandler.onConfigChanged(this, config, config.currentValue);
+        }
+    }
 
     private static String defaultGroupId(Source source, String modId) {
         if (source == Source.INBUILT) {

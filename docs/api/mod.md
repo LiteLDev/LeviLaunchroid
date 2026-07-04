@@ -292,9 +292,30 @@ pl::modmenu::ButtonBuilder("example_mod.speed_meter.take", "Take")
 ```
 
 Use the builder style helpers only when the button needs a different accent;
-style and size can be combined:
+style, size, and icons can be combined. Use `.pngIcon(...)`, `.webpIcon(...)`,
+or `.svgIcon(...)` for custom button icons, and keep `label()` as a short
+fallback:
+
+Supported icon inputs:
+
+| C++ helper | Raw C `icon_format` | Data |
+| --- | --- | --- |
+| `.pngIcon(data, size)` | `PL_BUTTON_ICON_PNG` | PNG file bytes. |
+| `.webpIcon(data, size)` | `PL_BUTTON_ICON_WEBP` | WebP file bytes. |
+| `.svgIcon(svgText)` | `PL_BUTTON_ICON_SVG` | UTF-8 SVG text. |
+
+For raw C, prefer an explicit `icon_format`. Use `PL_BUTTON_ICON_AUTO` only
+when the format is not known at compile time.
 
 ```cpp
+static constexpr unsigned char kPngIcon[] = {
+    /* PNG bytes */
+};
+
+static constexpr unsigned char kWebpIcon[] = {
+    /* WebP bytes */
+};
+
 pl::modmenu::ButtonBuilder("example_mod.speed_meter.toggle", "Toggle")
     .moduleId(kModuleId)
     .label("T")
@@ -304,6 +325,30 @@ pl::modmenu::ButtonBuilder("example_mod.speed_meter.toggle", "Toggle")
     .textColor(0xFFFFFFFFU)
     .activeTextColor(0xFF000000U)
     .sizeScale(1.4f, 1.0f)
+    .onEvent(onButtonEvent)
+    .registerButton();
+
+pl::modmenu::ButtonBuilder("example_mod.speed_meter.png", "PNG Button")
+    .moduleId(kModuleId)
+    .label("P")
+    .pngIcon(kPngIcon, static_cast<int>(sizeof(kPngIcon)))
+    .onEvent(onButtonEvent)
+    .registerButton();
+
+pl::modmenu::ButtonBuilder("example_mod.speed_meter.webp", "WebP Button")
+    .moduleId(kModuleId)
+    .label("W")
+    .webpIcon(kWebpIcon, static_cast<int>(sizeof(kWebpIcon)))
+    .onEvent(onButtonEvent)
+    .registerButton();
+
+pl::modmenu::ButtonBuilder("example_mod.speed_meter.icon", "Icon Button")
+    .moduleId(kModuleId)
+    .label("I")
+    .svgIcon(R"(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="24" fill="#4AE0A0"/>
+      <path d="M22 34l7 7 14-18" fill="none" stroke="#111" stroke-width="6"/>
+    </svg>)")
     .onEvent(onButtonEvent)
     .registerButton();
 ```
@@ -316,14 +361,35 @@ Button behaviors:
 | `PL_BUTTON_HOLD` | Press triggers `PL_BUTTON_EVENT_DOWN`; release or hide triggers `PL_BUTTON_EVENT_UP`. |
 | `PL_BUTTON_TOGGLE` | Each tap toggles state and sends `PL_BUTTON_EVENT_STATE_CHANGED` with `1.0` or `0.0`. |
 
-The raw C API uses `PLModMenu_ButtonInfo` and `RegisterButton()`. To provide
-only colors, pass a `PLModMenu_ButtonStyle` to `RegisterButtonWithStyle()`. To
-also specify shape ratios, pass a `PLModMenu_ButtonStyleV2` to
-`RegisterButtonWithStyleV2()`. Color fields use `0xAARRGGBB`; leave a color as
-`0` to use the preset default. Leave `width_scale` / `height_scale` as `0` to
-use defaults; width then auto-expands from the label length. `button_id` must
+The raw C API uses `PLModMenu_ButtonInfo` and `RegisterButton()`. Color fields
+use `0xAARRGGBB`; leave a color as `0` to use the preset default. Leave
+`width_scale` / `height_scale` as `0` to use defaults; width then auto-expands
+from the label length. For icons, set `icon_data`, `icon_data_size`, and
+`icon_format` to PNG, WebP, or SVG data; set `hide_label_when_icon_present`
+to control whether the label is hidden when the icon loads. `button_id` must
 be globally unique, and `module_id` must point to the owning menu module.
 `label` is the text shown inside the keycap and supports multiple letters.
+
+```c
+static const unsigned char kPngIcon[] = {
+    /* PNG bytes */
+};
+
+PLModMenu_ButtonInfo button = {
+    .button_id = "example_mod.speed_meter.png",
+    .module_id = kModuleId,
+    .display_name = "PNG Button",
+    .label = "P",
+    .behavior = PL_BUTTON_CLICK,
+    .default_visible = true,
+    .on_event = onButtonEvent,
+    .icon_data = kPngIcon,
+    .icon_data_size = (int)sizeof(kPngIcon),
+    .icon_format = PL_BUTTON_ICON_PNG,
+    .hide_label_when_icon_present = true,
+};
+menu->RegisterButton(&button);
+```
 
 Field notes:
 

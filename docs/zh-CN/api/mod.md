@@ -286,9 +286,30 @@ pl::modmenu::ButtonBuilder("example_mod.speed_meter.take", "Take")
     .registerButton();
 ```
 
-只有需要强调色时才使用样式 helper；样式和尺寸可以组合：
+只有需要强调色时才使用样式 helper；样式、尺寸和图标可以组合。自定义按钮图标
+使用 `.pngIcon(...)`、`.webpIcon(...)` 或 `.svgIcon(...)`，同时保留一个简短
+`label()` 作为回退显示：
+
+支持的图标输入：
+
+| C++ helper | 原始 C `icon_format` | 数据 |
+| --- | --- | --- |
+| `.pngIcon(data, size)` | `PL_BUTTON_ICON_PNG` | PNG 文件字节。 |
+| `.webpIcon(data, size)` | `PL_BUTTON_ICON_WEBP` | WebP 文件字节。 |
+| `.svgIcon(svgText)` | `PL_BUTTON_ICON_SVG` | UTF-8 SVG 文本。 |
+
+原始 C API 优先显式填写 `icon_format`。只有编译时无法确定格式时，再使用
+`PL_BUTTON_ICON_AUTO`。
 
 ```cpp
+static constexpr unsigned char kPngIcon[] = {
+    /* PNG bytes */
+};
+
+static constexpr unsigned char kWebpIcon[] = {
+    /* WebP bytes */
+};
+
 pl::modmenu::ButtonBuilder("example_mod.speed_meter.toggle", "Toggle")
     .moduleId(kModuleId)
     .label("T")
@@ -298,6 +319,30 @@ pl::modmenu::ButtonBuilder("example_mod.speed_meter.toggle", "Toggle")
     .textColor(0xFFFFFFFFU)
     .activeTextColor(0xFF000000U)
     .sizeScale(1.4f, 1.0f)
+    .onEvent(onButtonEvent)
+    .registerButton();
+
+pl::modmenu::ButtonBuilder("example_mod.speed_meter.png", "PNG Button")
+    .moduleId(kModuleId)
+    .label("P")
+    .pngIcon(kPngIcon, static_cast<int>(sizeof(kPngIcon)))
+    .onEvent(onButtonEvent)
+    .registerButton();
+
+pl::modmenu::ButtonBuilder("example_mod.speed_meter.webp", "WebP Button")
+    .moduleId(kModuleId)
+    .label("W")
+    .webpIcon(kWebpIcon, static_cast<int>(sizeof(kWebpIcon)))
+    .onEvent(onButtonEvent)
+    .registerButton();
+
+pl::modmenu::ButtonBuilder("example_mod.speed_meter.icon", "Icon Button")
+    .moduleId(kModuleId)
+    .label("I")
+    .svgIcon(R"(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="24" fill="#4AE0A0"/>
+      <path d="M22 34l7 7 14-18" fill="none" stroke="#111" stroke-width="6"/>
+    </svg>)")
     .onEvent(onButtonEvent)
     .registerButton();
 ```
@@ -310,13 +355,34 @@ pl::modmenu::ButtonBuilder("example_mod.speed_meter.toggle", "Toggle")
 | `PL_BUTTON_HOLD` | 按下触发 `PL_BUTTON_EVENT_DOWN`，抬起或隐藏时触发 `PL_BUTTON_EVENT_UP`。 |
 | `PL_BUTTON_TOGGLE` | 每次点击切换状态，并用 `PL_BUTTON_EVENT_STATE_CHANGED` 传出 `1.0` 或 `0.0`。 |
 
-原始 C API 使用 `PLModMenu_ButtonInfo` 并调用 `RegisterButton()`。如果只提供
-颜色样式，把 `PLModMenu_ButtonStyle` 传给 `RegisterButtonWithStyle()`；如果还要
-指定宽高比例，把 `PLModMenu_ButtonStyleV2` 传给 `RegisterButtonWithStyleV2()`。
-颜色字段使用 `0xAARRGGBB`；字段为 `0` 时使用预设默认值。`width_scale` /
-`height_scale` 为 `0` 时使用默认逻辑，其中宽度会按 label 自动拉宽。
-`button_id` 必须全局唯一，`module_id` 必须指向所属菜单模块。`label` 是 keycap
-内部文本，支持多字母。
+原始 C API 使用 `PLModMenu_ButtonInfo` 并调用 `RegisterButton()`。颜色字段使用
+`0xAARRGGBB`；字段为 `0` 时使用预设默认值。`width_scale` / `height_scale`
+为 `0` 时使用默认逻辑，其中宽度会按 label 自动拉宽。图标通过 `icon_data`、
+`icon_data_size` 和 `icon_format` 传入 PNG、WebP 或 SVG 数据；
+`hide_label_when_icon_present` 控制图标加载后是否隐藏 label。`button_id` 必须
+全局唯一，`module_id` 必须指向所属菜单模块。`label` 是 keycap 内部文本，支持
+多字母。
+
+```c
+static const unsigned char kPngIcon[] = {
+    /* PNG bytes */
+};
+
+PLModMenu_ButtonInfo button = {
+    .button_id = "example_mod.speed_meter.png",
+    .module_id = kModuleId,
+    .display_name = "PNG Button",
+    .label = "P",
+    .behavior = PL_BUTTON_CLICK,
+    .default_visible = true,
+    .on_event = onButtonEvent,
+    .icon_data = kPngIcon,
+    .icon_data_size = (int)sizeof(kPngIcon),
+    .icon_format = PL_BUTTON_ICON_PNG,
+    .hide_label_when_icon_present = true,
+};
+menu->RegisterButton(&button);
+```
 
 字段说明：
 

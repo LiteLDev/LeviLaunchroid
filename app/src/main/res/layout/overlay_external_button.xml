@@ -10,6 +10,15 @@
     android:padding="5dp"
     tools:ignore="TouchTargetSizeCheck">
 
+    <ImageView
+        android:id="@+id/external_overlay_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/inbuilt_mods"
+        android:scaleType="fitCenter"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/external_overlay_label"
         android:layout_width="match_parent"

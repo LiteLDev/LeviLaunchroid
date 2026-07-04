@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
-import org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod;
 
 public class ModMenuButton {
 

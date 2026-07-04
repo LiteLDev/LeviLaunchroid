@@ -140,6 +140,14 @@ public class ZoomOverlay extends BaseOverlayButton {
         return isZooming;
     }
 
+    @Override
+    public void applyConfigurationChanges() {
+        super.applyConfigurationChanges();
+        if (initialized) {
+            applyZoomLevel();
+        }
+    }
+
     public boolean isInitialized() {
         return initialized;
     }

@@ -52,9 +52,9 @@ public class ModMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 lastGroupId = mod.getGroupId();
             }
             items.add(MenuItem.mod(mod));
-            toggleStates.put(mod.getId(), mod.isEnabled());
-            favoriteStates.put(mod.getFavoriteKey(),
-                favoriteKeys != null && favoriteKeys.contains(mod.getFavoriteKey()));
+            toggleStates.put(mod.getStableKey(), mod.isEnabled());
+            favoriteStates.put(mod.getStableKey(),
+                favoriteKeys != null && favoriteKeys.contains(mod.getStableKey()));
         }
         notifyDataSetChanged();
     }
@@ -112,14 +112,13 @@ public class ModMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             modHolder.icon.setColorFilter(null);
         }
 
-        boolean isEnabled = toggleStates.getOrDefault(mod.getId(), false);
+        boolean isEnabled = toggleStates.getOrDefault(mod.getStableKey(), false);
         updateStatusView(modHolder, isEnabled);
-        updateFavoriteView(modHolder, favoriteStates.getOrDefault(mod.getFavoriteKey(), false));
+        updateFavoriteView(modHolder, favoriteStates.getOrDefault(mod.getStableKey(), false));
 
         View.OnClickListener toggleClick = v -> {
-            boolean newState = !toggleStates.getOrDefault(mod.getId(), false);
-            toggleStates.put(mod.getId(), newState);
-            mod.setEnabled(newState);
+            boolean newState = !toggleStates.getOrDefault(mod.getStableKey(), false);
+            toggleStates.put(mod.getStableKey(), newState);
             updateStatusView(modHolder, newState);
             if (listener != null) {
                 listener.onToggle(mod, newState);
@@ -131,8 +130,8 @@ public class ModMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         modHolder.icon.setOnClickListener(toggleClick);
 
         modHolder.favoriteBtn.setOnClickListener(v -> {
-            boolean favorite = !favoriteStates.getOrDefault(mod.getFavoriteKey(), false);
-            favoriteStates.put(mod.getFavoriteKey(), favorite);
+            boolean favorite = !favoriteStates.getOrDefault(mod.getStableKey(), false);
+            favoriteStates.put(mod.getStableKey(), favorite);
             updateFavoriteView(modHolder, favorite);
             if (listener != null) {
                 listener.onFavoriteChanged(mod, favorite);
