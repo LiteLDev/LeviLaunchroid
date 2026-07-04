@@ -27,6 +27,7 @@ public class InbuiltModManager {
     private static final String KEY_EXTERNAL_MODULE_ENABLED_PREFIX = "external_module_enabled_";
     private static final String KEY_ZOOM_LEVEL = "zoom_level";
     private static final String KEY_ZOOM_KEYBIND = "zoom_keybind";
+    private static final String KEY_ZOOM_TRANSITION_DURATION = "zoom_transition_duration";
     private static final String KEY_CURSOR_SENSITIVITY = "cursor_sensitivity";
     private static final String KEY_OVERLAY_POSITION_X_PREFIX = "overlay_pos_x_";
     private static final String KEY_OVERLAY_POSITION_Y_PREFIX = "overlay_pos_y_";
@@ -34,7 +35,8 @@ public class InbuiltModManager {
     private static final int DEFAULT_OVERLAY_BUTTON_SIZE = 56;
     private static final int DEFAULT_OVERLAY_OPACITY = 100;
     private static final int MIN_MOD_MENU_OPACITY = 70;
-    private static final int DEFAULT_ZOOM_LEVEL = 50;
+    private static final int DEFAULT_ZOOM_LEVEL = 10;
+    private static final int DEFAULT_ZOOM_TRANSITION_DURATION = 150;
     private static final int DEFAULT_CURSOR_SENSITIVITY = 120;
 
     private static volatile InbuiltModManager instance;
@@ -74,7 +76,7 @@ public class InbuiltModManager {
             context.getString(R.string.inbuilt_mod_chick_pet_desc), false));
         mods.add(new InbuiltMod(ModIds.ZOOM,
             context.getString(R.string.inbuilt_mod_zoom),
-            context.getString(R.string.inbuilt_mod_zoom_desc), false));
+            context.getString(R.string.inbuilt_mod_zoom_desc), true));
         mods.add(new InbuiltMod(ModIds.FPS_DISPLAY,
             context.getString(R.string.inbuilt_mod_fps_display),
             context.getString(R.string.inbuilt_mod_fps_display_desc), false));
@@ -202,7 +204,7 @@ public class InbuiltModManager {
     }
 
     public void setZoomLevel(int level) {
-        prefs.edit().putInt(KEY_ZOOM_LEVEL, Math.max(10, Math.min(100, level))).apply();
+        prefs.edit().putInt(KEY_ZOOM_LEVEL, Math.max(-20, Math.min(100, level))).apply();
     }
 
     public int getZoomKeybind() {
@@ -211,6 +213,14 @@ public class InbuiltModManager {
 
     public void setZoomKeybind(int keyCode) {
         prefs.edit().putInt(KEY_ZOOM_KEYBIND, keyCode).apply();
+    }
+
+    public int getZoomTransitionDuration() {
+        return prefs.getInt(KEY_ZOOM_TRANSITION_DURATION, DEFAULT_ZOOM_TRANSITION_DURATION);
+    }
+
+    public void setZoomTransitionDuration(int duration) {
+        prefs.edit().putInt(KEY_ZOOM_TRANSITION_DURATION, Math.max(0, Math.min(1000, duration))).apply();
     }
 
     public int getCursorSensitivity() {

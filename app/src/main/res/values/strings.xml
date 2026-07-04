@@ -665,6 +665,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_config_zoom_level_percent" formatted="false">Zoom Level (%)</string>
     <string name="mod_config_auto_sprint_keybind">Auto Sprint Keybind</string>
     <string name="mod_config_zoom_keybind">Zoom Keybind</string>
+    <string name="mod_config_zoom_transition">Transition Duration (ms)</string>
     <string name="mod_config_press_any_key">Press any key to bind...</string>
     <string name="mod_config_key_unknown">UNKNOWN</string>
     <string name="mod_config_color_alpha_short">A</string>

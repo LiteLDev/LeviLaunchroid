@@ -81,8 +81,12 @@ public class ModConfigView {
 
         // Zoom specific
         if (mod.getId().equals(ModIds.ZOOM)) {
-            addSlider(context, container, context.getString(R.string.mod_config_zoom_level_percent), manager.getZoomLevel(), 10, 100, accent, density, progress -> {
+            addSlider(context, container, context.getString(R.string.mod_config_zoom_level_percent), manager.getZoomLevel(), -20, 100, accent, density, progress -> {
                 manager.setZoomLevel(progress);
+                onConfigChanged.run();
+            });
+            addSlider(context, container, context.getString(R.string.mod_config_zoom_transition), manager.getZoomTransitionDuration(), 0, 1000, accent, density, progress -> {
+                manager.setZoomTransitionDuration(progress);
                 onConfigChanged.run();
             });
             addKeybindCapture(context, container, context.getString(R.string.mod_config_zoom_keybind), manager.getZoomKeybind(), accent, density, keyCode -> {

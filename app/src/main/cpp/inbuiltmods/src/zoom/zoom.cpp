@@ -21,6 +21,7 @@ static bool g_animated = true;
 static uint64_t g_zoomLevel = 5345000000ULL;
 static uint64_t g_lastClientZoom = 0;
 static Transition g_transition;
+static int g_transitionDuration = 150;
 
 static uint64_t (*g_CameraAPI_tryGetFOV_orig)(void*) = nullptr;
 
@@ -214,9 +215,10 @@ Java_org_levimc_launcher_core_mods_inbuilt_nativemod_ZoomMod_nativeOnKeyDown(JNI
     
     g_zoomKeyDown = true;
     
-    if (g_animated) {
-        uint64_t diff = unsignedDiff(g_lastClientZoom, g_zoomLevel);
-        g_transition.startTransition(g_lastClientZoom, g_zoomLevel, clamp(100, diff / 150000, 250));
+    if (g_animated && g_transitionDuration > 0) {
+        g_transition.startTransition(g_lastClientZoom, g_zoomLevel, g_transitionDuration);
+    } else {
+        g_transition.startTransition(g_zoomLevel, g_zoomLevel, 0); // instantly stop transition
     }
 }
 
@@ -226,9 +228,10 @@ Java_org_levimc_launcher_core_mods_inbuilt_nativemod_ZoomMod_nativeOnKeyUp(JNIEn
     
     g_zoomKeyDown = false;
     
-    if (g_animated) {
-        uint64_t diff = unsignedDiff(g_lastClientZoom, g_zoomLevel);
-        g_transition.startTransition(g_zoomLevel, g_lastClientZoom, clamp(100, diff / 150000, 250));
+    if (g_animated && g_transitionDuration > 0) {
+        g_transition.startTransition(g_zoomLevel, g_lastClientZoom, g_transitionDuration);
+    } else {
+        g_transition.startTransition(g_lastClientZoom, g_lastClientZoom, 0); // instantly stop transition
     }
 }
 
@@ -236,31 +239,31 @@ JNIEXPORT void JNICALL
 Java_org_levimc_launcher_core_mods_inbuilt_nativemod_ZoomMod_nativeOnScroll(JNIEnv* env, jclass clazz, jfloat delta) {
     if (!g_initialized || !g_zoomKeyDown) return;
 
-    uint64_t scrollAmount = 5000000ULL;
+    uint64_t scrollAmount = 25000000ULL;
     
     if (delta > 0) {
-        if (g_zoomLevel > 5310000000ULL + scrollAmount) {
-            if (g_animated) {
-                g_transition.startTransition(g_zoomLevel, g_zoomLevel - scrollAmount, 100);
+        if (g_zoomLevel > 5110000000ULL + scrollAmount) {
+            if (g_animated && g_transitionDuration > 0) {
+                g_transition.startTransition(g_zoomLevel, g_zoomLevel - scrollAmount, g_transitionDuration);
             }
             g_zoomLevel -= scrollAmount;
-        } else if (g_zoomLevel > 5310000000ULL) {
-            if (g_animated) {
-                g_transition.startTransition(g_zoomLevel, 5310000000ULL, 100);
+        } else if (g_zoomLevel > 5110000000ULL) {
+            if (g_animated && g_transitionDuration > 0) {
+                g_transition.startTransition(g_zoomLevel, 5110000000ULL, g_transitionDuration);
             }
-            g_zoomLevel = 5310000000ULL;
+            g_zoomLevel = 5110000000ULL;
         }
     } else if (delta < 0) {
-        if (g_zoomLevel < 5360000000ULL - scrollAmount) {
-            if (g_animated) {
-                g_transition.startTransition(g_zoomLevel, g_zoomLevel + scrollAmount, 100);
+        if (g_zoomLevel < 5410000000ULL - scrollAmount) {
+            if (g_animated && g_transitionDuration > 0) {
+                g_transition.startTransition(g_zoomLevel, g_zoomLevel + scrollAmount, g_transitionDuration);
             }
             g_zoomLevel += scrollAmount;
-        } else if (g_zoomLevel < 5360000000ULL) {
-            if (g_animated) {
-                g_transition.startTransition(g_zoomLevel, 5360000000ULL, 100);
+        } else if (g_zoomLevel < 5410000000ULL) {
+            if (g_animated && g_transitionDuration > 0) {
+                g_transition.startTransition(g_zoomLevel, 5410000000ULL, g_transitionDuration);
             }
-            g_zoomLevel = 5360000000ULL;
+            g_zoomLevel = 5410000000ULL;
         }
     }
 }
@@ -278,6 +281,12 @@ Java_org_levimc_launcher_core_mods_inbuilt_nativemod_ZoomMod_nativeIsZooming(JNI
 JNIEXPORT void JNICALL
 Java_org_levimc_launcher_core_mods_inbuilt_nativemod_ZoomMod_nativeSetZoomLevel(JNIEnv* env, jclass clazz, jlong level) {
     g_zoomLevel = static_cast<uint64_t>(level);
+}
+
+JNIEXPORT void JNICALL
+Java_org_levimc_launcher_core_mods_inbuilt_nativemod_ZoomMod_nativeSetTransitionDuration(JNIEnv* env, jclass clazz, jint duration) {
+    g_transitionDuration = duration;
+    g_animated = duration > 0;
 }
 
 JNIEXPORT jlong JNICALL

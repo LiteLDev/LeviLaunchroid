@@ -15,4 +15,5 @@ public class ZoomMod {
     public static native void nativeOnScroll(float delta);
 
     public static native void nativeSetZoomLevel(long level);
+    public static native void nativeSetTransitionDuration(int duration);
 }
