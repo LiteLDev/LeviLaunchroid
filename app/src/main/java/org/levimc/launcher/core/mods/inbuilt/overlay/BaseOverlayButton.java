@@ -139,8 +139,10 @@ public abstract class BaseOverlayButton {
                 PixelFormat.TRANSLUCENT
             );
             wmParams.gravity = Gravity.TOP | Gravity.START;
-            wmParams.x = startX;
-            wmParams.y = startY;
+            OverlayBounds.Position position = OverlayBounds.clampPosition(
+                activity, startX, startY, buttonWidth, buttonHeight);
+            wmParams.x = position.x;
+            wmParams.y = position.y;
             wmParams.token = activity.getWindow().getDecorView().getWindowToken();
 
             overlayView.setOnTouchListener(this::handleTouch);
@@ -177,8 +179,10 @@ public abstract class BaseOverlayButton {
             buttonHeight
         );
         params.gravity = Gravity.TOP | Gravity.START;
-        params.leftMargin = startX;
-        params.topMargin = startY;
+        OverlayBounds.Position position = OverlayBounds.clampPosition(
+            activity, startX, startY, buttonWidth, buttonHeight);
+        params.leftMargin = position.x;
+        params.topMargin = position.y;
 
         overlayView.setOnTouchListener(this::handleTouchFallback);
         rootView.addView(overlayView, params);
@@ -249,14 +253,16 @@ public abstract class BaseOverlayButton {
 
     public void updatePosition(int x, int y) {
         if (wmParams != null && windowManager != null && overlayView != null && isShowing) {
-            wmParams.x = x;
-            wmParams.y = y;
+            OverlayBounds.Position position = OverlayBounds.clampPosition(activity, overlayView, x, y);
+            wmParams.x = position.x;
+            wmParams.y = position.y;
             windowManager.updateViewLayout(overlayView, wmParams);
         } else if (overlayView != null && isShowing) {
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) overlayView.getLayoutParams();
             if (params != null) {
-                params.leftMargin = x;
-                params.topMargin = y;
+                OverlayBounds.Position position = OverlayBounds.clampPosition(activity, overlayView, x, y);
+                params.leftMargin = position.x;
+                params.topMargin = position.y;
                 overlayView.setLayoutParams(params);
             }
         }
@@ -305,8 +311,10 @@ public abstract class BaseOverlayButton {
                     }
                 }
                 if (isDragging && isHudEditorMode && windowManager != null && overlayView != null) {
-                    wmParams.x = (int) (initialX + dx);
-                    wmParams.y = (int) (initialY + dy);
+                    OverlayBounds.Position position = OverlayBounds.clampPosition(
+                        activity, overlayView, (int) (initialX + dx), (int) (initialY + dy));
+                    wmParams.x = position.x;
+                    wmParams.y = position.y;
                     windowManager.updateViewLayout(overlayView, wmParams);
                 }
                 return isHudEditorMode || !isDragging;
@@ -395,8 +403,10 @@ public abstract class BaseOverlayButton {
                     }
                 }
                 if (isDragging && (!isLocked || isHudEditorMode)) {
-                    params.leftMargin = (int) (initialX + dx);
-                    params.topMargin = (int) (initialY + dy);
+                    OverlayBounds.Position position = OverlayBounds.clampPosition(
+                        activity, overlayView, (int) (initialX + dx), (int) (initialY + dy));
+                    params.leftMargin = position.x;
+                    params.topMargin = position.y;
                     overlayView.setLayoutParams(params);
                 }
                 return isHudEditorMode || !isLocked || !isDragging;
@@ -479,14 +489,27 @@ public abstract class BaseOverlayButton {
         if (wmParams != null) {
             wmParams.width = newWidth;
             wmParams.height = newHeight;
+            OverlayBounds.Position position = OverlayBounds.clampPosition(
+                activity, wmParams.x, wmParams.y, newWidth, newHeight);
+            wmParams.x = position.x;
+            wmParams.y = position.y;
             try {
                 windowManager.updateViewLayout(overlayView, wmParams);
             } catch (Exception ignored) {}
+            savePosition(wmParams.x, wmParams.y);
         } else {
             ViewGroup.LayoutParams params = overlayView.getLayoutParams();
             if (params != null) {
                 params.width = newWidth;
                 params.height = newHeight;
+                if (params instanceof FrameLayout.LayoutParams) {
+                    FrameLayout.LayoutParams frameParams = (FrameLayout.LayoutParams) params;
+                    OverlayBounds.Position position = OverlayBounds.clampPosition(
+                        activity, frameParams.leftMargin, frameParams.topMargin, newWidth, newHeight);
+                    frameParams.leftMargin = position.x;
+                    frameParams.topMargin = position.y;
+                    savePosition(position.x, position.y);
+                }
                 overlayView.setLayoutParams(params);
             }
         }
@@ -708,14 +731,27 @@ public abstract class BaseOverlayButton {
         if (wmParams != null) {
             wmParams.width = buttonWidth;
             wmParams.height = buttonHeight;
+            OverlayBounds.Position position = OverlayBounds.clampPosition(
+                activity, wmParams.x, wmParams.y, buttonWidth, buttonHeight);
+            wmParams.x = position.x;
+            wmParams.y = position.y;
             try {
                 windowManager.updateViewLayout(overlayView, wmParams);
             } catch (Exception ignored) {}
+            savePosition(wmParams.x, wmParams.y);
         } else {
             ViewGroup.LayoutParams params = overlayView.getLayoutParams();
             if (params != null) {
                 params.width = buttonWidth;
                 params.height = buttonHeight;
+                if (params instanceof FrameLayout.LayoutParams) {
+                    FrameLayout.LayoutParams frameParams = (FrameLayout.LayoutParams) params;
+                    OverlayBounds.Position position = OverlayBounds.clampPosition(
+                        activity, frameParams.leftMargin, frameParams.topMargin, buttonWidth, buttonHeight);
+                    frameParams.leftMargin = position.x;
+                    frameParams.topMargin = position.y;
+                    savePosition(position.x, position.y);
+                }
                 overlayView.setLayoutParams(params);
             }
         }

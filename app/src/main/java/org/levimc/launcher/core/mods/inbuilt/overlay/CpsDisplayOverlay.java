@@ -174,6 +174,7 @@ public class CpsDisplayOverlay {
             applyOpacity();
             updateLockState();
             applySize();
+            updatePosition(wmParams.x, wmParams.y);
         } catch (Exception e) {
             showFallback(startX, startY);
         }
@@ -193,8 +194,9 @@ public class CpsDisplayOverlay {
             FrameLayout.LayoutParams.WRAP_CONTENT
         );
         params.gravity = Gravity.TOP | Gravity.START;
-        params.leftMargin = startX;
-        params.topMargin = startY;
+        OverlayBounds.Position position = OverlayBounds.clampPosition(activity, overlayView, startX, startY);
+        params.leftMargin = position.x;
+        params.topMargin = position.y;
 
         overlayView.setOnTouchListener(this::handleTouchFallback);
         rootView.addView(overlayView, params);
@@ -210,6 +212,7 @@ public class CpsDisplayOverlay {
     private void updateDisplay() {
         if (statsText != null) {
             statsText.setText(activity.getString(R.string.mod_overlay_cps_value, getCps()));
+            clampCurrentPosition(false);
         }
     }
 
@@ -235,7 +238,7 @@ public class CpsDisplayOverlay {
             
             if (wmParams != null && windowManager != null && overlayView != null && isShowing) {
                 try {
-                    windowManager.updateViewLayout(overlayView, wmParams);
+                    clampCurrentPosition(true);
                 } catch (Exception ignored) {}
             }
         }
@@ -256,9 +259,18 @@ public class CpsDisplayOverlay {
 
     public void updatePosition(int x, int y) {
         if (wmParams != null && windowManager != null && overlayView != null && isShowing) {
-            wmParams.x = x;
-            wmParams.y = y;
+            OverlayBounds.Position position = OverlayBounds.clampPosition(activity, overlayView, x, y);
+            wmParams.x = position.x;
+            wmParams.y = position.y;
             windowManager.updateViewLayout(overlayView, wmParams);
+        } else if (overlayView != null && isShowing) {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) overlayView.getLayoutParams();
+            if (params != null) {
+                OverlayBounds.Position position = OverlayBounds.clampPosition(activity, overlayView, x, y);
+                params.leftMargin = position.x;
+                params.topMargin = position.y;
+                overlayView.setLayoutParams(params);
+            }
         }
     }
 
@@ -288,8 +300,10 @@ public class CpsDisplayOverlay {
                     }
                 }
                 if (isDragging && isHudEditorMode && windowManager != null && overlayView != null) {
-                    wmParams.x = (int) (initialX + dx);
-                    wmParams.y = (int) (initialY + dy);
+                    OverlayBounds.Position position = OverlayBounds.clampPosition(
+                            activity, overlayView, (int) (initialX + dx), (int) (initialY + dy));
+                    wmParams.x = position.x;
+                    wmParams.y = position.y;
                     windowManager.updateViewLayout(overlayView, wmParams);
                 }
                 return isHudEditorMode || !isDragging;
@@ -336,16 +350,17 @@ public class CpsDisplayOverlay {
                     }
                 }
                 if (isDragging && isHudEditorMode) {
-                    params.leftMargin = (int) (initialX + dx);
-                    params.topMargin = (int) (initialY + dy);
+                    OverlayBounds.Position position = OverlayBounds.clampPosition(
+                            activity, overlayView, (int) (initialX + dx), (int) (initialY + dy));
+                    params.leftMargin = position.x;
+                    params.topMargin = position.y;
                     overlayView.setLayoutParams(params);
                 }
                 return isHudEditorMode || !isDragging;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 if (isDragging && isHudEditorMode) {
-                    savePosition((int) (initialX + (event.getRawX() - initialTouchX)), 
-                                 (int) (initialY + (event.getRawY() - initialTouchY)));
+                    savePosition(params.leftMargin, params.topMargin);
                 }
                 isDragging = false;
                 v.getParent().requestDisallowInterceptTouchEvent(false);
@@ -389,6 +404,34 @@ public class CpsDisplayOverlay {
     public void setVisibility(int visibility) {
         if (overlayView != null) {
             overlayView.setVisibility(visibility);
+        }
+    }
+
+    private void clampCurrentPosition(boolean save) {
+        if (overlayView == null || !isShowing) return;
+        if (wmParams != null && windowManager != null) {
+            OverlayBounds.Position position = OverlayBounds.clampPosition(activity, overlayView, wmParams.x, wmParams.y);
+            if (position.x != wmParams.x || position.y != wmParams.y) {
+                wmParams.x = position.x;
+                wmParams.y = position.y;
+                windowManager.updateViewLayout(overlayView, wmParams);
+                if (save) {
+                    savePosition(position.x, position.y);
+                }
+            }
+        } else {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) overlayView.getLayoutParams();
+            if (params == null) return;
+            OverlayBounds.Position position = OverlayBounds.clampPosition(
+                    activity, overlayView, params.leftMargin, params.topMargin);
+            if (position.x != params.leftMargin || position.y != params.topMargin) {
+                params.leftMargin = position.x;
+                params.topMargin = position.y;
+                overlayView.setLayoutParams(params);
+                if (save) {
+                    savePosition(position.x, position.y);
+                }
+            }
         }
     }
 }
