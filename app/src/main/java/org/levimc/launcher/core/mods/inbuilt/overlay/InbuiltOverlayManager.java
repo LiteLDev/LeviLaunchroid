@@ -90,9 +90,26 @@ public class InbuiltOverlayManager {
             snaplookOverlay.initializeForKeyboard();
         }
 
+        restorePersistedInbuiltModState(manager, ModIds.QUICK_DROP);
+        restorePersistedInbuiltModState(manager, ModIds.CAMERA_PERSPECTIVE);
+        restorePersistedInbuiltModState(manager, ModIds.TOGGLE_HUD);
+        restorePersistedInbuiltModState(manager, ModIds.AUTO_SPRINT);
+        restorePersistedInbuiltModState(manager, ModIds.CHICK_PET);
+        restorePersistedInbuiltModState(manager, ModIds.ZOOM);
+        restorePersistedInbuiltModState(manager, ModIds.FPS_DISPLAY);
+        restorePersistedInbuiltModState(manager, ModIds.CPS_DISPLAY);
+        restorePersistedInbuiltModState(manager, ModIds.SNAPLOOK);
+        restorePersistedInbuiltModState(manager, ModIds.VIRTUAL_CURSOR);
+
         modMenuButton = new ModMenuButton(activity);
         modMenuButton.show(START_X, nextY);
         refreshExternalButtons();
+    }
+
+    private void restorePersistedInbuiltModState(InbuiltModManager manager, String modId) {
+        if (manager.resolveInbuiltModEnabled(modId, false)) {
+            handleModToggle(modId, true);
+        }
     }
 
     public void handleModToggle(String modId, boolean enabled) {

@@ -24,6 +24,7 @@ public class InbuiltModManager {
     private static final String KEY_MOD_MENU_BUTTON_OPACITY = "mod_menu_button_opacity";
     private static final String KEY_PAUSE_MENU_ONLY = "pause_menu_only";
     private static final String KEY_FAVORITE_MODS = "favorite_mod_ids";
+    private static final String KEY_INBUILT_MOD_ENABLED_PREFIX = "inbuilt_mod_enabled_";
     private static final String KEY_EXTERNAL_MODULE_ENABLED_PREFIX = "external_module_enabled_";
     private static final String KEY_ZOOM_LEVEL = "zoom_level";
     private static final String KEY_ZOOM_KEYBIND = "zoom_keybind";
@@ -177,6 +178,16 @@ public class InbuiltModManager {
             favorites.remove(favoriteKey);
         }
         prefs.edit().putStringSet(KEY_FAVORITE_MODS, favorites).apply();
+    }
+
+    public boolean resolveInbuiltModEnabled(String modId, boolean defaultEnabled) {
+        if (modId == null || modId.isEmpty()) return defaultEnabled;
+        return prefs.getBoolean(KEY_INBUILT_MOD_ENABLED_PREFIX + modId, defaultEnabled);
+    }
+
+    public void setInbuiltModEnabled(String modId, boolean enabled) {
+        if (modId == null || modId.isEmpty()) return;
+        prefs.edit().putBoolean(KEY_INBUILT_MOD_ENABLED_PREFIX + modId, enabled).apply();
     }
 
     public boolean resolveExternalModuleEnabled(String moduleId, boolean defaultEnabled) {

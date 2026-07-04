@@ -437,11 +437,13 @@ public class ModMenuOverlay {
             public void onToggle(UnifiedMod mod, boolean enabled) {
                 mod.setEnabled(enabled);
                 if (mod.getSource() == UnifiedMod.Source.INBUILT) {
+                    InbuiltModManager modManager = InbuiltModManager.getInstance(activity);
+                    modManager.setInbuiltModEnabled(mod.getId(), enabled);
                     InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
                     if (manager != null) {
                         manager.handleModToggle(mod.getId(), enabled);
                     }
-                    if (enabled && InbuiltModManager.getInstance(activity).isNotificationsEnabled()) {
+                    if (enabled && modManager.isNotificationsEnabled()) {
                         notificationManager.show(mod.getName(), mod.getId());
                     }
                     if (callback != null) {
@@ -772,7 +774,9 @@ public class ModMenuOverlay {
         InbuiltOverlayManager overlayMgr = InbuiltOverlayManager.getInstance();
         String inbuiltGroupName = activity.getString(R.string.mod_menu_group_inbuilt);
         for (InbuiltMod im : manager.getAllMods(activity)) {
-            boolean active = overlayMgr != null && overlayMgr.isModActive(im.getId());
+            boolean active = overlayMgr != null
+                ? overlayMgr.isModActive(im.getId())
+                : manager.resolveInbuiltModEnabled(im.getId(), false);
             allMods.add(new UnifiedMod(
                 im.getId(), im.getName(), im.getDescription(), "inbuilt",
                 UnifiedMod.Source.INBUILT, active, null, true,
