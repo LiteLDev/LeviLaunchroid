@@ -107,6 +107,15 @@
 
     <string name="check_update">Güncellemeleri Kontrol Et</string>
     <string name="version_prefix">Sürüm: </string>
+    <string name="unknown_error">Bilinmeyen hata</string>
+    <string name="preloader_sigs_title">Çalışma zamanı verileri</string>
+    <string name="preloader_sigs_last_update">Son güncelleme: %1$s</string>
+    <string name="preloader_sigs_never_updated">Hiçbir zaman</string>
+    <string name="preloader_sigs_update">Çalışma zamanı verilerini güncelle</string>
+    <string name="preloader_sigs_updating">Güncelleniyor…</string>
+    <string name="preloader_sigs_update_success">Çalışma zamanı verileri güncellendi</string>
+    <string name="preloader_sigs_update_failed">Çalışma zamanı verileri güncellenemedi: %1$s</string>
+    <string name="preloader_sigs_no_remote_url">Çalışma zamanı verileri güncelleme URL adresi yapılandırılmamış</string>
 
     <string name="dialog_title_no_version">Sürüm Seçilmedi</string>
     <string name="dialog_message_no_version">Lütfen başlatmadan önce bir oyun sürümü seçin.</string>

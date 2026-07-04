@@ -109,6 +109,15 @@
 
     <string name="check_update">Check for updates</string>
     <string name="version_prefix">Version: </string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="preloader_sigs_title">Runtime Data</string>
+    <string name="preloader_sigs_last_update">Last update: %1$s</string>
+    <string name="preloader_sigs_never_updated">Never</string>
+    <string name="preloader_sigs_update">Update runtime data</string>
+    <string name="preloader_sigs_updating">Updating…</string>
+    <string name="preloader_sigs_update_success">Runtime data updated</string>
+    <string name="preloader_sigs_update_failed">Failed to update runtime data: %1$s</string>
+    <string name="preloader_sigs_no_remote_url">Runtime data update URL is not configured</string>
 
     <string name="dialog_title_no_version">No Version Selected</string>
     <string name="dialog_message_no_version">Please select a game version before launching.</string>

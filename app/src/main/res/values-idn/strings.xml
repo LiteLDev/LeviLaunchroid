@@ -90,6 +90,15 @@
 
     <string name="check_update">Periksa pembaruan</string>
     <string name="version_prefix">Versi: </string>
+    <string name="unknown_error">Kesalahan tidak diketahui</string>
+    <string name="preloader_sigs_title">Data runtime</string>
+    <string name="preloader_sigs_last_update">Pembaruan terakhir: %1$s</string>
+    <string name="preloader_sigs_never_updated">Belum pernah</string>
+    <string name="preloader_sigs_update">Perbarui data runtime</string>
+    <string name="preloader_sigs_updating">Memperbarui…</string>
+    <string name="preloader_sigs_update_success">Data runtime diperbarui</string>
+    <string name="preloader_sigs_update_failed">Gagal memperbarui data runtime: %1$s</string>
+    <string name="preloader_sigs_no_remote_url">URL pembaruan data runtime belum dikonfigurasi</string>
 
     <string name="dialog_title_no_version">Tidak Ada Versi yang Dipilih</string>
     <string name="dialog_message_no_version">Silakan pilih versi game sebelum memulai.</string>

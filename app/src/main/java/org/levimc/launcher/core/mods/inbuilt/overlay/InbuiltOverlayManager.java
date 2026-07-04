@@ -643,15 +643,17 @@ public class InbuiltOverlayManager {
 
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
         boolean isPauseOnly = manager.isPauseMenuOnly();
+        boolean forceGlobalModMenu = org.levimc.launcher.preloader.PreloaderInput.shouldForceGlobalModMenu();
         boolean isPauseOpen = org.levimc.launcher.preloader.PreloaderInput.isPauseMenuOpen();
         boolean isHudScreenOpen = org.levimc.launcher.preloader.PreloaderInput.isHudScreenOpen();
         boolean isShowingMenu = org.levimc.launcher.preloader.PreloaderInput.isShowingMenu();
 
-        boolean inbuiltVisible = hudEditorMode || (isHudScreenOpen && !isShowingMenu);
+        boolean showGameOverlays = forceGlobalModMenu || (isHudScreenOpen && !isShowingMenu);
+        boolean inbuiltVisible = hudEditorMode || showGameOverlays;
 
         activity.runOnUiThread(() -> {
             if (modMenuButton != null) {
-                if (isPauseOnly) {
+                if (isPauseOnly && !forceGlobalModMenu) {
                     if (isPauseOpen) {
                         modMenuButton.setVisibility(android.view.View.VISIBLE);
                     } else {
@@ -668,7 +670,7 @@ public class InbuiltOverlayManager {
             if (hudOverlay != null) {
                 if (hudOverlay.isHudEditorMode()) {
                     hudOverlay.setVisibility(android.view.View.VISIBLE);
-                } else if (isHudScreenOpen && !isShowingMenu) {
+                } else if (showGameOverlays) {
                     hudOverlay.setVisibility(android.view.View.VISIBLE);
                 } else {
                     hudOverlay.setVisibility(android.view.View.GONE);

@@ -90,6 +90,15 @@
 
     <string name="check_update">Проверить обновления</string>
     <string name="version_prefix">Версия: </string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="preloader_sigs_title">Данные среды выполнения</string>
+    <string name="preloader_sigs_last_update">Последнее обновление: %1$s</string>
+    <string name="preloader_sigs_never_updated">Никогда</string>
+    <string name="preloader_sigs_update">Обновить данные среды выполнения</string>
+    <string name="preloader_sigs_updating">Обновление…</string>
+    <string name="preloader_sigs_update_success">Данные среды выполнения обновлены</string>
+    <string name="preloader_sigs_update_failed">Не удалось обновить данные среды выполнения: %1$s</string>
+    <string name="preloader_sigs_no_remote_url">URL обновления данных среды выполнения не настроен</string>
 
     <string name="dialog_title_no_version">Версия не выбрана</string>
     <string name="dialog_message_no_version">Пожалуйста, выберите версию игры перед запуском.</string>

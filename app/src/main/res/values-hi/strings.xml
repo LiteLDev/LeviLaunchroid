@@ -108,6 +108,15 @@
 
     <string name="check_update">अपडेट्स के लिए जांचें</string>
     <string name="version_prefix">संस्करण: </string>
+    <string name="unknown_error">अज्ञात त्रुटि</string>
+    <string name="preloader_sigs_title">रनटाइम डेटा</string>
+    <string name="preloader_sigs_last_update">अंतिम अपडेट: %1$s</string>
+    <string name="preloader_sigs_never_updated">कभी नहीं</string>
+    <string name="preloader_sigs_update">रनटाइम डेटा अपडेट करें</string>
+    <string name="preloader_sigs_updating">अपडेट हो रहा है…</string>
+    <string name="preloader_sigs_update_success">रनटाइम डेटा अपडेट हो गया</string>
+    <string name="preloader_sigs_update_failed">रनटाइम डेटा अपडेट विफल: %1$s</string>
+    <string name="preloader_sigs_no_remote_url">रनटाइम डेटा अपडेट URL कॉन्फ़िगर नहीं है</string>
 
     <string name="dialog_title_no_version">कोई संस्करण नहीं चुना गया</string>
     <string name="dialog_message_no_version">लॉन्च करने से पहले कृपया एक गेम संस्करण चुनें।</string>

@@ -108,6 +108,15 @@
 
     <string name="check_update">アップデートを確認</string>
     <string name="version_prefix">バージョン: </string>
+    <string name="unknown_error">不明なエラー</string>
+    <string name="preloader_sigs_title">ランタイムデータ</string>
+    <string name="preloader_sigs_last_update">最終更新: %1$s</string>
+    <string name="preloader_sigs_never_updated">未更新</string>
+    <string name="preloader_sigs_update">ランタイムデータを更新</string>
+    <string name="preloader_sigs_updating">更新中…</string>
+    <string name="preloader_sigs_update_success">ランタイムデータを更新しました</string>
+    <string name="preloader_sigs_update_failed">ランタイムデータの更新に失敗しました: %1$s</string>
+    <string name="preloader_sigs_no_remote_url">ランタイムデータ更新URLが設定されていません</string>
 
     <string name="dialog_title_no_version">バージョンが選択されていません</string>
     <string name="dialog_message_no_version">起動する前にゲームのバージョンを選択してください。</string>

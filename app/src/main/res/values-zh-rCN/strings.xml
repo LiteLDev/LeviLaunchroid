@@ -48,6 +48,15 @@
 
     <string name="check_update">检查更新</string>
     <string name="version_prefix">版本号：</string>
+    <string name="unknown_error">未知错误</string>
+    <string name="preloader_sigs_title">运行时数据</string>
+    <string name="preloader_sigs_last_update">上次更新：%1$s</string>
+    <string name="preloader_sigs_never_updated">从未更新</string>
+    <string name="preloader_sigs_update">更新运行时数据</string>
+    <string name="preloader_sigs_updating">正在更新…</string>
+    <string name="preloader_sigs_update_success">运行时数据已更新</string>
+    <string name="preloader_sigs_update_failed">运行时数据更新失败：%1$s</string>
+    <string name="preloader_sigs_no_remote_url">未配置运行时数据更新地址</string>
 
     <!-- Permissions -->
     <string name="storage_permission_title">存储迁移权限</string>

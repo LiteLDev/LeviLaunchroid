@@ -108,6 +108,15 @@
 
     <string name="check_update">Kiểm tra cập nhật</string>
     <string name="version_prefix">Phiên bản: </string>
+    <string name="unknown_error">Lỗi không xác định</string>
+    <string name="preloader_sigs_title">Dữ liệu thời gian chạy</string>
+    <string name="preloader_sigs_last_update">Cập nhật lần cuối: %1$s</string>
+    <string name="preloader_sigs_never_updated">Chưa bao giờ</string>
+    <string name="preloader_sigs_update">Cập nhật dữ liệu thời gian chạy</string>
+    <string name="preloader_sigs_updating">Đang cập nhật…</string>
+    <string name="preloader_sigs_update_success">Đã cập nhật dữ liệu thời gian chạy</string>
+    <string name="preloader_sigs_update_failed">Không thể cập nhật dữ liệu thời gian chạy: %1$s</string>
+    <string name="preloader_sigs_no_remote_url">Chưa cấu hình URL cập nhật dữ liệu thời gian chạy</string>
 
     <string name="dialog_title_no_version">Chưa chọn phiên bản</string>
     <string name="dialog_message_no_version">Vui lòng chọn phiên bản trò chơi trước khi khởi chạy.</string>

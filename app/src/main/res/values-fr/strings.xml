@@ -108,6 +108,15 @@
 
     <string name="check_update">Vérifier les mises à jour</string>
     <string name="version_prefix">Version : </string>
+    <string name="unknown_error">Erreur inconnue</string>
+    <string name="preloader_sigs_title">Données d’exécution</string>
+    <string name="preloader_sigs_last_update">Dernière mise à jour : %1$s</string>
+    <string name="preloader_sigs_never_updated">Jamais</string>
+    <string name="preloader_sigs_update">Mettre à jour les données d’exécution</string>
+    <string name="preloader_sigs_updating">Mise à jour…</string>
+    <string name="preloader_sigs_update_success">Données d’exécution mises à jour</string>
+    <string name="preloader_sigs_update_failed">Échec de la mise à jour des données d’exécution : %1$s</string>
+    <string name="preloader_sigs_no_remote_url">L’URL de mise à jour des données d’exécution n’est pas configurée</string>
 
     <string name="dialog_title_no_version">Aucune version sélectionnée</string>
     <string name="dialog_message_no_version">Veuillez sélectionner une version du jeu avant le lancement.</string>
