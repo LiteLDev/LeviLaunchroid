@@ -123,6 +123,54 @@ bool MyMod::enable() {
 浮动按钮使用 `pl::modmenu::ButtonBuilder`。如果 UI 是 mod 临时注册的，请在
 `disable()` 中调用 `unregisterModule()` / `unregisterButton()`。
 
+## Mod Menu 覆盖层绘制
+
+使用 `pl::modmenu::submitDrawCommands()` 替换某个模块当前的 HUD 覆盖层绘制
+命令。文本命令可以使用 `registerFont()` 注册的字体；图片命令使用
+`registerImage()` 注册的原始 RGBA 像素。
+
+| API | 用途 |
+| --- | --- |
+| `registerFont(fontId, ttfData)` | 为文本命令注册 TrueType 字体。 |
+| `registerImage(imageId, imageData, width, height)` | 为图片命令注册原始 RGBA 图片像素。 |
+| `submitDrawCommands(moduleId, commands)` | 替换模块当前的覆盖层绘制命令列表。 |
+
+`registerImage()` 要求 `imageData.size()` 必须等于 `width * height * 4`。
+对 `DrawCommandType::Text`，请把 `DrawCommand::fontId` 设置为已注册的 font id。
+对 `DrawCommandType::Image`，请把 `DrawCommand::imageId` 设置为已注册的 image id。
+
+```cpp
+std::vector<unsigned char> logoRgba = loadLogoPixels();
+const int logoWidth = 64;
+const int logoHeight = 64;
+
+bool MyMod::enable() {
+  if (!pl::modmenu::registerImage("example.logo", logoRgba,
+                                  logoWidth, logoHeight)) {
+    return false;
+  }
+
+  return pl::modmenu::ModuleBuilder(ModuleId, "Speed Meter")
+      .modId(getSelf().getId())
+      .defaultEnabled(true)
+      .registerModule();
+}
+
+void submitOverlay() {
+  const std::vector<pl::modmenu::DrawCommand> commands = {
+      {
+          .type = pl::modmenu::DrawCommandType::Image,
+          .x = 12.0f,
+          .y = 12.0f,
+          .w = 32.0f,
+          .h = 32.0f,
+          .imageId = "example.logo",
+      },
+  };
+  pl::modmenu::submitDrawCommands(ModuleId, commands);
+}
+```
+
 ## 注意
 
 - 注册实例必须在进程生命周期内保持有效。

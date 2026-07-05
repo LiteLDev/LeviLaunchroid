@@ -197,6 +197,29 @@ bool registerQuickButton(ll::mod::NativeMod &self) {
 }
 ```
 
+要在 HUD 中绘制已注册图片，请先注册原始 RGBA 像素，再提交带
+`DrawCommand::imageId` 的 `Image` 绘制命令：
+
+```cpp
+bool registerLogoImage(std::span<const unsigned char> rgbaPixels) {
+  return pl::modmenu::registerImage("full_cpp_mod.logo", rgbaPixels, 64, 64);
+}
+
+void submitLogoOverlay() {
+  const std::vector<pl::modmenu::DrawCommand> commands = {
+      {
+          .type = pl::modmenu::DrawCommandType::Image,
+          .x = 16.0f,
+          .y = 16.0f,
+          .w = 32.0f,
+          .h = 32.0f,
+          .imageId = "full_cpp_mod.logo",
+      },
+  };
+  pl::modmenu::submitDrawCommands("full_cpp_mod.hud", commands);
+}
+```
+
 如果模块或按钮是临时 UI，请在 `disable()` 中注销。
 
 ## 构建选项

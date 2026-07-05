@@ -16,6 +16,7 @@ public class ExternalModBridge {
     private static native byte[] nativeGetExternalButtonIconBytes(String buttonId, int width, int height);
     private static native void nativeDispatchExternalButtonEvent(String buttonId, int event, float value);
     public static native byte[] nativeGetRegisteredFontBytes(String fontId);
+    public static native Object[] nativeGetRegisteredImage(String imageId);
 
     public static int getExternalModCount() {
         if (!ModManager.ensurePreloaderLoaded()) return 0;
@@ -200,13 +201,14 @@ public class ExternalModBridge {
         public String text;
         public String moduleId;
         public String fontId;
+        public String imageId;
     }
 
     public static DrawCommand[] getDrawCommands() {
         if (!ModManager.ensurePreloaderLoaded()) return new DrawCommand[0];
         try {
             Object[] arrays = nativeGetDrawCommands();
-            if (arrays == null || arrays.length < 7) return new DrawCommand[0];
+            if (arrays == null || arrays.length < 8) return new DrawCommand[0];
 
             int[] types = (int[]) arrays[0];
             float[] rects = (float[]) arrays[1];
@@ -215,6 +217,7 @@ public class ExternalModBridge {
             String[] texts = (String[]) arrays[4];
             String[] moduleIds = (String[]) arrays[5];
             String[] fontIds = (String[]) arrays[6];
+            String[] imageIds = (String[]) arrays[7];
 
             if (types == null) return new DrawCommand[0];
 
@@ -234,6 +237,7 @@ public class ExternalModBridge {
                 cmd.text = texts != null ? texts[i] : null;
                 cmd.moduleId = moduleIds != null ? moduleIds[i] : null;
                 cmd.fontId = fontIds != null ? fontIds[i] : null;
+                cmd.imageId = imageIds != null ? imageIds[i] : null;
                 cmds[i] = cmd;
             }
             return cmds;

@@ -202,6 +202,29 @@ bool registerQuickButton(ll::mod::NativeMod &self) {
 }
 ```
 
+To draw registered images in the HUD, register raw RGBA pixels and submit an
+`Image` draw command with `DrawCommand::imageId`:
+
+```cpp
+bool registerLogoImage(std::span<const unsigned char> rgbaPixels) {
+  return pl::modmenu::registerImage("full_cpp_mod.logo", rgbaPixels, 64, 64);
+}
+
+void submitLogoOverlay() {
+  const std::vector<pl::modmenu::DrawCommand> commands = {
+      {
+          .type = pl::modmenu::DrawCommandType::Image,
+          .x = 16.0f,
+          .y = 16.0f,
+          .w = 32.0f,
+          .h = 32.0f,
+          .imageId = "full_cpp_mod.logo",
+      },
+  };
+  pl::modmenu::submitDrawCommands("full_cpp_mod.hud", commands);
+}
+```
+
 Unregister temporary modules/buttons in `disable()`.
 
 ## Build Options
