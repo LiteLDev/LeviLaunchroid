@@ -47,13 +47,13 @@ void removeReturnZero() {
 ```cpp
 class MyMod {
 public:
-  bool enable(pl::mod::ModContext &context) {
+  bool enable() {
     mPatch = pl::memory::PatchHandle(address, "00 00 80 D2 C0 03 5F D6",
                                      "example.return_zero");
     return mPatch.applied();
   }
 
-  bool disable(pl::mod::ModContext &context) {
+  bool disable() {
     mPatch.reset();
     return true;
   }

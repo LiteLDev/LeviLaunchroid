@@ -3,8 +3,8 @@
 ## Purpose
 
 The Mod API is the lifecycle entry point for native mods. It uses
-`<pl/Mod.hpp>`, lifecycle methods that receive `pl::mod::ModContext &`, and a
-long-lived C++ instance registered with `PL_REGISTER_MOD`.
+`<pl/Mod.hpp>`, `ll::mod::NativeMod::current()`, and a long-lived C++
+instance registered with `PL_REGISTER_MOD`.
 
 ## Header
 
@@ -21,13 +21,24 @@ class MyMod {
 public:
   static MyMod &instance();
 
-  bool load(pl::mod::ModContext &context);
-  bool enable(pl::mod::ModContext &context);
-  bool disable(pl::mod::ModContext &context);
-  bool unload(pl::mod::ModContext &context);
+  MyMod();
+
+  [[nodiscard]] ll::mod::NativeMod &getSelf() const { return mSelf; }
+
+  bool load();
+  bool enable();
+  bool disable();
+  bool unload();
+
+private:
+  ll::mod::NativeMod &mSelf;
 };
 
 PL_REGISTER_MOD(MyMod, MyMod::instance())
+```
+
+```cpp
+MyMod::MyMod() : mSelf(*ll::mod::NativeMod::current()) {}
 ```
 
 `load()` is required. `enable()`, `disable()`, and `unload()` are optional; the
@@ -40,22 +51,23 @@ registration helper treats missing optional phases as success.
 
 | Method | Recommended work |
 | --- | --- |
-| `load(context)` | Read config, create directories, prepare mod-owned state. |
-| `enable(context)` | Register hooks, input callbacks, and Mod Menu modules. |
-| `disable(context)` | Undo game-facing work and unregister runtime UI. |
-| `unload(context)` | Release remaining C++ state after disable. |
+| `load()` | Read config, create directories, prepare mod-owned state. |
+| `enable()` | Register hooks, input callbacks, and Mod Menu modules. |
+| `disable()` | Undo game-facing work and unregister runtime UI. |
+| `unload()` | Release remaining C++ state after disable. |
 
 Each method returns `true` on success and `false` on failure.
 
-## ModContext
+## NativeMod
 
-`pl::mod::ModContext` contains resolved manifest metadata, paths, the Java VM,
-and a mod-scoped logger.
+`ll::mod::NativeMod` exposes resolved manifest metadata, paths, the Java VM,
+state, and a mod-scoped logger.
 
 ```cpp
-bool MyMod::load(pl::mod::ModContext &context) {
-  std::filesystem::create_directories(context.configDir());
-  context.logger().info("Loading {}", context.name());
+bool MyMod::load() {
+  auto &self = getSelf();
+  std::filesystem::create_directories(self.getConfigDir());
+  self.getLogger().info("Loading {}", self.getName());
   return true;
 }
 ```
@@ -64,15 +76,15 @@ Common members:
 
 | Member | Purpose |
 | --- | --- |
-| `javaVm()` | Current `JavaVM *`. |
-| `info()` | Full `pl::mod::ModInfo`. |
-| `logger()` | `pl::log::Logger` for this mod. |
-| `id()` | Stable runtime mod id. |
-| `name()` | Display name from the manifest. |
-| `modRootPath()` | Root directory of the mod package. |
-| `dataDir()` | `<mod root>/data`. |
-| `configDir()` | `<mod root>/config`. |
-| `resourceDir()` | `<mod root>/resources`. |
+| `getJavaVM()` | Current `JavaVM *`. |
+| `getLogger()` | `pl::log::Logger` for this mod. |
+| `getId()` | Stable runtime mod id. |
+| `getName()` | Display name from the manifest. |
+| `getModDir()` | Root directory of the mod package. |
+| `getDataDir()` | `<mod root>/data`. |
+| `getConfigDir()` | `<mod root>/config`. |
+| `getResourceDir()` | `<mod root>/resources`. |
+| `getState()` | Current native mod lifecycle state. |
 
 ## Mod Menu Example
 
@@ -89,9 +101,9 @@ void onToggle(std::string_view moduleId, bool enabled) {
 }
 } // namespace
 
-bool MyMod::enable(pl::mod::ModContext &context) {
+bool MyMod::enable() {
   return pl::modmenu::ModuleBuilder(ModuleId, "Speed Meter")
-      .modId(context.id())
+      .modId(getSelf().getId())
       .description("Shows a small movement speed overlay.")
       .defaultEnabled(true)
       .onToggle(onToggle)
@@ -109,4 +121,4 @@ the mod owns temporary UI.
 
 - Keep the registered instance alive for the process lifetime.
 - Do not throw across lifecycle boundaries; catch failures and return `false`.
-- Store user-editable config under `context.configDir()`.
+- Store user-editable config under `getSelf().getConfigDir()`.

@@ -64,6 +64,8 @@ if(NOT ANDROID)
     add_executable(full_cpp_mod_config_gen
         src/GenerateConfig.cpp)
     configure_full_cpp_mod_common(full_cpp_mod_config_gen)
+    target_compile_definitions(full_cpp_mod_config_gen PRIVATE
+        PL_CONFIG_NO_RUNTIME)
 endif()
 
 if(ANDROID)

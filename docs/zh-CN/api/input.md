@@ -50,7 +50,7 @@ void hideKeyboard();
 ```cpp
 #include <pl/Input.hpp>
 
-bool MyMod::enable(pl::mod::ModContext &) {
+bool MyMod::enable() {
   pl::input::registerTouchCallback([](const pl::input::TouchEvent &event) {
     (void)event;
     return false;

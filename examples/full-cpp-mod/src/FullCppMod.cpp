@@ -185,35 +185,38 @@ public:
     return mod;
   }
 
-  bool load(pl::mod::ModContext &context) {
-    mCurrentContext = &context;
+  FullCppMod() : mSelf(*ll::mod::NativeMod::current()) {}
+
+  [[nodiscard]] ll::mod::NativeMod &getSelf() const { return mSelf; }
+
+  bool load() {
+    auto &self = getSelf();
     std::lock_guard lock(mConfigMutex);
-    const auto configDir = context.configDir();
-    mConfigFile.emplace(ExampleConfig{}, configDir / "config.json",
-                        configDir / "config.schema.json");
+    mConfigFile.emplace();
     if (!mConfigFile->load()) {
-      context.logger().error("Failed to load config");
+      self.getLogger().error("Failed to load config");
       mConfigFile.reset();
       return false;
     }
 
     normalizeConfig(mConfigFile->value());
     if (!mConfigFile->save()) {
-      context.logger().error("Failed to persist normalized config");
+      self.getLogger().error("Failed to persist normalized config");
       mConfigFile.reset();
       return false;
     }
 
-    context.logger().info("Loaded config from {}",
+    self.getLogger().info("Loaded config from {}",
                           mConfigFile->configPath().string());
     return true;
   }
 
-  bool enable(pl::mod::ModContext &context) {
-    mCurrentContext = &context;
+  bool enable() {
+    auto &self = getSelf();
     const auto snapshot = snapshotConfig();
     const bool moduleRegistered =
         pl::modmenu::ModuleBuilder(kModuleId, "Full C++ Config Demo")
+            .modId(self.getId())
             .description(
                 "Pure C++ lifecycle module with persistent typed config.")
             .defaultEnabled(true)
@@ -289,10 +292,10 @@ public:
                             holdButtonRegistered && toggleButtonRegistered &&
                             takeButtonRegistered;
     if (registered) {
-      context.logger().info("Registered Mod Menu module {} and demo buttons",
+      self.getLogger().info("Registered Mod Menu module {} and demo buttons",
                             kModuleId);
     } else {
-      context.logger().error(
+      self.getLogger().error(
           "Failed to register Mod Menu module/buttons: module={} quickDrop={} "
           "hold={} toggle={} take={}",
           moduleRegistered, quickDropButtonRegistered, holdButtonRegistered,
@@ -301,25 +304,24 @@ public:
     return registered;
   }
 
-  bool disable(pl::mod::ModContext &context) {
+  bool disable() {
     unregisterModule();
-    context.logger().info("Disabled");
+    getSelf().getLogger().info("Disabled");
     return true;
   }
 
-  bool unload(pl::mod::ModContext &context) {
+  bool unload() {
     unregisterModule();
     {
       std::lock_guard lock(mConfigMutex);
       mConfigFile.reset();
     }
-    context.logger().info("Unloaded");
-    mCurrentContext = nullptr;
+    getSelf().getLogger().info("Unloaded");
     return true;
   }
 
 private:
-  pl::mod::ModContext *mCurrentContext{};
+  ll::mod::NativeMod &mSelf;
   std::mutex mConfigMutex;
   std::optional<pl::config::ConfigFile<ExampleConfig>> mConfigFile;
   std::atomic_bool mHoldButtonDown{false};
@@ -354,10 +356,8 @@ private:
       return;
     }
 
-    if (mCurrentContext) {
-      mCurrentContext->logger().info("Module {} {}", moduleId,
-                                     enabled ? "enabled" : "disabled");
-    }
+    getSelf().getLogger().info("Module {} {}", moduleId,
+                               enabled ? "enabled" : "disabled");
   }
 
   void handleConfigChanged(std::string_view moduleId, std::string_view key,
@@ -401,13 +401,10 @@ private:
 
     normalizeConfig(mConfigFile->value());
     const bool saved = mConfigFile->save();
-    if (mCurrentContext) {
-      if (saved) {
-        mCurrentContext->logger().info("Persisted config after {}", reason);
-      } else {
-        mCurrentContext->logger().warn("Failed to persist config after {}",
-                                       reason);
-      }
+    if (saved) {
+      getSelf().getLogger().info("Persisted config after {}", reason);
+    } else {
+      getSelf().getLogger().warn("Failed to persist config after {}", reason);
     }
     return saved;
   }
@@ -429,12 +426,10 @@ private:
       return;
     }
 
-    if (mCurrentContext) {
-      mCurrentContext->logger().info(
-          "External button {} event={} value={} holdDown={} toggleActive={}",
-          buttonId, static_cast<int>(event), value, mHoldButtonDown.load(),
-          mToggleButtonActive.load());
-    }
+    getSelf().getLogger().info(
+        "External button {} event={} value={} holdDown={} toggleActive={}",
+        buttonId, static_cast<int>(event), value, mHoldButtonDown.load(),
+        mToggleButtonActive.load());
   }
 
   void unregisterModule() {

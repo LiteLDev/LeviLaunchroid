@@ -48,25 +48,27 @@ struct ModConfig {
 
 ## 加载与保存
 
-请从 `pl::mod::ModContext` 传入显式路径。SDK 不保存全局 current mod，因此默认路径
-helper 会返回空路径。
+native mod 生命周期调用期间，`ConfigFile` 默认可以使用当前 mod 的
+`config/config.json` 和 `config/config.schema.json` 路径。需要非默认位置时仍可
+传入显式路径。
 
 ```cpp
 class MyMod {
 public:
-  bool load(pl::mod::ModContext &context) {
-    mConfig.emplace(ModConfig{}, context.configDir() / "config.json",
-                    context.configDir() / "config.schema.json");
+  bool load() {
+    mConfig.emplace();
     if (!mConfig->load()) {
-      context.logger().warn("Failed to load config");
+      getSelf().getLogger().warn("Failed to load config");
       return false;
     }
     return true;
   }
 
-  bool enable(pl::mod::ModContext &) {
+  bool enable() {
     return mConfig && mConfig->value().enabled;
   }
+
+  [[nodiscard]] ll::mod::NativeMod &getSelf() const;
 
 private:
   std::optional<pl::config::ConfigFile<ModConfig>> mConfig;

@@ -36,7 +36,7 @@ PL_EXPORT void customVisibleFunction();
 
 class MyMod {
 public:
-  bool load(pl::mod::ModContext &context);
+  bool load();
 };
 
 PL_REGISTER_MOD(MyMod, MyMod{})

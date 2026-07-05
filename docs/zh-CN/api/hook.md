@@ -52,8 +52,8 @@ using UpdateFn = void (*)(void *);
 
 class MyMod {
 public:
-  bool enable(pl::mod::ModContext &context);
-  bool disable(pl::mod::ModContext &context);
+  bool enable();
+  bool disable();
 
 private:
   static void updateHook(void *self);
@@ -62,7 +62,7 @@ private:
   pl::memory::HookHandle mUpdateHook;
 };
 
-bool MyMod::enable(pl::mod::ModContext &) {
+bool MyMod::enable() {
   void *target = /* resolved target address */;
   mUpdateHook = pl::memory::HookHandle(
       target, reinterpret_cast<void *>(&updateHook),
@@ -71,7 +71,7 @@ bool MyMod::enable(pl::mod::ModContext &) {
   return mUpdateHook.installed();
 }
 
-bool MyMod::disable(pl::mod::ModContext &) {
+bool MyMod::disable() {
   mUpdateHook.reset();
   return true;
 }

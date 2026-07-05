@@ -78,10 +78,17 @@ class FullCppMod {
 public:
   static FullCppMod &instance();
 
-  bool load(pl::mod::ModContext &context);
-  bool enable(pl::mod::ModContext &context);
-  bool disable(pl::mod::ModContext &context);
-  bool unload(pl::mod::ModContext &context);
+  FullCppMod();
+
+  [[nodiscard]] ll::mod::NativeMod &getSelf() const { return mSelf; }
+
+  bool load();
+  bool enable();
+  bool disable();
+  bool unload();
+
+private:
+  ll::mod::NativeMod &mSelf;
 };
 
 PL_REGISTER_MOD(FullCppMod, FullCppMod::instance())
@@ -90,12 +97,15 @@ PL_REGISTER_MOD(FullCppMod, FullCppMod::instance())
 `load()` is required. The other lifecycle methods are optional and default to
 success when absent.
 
-Use `pl::mod::ModContext` instead of global current-mod state:
+Store the loader-provided native mod object in the constructor:
 
 ```cpp
-bool FullCppMod::load(pl::mod::ModContext &context) {
-  std::filesystem::create_directories(context.configDir());
-  context.logger().info("Loaded {}", context.name());
+FullCppMod::FullCppMod() : mSelf(*ll::mod::NativeMod::current()) {}
+
+bool FullCppMod::load() {
+  auto &self = getSelf();
+  std::filesystem::create_directories(self.getConfigDir());
+  self.getLogger().info("Loaded {}", self.getName());
   return true;
 }
 ```
@@ -111,13 +121,13 @@ include(FetchContent)
 FetchContent_Declare(
     preloader_android
     GIT_REPOSITORY https://github.com/LiteLDev/preloader-android.git
-    GIT_TAG 0.2.0)
+    GIT_TAG main)
 FetchContent_MakeAvailable(preloader_android)
 
 target_link_libraries(my_mod PRIVATE preloader)
 ```
 
-Pin `GIT_TAG` to a released tag or commit for reproducible builds.
+Pin `GIT_TAG` to a release tag or commit for reproducible builds.
 
 If the SDK is vendored or added as a git submodule in your mod project, point
 to that checkout instead:
@@ -144,7 +154,9 @@ implementation details.
 
 ## Typed Config
 
-Keep config in mod-owned state and pass explicit paths from `ModContext`:
+Keep config in mod-owned state. During lifecycle calls, `ConfigFile` can use
+the current native mod's `config/config.json` and `config/config.schema.json`
+paths by default:
 
 ```cpp
 struct ExampleConfig {
@@ -158,9 +170,8 @@ private:
   std::optional<pl::config::ConfigFile<ExampleConfig>> mConfig;
 };
 
-bool FullCppMod::load(pl::mod::ModContext &context) {
-  mConfig.emplace(ExampleConfig{}, context.configDir() / "config.json",
-                  context.configDir() / "config.schema.json");
+bool FullCppMod::load() {
+  mConfig.emplace();
   return mConfig->load();
 }
 ```
@@ -171,12 +182,12 @@ to place `config.json` and `config.schema.json` into the package before import.
 ## Mod Menu
 
 ```cpp
-bool FullCppMod::enable(pl::mod::ModContext &context) {
+bool FullCppMod::enable() {
   const auto &config = mConfig->value();
 
   return pl::modmenu::ModuleBuilder("full_cpp_mod.hud",
                                     "Full C++ Config Demo")
-      .modId(context.id())
+      .modId(getSelf().getId())
       .description("Pure C++ lifecycle module with persistent typed config.")
       .defaultEnabled(config.showOverlay)
       .config("opacity", "Opacity", pl::modmenu::ConfigType::SliderInt,
@@ -205,7 +216,7 @@ runtime preloader can resolve them when the mod is loaded.
 - Build native mods for `arm64-v8a`.
 - Include only the SDK `include` directory.
 - Register one long-lived object with `PL_REGISTER_MOD`.
-- Pass `pl::mod::ModContext &` through lifecycle methods.
+- Keep `ll::mod::NativeMod &mSelf` from `ll::mod::NativeMod::current()`.
 - Load config before registering runtime UI.
 - Store hook and patch handles in mod-owned state.
 - Unregister temporary Mod Menu entries during `disable()`.
