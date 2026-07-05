@@ -44,6 +44,17 @@ if(NOT TARGET magic_enum::magic_enum)
     list(APPEND LL_FULL_CPP_MOD_DEPS magic_enum)
 endif()
 
+if(NOT TARGET fmt::fmt)
+    FetchContent_Declare(
+        fmt
+        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+        GIT_TAG 11.2.0)
+    set(FMT_DOC OFF CACHE BOOL "Disable fmt docs" FORCE)
+    set(FMT_TEST OFF CACHE BOOL "Disable fmt tests" FORCE)
+    set(FMT_INSTALL OFF CACHE BOOL "Disable fmt install rules" FORCE)
+    list(APPEND LL_FULL_CPP_MOD_DEPS fmt)
+endif()
+
 if(LL_FULL_CPP_MOD_DEPS)
     FetchContent_MakeAvailable(${LL_FULL_CPP_MOD_DEPS})
 endif()
@@ -55,7 +66,8 @@ function(configure_full_cpp_mod_common target_name)
     target_link_libraries("${target_name}" PRIVATE
         nlohmann_json::nlohmann_json
         Boost::pfr
-        magic_enum::magic_enum)
+        magic_enum::magic_enum
+        fmt::fmt)
     target_compile_options("${target_name}" PRIVATE
         $<$<COMPILE_LANG_AND_ID:CXX,Clang,GNU>:-Wall -Wextra -Wpedantic>)
 endfunction()

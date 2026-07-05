@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+include(FetchContent)
+
 get_filename_component(LL_REPO_ROOT "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
 set(PRELOADER_ANDROID_ROOT
     "${LL_REPO_ROOT}/app/src/main/cpp/preloader"
@@ -26,6 +28,17 @@ if(LL_MOD_MENU_EXAMPLES_LINK_PRELOADER AND NOT TARGET preloader)
                      "${CMAKE_BINARY_DIR}/_preloader_android")
 endif()
 
+if(NOT TARGET fmt::fmt)
+    FetchContent_Declare(
+        fmt
+        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+        GIT_TAG 11.2.0)
+    set(FMT_DOC OFF CACHE BOOL "Disable fmt docs" FORCE)
+    set(FMT_TEST OFF CACHE BOOL "Disable fmt tests" FORCE)
+    set(FMT_INSTALL OFF CACHE BOOL "Disable fmt install rules" FORCE)
+    FetchContent_MakeAvailable(fmt)
+endif()
+
 if(ANDROID_ABI)
     set(LL_EXAMPLE_OUTPUT_ABI "${ANDROID_ABI}")
 else()
@@ -42,6 +55,7 @@ function(configure_mod_menu_example target_name)
     if(LL_LOG_LIB)
         target_link_libraries("${target_name}" PRIVATE "${LL_LOG_LIB}")
     endif()
+    target_link_libraries("${target_name}" PRIVATE fmt::fmt)
 endfunction()
 
 function(link_preloader_or_allow_runtime_lookup target_name)
