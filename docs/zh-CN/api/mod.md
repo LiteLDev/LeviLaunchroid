@@ -51,7 +51,7 @@ helper 会按成功处理。
 | 方法 | 建议职责 |
 | --- | --- |
 | `load()` | 读取配置、创建目录、准备 mod 自有状态。 |
-| `enable()` | 注册 hook、input callback、Mod Menu 模块。 |
+| `enable()` | 注册 hook、input callback 和运行期 UI。 |
 | `disable()` | 撤销面向游戏的行为并注销运行期 UI。 |
 | `unload()` | 在 disable 后释放剩余 C++ 状态。 |
 
@@ -93,83 +93,7 @@ bool MyMod::load() {
 | `getState()` | 当前 native mod 生命周期状态。 |
 | `isLoaded()` / `isEnabled()` / `isDisabled()` | 常用状态判断。 |
 
-## Mod Menu 示例
-
-```cpp
-#include <pl/Mod.hpp>
-#include <pl/ModMenu.hpp>
-
-namespace {
-constexpr const char *ModuleId = "example.speed_meter";
-
-void onToggle(std::string_view moduleId, bool enabled) {
-  (void)moduleId;
-  (void)enabled;
-}
-} // namespace
-
-bool MyMod::enable() {
-  return pl::modmenu::ModuleBuilder(ModuleId, "Speed Meter")
-      .modId(getSelf().getId())
-      .description("Shows a small movement speed overlay.")
-      .defaultEnabled(true)
-      .onToggle(onToggle)
-      .config("refreshRate", "Refresh Rate",
-              pl::modmenu::ConfigType::SliderInt, "20", "1", "60")
-      .registerModule();
-}
-```
-
-浮动按钮使用 `pl::modmenu::ButtonBuilder`。如果 UI 是 mod 临时注册的，请在
-`disable()` 中调用 `unregisterModule()` / `unregisterButton()`。
-
-## Mod Menu 覆盖层绘制
-
-使用 `pl::modmenu::submitDrawCommands()` 替换某个模块当前的 HUD 覆盖层绘制
-命令。文本命令可以使用 `registerFont()` 注册的字体；图片命令使用
-`registerImage()` 注册的原始 RGBA 像素。
-
-| API | 用途 |
-| --- | --- |
-| `registerFont(fontId, ttfData)` | 为文本命令注册 TrueType 字体。 |
-| `registerImage(imageId, imageData, width, height)` | 为图片命令注册原始 RGBA 图片像素。 |
-| `submitDrawCommands(moduleId, commands)` | 替换模块当前的覆盖层绘制命令列表。 |
-
-`registerImage()` 要求 `imageData.size()` 必须等于 `width * height * 4`。
-对 `DrawCommandType::Text`，请把 `DrawCommand::fontId` 设置为已注册的 font id。
-对 `DrawCommandType::Image`，请把 `DrawCommand::imageId` 设置为已注册的 image id。
-
-```cpp
-std::vector<unsigned char> logoRgba = loadLogoPixels();
-const int logoWidth = 64;
-const int logoHeight = 64;
-
-bool MyMod::enable() {
-  if (!pl::modmenu::registerImage("example.logo", logoRgba,
-                                  logoWidth, logoHeight)) {
-    return false;
-  }
-
-  return pl::modmenu::ModuleBuilder(ModuleId, "Speed Meter")
-      .modId(getSelf().getId())
-      .defaultEnabled(true)
-      .registerModule();
-}
-
-void submitOverlay() {
-  const std::vector<pl::modmenu::DrawCommand> commands = {
-      {
-          .type = pl::modmenu::DrawCommandType::Image,
-          .x = 12.0f,
-          .y = 12.0f,
-          .w = 32.0f,
-          .h = 32.0f,
-          .imageId = "example.logo",
-      },
-  };
-  pl::modmenu::submitDrawCommands(ModuleId, commands);
-}
-```
+运行期 UI、浮动按钮和 HUD 覆盖层绘制见 [Mod Menu API](./mod-menu.md)。
 
 ## 注意
 

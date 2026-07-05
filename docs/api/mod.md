@@ -51,7 +51,7 @@ Use `PL_REGISTER_MOD` once in a source file for each native mod library.
 | Method | Recommended work |
 | --- | --- |
 | `load()` | Read config, create directories, prepare mod-owned state. |
-| `enable()` | Register hooks, input callbacks, and Mod Menu modules. |
+| `enable()` | Register hooks, input callbacks, and runtime UI. |
 | `disable()` | Undo game-facing work and unregister runtime UI. |
 | `unload()` | Release remaining C++ state after disable. |
 
@@ -93,85 +93,8 @@ Common members:
 | `getState()` | Current native mod lifecycle state. |
 | `isLoaded()` / `isEnabled()` / `isDisabled()` | Convenience state checks. |
 
-## Mod Menu Example
-
-```cpp
-#include <pl/Mod.hpp>
-#include <pl/ModMenu.hpp>
-
-namespace {
-constexpr const char *ModuleId = "example.speed_meter";
-
-void onToggle(std::string_view moduleId, bool enabled) {
-  (void)moduleId;
-  (void)enabled;
-}
-} // namespace
-
-bool MyMod::enable() {
-  return pl::modmenu::ModuleBuilder(ModuleId, "Speed Meter")
-      .modId(getSelf().getId())
-      .description("Shows a small movement speed overlay.")
-      .defaultEnabled(true)
-      .onToggle(onToggle)
-      .config("refreshRate", "Refresh Rate",
-              pl::modmenu::ConfigType::SliderInt, "20", "1", "60")
-      .registerModule();
-}
-```
-
-Use `pl::modmenu::ButtonBuilder` for floating buttons and
-`pl::modmenu::unregisterModule()` / `unregisterButton()` during `disable()` when
-the mod owns temporary UI.
-
-## Mod Menu Overlay Drawing
-
-Use `pl::modmenu::submitDrawCommands()` to replace a module's HUD overlay
-commands. Text commands can use a font registered with `registerFont()`, while
-image commands use raw RGBA pixels registered with `registerImage()`.
-
-| API | Purpose |
-| --- | --- |
-| `registerFont(fontId, ttfData)` | Registers a TrueType font for text commands. |
-| `registerImage(imageId, imageData, width, height)` | Registers raw RGBA image pixels for image commands. |
-| `submitDrawCommands(moduleId, commands)` | Replaces the module's current overlay draw command list. |
-
-`registerImage()` expects `imageData.size()` to be exactly
-`width * height * 4`. For `DrawCommandType::Text`, set `DrawCommand::fontId`
-to the registered font id. For `DrawCommandType::Image`, set
-`DrawCommand::imageId` to the registered image id.
-
-```cpp
-std::vector<unsigned char> logoRgba = loadLogoPixels();
-const int logoWidth = 64;
-const int logoHeight = 64;
-
-bool MyMod::enable() {
-  if (!pl::modmenu::registerImage("example.logo", logoRgba,
-                                  logoWidth, logoHeight)) {
-    return false;
-  }
-
-  return pl::modmenu::ModuleBuilder(ModuleId, "Speed Meter")
-      .modId(getSelf().getId())
-      .defaultEnabled(true)
-      .registerModule();
-}
-
-void submitOverlay() {
-  const std::vector<pl::modmenu::DrawCommand> commands = {
-      {
-          .type = pl::modmenu::DrawCommandType::Image,
-          .x = 12.0f,
-          .y = 12.0f,
-          .w = 32.0f,
-          .h = 32.0f,
-          .imageId = "example.logo",
-      },
-  };
-  pl::modmenu::submitDrawCommands(ModuleId, commands);
-}
-```
+Runtime UI, floating buttons, and HUD overlay drawing are documented in
+[Mod Menu API](./mod-menu.md).
 
 ## Notes
 

@@ -117,7 +117,7 @@ include(FetchContent)
 FetchContent_Declare(
     preloader_android
     GIT_REPOSITORY https://github.com/LiteLDev/preloader-android.git
-    GIT_TAG 0.2.1)
+    GIT_TAG 0.2.2)
 FetchContent_MakeAvailable(preloader_android)
 
 target_link_libraries(my_mod PRIVATE preloader)
@@ -221,6 +221,7 @@ void submitLogoOverlay() {
 ```
 
 如果模块或按钮是临时 UI，请在 `disable()` 中注销。
+完整 API 参考见 [Mod Menu API](../api/mod-menu.md)。
 
 ## 构建选项
 

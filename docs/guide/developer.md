@@ -121,7 +121,7 @@ include(FetchContent)
 FetchContent_Declare(
     preloader_android
     GIT_REPOSITORY https://github.com/LiteLDev/preloader-android.git
-    GIT_TAG 0.2.1)
+    GIT_TAG 0.2.2)
 FetchContent_MakeAvailable(preloader_android)
 
 target_link_libraries(my_mod PRIVATE preloader)
@@ -226,6 +226,7 @@ void submitLogoOverlay() {
 ```
 
 Unregister temporary modules/buttons in `disable()`.
+For the full API reference, see [Mod Menu API](../api/mod-menu.md).
 
 ## Build Options
 
