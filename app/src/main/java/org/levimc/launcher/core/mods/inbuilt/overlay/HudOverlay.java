@@ -37,6 +37,28 @@ public class HudOverlay extends View {
         return null;
     }
 
+    private final java.util.Map<String, android.graphics.Bitmap> imageCache = new java.util.HashMap<>();
+
+    private android.graphics.Bitmap getImage(String imageId) {
+        if (imageId == null || imageId.isEmpty()) return null;
+        if (imageCache.containsKey(imageId)) return imageCache.get(imageId);
+        
+        byte[] imageBytes = ExternalModBridge.nativeGetRegisteredFontBytes(imageId);
+        if (imageBytes != null && imageBytes.length >= 4) {
+            try {
+                int dim = (int) Math.sqrt(imageBytes.length / 4);
+                java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap(imageBytes);
+                android.graphics.Bitmap bitmap = android.graphics.Bitmap.createBitmap(dim, dim, android.graphics.Bitmap.Config.ARGB_8888);
+                bitmap.copyPixelsFromBuffer(buffer);
+                imageCache.put(imageId, bitmap);
+                return bitmap;
+            } catch (Exception e) {
+            }
+        }
+        imageCache.put(imageId, null);
+        return null;
+    }
+
     public HudOverlay(Activity activity) {
         super(activity);
         paint.setAntiAlias(true);
@@ -436,6 +458,12 @@ public class HudOverlay extends View {
                     
                     path.close();
                     canvas.drawPath(path, paint);
+                } else if (cmd.type == DrawCommand.TYPE_IMAGE) {
+                    android.graphics.Bitmap bitmap = getImage(cmd.fontId);
+                    if (bitmap != null) {
+                        android.graphics.RectF dst = new android.graphics.RectF(drawX, drawY, drawX + cmd.w, drawY + cmd.h);
+                        canvas.drawBitmap(bitmap, null, dst, paint);
+                    }
                 }
 
                 if (isHudEditorMode && cmd.moduleId != null) {

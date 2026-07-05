@@ -190,6 +190,7 @@ public class ExternalModBridge {
         public static final int TYPE_RECT_FILLED = 3;
         public static final int TYPE_CIRCLE_FILLED = 4;
         public static final int TYPE_TRIANGLE_FILLED = 5;
+        public static final int TYPE_IMAGE = 6;
 
         public int type;
         public float x, y, w, h;
