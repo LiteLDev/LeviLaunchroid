@@ -92,7 +92,7 @@ existing JSON into that default layout.
 - New fields are added with C++ defaults.
 - Existing user values are preserved when they can be deserialized.
 - `version` is forced back to the C++ default `version`.
-- Malformed, outdated, or incomplete files are normalized and written back.
+- Malformed or incomplete files are normalized and written back.
 - Unknown keys are not kept after normalization.
 
 ## Schema Metadata
