@@ -1,7 +1,11 @@
 # Native Mod Quick Start
 
 This page describes the supported developer path for LeviLaunchroid native
-mods. The public SDK lives under `app/src/main/cpp/preloader/include`.
+mods. The public SDK is published in
+[LiteLDev/preloader-android](https://github.com/LiteLDev/preloader-android).
+
+For standalone third-party mods, start from the
+[LeviLauncher Android mod template](https://github.com/QYCottage/levilauncher-android-mod-template).
 
 Use `examples/full-cpp-mod` as the reference implementation. It includes
 lifecycle registration, typed config, Mod Menu integration, Android packaging,
@@ -14,6 +18,9 @@ From the repository root:
 ```powershell
 .\examples\full-cpp-mod\build.ps1 -Clean
 ```
+
+This built-in example uses the repository's internal build wiring. Standalone
+mod projects should import the SDK as an external dependency.
 
 Output:
 
@@ -93,13 +100,32 @@ bool FullCppMod::load(pl::mod::ModContext &context) {
 }
 ```
 
-## CMake
+## SDK Dependency
 
-Include the SDK root, not internal source directories:
+In a standalone mod project, import `preloader-android` the same way you import
+other third-party CMake dependencies. For example, with `FetchContent`:
 
 ```cmake
-target_include_directories(my_mod PRIVATE
-    "${PRELOADER_ANDROID_ROOT}/include")
+include(FetchContent)
+
+FetchContent_Declare(
+    preloader_android
+    GIT_REPOSITORY https://github.com/LiteLDev/preloader-android.git
+    GIT_TAG 0.2.0)
+FetchContent_MakeAvailable(preloader_android)
+
+target_link_libraries(my_mod PRIVATE preloader)
+```
+
+Pin `GIT_TAG` to a released tag or commit for reproducible builds. The current
+SDK release is `0.2.0`.
+
+If the SDK is vendored or added as a git submodule in your mod project, point
+to that checkout instead:
+
+```cmake
+add_subdirectory(third_party/preloader-android)
+target_link_libraries(my_mod PRIVATE preloader)
 ```
 
 Common SDK headers:
@@ -168,7 +194,7 @@ Use `ButtonBuilder` for floating buttons, and unregister modules/buttons in
 ```powershell
 .\examples\full-cpp-mod\build.ps1
 .\examples\full-cpp-mod\build.ps1 -Ndk <path-to-android-ndk>
-.\examples\full-cpp-mod\build.ps1 -PreloaderRoot <path-to-preloader>
+.\examples\full-cpp-mod\build.ps1 -PreloaderRoot <path-to-preloader-android>
 .\examples\full-cpp-mod\build.ps1 -NoLinkPreloader
 ```
 

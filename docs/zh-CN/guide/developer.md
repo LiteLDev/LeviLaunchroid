@@ -1,6 +1,11 @@
 # Native Mod 快速开始
 
-本页面描述 LeviLaunchroid native mod 的受支持开发路径。公开 SDK 位于 `app/src/main/cpp/preloader/include`。
+本页面描述 LeviLaunchroid native mod 的受支持开发路径。公开 SDK 位于
+[LiteLDev/preloader-android](https://github.com/LiteLDev/preloader-android)。
+
+独立第三方 mod 建议从
+[LeviLauncher Android mod template](https://github.com/QYCottage/levilauncher-android-mod-template)
+开始。
 
 推荐以 `examples/full-cpp-mod` 作为参考实现。它包含生命周期注册、类型化
 配置、Mod Menu 集成、Android 打包和 `.levipack` 输出。
@@ -12,6 +17,8 @@
 ```powershell
 .\examples\full-cpp-mod\build.ps1 -Clean
 ```
+
+这个内置示例使用仓库内部构建配置。独立 mod 工程请把 SDK 作为外部依赖引入。
 
 输出：
 
@@ -88,13 +95,31 @@ bool FullCppMod::load(pl::mod::ModContext &context) {
 }
 ```
 
-## CMake
+## SDK 依赖
 
-只 include SDK 根目录，不要 include 内部源码目录：
+独立 mod 工程应像引入其它 CMake 第三方依赖一样引入 `preloader-android`。例如使用
+`FetchContent`：
 
 ```cmake
-target_include_directories(my_mod PRIVATE
-    "${PRELOADER_ANDROID_ROOT}/include")
+include(FetchContent)
+
+FetchContent_Declare(
+    preloader_android
+    GIT_REPOSITORY https://github.com/LiteLDev/preloader-android.git
+    GIT_TAG 0.2.0)
+FetchContent_MakeAvailable(preloader_android)
+
+target_link_libraries(my_mod PRIVATE preloader)
+```
+
+实际项目应把 `GIT_TAG` 固定到 release tag 或 commit，避免构建结果漂移。当前 SDK
+release 是 `0.2.0`。
+
+如果 SDK 以 vendored 目录或 git submodule 放在 mod 工程里，就指向对应 checkout：
+
+```cmake
+add_subdirectory(third_party/preloader-android)
+target_link_libraries(my_mod PRIVATE preloader)
 ```
 
 常用 SDK 头文件：
@@ -161,7 +186,7 @@ bool FullCppMod::enable(pl::mod::ModContext &context) {
 ```powershell
 .\examples\full-cpp-mod\build.ps1
 .\examples\full-cpp-mod\build.ps1 -Ndk <path-to-android-ndk>
-.\examples\full-cpp-mod\build.ps1 -PreloaderRoot <path-to-preloader>
+.\examples\full-cpp-mod\build.ps1 -PreloaderRoot <path-to-preloader-android>
 .\examples\full-cpp-mod\build.ps1 -NoLinkPreloader
 ```
 
