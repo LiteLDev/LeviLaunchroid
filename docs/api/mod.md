@@ -44,8 +44,7 @@ MyMod::MyMod() : mSelf(*ll::mod::NativeMod::current()) {}
 `load()` is required. `enable()`, `disable()`, and `unload()` are optional; the
 registration helper treats missing optional phases as success.
 
-`PL_REGISTER_MOD` exports the unmangled C-linkage symbol
-`PLGetModRegistration`, which returns the C++ lifecycle registration table.
+Use `PL_REGISTER_MOD` once in a source file for each native mod library.
 
 ## Lifecycle
 
@@ -60,7 +59,7 @@ Each method returns `true` on success and `false` on failure.
 
 ## NativeMod
 
-`ll::mod::NativeMod` exposes resolved manifest metadata, paths, the Java VM,
+`ll::mod::NativeMod` exposes manifest metadata, package paths, the Java VM,
 state, and a mod-scoped logger.
 
 ```cpp
@@ -80,11 +79,19 @@ Common members:
 | `getLogger()` | `pl::log::Logger` for this mod. |
 | `getId()` | Stable runtime mod id. |
 | `getName()` | Display name from the manifest. |
+| `getAuthor()` | Author from the manifest. |
+| `getVersion()` | Version from the manifest. |
+| `getEntryPath()` | Resolved path to the configured entry file. |
+| `getEntryFileName()` | Entry file name from the manifest. |
+| `getIconPath()` | Resolved icon path, when one is configured. |
 | `getModDir()` | Root directory of the mod package. |
 | `getDataDir()` | `<mod root>/data`. |
 | `getConfigDir()` | `<mod root>/config`. |
 | `getResourceDir()` | `<mod root>/resources`. |
+| `getManifestPath()` | Resolved path to `manifest.json`. |
+| `getLibraryPath()` | Resolved path to the loaded native library. |
 | `getState()` | Current native mod lifecycle state. |
+| `isLoaded()` / `isEnabled()` / `isDisabled()` | Convenience state checks. |
 
 ## Mod Menu Example
 

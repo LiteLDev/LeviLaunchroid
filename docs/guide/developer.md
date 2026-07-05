@@ -19,8 +19,8 @@ From the repository root:
 .\examples\full-cpp-mod\build.ps1 -Clean
 ```
 
-This built-in example uses the repository's internal build wiring. Standalone
-mod projects should import the SDK as an external dependency.
+The example is ready to build in this repository. Standalone mod projects
+should start from the template and import the SDK as an external dependency.
 
 Output:
 
@@ -112,8 +112,8 @@ bool FullCppMod::load() {
 
 ## SDK Dependency
 
-In a standalone mod project, import `preloader-android` the same way you import
-other third-party CMake dependencies. For example, with `FetchContent`:
+In a standalone Android native mod project, import `preloader-android` with
+`FetchContent` and link your mod library to the `preloader` target:
 
 ```cmake
 include(FetchContent)
@@ -121,21 +121,13 @@ include(FetchContent)
 FetchContent_Declare(
     preloader_android
     GIT_REPOSITORY https://github.com/LiteLDev/preloader-android.git
-    GIT_TAG main)
+    GIT_TAG 0.2.1)
 FetchContent_MakeAvailable(preloader_android)
 
 target_link_libraries(my_mod PRIVATE preloader)
 ```
 
-Pin `GIT_TAG` to a release tag or commit for reproducible builds.
-
-If the SDK is vendored or added as a git submodule in your mod project, point
-to that checkout instead:
-
-```cmake
-add_subdirectory(third_party/preloader-android)
-target_link_libraries(my_mod PRIVATE preloader)
-```
+Pin `GIT_TAG` to a release tag for reproducible builds.
 
 Common SDK headers:
 
@@ -149,8 +141,7 @@ Common SDK headers:
 #include <pl/memory/Signature.hpp>
 ```
 
-Do not include preloader `src` directories. They contain private runtime
-implementation details.
+Use only public SDK headers from `include/pl`.
 
 ## Typed Config
 
@@ -176,8 +167,8 @@ bool FullCppMod::load() {
 }
 ```
 
-Use a host-side generator like `examples/full-cpp-mod/src/GenerateConfig.cpp`
-to place `config.json` and `config.schema.json` into the package before import.
+Package `config.json` and `config.schema.json` with your mod. The full example
+build script produces both files before creating the `.levipack`.
 
 ## Mod Menu
 
@@ -196,25 +187,38 @@ bool FullCppMod::enable() {
 }
 ```
 
-Use `ButtonBuilder` for floating buttons, and unregister modules/buttons in
-`disable()` when they are temporary.
+Use `ButtonBuilder` for floating buttons:
+
+```cpp
+bool registerQuickButton(ll::mod::NativeMod &self) {
+  return pl::modmenu::ButtonBuilder("full_cpp_mod.quick_drop",
+                                    "Full C++ Quick Drop")
+      .moduleId("full_cpp_mod.hud")
+      .modId(self.getId())
+      .label("Q")
+      .androidKeyCode(45)
+      .behavior(pl::modmenu::ButtonBehavior::Click)
+      .registerButton();
+}
+```
+
+Unregister temporary modules/buttons in `disable()`.
 
 ## Build Options
 
 ```powershell
 .\examples\full-cpp-mod\build.ps1
+.\examples\full-cpp-mod\build.ps1 -Clean
 .\examples\full-cpp-mod\build.ps1 -Ndk <path-to-android-ndk>
-.\examples\full-cpp-mod\build.ps1 -PreloaderRoot <path-to-preloader-android>
-.\examples\full-cpp-mod\build.ps1 -NoLinkPreloader
 ```
 
-`-NoLinkPreloader` leaves SDK symbols unresolved in the example `.so` so the
-runtime preloader can resolve them when the mod is loaded.
+If `-Ndk` is omitted, the script resolves it from `ANDROID_NDK_HOME`,
+`ANDROID_NDK_ROOT`, `ANDROID_HOME`, or `ANDROID_SDK_ROOT`.
 
 ## Checklist
 
 - Build native mods for `arm64-v8a`.
-- Include only the SDK `include` directory.
+- Link the `preloader` target and use public SDK headers from `include/pl`.
 - Register one long-lived object with `PL_REGISTER_MOD`.
 - Keep `ll::mod::NativeMod &mSelf` from `ll::mod::NativeMod::current()`.
 - Load config before registering runtime UI.
@@ -223,4 +227,4 @@ runtime preloader can resolve them when the mod is loaded.
 - Keep callbacks valid until they are unregistered or the mod unloads.
 
 Continue with the [Mod API Reference](/api/mod) and
-[Config API Reference](/api/config) for lower-level details.
+[Config API Reference](/api/config) for the complete API surface.

@@ -18,7 +18,8 @@
 .\examples\full-cpp-mod\build.ps1 -Clean
 ```
 
-这个内置示例使用仓库内部构建配置。独立 mod 工程请把 SDK 作为外部依赖引入。
+这个示例可以在当前仓库直接构建。独立 mod 工程建议从模板开始，并把 SDK
+作为外部依赖引入。
 
 输出：
 
@@ -107,8 +108,8 @@ bool FullCppMod::load() {
 
 ## SDK 依赖
 
-独立 mod 工程应像引入其它 CMake 第三方依赖一样引入 `preloader-android`。例如使用
-`FetchContent`：
+独立 Android native mod 工程使用 `FetchContent` 引入 `preloader-android`，
+并把自己的 mod library 链接到 `preloader` target：
 
 ```cmake
 include(FetchContent)
@@ -116,20 +117,13 @@ include(FetchContent)
 FetchContent_Declare(
     preloader_android
     GIT_REPOSITORY https://github.com/LiteLDev/preloader-android.git
-    GIT_TAG main)
+    GIT_TAG 0.2.1)
 FetchContent_MakeAvailable(preloader_android)
 
 target_link_libraries(my_mod PRIVATE preloader)
 ```
 
-实际项目应把 `GIT_TAG` 固定到 release tag 或 commit，避免构建结果漂移。
-
-如果 SDK 以 vendored 目录或 git submodule 放在 mod 工程里，就指向对应 checkout：
-
-```cmake
-add_subdirectory(third_party/preloader-android)
-target_link_libraries(my_mod PRIVATE preloader)
-```
+实际项目应把 `GIT_TAG` 固定到 release tag，避免构建结果漂移。
 
 常用 SDK 头文件：
 
@@ -143,7 +137,7 @@ target_link_libraries(my_mod PRIVATE preloader)
 #include <pl/memory/Signature.hpp>
 ```
 
-不要 include preloader 的 `src` 目录；那里是私有运行时代码。
+只使用 `include/pl` 下的公开 SDK 头文件。
 
 ## 类型化配置
 
@@ -168,8 +162,8 @@ bool FullCppMod::load() {
 }
 ```
 
-参考 `examples/full-cpp-mod/src/GenerateConfig.cpp` 的 host-side generator，在导入前
-把 `config.json` 和 `config.schema.json` 放进包里。
+把 `config.json` 和 `config.schema.json` 随 mod 一起打包。完整示例的构建脚本会在
+生成 `.levipack` 前产出这两个文件。
 
 ## Mod Menu
 
@@ -188,23 +182,38 @@ bool FullCppMod::enable() {
 }
 ```
 
-浮动按钮使用 `ButtonBuilder`。如果模块或按钮是临时 UI，请在 `disable()` 中注销。
+浮动按钮使用 `ButtonBuilder`：
+
+```cpp
+bool registerQuickButton(ll::mod::NativeMod &self) {
+  return pl::modmenu::ButtonBuilder("full_cpp_mod.quick_drop",
+                                    "Full C++ Quick Drop")
+      .moduleId("full_cpp_mod.hud")
+      .modId(self.getId())
+      .label("Q")
+      .androidKeyCode(45)
+      .behavior(pl::modmenu::ButtonBehavior::Click)
+      .registerButton();
+}
+```
+
+如果模块或按钮是临时 UI，请在 `disable()` 中注销。
 
 ## 构建选项
 
 ```powershell
 .\examples\full-cpp-mod\build.ps1
+.\examples\full-cpp-mod\build.ps1 -Clean
 .\examples\full-cpp-mod\build.ps1 -Ndk <path-to-android-ndk>
-.\examples\full-cpp-mod\build.ps1 -PreloaderRoot <path-to-preloader-android>
-.\examples\full-cpp-mod\build.ps1 -NoLinkPreloader
 ```
 
-`-NoLinkPreloader` 会让示例 `.so` 保留未解析的 SDK 符号，运行时由 preloader 解析。
+省略 `-Ndk` 时，脚本会从 `ANDROID_NDK_HOME`、`ANDROID_NDK_ROOT`、`ANDROID_HOME`
+或 `ANDROID_SDK_ROOT` 解析 NDK。
 
 ## 检查清单
 
 - native mod 目标 ABI 为 `arm64-v8a`。
-- 只 include SDK `include` 目录。
+- 链接 `preloader` target，并只使用 `include/pl` 下的公开 SDK 头文件。
 - 使用 `PL_REGISTER_MOD` 注册一个长期存活对象。
 - 从 `ll::mod::NativeMod::current()` 保存 `ll::mod::NativeMod &mSelf`。
 - 注册运行期 UI 前先加载配置。
@@ -212,5 +221,5 @@ bool FullCppMod::enable() {
 - `disable()` 中注销临时 Mod Menu 项。
 - callback 在注销或 unload 前必须保持有效。
 
-更底层的接口细节继续阅读 [Mod API 参考](/zh-CN/api/mod) 和
+完整 API 继续阅读 [Mod API 参考](/zh-CN/api/mod) 和
 [Config API 参考](/zh-CN/api/config)。

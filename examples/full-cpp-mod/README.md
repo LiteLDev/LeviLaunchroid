@@ -1,15 +1,15 @@
 # Full C++ Lifecycle Mod Example
 
 This directory is a complete C++ native mod example for LeviLaunchroid. It shows
-the recommended C++ lifecycle integration path without mixing C ABI entry
-points or ad hoc packaging scripts.
+the recommended C++ lifecycle API, typed config, Mod Menu integration, and
+`.levipack` packaging.
 
 ## What It Covers
 
 - `PL_REGISTER_MOD` binding for a C++ lifecycle object
 - `ll::mod::NativeMod::current()` cached as `mSelf`
 - `pl::config::ConfigFile<T>` for typed JSON config
-- A host-side generator for default `config.json` and `config.schema.json`
+- Packaged default `config.json` and `config.schema.json`
 - `pl::modmenu::ModuleBuilder` registration for Mod Menu modules
 - `pl::modmenu::ButtonBuilder` registration for external HUD binding buttons
 - PNG, WebP, and SVG custom icons for external HUD buttons
@@ -34,9 +34,9 @@ Key files:
 
 | File | Purpose |
 | --- | --- |
-| `src/ExampleConfig.hpp` | Shared config definition used by both runtime and host generator. |
+| `src/ExampleConfig.hpp` | Shared config definition used by runtime code and packaged defaults. |
 | `src/FullCppMod.cpp` | Lifecycle, Mod Menu registration, and runtime persistence logic. |
-| `src/GenerateConfig.cpp` | Generates package config and schema for the packaged mod. |
+| `src/GenerateConfig.cpp` | Creates default `config.json` and `config.schema.json` during build. |
 | `manifest.json` | Uses `type: preload-native` and points `entry` to `libfull_cpp_mod.so`. |
 
 ## Build
@@ -48,23 +48,14 @@ Run from the repository root:
 ```
 
 This project only supports `arm64-v8a`, so the script always builds that ABI.
-You can override the NDK or preloader path:
+You can pass an explicit NDK path:
 
 ```powershell
 .\examples\full-cpp-mod\build.ps1 -Ndk <path-to-android-ndk>
-.\examples\full-cpp-mod\build.ps1 -PreloaderRoot <path-to-preloader-android>
 ```
 
 If `-Ndk` is omitted, the script resolves it from `ANDROID_NDK_HOME`,
 `ANDROID_NDK_ROOT`, `ANDROID_HOME`, or `ANDROID_SDK_ROOT`.
-
-Use `-NoLinkPreloader` if the example `.so` should leave preloader symbols for
-runtime resolution instead of carrying a local `libpreloader.so` link
-dependency:
-
-```powershell
-.\examples\full-cpp-mod\build.ps1 -NoLinkPreloader
-```
 
 ## Output
 

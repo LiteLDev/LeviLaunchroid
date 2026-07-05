@@ -19,7 +19,7 @@ SDK 只安装以下头文件：
 ## PL_EXPORT
 
 `PL_EXPORT` 在支持的编译器上为符号设置默认可见性。大多数 mod 不需要直接使用；
-`PL_REGISTER_MOD` 已经会导出 `PLGetModRegistration`。
+只有需要给其它 native library 调用的符号才需要它。
 
 ```cpp
 #include <pl/Export.hpp>
@@ -36,14 +36,19 @@ PL_EXPORT void customVisibleFunction();
 
 class MyMod {
 public:
+  static MyMod &instance();
+
   bool load();
 };
 
-PL_REGISTER_MOD(MyMod, MyMod{})
+PL_REGISTER_MOD(MyMod, MyMod::instance())
 ```
 
-该宏以 C linkage 导出 `PLGetModRegistration`，loader 无需依赖 C++ mangled name
-即可找到它。导出的函数返回 C++ 生命周期 registration 表。
+在一个源文件中使用一次该宏。`instanceExpr` 必须返回或创建一个在进程生命周期内
+保持有效的对象。
+
+被注册类型必须提供 `bool load()`。`bool enable()`、`bool disable()` 和
+`bool unload()` 可选。
 
 ## 命名
 

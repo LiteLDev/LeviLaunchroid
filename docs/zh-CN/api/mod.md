@@ -44,8 +44,7 @@ MyMod::MyMod() : mSelf(*ll::mod::NativeMod::current()) {}
 `load()` 是必需的。`enable()`、`disable()`、`unload()` 是可选的；缺失时注册
 helper 会按成功处理。
 
-`PL_REGISTER_MOD` 导出未改名的 C linkage 符号 `PLGetModRegistration`，返回
-C++ 生命周期 registration 表。
+每个 native mod library 在一个源文件中使用一次 `PL_REGISTER_MOD`。
 
 ## 生命周期
 
@@ -60,7 +59,7 @@ C++ 生命周期 registration 表。
 
 ## NativeMod
 
-`ll::mod::NativeMod` 提供 manifest 元数据、路径、Java VM、生命周期状态和 mod
+`ll::mod::NativeMod` 提供 manifest 元数据、包路径、Java VM、生命周期状态和 mod
 专属 logger。
 
 ```cpp
@@ -80,11 +79,19 @@ bool MyMod::load() {
 | `getLogger()` | 当前 mod 的 `pl::log::Logger`。 |
 | `getId()` | 稳定运行期 mod id。 |
 | `getName()` | manifest 中的显示名。 |
+| `getAuthor()` | manifest 中的作者。 |
+| `getVersion()` | manifest 中的版本。 |
+| `getEntryPath()` | 已解析的入口文件路径。 |
+| `getEntryFileName()` | manifest 中的入口文件名。 |
+| `getIconPath()` | 已解析的图标路径，未配置时为空路径。 |
 | `getModDir()` | mod 包根目录。 |
 | `getDataDir()` | `<mod root>/data`。 |
 | `getConfigDir()` | `<mod root>/config`。 |
 | `getResourceDir()` | `<mod root>/resources`。 |
+| `getManifestPath()` | 已解析的 `manifest.json` 路径。 |
+| `getLibraryPath()` | 已解析的 native library 路径。 |
 | `getState()` | 当前 native mod 生命周期状态。 |
+| `isLoaded()` / `isEnabled()` / `isDisabled()` | 常用状态判断。 |
 
 ## Mod Menu 示例
 
