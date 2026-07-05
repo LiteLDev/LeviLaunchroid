@@ -2,135 +2,85 @@
 
 ## Purpose
 
-Hook API lets a mod run custom code before or instead of a target function.
-Multiple hooks on the same target are ordered by priority.
+Hook API installs function detours in the current process.
 
-## Headers
-
-C:
-
-```c
-#include <pl/c/Hook.h>
-```
-
-C++:
+## Header
 
 ```cpp
-#include <pl/cpp/Hook.hpp>
+#include <pl/memory/Hook.hpp>
 ```
 
-## Signatures
-
-```c
-typedef void *PLFuncPtr;
-typedef PLFuncPtr FuncPtr;
-
-typedef enum PLHookPriority {
-  PL_HOOK_PRIORITY_HIGHEST = 0,
-  PL_HOOK_PRIORITY_HIGH = 100,
-  PL_HOOK_PRIORITY_NORMAL = 200,
-  PL_HOOK_PRIORITY_LOW = 300,
-  PL_HOOK_PRIORITY_LOWEST = 400,
-} PLHookPriority;
-
-PLAPI int pl_hook(PLFuncPtr target, PLFuncPtr detour,
-                  PLFuncPtr *originalFunc,
-                  PLHookPriority priority);
-
-PLAPI bool pl_unhook(PLFuncPtr target, PLFuncPtr detour);
-```
-
-C++ wrappers:
+## Types
 
 ```cpp
-namespace pl::hook {
-using FuncPtr = PLFuncPtr;
+namespace pl::memory {
+using FuncPtr = void *;
 
-enum Priority : int {
-  PriorityHighest = PL_HOOK_PRIORITY_HIGHEST,
-  PriorityHigh = PL_HOOK_PRIORITY_HIGH,
-  PriorityNormal = PL_HOOK_PRIORITY_NORMAL,
-  PriorityLow = PL_HOOK_PRIORITY_LOW,
-  PriorityLowest = PL_HOOK_PRIORITY_LOWEST,
+enum class HookPriority : int {
+  Highest = 0,
+  High = 100,
+  Normal = 200,
+  Low = 300,
+  Lowest = 400,
 };
-
-int pl_hook(FuncPtr target, FuncPtr detour, FuncPtr *originalFunc,
-            Priority priority);
-bool pl_unhook(FuncPtr target, FuncPtr detour);
-int hook(FuncPtr target, FuncPtr detour, FuncPtr *originalFunc,
-         Priority priority = PriorityNormal);
-bool unhook(FuncPtr target, FuncPtr detour);
 }
 ```
 
-## pl_hook
+Lower priority values run earlier in the hook chain.
 
-### Purpose
-
-Installs a hook for a target function.
-
-### Parameters
-
-| Parameter | Description |
-| --- | --- |
-| `target` | Target function address; must not be `NULL` |
-| `detour` | Replacement function address; must not be `NULL` |
-| `originalFunc` | Receives the function pointer to call from the detour; must not be `NULL` |
-| `priority` | Hook priority; lower values run earlier |
-
-### Return Value
-
-| Value | Description |
-| --- | --- |
-| `0` | Success |
-| `-1` | Invalid argument or hook failure |
-
-### Example
+## Functions
 
 ```cpp
-#include <pl/cpp/Hook.hpp>
+int hook(FuncPtr target, FuncPtr detour, FuncPtr *originalFunc,
+         HookPriority priority = HookPriority::Normal);
+
+bool unhook(FuncPtr target, FuncPtr detour);
+```
+
+`hook()` returns `0` on success and `-1` on invalid input or install failure.
+`originalFunc` receives the function pointer that the detour should call to
+continue the chain.
+
+## RAII Handle
+
+Use `pl::memory::HookHandle` when a hook should be removed automatically during
+`disable()` or object destruction.
+
+```cpp
+#include <pl/memory/Hook.hpp>
 
 using UpdateFn = void (*)(void *);
-static UpdateFn old_update = nullptr;
 
-static void my_update(void *self) {
-  old_update(self);
+class MyMod {
+public:
+  bool enable(pl::mod::ModContext &context);
+  bool disable(pl::mod::ModContext &context);
+
+private:
+  static void updateHook(void *self);
+
+  UpdateFn mOriginalUpdate{};
+  pl::memory::HookHandle mUpdateHook;
+};
+
+bool MyMod::enable(pl::mod::ModContext &) {
+  void *target = /* resolved target address */;
+  mUpdateHook = pl::memory::HookHandle(
+      target, reinterpret_cast<void *>(&updateHook),
+      reinterpret_cast<void **>(&mOriginalUpdate),
+      pl::memory::HookPriority::Normal);
+  return mUpdateHook.installed();
 }
 
-void install(void *target) {
-  pl::hook::hook(target,
-                 reinterpret_cast<void *>(my_update),
-                 reinterpret_cast<void **>(&old_update),
-                 pl::hook::PriorityNormal);
+bool MyMod::disable(pl::mod::ModContext &) {
+  mUpdateHook.reset();
+  return true;
 }
 ```
-
-## pl_unhook
-
-### Purpose
-
-Removes one detour from a target function.
-
-### Parameters
-
-| Parameter | Description |
-| --- | --- |
-| `target` | Target function address |
-| `detour` | Detour function address to remove |
-
-### Return Value
-
-Returns `true` when removed, otherwise `false`.
-
-## Chain Behavior
-
-- Lower priority values run earlier.
-- Same priority keeps registration order.
-- `originalFunc` points to the function that should be called from the detour.
 
 ## Common Mistakes
 
-- Passing `NULL` as `originalFunc`: `pl_hook` returns `-1`.
-- Detour parameters or return type do not match the target function.
-- Calling the target address directly inside detour, causing recursion.
-- Installing before the target function is available.
+- Passing `nullptr` for `target`, `detour`, or `originalFunc`.
+- Using a detour signature that does not exactly match the target function.
+- Calling the target address directly inside the detour, causing recursion.
+- Installing before the target module and address are available.

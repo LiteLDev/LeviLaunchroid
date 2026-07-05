@@ -1,28 +1,11 @@
-# 纯 C++ Native Mod 开发指南
+# Native Mod 快速开始
 
-本页说明 LeviLaunchroid native mod 推荐的 C++ 开发方式。请把
-`examples/full-cpp-mod` 当作基准实现：它是完整的 preloader `cpp_lifecycle`
-示例，覆盖模组注册、强类型配置、schema 生成、运行时持久化、Mod Menu 接入和
-`.levipack` 打包。
+本页面描述 LeviLaunchroid native mod 的受支持开发路径。公开 SDK 位于 `app/src/main/cpp/preloader/include`。
 
-## 从示例开始
+推荐以 `examples/full-cpp-mod` 作为参考实现。它包含生命周期注册、类型化
+配置、Mod Menu 集成、Android 打包和 `.levipack` 输出。
 
-示例目录：
-
-```text
-examples/full-cpp-mod/
-```
-
-目录内容：
-
-| 文件 | 作用 |
-| --- | --- |
-| `manifest.json` | LeviLaunchroid 读取的 native mod 元数据。 |
-| `src/ExampleConfig.hpp` | C++ 配置类型和 schema 元数据。 |
-| `src/FullCppMod.cpp` | 运行时 lifecycle mod 实现。 |
-| `src/GenerateConfig.cpp` | 主机端默认配置和 schema 生成器。 |
-| `CMakeLists.txt` | 同时构建 host generator 和 Android shared library。 |
-| `build.ps1` | 构建、生成配置文件并打包 mod。 |
+## 构建示例
 
 在仓库根目录运行：
 
@@ -30,19 +13,16 @@ examples/full-cpp-mod/
 .\examples\full-cpp-mod\build.ps1 -Clean
 ```
 
-输出位置：
+输出：
 
 ```text
 examples\full-cpp-mod\dist\arm64-v8a\full-cpp-mod\
 examples\full-cpp-mod\dist\arm64-v8a\full-cpp-mod.levipack
 ```
 
-可以导入 `.levipack`，也可以把 `full-cpp-mod` 目录作为 native mod 目录复制到
-目标位置。
+可以导入 `.levipack`，也可以把解包后的 mod 目录复制到启动器 native mod 位置。
 
 ## 包结构
-
-native mod 目录应保持这种结构：
 
 ```text
 full-cpp-mod/
@@ -53,8 +33,7 @@ full-cpp-mod/
     └── config.schema.json
 ```
 
-目录名就是运行时 mod id。对于 lifecycle mod，它也会作为 Mod Menu 默认 owner
-分组。用户安装后不要随意改目录名，否则配置、菜单分组和持久化状态都容易错位。
+目录名是运行期 mod id。发布后保持稳定，因为它会用于路径、Mod Menu 归属和用户持久化状态。
 
 ## manifest.json
 
@@ -73,199 +52,131 @@ full-cpp-mod/
 | --- | --- |
 | `type` | 必须是 `preload-native`。 |
 | `entry` | mod 目录内 Android `.so` 的相对路径。 |
-| `name` | 启动器展示的名称。 |
-| `author` | 启动器展示的作者。 |
+| `name` | 启动器显示名。 |
+| `author` | 作者信息。 |
 | `version` | mod 版本。 |
 | `icon` | 可选图标相对路径。 |
-| `minecraft_versions` | 支持精确版本和 `*` 前缀通配；缺失或为空表示兼容全部版本。 |
+| `minecraft_versions` | 支持精确版本和 `*` 前缀通配；缺失或为空表示全部版本。 |
 
-## C++ 生命周期形态
-
-使用 `PL_REGISTER_MOD` 绑定一个长生命周期 C++ 对象：
+## 生命周期形态
 
 ```cpp
-#include <pl/cpp/mod/RegisterHelper.hpp>
+#include <pl/Mod.hpp>
 
 class FullCppMod {
 public:
   static FullCppMod &instance();
 
-  bool load();
-  bool enable();
-  bool disable();
-  bool unload();
+  bool load(pl::mod::ModContext &context);
+  bool enable(pl::mod::ModContext &context);
+  bool disable(pl::mod::ModContext &context);
+  bool unload(pl::mod::ModContext &context);
 };
 
 PL_REGISTER_MOD(FullCppMod, FullCppMod::instance())
 ```
 
-生命周期建议分工：
+`load()` 是必需的。其它生命周期函数可选，缺失时默认成功。
 
-| 方法 | 建议职责 |
-| --- | --- |
-| `load()` | 加载并规范化配置；创建游戏启动前就需要的文件。 |
-| `enable()` | 注册 Mod Menu 模块，并应用运行时状态。 |
-| `disable()` | 停止运行时行为，按需注销菜单模块。 |
-| `unload()` | 在 `disable()` 之后释放 C++ 持有的状态。 |
-
-只在 lifecycle callback 有效期间访问当前模组对象：
+使用 `pl::mod::ModContext`，不要依赖全局 current-mod 状态：
 
 ```cpp
-const auto self = pl::mod::NativeMod::current();
-if (!self) {
-  return false;
+bool FullCppMod::load(pl::mod::ModContext &context) {
+  std::filesystem::create_directories(context.configDir());
+  context.logger().info("Loaded {}", context.name());
+  return true;
 }
-
-self->getLogger().info("Loaded {}", self->getName());
 ```
 
-常用路径都从 `self` 获取：`getModDir()`、`getDataDir()`、`getConfigDir()`、
-`getResourceDir()`、`getManifestPath()`、`getLibraryPath()`。
+## CMake
 
-## 强类型配置
+只 include SDK 根目录，不要 include 内部源码目录：
 
-配置类型应是简单 aggregate：公开字段、默认成员初始化，不要把业务逻辑塞进配置对象。
+```cmake
+target_include_directories(my_mod PRIVATE
+    "${PRELOADER_ANDROID_ROOT}/include")
+```
+
+常用 SDK 头文件：
 
 ```cpp
-enum class DisplayMode {
-  Compact,
-  Detailed,
-  Debug,
-};
+#include <pl/Mod.hpp>
+#include <pl/ModMenu.hpp>
+#include <pl/Input.hpp>
+#include <pl/Config.hpp>
+#include <pl/memory/Hook.hpp>
+#include <pl/memory/Patch.hpp>
+#include <pl/memory/Signature.hpp>
+```
 
+不要 include preloader 的 `src` 目录；那里是私有运行时代码。
+
+## 类型化配置
+
+配置应保存在 mod 自有状态中，并从 `ModContext` 传入显式路径：
+
+```cpp
 struct ExampleConfig {
   int version = 1;
   bool showOverlay = true;
   int opacity = 80;
-  double scale = 1.0;
-  DisplayMode mode = DisplayMode::Compact;
-  std::string accentColor = "#4AE0A0";
 };
-```
 
-再特化 `pl::config::Schema<T>`，给启动器配置编辑器提供 UI 元数据：
-
-```cpp
-template <> struct pl::config::Schema<fullcppmod::ExampleConfig> {
-  static constexpr std::string_view title = "Full C++ Lifecycle Mod Example";
-
-  static constexpr FieldSchema field(std::string_view name) {
-    if (name == "opacity") {
-      return {"Opacity", "Overlay opacity percentage.", 0, 100, false};
-    }
-    return {};
-  }
+class FullCppMod {
+private:
+  std::optional<pl::config::ConfigFile<ExampleConfig>> mConfig;
 };
-```
 
-运行时不要每次 callback 都临时构造 `ConfigFile`。把
-`pl::config::ConfigFile<ExampleConfig>` 保存在 mod 自己的状态里，这样配置路径、
-schema 路径、默认值和当前值不会分散：
-
-```cpp
-std::optional<pl::config::ConfigFile<ExampleConfig>> configFile;
-
-bool FullCppMod::load() {
-  configFile.emplace(ExampleConfig{});
-  if (!configFile->load()) {
-    return false;
-  }
-
-  normalizeConfig(configFile->value());
-  return configFile->save();
+bool FullCppMod::load(pl::mod::ModContext &context) {
+  mConfig.emplace(ExampleConfig{}, context.configDir() / "config.json",
+                  context.configDir() / "config.schema.json");
+  return mConfig->load();
 }
 ```
 
-构建期使用 `GenerateConfig.cpp` 的模式，并定义 `PL_CONFIG_NO_RUNTIME`，在 host
-端生成 `config.json` 和 `config.schema.json`。这样 mod 刚导入启动器、native
-库还没第一次加载时，配置页也能直接显示可编辑配置。
+参考 `examples/full-cpp-mod/src/GenerateConfig.cpp` 的 host-side generator，在导入前
+把 `config.json` 和 `config.schema.json` 放进包里。
 
-## Mod Menu 与配置持久化
-
-lifecycle mod 优先使用 `pl::modmenu::ModuleBuilder`。它在 `enable()` 内调用时会
-自动使用当前 native mod id 作为 owner 分组：
+## Mod Menu
 
 ```cpp
-return pl::modmenu::ModuleBuilder("full_cpp_mod.hud", "Full C++ Config Demo")
-    .description("Pure C++ lifecycle module with persistent typed config.")
-    .defaultEnabled(true)
-    .onToggle(onModuleToggle)
-    .config("showOverlay", "Show Overlay", PL_CONFIG_TOGGLE, "true")
-    .config("opacity", "Opacity", PL_CONFIG_SLIDER_INT, "80", "0", "100")
-    .config("scale", "Scale", PL_CONFIG_SLIDER_FLOAT, "1.0", "0.5", "2.0")
-    .config("mode", "Display Mode", PL_CONFIG_RADIO, "0",
-            "Compact,Detailed,Debug")
-    .config("accentColor", "Accent Color", PL_CONFIG_COLOR, "#4AE0A0")
-    .onConfigChanged(onConfigChanged)
-    .registerModule();
-```
+bool FullCppMod::enable(pl::mod::ModContext &context) {
+  const auto &config = mConfig->value();
 
-LeviLauncher 会按 `module_id` 持久化用户在 Mod Menu 中选择的启用状态。
-`defaultEnabled()` 只作为首次发现模块时的默认值；mod 自己的配置只需要保存
-overlay 显示、透明度、缩放、模式、颜色等参数。
-
-菜单 callback 收到的是字符串。需要防御式解析、把数值 clamp 到菜单和 schema 的同一
-范围，然后调用 `save()`：
-
-```cpp
-void FullCppMod::handleConfigChanged(const char *moduleId,
-                                     const char *key,
-                                     const char *value) {
-  if (!matchesModule(moduleId) || !key || !configFile) {
-    return;
-  }
-
-  auto &config = configFile->value();
-  if (std::string_view(key) == "opacity") {
-    config.opacity = clampOpacity(value);
-  }
-
-  configFile->save();
+  return pl::modmenu::ModuleBuilder("full_cpp_mod.hud",
+                                    "Full C++ Config Demo")
+      .modId(context.id())
+      .description("Pure C++ lifecycle module with persistent typed config.")
+      .defaultEnabled(config.showOverlay)
+      .config("opacity", "Opacity", pl::modmenu::ConfigType::SliderInt,
+              std::to_string(config.opacity), "0", "100")
+      .registerModule();
 }
 ```
 
-callback 函数必须是 static，或来自一个在模块注销/模组卸载前一直有效的长生命周期
-对象。`RegisterModule()` 会复制模块字符串和配置项，但不会“复制”你的 callback
-代码。
+浮动按钮使用 `ButtonBuilder`。如果模块或按钮是临时 UI，请在 `disable()` 中注销。
 
-## 构建与打包
-
-`build.ps1` 有意拆成两次 CMake。本项目只支持 `arm64-v8a`，所以示例固定构建
-这个 ABI。
-
-1. Host build：编译 `full_cpp_mod_config_gen`。
-2. Android build：为 `arm64-v8a` 编译 `libfull_cpp_mod.so`。
-3. Staging：把 `manifest.json`、`.so`、`config.json` 和
-   `config.schema.json` 复制到 `dist/<Abi>/full-cpp-mod/`。
-4. Packaging：把 staged 文件压成 `full-cpp-mod.levipack`。
-
-常用参数：
+## 构建选项
 
 ```powershell
 .\examples\full-cpp-mod\build.ps1
 .\examples\full-cpp-mod\build.ps1 -Ndk <path-to-android-ndk>
-.\examples\full-cpp-mod\build.ps1 -PreloaderRoot <path-to-preloader-android>
+.\examples\full-cpp-mod\build.ps1 -PreloaderRoot <path-to-preloader>
 .\examples\full-cpp-mod\build.ps1 -NoLinkPreloader
 ```
 
-如果不传 `-Ndk`，脚本会从 `ANDROID_NDK_HOME`、`ANDROID_NDK_ROOT`、
-`ANDROID_HOME` 或 `ANDROID_SDK_ROOT` 推导 NDK 路径。
-
-当你希望示例 `.so` 不携带本地 `libpreloader.so` link dependency，而是把 preloader
-符号交给运行时解析时，使用 `-NoLinkPreloader`。
+`-NoLinkPreloader` 会让示例 `.so` 保留未解析的 SDK 符号，运行时由 preloader 解析。
 
 ## 检查清单
 
-- 保持 mod 目录名稳定；它就是运行时 mod id。
-- 只构建 `arm64-v8a`；本项目不支持其他 Android ABI。
-- C++ lifecycle mod 使用 `PL_REGISTER_MOD`。
-- 注册菜单前先加载 config。
-- 菜单默认值来自已加载 config。
-- 需要跨重启保留的菜单改动必须立即持久化。
-- callback 收到的是字符串，必须解析、校验并 clamp。
-- callback 保持 static，或绑定到长生命周期 singleton。
-- 打包时生成 `config.json` 和 `config.schema.json`。
-- 验证 `.levipack` 根级包含 `manifest.json`、`.so` 和 `config/`。
+- native mod 目标 ABI 为 `arm64-v8a`。
+- 只 include SDK `include` 目录。
+- 使用 `PL_REGISTER_MOD` 注册一个长期存活对象。
+- 生命周期函数接收 `pl::mod::ModContext &`。
+- 注册运行期 UI 前先加载配置。
+- hook 和 patch handle 放在 mod 自有状态中。
+- `disable()` 中注销临时 Mod Menu 项。
+- callback 在注销或 unload 前必须保持有效。
 
 更底层的接口细节继续阅读 [Mod API 参考](/zh-CN/api/mod) 和
 [Config API 参考](/zh-CN/api/config)。

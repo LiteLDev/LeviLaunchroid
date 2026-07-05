@@ -1,70 +1,60 @@
-# Types and Macros
+# SDK Headers and Macros
 
-## Purpose
+## Public Headers
 
-Type and macro headers provide small helper macros and common type aliases.
-
-## Headers
-
-C:
-
-```c
-#include <pl/c/Macro.h>
-#include <pl/c/Types.h>
-```
-
-C++:
+The SDK installs only these headers:
 
 ```cpp
-#include <pl/cpp/Types.hpp>
+#include <pl/Config.hpp>
+#include <pl/Export.hpp>
+#include <pl/Input.hpp>
+#include <pl/Logger.hpp>
+#include <pl/Mod.hpp>
+#include <pl/ModMenu.hpp>
+#include <pl/memory/Hook.hpp>
+#include <pl/memory/Patch.hpp>
+#include <pl/memory/Signature.hpp>
 ```
 
-## VA_EXPAND
+## PL_EXPORT
 
-```c
-#define VA_EXPAND(...) __VA_ARGS__
+`PL_EXPORT` marks a symbol with default visibility on supported compilers. Most
+mods do not need it directly; `PL_REGISTER_MOD` already exports
+`PLGetModRegistration`.
+
+```cpp
+#include <pl/Export.hpp>
+
+PL_EXPORT void customVisibleFunction();
 ```
 
-Expands variadic macro arguments.
+## PL_REGISTER_MOD
 
-## PLAPI
+`PL_REGISTER_MOD(Type, instanceExpr)` registers a lifecycle object.
 
-Marks a function as part of the public native interface.
+```cpp
+#include <pl/Mod.hpp>
 
-```c
-PLAPI void MyExportedFunction(void);
+class MyMod {
+public:
+  bool load(pl::mod::ModContext &context);
+};
+
+PL_REGISTER_MOD(MyMod, MyMod{})
 ```
 
-## PLCAPI
+The macro exports `PLGetModRegistration` with C linkage so the loader can find
+it without a C++ mangled name. The exported function returns a C++ lifecycle
+registration table.
 
-Declares a public C-style function.
+## Naming
 
-```c
-PLCAPI void MyCFunction(void);
-```
+Public SDK names follow the Lamina C++ style:
 
-## Base Type Aliases
-
-| Alias | Equivalent type |
+| Item | Style |
 | --- | --- |
-| `ushort` | `unsigned short` |
-| `uint` | `unsigned int` |
-| `ulong` | `unsigned long` |
-| `llong` | `long long` |
-| `ullong` | `unsigned long long` |
-| `uchar` | `unsigned char` |
-| `schar` | `signed char` |
-| `byte` | `uchar` |
-| `ldouble` | `long double` |
-| `int64` | `long long` |
-| `int32` | `int` |
-| `int16` | `short` |
-| `int8` | `char` |
-| `uint64` | `unsigned long long` |
-| `uint32` | `unsigned int` |
-| `uint16` | `unsigned short` |
-| `uint8` | `unsigned char` |
-
-## Notes
-
-- Prefer `pl/c/*` or `pl/cpp/*` in new code.
+| Files and types | `UpperCamelCase` |
+| Functions and variables | `lowerCamelCase` |
+| Private members | `mUpperCamelCase` |
+| Constants | `UpperCamelCase` |
+| Macros | `UPPER_SNAKE_CASE` |

@@ -1,112 +1,62 @@
-# Memory Hook 宏
+# Memory Hook 示例
 
 ## 作用
 
-`pl/api/memory/Hook.h` 提供 C++ hook 宏，用更少样板代码声明并注册 hook。
+这个示例用 `pl::memory::resolveSignature()` 解析目标，用
+`pl::memory::HookHandle` 安装 hook，并在 `disable()` 或句柄析构时释放。
 
 ## 头文件
 
 ```cpp
-#include <pl/api/memory/Hook.h>
+#include <pl/memory/Hook.hpp>
+#include <pl/memory/Signature.hpp>
 ```
 
-## 相关类型
+## 示例
 
 ```cpp
-namespace memory {
-enum class HookPriority : int {
-  Highest,
-  High,
-  Normal,
-  Low,
-  Lowest,
+#include <pl/Mod.hpp>
+#include <pl/memory/Hook.hpp>
+#include <pl/memory/Signature.hpp>
+
+class MyMod {
+public:
+  bool enable(pl::mod::ModContext &context) {
+    const auto target = pl::memory::resolveSignature(
+        "Game_update", "libminecraftpe.so");
+    if (target == 0) {
+      context.logger().warn("Game_update was not found");
+      return true;
+    }
+
+    mUpdateHook = pl::memory::HookHandle(
+        reinterpret_cast<void *>(target),
+        reinterpret_cast<void *>(&updateHook),
+        reinterpret_cast<void **>(&mOriginalUpdate));
+    return mUpdateHook.installed();
+  }
+
+  bool disable(pl::mod::ModContext &) {
+    mUpdateHook.reset();
+    return true;
+  }
+
+private:
+  using UpdateFn = void (*)(void *);
+
+  static void updateHook(void *self) {
+    instance().mOriginalUpdate(self);
+  }
+
+  static MyMod &instance();
+
+  UpdateFn mOriginalUpdate{};
+  pl::memory::HookHandle mUpdateHook;
 };
-}
 ```
 
-## 常用宏
+## 注意
 
-| 宏 | 作用 |
-| --- | --- |
-| `LL_STATIC_HOOK` | 定义静态函数 hook，需要手动调用 `hook()` |
-| `LL_AUTO_STATIC_HOOK` | 定义静态函数 hook，并自动注册 |
-| `LL_INSTANCE_HOOK` | 定义成员函数 hook，需要手动调用 `hook()` |
-| `LL_AUTO_INSTANCE_HOOK` | 定义成员函数 hook，并自动注册 |
-| `LL_TYPED_STATIC_HOOK` | 静态 hook，并继承一个自定义类型 |
-| `LL_AUTO_TYPED_STATIC_HOOK` | 自动注册的 typed 静态 hook |
-| `LL_TYPED_HOOK` | 成员 hook，并继承一个自定义类型 |
-| `LL_AUTO_TYPED_INSTANCE_HOOK` | 自动注册的 typed 成员 hook |
-
-## 参数含义
-
-以 `LL_STATIC_HOOK` 为例：
-
-```cpp
-LL_STATIC_HOOK(DefType, priority, identifier, module, Ret, ...)
-```
-
-| 参数 | 说明 |
-| --- | --- |
-| `DefType` | 生成的 hook 类型名 |
-| `priority` | `memory::HookPriority` |
-| `identifier` | 目标函数地址、函数指针、函数名或 pattern |
-| `module` | 目标模块名 |
-| `Ret` | 返回值类型 |
-| `...` | 目标函数参数列表 |
-
-## 静态函数示例
-
-```cpp
-#include <pl/api/memory/Hook.h>
-
-LL_STATIC_HOOK(MyTickHook,
-               memory::HookPriority::Normal,
-               "Game_tick",
-               "libminecraftpe.so",
-               void,
-               void *self) {
-  origin(self);
-}
-
-void install() {
-  MyTickHook::hook();
-}
-
-void uninstall() {
-  MyTickHook::unhook();
-}
-```
-
-## 自动注册示例
-
-```cpp
-#include <pl/api/memory/Hook.h>
-
-LL_AUTO_STATIC_HOOK(MyAutoHook,
-                    memory::HookPriority::High,
-                    "Game_tick",
-                    "libminecraftpe.so",
-                    void,
-                    void *self) {
-  origin(self);
-}
-```
-
-## 直接地址示例
-
-```cpp
-LL_STATIC_HOOK(MyAddressHook,
-               memory::HookPriority::Normal,
-               reinterpret_cast<uintptr_t>(target_address),
-               nullptr,
-               int,
-               int value) {
-  return origin(value);
-}
-```
-
-## 注意事项
-
-- `origin(...)` 会调用原函数或 hook 链中的下一个函数。
-- detour 参数和返回值必须与目标函数匹配。
-- 自动注册时目标函数不可用可能会失败；这种情况应使用手动注册宏。
+- detour 签名必须和目标函数完全一致。
+- hook handle 应存放在 mod 自有状态中，不要放在局部变量里。
+- 优先使用明确的生命周期清理，不要依赖 constructor-time 自动注册。
