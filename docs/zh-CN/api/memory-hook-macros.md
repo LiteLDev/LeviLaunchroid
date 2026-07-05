@@ -21,11 +21,11 @@
 
 class MyMod {
 public:
-  bool enable(pl::mod::ModContext &context) {
+  bool enable() {
     const auto target = pl::memory::resolveSignature(
         "Game_update", "libminecraftpe.so");
     if (target == 0) {
-      context.logger().warn("Game_update was not found");
+      getSelf().getLogger().warn("Game_update was not found");
       return true;
     }
 
@@ -36,10 +36,12 @@ public:
     return mUpdateHook.installed();
   }
 
-  bool disable(pl::mod::ModContext &) {
+  bool disable() {
     mUpdateHook.reset();
     return true;
   }
+
+  [[nodiscard]] ll::mod::NativeMod &getSelf() const;
 
 private:
   using UpdateFn = void (*)(void *);

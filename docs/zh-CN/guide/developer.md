@@ -74,10 +74,17 @@ class FullCppMod {
 public:
   static FullCppMod &instance();
 
-  bool load(pl::mod::ModContext &context);
-  bool enable(pl::mod::ModContext &context);
-  bool disable(pl::mod::ModContext &context);
-  bool unload(pl::mod::ModContext &context);
+  FullCppMod();
+
+  [[nodiscard]] ll::mod::NativeMod &getSelf() const { return mSelf; }
+
+  bool load();
+  bool enable();
+  bool disable();
+  bool unload();
+
+private:
+  ll::mod::NativeMod &mSelf;
 };
 
 PL_REGISTER_MOD(FullCppMod, FullCppMod::instance())
@@ -85,12 +92,15 @@ PL_REGISTER_MOD(FullCppMod, FullCppMod::instance())
 
 `load()` 是必需的。其它生命周期函数可选，缺失时默认成功。
 
-使用 `pl::mod::ModContext`，不要依赖全局 current-mod 状态：
+在构造函数中保存 loader 提供的 native mod 对象：
 
 ```cpp
-bool FullCppMod::load(pl::mod::ModContext &context) {
-  std::filesystem::create_directories(context.configDir());
-  context.logger().info("Loaded {}", context.name());
+FullCppMod::FullCppMod() : mSelf(*ll::mod::NativeMod::current()) {}
+
+bool FullCppMod::load() {
+  auto &self = getSelf();
+  std::filesystem::create_directories(self.getConfigDir());
+  self.getLogger().info("Loaded {}", self.getName());
   return true;
 }
 ```
@@ -106,7 +116,7 @@ include(FetchContent)
 FetchContent_Declare(
     preloader_android
     GIT_REPOSITORY https://github.com/LiteLDev/preloader-android.git
-    GIT_TAG 0.2.0)
+    GIT_TAG main)
 FetchContent_MakeAvailable(preloader_android)
 
 target_link_libraries(my_mod PRIVATE preloader)
@@ -137,7 +147,8 @@ target_link_libraries(my_mod PRIVATE preloader)
 
 ## 类型化配置
 
-配置应保存在 mod 自有状态中，并从 `ModContext` 传入显式路径：
+配置应保存在 mod 自有状态中。生命周期调用期间，`ConfigFile` 默认会使用当前
+native mod 的 `config/config.json` 和 `config/config.schema.json` 路径：
 
 ```cpp
 struct ExampleConfig {
@@ -151,9 +162,8 @@ private:
   std::optional<pl::config::ConfigFile<ExampleConfig>> mConfig;
 };
 
-bool FullCppMod::load(pl::mod::ModContext &context) {
-  mConfig.emplace(ExampleConfig{}, context.configDir() / "config.json",
-                  context.configDir() / "config.schema.json");
+bool FullCppMod::load() {
+  mConfig.emplace();
   return mConfig->load();
 }
 ```
@@ -164,12 +174,12 @@ bool FullCppMod::load(pl::mod::ModContext &context) {
 ## Mod Menu
 
 ```cpp
-bool FullCppMod::enable(pl::mod::ModContext &context) {
+bool FullCppMod::enable() {
   const auto &config = mConfig->value();
 
   return pl::modmenu::ModuleBuilder("full_cpp_mod.hud",
                                     "Full C++ Config Demo")
-      .modId(context.id())
+      .modId(getSelf().getId())
       .description("Pure C++ lifecycle module with persistent typed config.")
       .defaultEnabled(config.showOverlay)
       .config("opacity", "Opacity", pl::modmenu::ConfigType::SliderInt,
@@ -196,7 +206,7 @@ bool FullCppMod::enable(pl::mod::ModContext &context) {
 - native mod 目标 ABI 为 `arm64-v8a`。
 - 只 include SDK `include` 目录。
 - 使用 `PL_REGISTER_MOD` 注册一个长期存活对象。
-- 生命周期函数接收 `pl::mod::ModContext &`。
+- 从 `ll::mod::NativeMod::current()` 保存 `ll::mod::NativeMod &mSelf`。
 - 注册运行期 UI 前先加载配置。
 - hook 和 patch handle 放在 mod 自有状态中。
 - `disable()` 中注销临时 Mod Menu 项。

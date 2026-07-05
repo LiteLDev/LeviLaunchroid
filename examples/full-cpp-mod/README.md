@@ -1,12 +1,13 @@
 # Full C++ Lifecycle Mod Example
 
 This directory is a complete C++ native mod example for LeviLaunchroid. It shows
-the recommended `cpp_lifecycle` integration path without mixing C ABI entry
-points, constructor-based registration, or ad hoc packaging scripts.
+the recommended C++ lifecycle integration path without mixing C ABI entry
+points or ad hoc packaging scripts.
 
 ## What It Covers
 
 - `PL_REGISTER_MOD` binding for a C++ lifecycle object
+- `ll::mod::NativeMod::current()` cached as `mSelf`
 - `pl::config::ConfigFile<T>` for typed JSON config
 - A host-side generator for default `config.json` and `config.schema.json`
 - `pl::modmenu::ModuleBuilder` registration for Mod Menu modules

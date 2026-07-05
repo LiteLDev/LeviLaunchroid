@@ -49,25 +49,27 @@ names start with `$` are ignored by reflection.
 
 ## Load and Save
 
-Pass explicit paths from `pl::mod::ModContext`. The default path helpers return
-empty paths because the SDK does not keep a global current mod.
+During native mod lifecycle calls, `ConfigFile` can use the current mod's
+default `config/config.json` and `config/config.schema.json` paths. You may
+still pass explicit paths when you need a non-default location.
 
 ```cpp
 class MyMod {
 public:
-  bool load(pl::mod::ModContext &context) {
-    mConfig.emplace(ModConfig{}, context.configDir() / "config.json",
-                    context.configDir() / "config.schema.json");
+  bool load() {
+    mConfig.emplace();
     if (!mConfig->load()) {
-      context.logger().warn("Failed to load config");
+      getSelf().getLogger().warn("Failed to load config");
       return false;
     }
     return true;
   }
 
-  bool enable(pl::mod::ModContext &) {
+  bool enable() {
     return mConfig && mConfig->value().enabled;
   }
+
+  [[nodiscard]] ll::mod::NativeMod &getSelf() const;
 
 private:
   std::optional<pl::config::ConfigFile<ModConfig>> mConfig;
