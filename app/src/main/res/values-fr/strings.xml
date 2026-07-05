@@ -108,6 +108,15 @@
 
     <string name="check_update">Vérifier les mises à jour</string>
     <string name="version_prefix">Version : </string>
+    <string name="unknown_error">Erreur inconnue</string>
+    <string name="preloader_sigs_title">Données d’exécution</string>
+    <string name="preloader_sigs_last_update">Dernière mise à jour : %1$s</string>
+    <string name="preloader_sigs_never_updated">Jamais</string>
+    <string name="preloader_sigs_update">Mettre à jour les données d’exécution</string>
+    <string name="preloader_sigs_updating">Mise à jour…</string>
+    <string name="preloader_sigs_update_success">Données d’exécution mises à jour</string>
+    <string name="preloader_sigs_update_failed">Échec de la mise à jour des données d’exécution : %1$s</string>
+    <string name="preloader_sigs_no_remote_url">L’URL de mise à jour des données d’exécution n’est pas configurée</string>
 
     <string name="dialog_title_no_version">Aucune version sélectionnée</string>
     <string name="dialog_message_no_version">Veuillez sélectionner une version du jeu avant le lancement.</string>
@@ -719,4 +728,42 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
         <item quantity="other">%d éléments</item>
     </plurals>
 
+    <!-- Mod Menu synced translations -->
+    <string name="mod_menu_favorites">Favoris</string>
+    <string name="mod_menu_favorite">Ajouter aux favoris</string>
+    <string name="mod_menu_unfavorite">Retirer des favoris</string>
+    <string name="mod_menu_hud_editor">Éditeur HUD</string>
+    <string name="mod_menu_filter_enabled">Activés</string>
+    <string name="mod_menu_filter_inbuilt">Intégrés</string>
+    <string name="mod_menu_filter_external">Externes</string>
+    <string name="mod_menu_no_favorites">Aucun mod favori pour le moment</string>
+    <string name="mod_menu_no_matches">Aucun mod correspondant</string>
+    <string name="mod_menu_group_inbuilt">Fonctionnalités intégrées</string>
+    <string name="mod_menu_group_external_ungrouped">Mods externes non groupés</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">Paramètres généraux</string>
+    <string name="mod_menu_appearance">Apparence</string>
+    <string name="mod_menu_pause_menu_only">Menu pause uniquement</string>
+    <string name="mod_menu_pause_menu_only_desc">Afficher le menu des mods uniquement dans le menu de pause</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">Taille du bouton de superposition (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">Opacité de la superposition (%)</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">Sensibilité du curseur (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">Niveau de zoom (%)</string>
+    <string name="mod_config_auto_sprint_keybind">Touche de sprint automatique</string>
+    <string name="mod_config_zoom_keybind">Touche de zoom</string>
+    <string name="mod_config_press_any_key">Appuyez sur une touche pour associer...</string>
+    <string name="mod_config_key_unknown">INCONNU</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="overlay_button_size_value">Taille : %1$ddp</string>
+    <string name="overlay_button_opacity_value">Opacité : %1$d%%</string>
+    <string name="reset">Réinitialiser</string>
 </resources>

@@ -108,6 +108,15 @@
 
     <string name="check_update">अपडेट्स के लिए जांचें</string>
     <string name="version_prefix">संस्करण: </string>
+    <string name="unknown_error">अज्ञात त्रुटि</string>
+    <string name="preloader_sigs_title">रनटाइम डेटा</string>
+    <string name="preloader_sigs_last_update">अंतिम अपडेट: %1$s</string>
+    <string name="preloader_sigs_never_updated">कभी नहीं</string>
+    <string name="preloader_sigs_update">रनटाइम डेटा अपडेट करें</string>
+    <string name="preloader_sigs_updating">अपडेट हो रहा है…</string>
+    <string name="preloader_sigs_update_success">रनटाइम डेटा अपडेट हो गया</string>
+    <string name="preloader_sigs_update_failed">रनटाइम डेटा अपडेट विफल: %1$s</string>
+    <string name="preloader_sigs_no_remote_url">रनटाइम डेटा अपडेट URL कॉन्फ़िगर नहीं है</string>
 
     <string name="dialog_title_no_version">कोई संस्करण नहीं चुना गया</string>
     <string name="dialog_message_no_version">लॉन्च करने से पहले कृपया एक गेम संस्करण चुनें।</string>
@@ -746,4 +755,42 @@ LeviLauncher जारी रखने से पहले माइग्रे
         <item quantity="other">%d आइटम</item>
     </plurals>
 
+    <!-- Mod Menu synced translations -->
+    <string name="mod_menu_favorites">पसंदीदा</string>
+    <string name="mod_menu_favorite">पसंदीदा में जोड़ें</string>
+    <string name="mod_menu_unfavorite">पसंदीदा से हटाएं</string>
+    <string name="mod_menu_hud_editor">HUD एडिटर</string>
+    <string name="mod_menu_filter_enabled">सक्षम</string>
+    <string name="mod_menu_filter_inbuilt">अंतर्निर्मित</string>
+    <string name="mod_menu_filter_external">बाहरी</string>
+    <string name="mod_menu_no_favorites">अभी कोई पसंदीदा मॉड नहीं</string>
+    <string name="mod_menu_no_matches">कोई मेल खाता मॉड नहीं</string>
+    <string name="mod_menu_group_inbuilt">अंतर्निहित सुविधाएँ</string>
+    <string name="mod_menu_group_external_ungrouped">असमूहीकृत बाहरी मॉड</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">सामान्य सेटिंग्स</string>
+    <string name="mod_menu_appearance">रूप-रंग</string>
+    <string name="mod_menu_pause_menu_only">केवल पॉज़ मेनू</string>
+    <string name="mod_menu_pause_menu_only_desc">मॉड मेनू केवल पॉज़ स्क्रीन में दिखाएं</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">ओवरले बटन आकार (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">ओवरले अपारदर्शिता (%)</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">कर्सर संवेदनशीलता (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">ज़ूम स्तर (%)</string>
+    <string name="mod_config_auto_sprint_keybind">ऑटो स्प्रिंट कीबाइंड</string>
+    <string name="mod_config_zoom_keybind">ज़ूम कीबाइंड</string>
+    <string name="mod_config_press_any_key">बाइंड करने के लिए कोई भी कुंजी दबाएं...</string>
+    <string name="mod_config_key_unknown">अज्ञात</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="overlay_button_size_value">आकार: %1$ddp</string>
+    <string name="overlay_button_opacity_value">अपारदर्शिता: %1$d%%</string>
+    <string name="reset">रीसेट</string>
 </resources>

@@ -2,139 +2,84 @@
 
 ## 作用
 
-Hook API 允许模组在目标函数执行前或替代目标函数执行自定义代码。多个 hook
-作用于同一目标时会按优先级执行。
+Hook API 用于在当前进程中安装函数 detour。
 
 ## 头文件
 
-C:
-
-```c
-#include <pl/c/Hook.h>
+```cpp
+#include <pl/memory/Hook.hpp>
 ```
 
-C++:
+## 类型
 
 ```cpp
-#include <pl/cpp/Hook.hpp>
-```
+namespace pl::memory {
+using FuncPtr = void *;
 
-## 类型签名
-
-```c
-typedef void *PLFuncPtr;
-typedef PLFuncPtr FuncPtr;
-
-typedef enum PLHookPriority {
-  PL_HOOK_PRIORITY_HIGHEST = 0,
-  PL_HOOK_PRIORITY_HIGH = 100,
-  PL_HOOK_PRIORITY_NORMAL = 200,
-  PL_HOOK_PRIORITY_LOW = 300,
-  PL_HOOK_PRIORITY_LOWEST = 400,
-} PLHookPriority;
-
-PLAPI int pl_hook(PLFuncPtr target, PLFuncPtr detour,
-                  PLFuncPtr *originalFunc,
-                  PLHookPriority priority);
-
-PLAPI bool pl_unhook(PLFuncPtr target, PLFuncPtr detour);
-```
-
-C++ 包装：
-
-```cpp
-namespace pl::hook {
-using FuncPtr = PLFuncPtr;
-
-enum Priority : int {
-  PriorityHighest = PL_HOOK_PRIORITY_HIGHEST,
-  PriorityHigh = PL_HOOK_PRIORITY_HIGH,
-  PriorityNormal = PL_HOOK_PRIORITY_NORMAL,
-  PriorityLow = PL_HOOK_PRIORITY_LOW,
-  PriorityLowest = PL_HOOK_PRIORITY_LOWEST,
+enum class HookPriority : int {
+  Highest = 0,
+  High = 100,
+  Normal = 200,
+  Low = 300,
+  Lowest = 400,
 };
-
-int pl_hook(FuncPtr target, FuncPtr detour, FuncPtr *originalFunc,
-            Priority priority);
-bool pl_unhook(FuncPtr target, FuncPtr detour);
-int hook(FuncPtr target, FuncPtr detour, FuncPtr *originalFunc,
-         Priority priority = PriorityNormal);
-bool unhook(FuncPtr target, FuncPtr detour);
 }
 ```
 
-## pl_hook
+优先级数值越小，hook 链中越早执行。
 
-### 作用
-
-为目标函数安装 hook。
-
-### 参数
-
-| 参数 | 说明 |
-| --- | --- |
-| `target` | 目标函数地址，不能为 `NULL` |
-| `detour` | 替换函数地址，不能为 `NULL` |
-| `originalFunc` | 用于接收 detour 中应调用的函数指针，不能为 `NULL` |
-| `priority` | hook 优先级，数值越小越靠前 |
-
-### 返回值
-
-| 返回值 | 说明 |
-| --- | --- |
-| `0` | 成功 |
-| `-1` | 参数无效或 hook 失败 |
-
-### 示例
+## 函数
 
 ```cpp
-#include <pl/cpp/Hook.hpp>
+int hook(FuncPtr target, FuncPtr detour, FuncPtr *originalFunc,
+         HookPriority priority = HookPriority::Normal);
+
+bool unhook(FuncPtr target, FuncPtr detour);
+```
+
+`hook()` 成功返回 `0`，参数无效或安装失败返回 `-1`。`originalFunc` 接收 detour
+中继续调用链所需的函数指针。
+
+## RAII 句柄
+
+如果 hook 应在 `disable()` 或对象析构时自动移除，请使用
+`pl::memory::HookHandle`。
+
+```cpp
+#include <pl/memory/Hook.hpp>
 
 using UpdateFn = void (*)(void *);
-static UpdateFn old_update = nullptr;
 
-static void my_update(void *self) {
-  // before
-  old_update(self);
-  // after
+class MyMod {
+public:
+  bool enable(pl::mod::ModContext &context);
+  bool disable(pl::mod::ModContext &context);
+
+private:
+  static void updateHook(void *self);
+
+  UpdateFn mOriginalUpdate{};
+  pl::memory::HookHandle mUpdateHook;
+};
+
+bool MyMod::enable(pl::mod::ModContext &) {
+  void *target = /* resolved target address */;
+  mUpdateHook = pl::memory::HookHandle(
+      target, reinterpret_cast<void *>(&updateHook),
+      reinterpret_cast<void **>(&mOriginalUpdate),
+      pl::memory::HookPriority::Normal);
+  return mUpdateHook.installed();
 }
 
-void install(void *target) {
-  pl::hook::hook(target,
-                 reinterpret_cast<void *>(my_update),
-                 reinterpret_cast<void **>(&old_update),
-                 pl::hook::PriorityNormal);
+bool MyMod::disable(pl::mod::ModContext &) {
+  mUpdateHook.reset();
+  return true;
 }
 ```
-
-## pl_unhook
-
-### 作用
-
-从指定目标函数上移除指定 detour。
-
-### 参数
-
-| 参数 | 说明 |
-| --- | --- |
-| `target` | 目标函数地址 |
-| `detour` | 要移除的 detour 函数地址 |
-
-### 返回值
-
-返回 `true` 表示移除成功，返回 `false` 表示未找到对应 hook。
-
-## 链式 hook 行为
-
-多个 hook 作用于同一个 `target` 时：
-
-- priority 数字越小越先执行。
-- 同优先级下，先注册的 detour 更靠前。
-- `originalFunc` 会指向 detour 中应继续调用的函数。
 
 ## 常见错误
 
-- `originalFunc` 传 `NULL`。
-- detour 参数或返回值和目标函数不一致。
-- detour 内直接调用目标函数地址：会递归进入 detour，应该调用 `originalFunc`。
-- 在目标函数可用之前安装 hook。
+- `target`、`detour` 或 `originalFunc` 传入 `nullptr`。
+- detour 签名没有和目标函数完全一致。
+- 在 detour 中直接调用目标地址，导致递归。
+- 目标模块和地址尚不可用时就安装 hook。

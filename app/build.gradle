@@ -66,6 +66,11 @@ android {
     buildFeatures {
         buildConfig true
     }
+    sourceSets {
+        main {
+            assets.srcDirs += rootProject.file('resources')
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false

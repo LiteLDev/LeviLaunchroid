@@ -8,6 +8,8 @@ import org.levimc.launcher.core.mods.Mod
 import org.levimc.launcher.core.mods.ModManager
 import org.levimc.launcher.core.mods.ModNativeLoader
 import org.levimc.launcher.core.versions.GameVersion
+import org.levimc.launcher.preloader.PreloaderInput
+import org.levimc.launcher.preloader.PreloaderSignatureRulesManager
 import org.levimc.launcher.util.LauncherStorage
 import java.io.File
 
@@ -67,6 +69,9 @@ object MinecraftRuntimePreparer {
         } catch (error: UnsatisfiedLinkError) {
             trace.mark("Game loader load skipped", error.message ?: error.javaClass.simpleName)
         }
+        val signatureRulesFile = PreloaderSignatureRulesManager.getRulesFile(context.applicationContext)
+        PreloaderInput.configureSignatureRules(signatureRulesFile, version.versionCode)
+        trace.mark("Preloader signature rules configured", signatureRulesFile?.absolutePath ?: "<none>")
 
         listener.onLog("Loading native libraries")
         loadMinecraftLibraries(gameManager, version, listener, trace)

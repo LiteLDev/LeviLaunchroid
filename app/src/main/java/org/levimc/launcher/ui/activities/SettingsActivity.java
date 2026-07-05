@@ -32,6 +32,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.crash.CrashReporter;
+import org.levimc.launcher.preloader.PreloaderSignatureRulesManager;
 import org.levimc.launcher.settings.FeatureSettings;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.dialogs.LogcatOverlayManager;
@@ -42,6 +43,8 @@ import org.levimc.launcher.util.PermissionsHandler;
 import org.levimc.launcher.util.PersonalizationManager;
 import org.levimc.launcher.util.ThemeManager;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class SettingsActivity extends BaseActivity {
@@ -80,6 +83,8 @@ public class SettingsActivity extends BaseActivity {
     private Button migrationCleanupButton;
     private SwitchMaterial switchSharedStorageLayout;
     private TextView sharedStorageLayoutStatus;
+    private TextView preloaderSigsLastUpdateText;
+    private Button preloaderSigsUpdateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -478,6 +483,12 @@ public class SettingsActivity extends BaseActivity {
             btnCheckUpdate.setBackgroundTintList(ColorStateList.valueOf(accent));
             btnCheckUpdate.setTextColor(Color.WHITE);
         }
+
+        Button btnUpdatePreloaderSigs = findViewById(R.id.btn_update_preloader_sigs);
+        if (btnUpdatePreloaderSigs != null && accent != 0) {
+            btnUpdatePreloaderSigs.setBackgroundTintList(ColorStateList.valueOf(accent));
+            btnUpdatePreloaderSigs.setTextColor(Color.WHITE);
+        }
         
         SwitchMaterial switchLogcat = findViewById(R.id.switch_logcat);
         if (switchLogcat != null && accent != 0) {
@@ -674,6 +685,55 @@ public class SettingsActivity extends BaseActivity {
 
         Button btnCheckUpdate = findViewById(R.id.btn_check_update);
         btnCheckUpdate.setOnClickListener(v -> handleUpdateButtonClick());
+
+        preloaderSigsLastUpdateText = findViewById(R.id.preloader_sigs_last_update);
+        preloaderSigsUpdateButton = findViewById(R.id.btn_update_preloader_sigs);
+        refreshPreloaderSigsLastUpdateUi();
+        if (preloaderSigsUpdateButton != null) {
+            preloaderSigsUpdateButton.setOnClickListener(v -> handlePreloaderSigsUpdateClick());
+        }
+    }
+
+    private void handlePreloaderSigsUpdateClick() {
+        if (preloaderSigsUpdateButton == null) {
+            return;
+        }
+        if (!PreloaderSignatureRulesManager.hasRemoteRulesUrl()) {
+            Toast.makeText(this, R.string.preloader_sigs_no_remote_url, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        preloaderSigsUpdateButton.setEnabled(false);
+        preloaderSigsUpdateButton.setText(R.string.preloader_sigs_updating);
+        PreloaderSignatureRulesManager.refreshNow(this, result -> {
+            if (isFinishing()) {
+                return;
+            }
+            preloaderSigsUpdateButton.setEnabled(true);
+            preloaderSigsUpdateButton.setText(R.string.preloader_sigs_update);
+            refreshPreloaderSigsLastUpdateUi();
+
+            if (result.success) {
+                Toast.makeText(this, R.string.preloader_sigs_update_success, Toast.LENGTH_SHORT).show();
+            } else {
+                String detail = result.message.isEmpty()
+                        ? getString(R.string.unknown_error)
+                        : result.message;
+                Toast.makeText(this, getString(R.string.preloader_sigs_update_failed, detail), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void refreshPreloaderSigsLastUpdateUi() {
+        if (preloaderSigsLastUpdateText == null) {
+            return;
+        }
+
+        long updateTime = PreloaderSignatureRulesManager.getLastSuccessfulUpdateTime(this);
+        String updateText = updateTime > 0L
+                ? DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, Locale.getDefault()).format(new Date(updateTime))
+                : getString(R.string.preloader_sigs_never_updated);
+        preloaderSigsLastUpdateText.setText(getString(R.string.preloader_sigs_last_update, updateText));
     }
 
     private void setupMigrationSection() {

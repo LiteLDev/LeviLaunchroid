@@ -150,7 +150,7 @@ public class CpsDisplayOverlay {
         try {
             overlayView = LayoutInflater.from(activity).inflate(R.layout.overlay_stats_display, null);
             statsText = overlayView.findViewById(R.id.stats_text);
-            statsText.setText("CPS: 0");
+            statsText.setText(activity.getString(R.string.mod_overlay_cps_value, 0));
 
             wmParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -174,6 +174,7 @@ public class CpsDisplayOverlay {
             applyOpacity();
             updateLockState();
             applySize();
+            updatePosition(wmParams.x, wmParams.y);
         } catch (Exception e) {
             showFallback(startX, startY);
         }
@@ -186,15 +187,16 @@ public class CpsDisplayOverlay {
 
         overlayView = LayoutInflater.from(activity).inflate(R.layout.overlay_stats_display, null);
         statsText = overlayView.findViewById(R.id.stats_text);
-        statsText.setText("CPS: 0");
+        statsText.setText(activity.getString(R.string.mod_overlay_cps_value, 0));
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
             FrameLayout.LayoutParams.WRAP_CONTENT
         );
         params.gravity = Gravity.TOP | Gravity.START;
-        params.leftMargin = startX;
-        params.topMargin = startY;
+        OverlayBounds.Position position = OverlayBounds.clampPosition(activity, overlayView, startX, startY);
+        params.leftMargin = position.x;
+        params.topMargin = position.y;
 
         overlayView.setOnTouchListener(this::handleTouchFallback);
         rootView.addView(overlayView, params);
@@ -209,7 +211,8 @@ public class CpsDisplayOverlay {
 
     private void updateDisplay() {
         if (statsText != null) {
-            statsText.setText("CPS: " + getCps());
+            statsText.setText(activity.getString(R.string.mod_overlay_cps_value, getCps()));
+            clampCurrentPosition(false);
         }
     }
 
@@ -235,7 +238,7 @@ public class CpsDisplayOverlay {
             
             if (wmParams != null && windowManager != null && overlayView != null && isShowing) {
                 try {
-                    windowManager.updateViewLayout(overlayView, wmParams);
+                    clampCurrentPosition(true);
                 } catch (Exception ignored) {}
             }
         }
@@ -245,34 +248,68 @@ public class CpsDisplayOverlay {
         isLocked = InbuiltModManager.getInstance(activity).isOverlayLocked(ModIds.CPS_DISPLAY);
     }
 
+    private boolean isHudEditorMode = false;
+    
+    public void setHudEditorMode(boolean active) {
+        this.isHudEditorMode = active;
+        if (overlayView != null) {
+            overlayView.setBackgroundColor(active ? 0x44FFFFFF : android.graphics.Color.TRANSPARENT);
+        }
+    }
+
+    public void updatePosition(int x, int y) {
+        if (wmParams != null && windowManager != null && overlayView != null && isShowing) {
+            OverlayBounds.Position position = OverlayBounds.clampPosition(activity, overlayView, x, y);
+            wmParams.x = position.x;
+            wmParams.y = position.y;
+            windowManager.updateViewLayout(overlayView, wmParams);
+        } else if (overlayView != null && isShowing) {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) overlayView.getLayoutParams();
+            if (params != null) {
+                OverlayBounds.Position position = OverlayBounds.clampPosition(activity, overlayView, x, y);
+                params.leftMargin = position.x;
+                params.topMargin = position.y;
+                overlayView.setLayoutParams(params);
+            }
+        }
+    }
+
     private boolean handleTouch(View v, MotionEvent event) {
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                if (isHudEditorMode) {
+                    InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+                    if (manager != null) {
+                        manager.selectHudEditorDisplay(ModIds.CPS_DISPLAY);
+                    }
+                }
                 initialX = wmParams.x;
                 initialY = wmParams.y;
                 initialTouchX = event.getRawX();
                 initialTouchY = event.getRawY();
                 isDragging = false;
                 touchDownTime = SystemClock.uptimeMillis();
-                v.getParent().requestDisallowInterceptTouchEvent(!isLocked);
+                v.getParent().requestDisallowInterceptTouchEvent(isHudEditorMode);
                 return true;
             case MotionEvent.ACTION_MOVE:
                 float dx = event.getRawX() - initialTouchX;
                 float dy = event.getRawY() - initialTouchY;
                 if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-                    if (!isLocked) {
+                    if (isHudEditorMode) {
                         isDragging = true;
                     }
                 }
-                if (isDragging && !isLocked && windowManager != null && overlayView != null) {
-                    wmParams.x = (int) (initialX + dx);
-                    wmParams.y = (int) (initialY + dy);
+                if (isDragging && isHudEditorMode && windowManager != null && overlayView != null) {
+                    OverlayBounds.Position position = OverlayBounds.clampPosition(
+                            activity, overlayView, (int) (initialX + dx), (int) (initialY + dy));
+                    wmParams.x = position.x;
+                    wmParams.y = position.y;
                     windowManager.updateViewLayout(overlayView, wmParams);
                 }
-                return !isLocked || !isDragging;
+                return isHudEditorMode || !isDragging;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (isDragging && !isLocked) {
+                if (isDragging && isHudEditorMode) {
                     savePosition(wmParams.x, wmParams.y);
                 }
                 isDragging = false;
@@ -290,33 +327,40 @@ public class CpsDisplayOverlay {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) overlayView.getLayoutParams();
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                if (isHudEditorMode) {
+                    InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+                    if (manager != null) {
+                        manager.selectHudEditorDisplay(ModIds.CPS_DISPLAY);
+                    }
+                }
                 initialX = params.leftMargin;
                 initialY = params.topMargin;
                 initialTouchX = event.getRawX();
                 initialTouchY = event.getRawY();
                 isDragging = false;
                 touchDownTime = SystemClock.uptimeMillis();
-                v.getParent().requestDisallowInterceptTouchEvent(!isLocked);
+                v.getParent().requestDisallowInterceptTouchEvent(isHudEditorMode);
                 return true;
             case MotionEvent.ACTION_MOVE:
                 float dx = event.getRawX() - initialTouchX;
                 float dy = event.getRawY() - initialTouchY;
                 if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-                    if (!isLocked) {
+                    if (isHudEditorMode) {
                         isDragging = true;
                     }
                 }
-                if (isDragging && !isLocked) {
-                    params.leftMargin = (int) (initialX + dx);
-                    params.topMargin = (int) (initialY + dy);
+                if (isDragging && isHudEditorMode) {
+                    OverlayBounds.Position position = OverlayBounds.clampPosition(
+                            activity, overlayView, (int) (initialX + dx), (int) (initialY + dy));
+                    params.leftMargin = position.x;
+                    params.topMargin = position.y;
                     overlayView.setLayoutParams(params);
                 }
-                return !isLocked || !isDragging;
+                return isHudEditorMode || !isDragging;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (isDragging && !isLocked) {
-                    savePosition((int) (initialX + (event.getRawX() - initialTouchX)), 
-                                 (int) (initialY + (event.getRawY() - initialTouchY)));
+                if (isDragging && isHudEditorMode) {
+                    savePosition(params.leftMargin, params.topMargin);
                 }
                 isDragging = false;
                 v.getParent().requestDisallowInterceptTouchEvent(false);
@@ -355,5 +399,39 @@ public class CpsDisplayOverlay {
         applyOpacity();
         updateLockState();
         applySize();
+    }
+
+    public void setVisibility(int visibility) {
+        if (overlayView != null) {
+            overlayView.setVisibility(visibility);
+        }
+    }
+
+    private void clampCurrentPosition(boolean save) {
+        if (overlayView == null || !isShowing) return;
+        if (wmParams != null && windowManager != null) {
+            OverlayBounds.Position position = OverlayBounds.clampPosition(activity, overlayView, wmParams.x, wmParams.y);
+            if (position.x != wmParams.x || position.y != wmParams.y) {
+                wmParams.x = position.x;
+                wmParams.y = position.y;
+                windowManager.updateViewLayout(overlayView, wmParams);
+                if (save) {
+                    savePosition(position.x, position.y);
+                }
+            }
+        } else {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) overlayView.getLayoutParams();
+            if (params == null) return;
+            OverlayBounds.Position position = OverlayBounds.clampPosition(
+                    activity, overlayView, params.leftMargin, params.topMargin);
+            if (position.x != params.leftMargin || position.y != params.topMargin) {
+                params.leftMargin = position.x;
+                params.topMargin = position.y;
+                overlayView.setLayoutParams(params);
+                if (save) {
+                    savePosition(position.x, position.y);
+                }
+            }
+        }
     }
 }

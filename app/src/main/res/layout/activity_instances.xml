@@ -76,7 +76,7 @@
                 android:layout_marginStart="12dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:background="@drawable/bg_search_field"
+                android:background="@drawable/bg_search_field_light"
                 android:paddingHorizontal="12dp">
 
                 <ImageView

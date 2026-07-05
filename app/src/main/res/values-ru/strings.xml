@@ -90,6 +90,15 @@
 
     <string name="check_update">Проверить обновления</string>
     <string name="version_prefix">Версия: </string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="preloader_sigs_title">Данные среды выполнения</string>
+    <string name="preloader_sigs_last_update">Последнее обновление: %1$s</string>
+    <string name="preloader_sigs_never_updated">Никогда</string>
+    <string name="preloader_sigs_update">Обновить данные среды выполнения</string>
+    <string name="preloader_sigs_updating">Обновление…</string>
+    <string name="preloader_sigs_update_success">Данные среды выполнения обновлены</string>
+    <string name="preloader_sigs_update_failed">Не удалось обновить данные среды выполнения: %1$s</string>
+    <string name="preloader_sigs_no_remote_url">URL обновления данных среды выполнения не настроен</string>
 
     <string name="dialog_title_no_version">Версия не выбрана</string>
     <string name="dialog_message_no_version">Пожалуйста, выберите версию игры перед запуском.</string>
@@ -749,4 +758,42 @@
         <item quantity="other">%d элемента</item>
     </plurals>
 
+    <!-- Mod Menu synced translations -->
+    <string name="mod_menu_favorites">Избранное</string>
+    <string name="mod_menu_favorite">Добавить в избранное</string>
+    <string name="mod_menu_unfavorite">Удалить из избранного</string>
+    <string name="mod_menu_hud_editor">Редактор HUD</string>
+    <string name="mod_menu_filter_enabled">Включённые</string>
+    <string name="mod_menu_filter_inbuilt">Встроенные</string>
+    <string name="mod_menu_filter_external">Внешние</string>
+    <string name="mod_menu_no_favorites">Избранных модов пока нет</string>
+    <string name="mod_menu_no_matches">Подходящих модов нет</string>
+    <string name="mod_menu_group_inbuilt">Встроенные функции</string>
+    <string name="mod_menu_group_external_ungrouped">Несгруппированные внешние моды</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">Общие настройки</string>
+    <string name="mod_menu_appearance">Внешний вид</string>
+    <string name="mod_menu_pause_menu_only">Только меню паузы</string>
+    <string name="mod_menu_pause_menu_only_desc">Показывать меню модов только на экране паузы</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">Размер кнопки оверлея (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">Непрозрачность оверлея (%)</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">Чувствительность курсора (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">Уровень зума (%)</string>
+    <string name="mod_config_auto_sprint_keybind">Клавиша автоспринта</string>
+    <string name="mod_config_zoom_keybind">Клавиша зума</string>
+    <string name="mod_config_press_any_key">Нажмите любую клавишу для привязки...</string>
+    <string name="mod_config_key_unknown">НЕИЗВЕСТНО</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="overlay_button_size_value">Размер: %1$ddp</string>
+    <string name="overlay_button_opacity_value">Непрозрачность: %1$d%%</string>
+    <string name="reset">Сбросить</string>
 </resources>

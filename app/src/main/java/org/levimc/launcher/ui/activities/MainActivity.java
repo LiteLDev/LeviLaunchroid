@@ -1536,13 +1536,7 @@ import okhttp3.OkHttpClient;
             }
         }
 
-        // Add enabled inbuilt mods
-        InbuiltModManager manager = InbuiltModManager.getInstance(this);
-        if (!manager.isModMenuEnabled()) {
-            for (org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod inbuilt : manager.getAddedMods(this)) {
-                addModNameEntry(inbuilt.getName());
-            }
-        }
+
     }
 
     private void addModNameEntry(String name) {

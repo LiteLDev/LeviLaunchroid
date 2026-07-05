@@ -1,79 +1,63 @@
-# Memory Hook Macros
+# Memory Hook Example
 
 ## Purpose
 
-`pl/api/memory/Hook.h` provides C++ macros for declaring and registering hooks
-with less boilerplate.
+This example resolves a target with `pl::memory::resolveSignature()`, installs
+a hook with `pl::memory::HookHandle`, and releases it in `disable()` or by
+destroying the handle.
 
-## Header
+## Headers
 
 ```cpp
-#include <pl/api/memory/Hook.h>
+#include <pl/memory/Hook.hpp>
+#include <pl/memory/Signature.hpp>
 ```
 
-## Related Type
+## Example
 
 ```cpp
-namespace memory {
-enum class HookPriority : int {
-  Highest,
-  High,
-  Normal,
-  Low,
-  Lowest,
+#include <pl/Mod.hpp>
+#include <pl/memory/Hook.hpp>
+#include <pl/memory/Signature.hpp>
+
+class MyMod {
+public:
+  bool enable(pl::mod::ModContext &context) {
+    const auto target = pl::memory::resolveSignature(
+        "Game_update", "libminecraftpe.so");
+    if (target == 0) {
+      context.logger().warn("Game_update was not found");
+      return true;
+    }
+
+    mUpdateHook = pl::memory::HookHandle(
+        reinterpret_cast<void *>(target),
+        reinterpret_cast<void *>(&updateHook),
+        reinterpret_cast<void **>(&mOriginalUpdate));
+    return mUpdateHook.installed();
+  }
+
+  bool disable(pl::mod::ModContext &) {
+    mUpdateHook.reset();
+    return true;
+  }
+
+private:
+  using UpdateFn = void (*)(void *);
+
+  static void updateHook(void *self) {
+    instance().mOriginalUpdate(self);
+  }
+
+  static MyMod &instance();
+
+  UpdateFn mOriginalUpdate{};
+  pl::memory::HookHandle mUpdateHook;
 };
-}
-```
-
-## Common Macros
-
-| Macro | Purpose |
-| --- | --- |
-| `LL_STATIC_HOOK` | Static function hook, manual registration |
-| `LL_AUTO_STATIC_HOOK` | Static function hook, automatic registration |
-| `LL_INSTANCE_HOOK` | Member function hook, manual registration |
-| `LL_AUTO_INSTANCE_HOOK` | Member function hook, automatic registration |
-| `LL_TYPED_STATIC_HOOK` | Static hook that inherits from a custom type |
-| `LL_AUTO_TYPED_STATIC_HOOK` | Auto typed static hook |
-| `LL_TYPED_HOOK` | Member hook that inherits from a custom type |
-| `LL_AUTO_TYPED_INSTANCE_HOOK` | Auto typed member hook |
-
-## Parameters
-
-```cpp
-LL_STATIC_HOOK(DefType, priority, identifier, module, Ret, ...)
-```
-
-| Parameter | Description |
-| --- | --- |
-| `DefType` | Generated hook type name |
-| `priority` | `memory::HookPriority` |
-| `identifier` | Target address, function pointer, function name, or pattern |
-| `module` | Target module name |
-| `Ret` | Return type |
-| `...` | Target function parameter list |
-
-## Static Function Example
-
-```cpp
-#include <pl/api/memory/Hook.h>
-
-LL_STATIC_HOOK(MyTickHook,
-               memory::HookPriority::Normal,
-               "Game_tick",
-               "libminecraftpe.so",
-               void,
-               void *self) {
-  origin(self);
-}
-
-void install() {
-  MyTickHook::hook();
-}
 ```
 
 ## Notes
 
-- `origin(...)` calls the original or next function in the hook chain.
-- Detour parameters and return type must match the target function.
-- Automatic registration may fail if the target function is not available yet.
+- Keep the detour signature identical to the target function.
+- Store hook handles in mod-owned state, not local variables.
+- Prefer explicit lifecycle cleanup over constructor-time auto registration.

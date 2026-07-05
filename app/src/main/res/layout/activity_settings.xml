@@ -752,6 +752,45 @@
                             android:backgroundTint="@color/primary"
                             android:paddingHorizontal="20dp"
                             android:textAllCaps="false" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="14dp"
+                            android:layout_marginBottom="14dp"
+                            android:background="@color/divider"
+                            android:alpha="0.3" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/preloader_sigs_title"
+                            android:fontFamily="@font/misans"
+                            android:textColor="@color/on_surface"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/preloader_sigs_last_update"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/misans"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/btn_update_preloader_sigs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/preloader_sigs_update"
+                            android:fontFamily="@font/misans"
+                            android:textSize="13sp"
+                            android:textColor="@color/on_primary"
+                            android:backgroundTint="@color/primary"
+                            android:paddingHorizontal="20dp"
+                            android:textAllCaps="false" />
                     </LinearLayout>
                 </LinearLayout>
 

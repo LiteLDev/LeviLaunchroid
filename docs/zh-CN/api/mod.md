@@ -2,122 +2,109 @@
 
 ## 作用
 
-Mod API 提供 LeviLauncher native mod 使用的 `MyMod` 生命周期写法。新 mod
-建议使用 C++ 模板和 `PL_REGISTER_MOD`。
+Mod API 是 native mod 的生命周期入口。它使用 `<pl/Mod.hpp>`、接收
+`pl::mod::ModContext &` 的生命周期函数，以及通过 `PL_REGISTER_MOD` 注册的长期存活
+C++ 对象。
 
 ## 头文件
 
 ```cpp
-#include <pl/cpp/Mod.hpp>
-#include <pl/cpp/mod/RegisterHelper.hpp>
+#include <pl/Mod.hpp>
 ```
 
-强类型配置 helper 使用：
+## 注册
 
 ```cpp
-#include <pl/cpp/Config.hpp>
-```
+#include <pl/Mod.hpp>
 
-## 注册模组
-
-```cpp
-#include "mod/MyMod.h"
-#include <pl/cpp/mod/RegisterHelper.hpp>
-
-PL_REGISTER_MOD(my_mod::MyMod, my_mod::MyMod::getInstance());
-```
-
-`MyMod` 应提供这些方法：
-
-```cpp
 class MyMod {
 public:
-  static MyMod &getInstance();
+  static MyMod &instance();
 
-  bool load();
-  bool enable();
-  bool disable();
-  bool unload();
+  bool load(pl::mod::ModContext &context);
+  bool enable(pl::mod::ModContext &context);
+  bool disable(pl::mod::ModContext &context);
+  bool unload(pl::mod::ModContext &context);
 };
+
+PL_REGISTER_MOD(MyMod, MyMod::instance())
 ```
 
-`unload()` 是可选的。模组持有需要在退出时释放的资源时再添加即可。
+`load()` 是必需的。`enable()`、`disable()`、`unload()` 是可选的；缺失时注册
+helper 会按成功处理。
+
+`PL_REGISTER_MOD` 导出未改名的 C linkage 符号 `PLGetModRegistration`，返回
+C++ 生命周期 registration 表。
 
 ## 生命周期
 
-| 方法 | 调用时机 |
+| 方法 | 建议职责 |
 | --- | --- |
-| `load()` | 模组被加载时。 |
-| `enable()` | 游戏即将启动时。 |
-| `disable()` | 游戏正在结束时。 |
-| `unload()` | 模组进行最终清理时。 |
+| `load(context)` | 读取配置、创建目录、准备 mod 自有状态。 |
+| `enable(context)` | 注册 hook、input callback、Mod Menu 模块。 |
+| `disable(context)` | 撤销面向游戏的行为并注销运行期 UI。 |
+| `unload(context)` | 在 disable 后释放剩余 C++ 状态。 |
 
-每个方法成功时返回 `true`，失败时返回 `false`。
+每个方法成功返回 `true`，失败返回 `false`。
 
-## NativeMod
+## ModContext
 
-在模组类里通过 `getSelf()` 访问当前模组对象：
+`pl::mod::ModContext` 包含 manifest 元数据、路径、Java VM 和 mod 专属 logger。
 
 ```cpp
-pl::mod::NativeMod &MyMod::getSelf() const {
-  return *pl::mod::NativeMod::current();
-}
-```
-
-常用方法：
-
-| 方法 | 作用 |
-| --- | --- |
-| `getLogger()` | 当前模组专属 logger。 |
-| `getId()` | 模组 id。 |
-| `getName()` | 显示名称。 |
-| `getAuthor()` | manifest 中的作者。 |
-| `getVersion()` | manifest 中的版本。 |
-| `getModDir()` | 模组包目录。 |
-| `getDataDir()` | 模组数据文件目录。 |
-| `getConfigDir()` | 模组配置文件目录。 |
-| `getResourceDir()` | 模组资源文件目录。 |
-| `getManifestPath()` | manifest 文件路径。 |
-| `getLibraryPath()` | 模组库文件路径。 |
-| `getJavaVM()` | 当前 Java VM 指针。 |
-
-## 示例
-
-```cpp
-bool MyMod::load() {
-  auto &self = getSelf();
-  self.getLogger().info("Loading {}", self.getName());
-
-  std::filesystem::create_directories(self.getDataDir());
-  std::filesystem::create_directories(self.getConfigDir());
-  return true;
-}
-
-bool MyMod::enable() {
-  getSelf().getLogger().info("Enabled");
-  return true;
-}
-
-bool MyMod::disable() {
-  getSelf().getLogger().info("Disabled");
-  return true;
-}
-
-bool MyMod::unload() {
-  getSelf().getLogger().info("Unloaded");
+bool MyMod::load(pl::mod::ModContext &context) {
+  std::filesystem::create_directories(context.configDir());
+  context.logger().info("Loading {}", context.name());
   return true;
 }
 ```
 
-## 配置
+常用成员：
 
-使用 `pl::config::ConfigFile<T>` 可以管理强类型 JSON 配置、自动更新默认布局，
-并生成启动器可编辑的 schema。详情见 [Config API 参考](/zh-CN/api/config)。
+| 成员 | 用途 |
+| --- | --- |
+| `javaVm()` | 当前 `JavaVM *`。 |
+| `info()` | 完整 `pl::mod::ModInfo`。 |
+| `logger()` | 当前 mod 的 `pl::log::Logger`。 |
+| `id()` | 稳定运行期 mod id。 |
+| `name()` | manifest 中的显示名。 |
+| `modRootPath()` | mod 包根目录。 |
+| `dataDir()` | `<mod root>/data`。 |
+| `configDir()` | `<mod root>/config`。 |
+| `resourceDir()` | `<mod root>/resources`。 |
 
-## 注意事项
+## Mod Menu 示例
 
-- 模组数据放到 `getDataDir()`。
-- 用户可编辑配置放到 `getConfigDir()`，也可以使用
-  `pl::config::ConfigFile<T>` 管理强类型 JSON 配置。
-- `load()` 尽量保持轻量，和游戏运行相关的工作优先放到 `enable()`。
-- 清理资源时按相反顺序处理：先 `disable()`，再 `unload()`。
+```cpp
+#include <pl/Mod.hpp>
+#include <pl/ModMenu.hpp>
+
+namespace {
+constexpr const char *ModuleId = "example.speed_meter";
+
+void onToggle(std::string_view moduleId, bool enabled) {
+  (void)moduleId;
+  (void)enabled;
+}
+} // namespace
+
+bool MyMod::enable(pl::mod::ModContext &context) {
+  return pl::modmenu::ModuleBuilder(ModuleId, "Speed Meter")
+      .modId(context.id())
+      .description("Shows a small movement speed overlay.")
+      .defaultEnabled(true)
+      .onToggle(onToggle)
+      .config("refreshRate", "Refresh Rate",
+              pl::modmenu::ConfigType::SliderInt, "20", "1", "60")
+      .registerModule();
+}
+```
+
+浮动按钮使用 `pl::modmenu::ButtonBuilder`。如果 UI 是 mod 临时注册的，请在
+`disable()` 中调用 `unregisterModule()` / `unregisterButton()`。
+
+## 注意
+
+- 注册实例必须在进程生命周期内保持有效。
+- 不要让异常跨越生命周期边界；捕获失败并返回 `false`。
+- 用户可编辑配置应放在 `context.configDir()` 下。

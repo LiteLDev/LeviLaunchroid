@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
-import org.levimc.launcher.core.mods.inbuilt.model.InbuiltMod;
 
 public class ModMenuButton {
 
@@ -189,15 +188,9 @@ public class ModMenuButton {
     private void onButtonClick() {
         if (menuOverlay == null) {
             menuOverlay = new ModMenuOverlay(activity);
-            menuOverlay.setCallback(new ModMenuOverlay.ModMenuButtonCallback() {
+            menuOverlay.setCallback(new ModMenuOverlay.ModMenuCallback() {
                 @Override
                 public void onModToggled(String modId, boolean enabled) {
-                }
-                @Override
-                public void onModConfigRequested(InbuiltMod mod) {
-                    org.levimc.launcher.ui.util.InbuiltModConfigHelper.showConfigDialog(activity, mod, modId -> {
-                        applyConfigurationChanges(modId);
-                    });
                 }
                 @Override
                 public void onButtonOpacityChanged(int opacity) {
@@ -244,8 +237,23 @@ public class ModMenuButton {
         });
     }
     
+    public void setVisibility(int visibility) {
+        if (buttonView != null) {
+            buttonView.setVisibility(visibility);
+        }
+    }
+    
     public boolean isShowing() {
         return isShowing;
     }
 
+    public boolean isMenuShowing() {
+        return menuOverlay != null && menuOverlay.isShowing();
+    }
+
+    public void hideMenu() {
+        if (menuOverlay != null && menuOverlay.isShowing()) {
+            menuOverlay.hide();
+        }
+    }
 }

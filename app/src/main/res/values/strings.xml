@@ -109,6 +109,15 @@
 
     <string name="check_update">Check for updates</string>
     <string name="version_prefix">Version: </string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="preloader_sigs_title">Runtime Data</string>
+    <string name="preloader_sigs_last_update">Last update: %1$s</string>
+    <string name="preloader_sigs_never_updated">Never</string>
+    <string name="preloader_sigs_update">Update runtime data</string>
+    <string name="preloader_sigs_updating">Updating…</string>
+    <string name="preloader_sigs_update_success">Runtime data updated</string>
+    <string name="preloader_sigs_update_failed">Failed to update runtime data: %1$s</string>
+    <string name="preloader_sigs_no_remote_url">Runtime data update URL is not configured</string>
 
     <string name="dialog_title_no_version">No Version Selected</string>
     <string name="dialog_message_no_version">Please select a game version before launching.</string>
@@ -371,6 +380,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="edit_world">Edit World</string>
     <string name="edit">Edit</string>
     <string name="save">Save</string>
+    <string name="reset">Reset</string>
     <string name="saved_to_gallery">Saved to gallery</string>
     <string name="level_dat_not_found">level.dat not found</string>
     <string name="no_editable_properties">No editable properties found</string>
@@ -599,6 +609,8 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="configure">Configure</string>
     <string name="overlay_button_size">Overlay Button Size</string>
     <string name="overlay_button_opacity">Overlay Button Opacity</string>
+    <string name="overlay_button_size_value">Size: %1$ddp</string>
+    <string name="overlay_button_opacity_value">Opacity: %1$d%%</string>
     <string name="overlay_button_lock">Lock Position</string>
     <string name="overlay_button_lock_desc">Prevent dragging and accidental activation</string>
     <string name="settings">Settings</string>
@@ -620,8 +632,26 @@ Migration must complete before LeviLauncher can continue.</string>
     <!-- Mod Menu -->
     <string name="mod_menu">Mod Menu</string>
     <string name="mod_menu_modules">Modules</string>
+    <string name="mod_menu_favorites">Favorites</string>
+    <string name="mod_menu_favorite">Add to favorites</string>
+    <string name="mod_menu_unfavorite">Remove from favorites</string>
+    <string name="mod_menu_hud_editor">HUD Editor</string>
+    <string name="mod_menu_filter_enabled">Enabled</string>
+    <string name="mod_menu_filter_inbuilt">Inbuilt</string>
+    <string name="mod_menu_filter_external">External</string>
     <string name="mod_menu_search_hint">Search mods…</string>
     <string name="mod_menu_no_mods">No mods added</string>
+    <string name="mod_menu_no_favorites">No favorite mods yet</string>
+    <string name="mod_menu_no_matches">No matching mods</string>
+    <string name="mod_menu_group_inbuilt">Inbuilt Features</string>
+    <string name="mod_menu_group_external_ungrouped">Ungrouped External Mods</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">General Settings</string>
+    <string name="mod_menu_appearance">Appearance</string>
+    <string name="mod_menu_pause_menu_only">Pause Menu Only</string>
+    <string name="mod_menu_pause_menu_only_desc">Only show mod menu in pause screen</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">Settings coming soon</string>
     <string name="mod_menu_notifications">Notifications</string>
     <string name="mod_menu_notifications_desc">Show notification when enabling mods</string>
@@ -635,6 +665,23 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_status_enabled">Enabled</string>
     <string name="mod_status_disabled">Disabled</string>
     <string name="mod_notification_enabled">%s enabled</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">Overlay Button Size (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">Overlay Opacity (%)</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">Cursor Sensitivity (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">Zoom Level (%)</string>
+    <string name="mod_config_auto_sprint_keybind">Auto Sprint Keybind</string>
+    <string name="mod_config_zoom_keybind">Zoom Keybind</string>
+    <string name="mod_config_zoom_transition">Transition Duration (ms)</string>
+    <string name="mod_config_press_any_key">Press any key to bind...</string>
+    <string name="mod_config_key_unknown">UNKNOWN</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
 
     <!-- Options Editor -->
     <string name="edit_options">Edit Options</string>

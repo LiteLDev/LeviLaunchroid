@@ -90,6 +90,15 @@
 
     <string name="check_update">Periksa pembaruan</string>
     <string name="version_prefix">Versi: </string>
+    <string name="unknown_error">Kesalahan tidak diketahui</string>
+    <string name="preloader_sigs_title">Data runtime</string>
+    <string name="preloader_sigs_last_update">Pembaruan terakhir: %1$s</string>
+    <string name="preloader_sigs_never_updated">Belum pernah</string>
+    <string name="preloader_sigs_update">Perbarui data runtime</string>
+    <string name="preloader_sigs_updating">Memperbarui…</string>
+    <string name="preloader_sigs_update_success">Data runtime diperbarui</string>
+    <string name="preloader_sigs_update_failed">Gagal memperbarui data runtime: %1$s</string>
+    <string name="preloader_sigs_no_remote_url">URL pembaruan data runtime belum dikonfigurasi</string>
 
     <string name="dialog_title_no_version">Tidak Ada Versi yang Dipilih</string>
     <string name="dialog_message_no_version">Silakan pilih versi game sebelum memulai.</string>
@@ -742,4 +751,42 @@ Migrasi harus selesai sebelum LeviLauncher dapat melanjutkan.</string>
         <item quantity="other">%d item</item>
     </plurals>
 
+    <!-- Mod Menu synced translations -->
+    <string name="mod_menu_favorites">Favorit</string>
+    <string name="mod_menu_favorite">Tambahkan ke favorit</string>
+    <string name="mod_menu_unfavorite">Hapus dari favorit</string>
+    <string name="mod_menu_hud_editor">Editor HUD</string>
+    <string name="mod_menu_filter_enabled">Aktif</string>
+    <string name="mod_menu_filter_inbuilt">Bawaan</string>
+    <string name="mod_menu_filter_external">Eksternal</string>
+    <string name="mod_menu_no_favorites">Belum ada mod favorit</string>
+    <string name="mod_menu_no_matches">Tidak ada mod yang cocok</string>
+    <string name="mod_menu_group_inbuilt">Fitur Bawaan</string>
+    <string name="mod_menu_group_external_ungrouped">Mod Eksternal Tidak Dikelompokkan</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">Pengaturan Umum</string>
+    <string name="mod_menu_appearance">Tampilan</string>
+    <string name="mod_menu_pause_menu_only">Hanya Menu Jeda</string>
+    <string name="mod_menu_pause_menu_only_desc">Tampilkan menu mod hanya di layar jeda</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">Ukuran Tombol Overlay (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">Opasitas Overlay (%)</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">Sensitivitas Kursor (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">Level Zoom (%)</string>
+    <string name="mod_config_auto_sprint_keybind">Keybind Sprint Otomatis</string>
+    <string name="mod_config_zoom_keybind">Keybind Zoom</string>
+    <string name="mod_config_press_any_key">Tekan tombol apa saja untuk mengikat...</string>
+    <string name="mod_config_key_unknown">TIDAK DIKETAHUI</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="overlay_button_size_value">Ukuran: %1$ddp</string>
+    <string name="overlay_button_opacity_value">Opasitas: %1$d%%</string>
+    <string name="reset">Reset</string>
 </resources>

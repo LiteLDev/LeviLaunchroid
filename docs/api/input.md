@@ -2,137 +2,72 @@
 
 ## Purpose
 
-Input API lets mods register touch and keyboard callbacks, and request the soft keyboard to show or hide.
+Input API lets native mods observe touch, key, and mouse events and control the
+Android soft keyboard.
 
-## Headers
-
-```c
-#include <pl/c/PreloaderInput.h>
-```
-
-C++:
+## Header
 
 ```cpp
-#include <pl/cpp/PreloaderInput.hpp>
+#include <pl/Input.hpp>
 ```
 
-## Signatures
+## Events
 
-```c
-typedef bool (*PreloaderInput_OnTouch_Fn)(int action, int pointerId,
-                                          float x, float y);
+```cpp
+struct TouchEvent {
+  int action;
+  int pointerId;
+  float x;
+  float y;
+};
 
-typedef bool (*PreloaderInput_OnKeyEvent_Fn)(int keyCode,
-                                             unsigned int unicodeChar,
-                                             bool isKeyDown);
+struct KeyEvent {
+  int keyCode;
+  unsigned int unicodeChar;
+  bool isKeyDown;
+};
 
-typedef struct PreloaderInput_Interface {
-  void (*RegisterTouchCallback)(PreloaderInput_OnTouch_Fn callback);
-  void (*RegisterKeyEventCallback)(PreloaderInput_OnKeyEvent_Fn callback);
-  void (*ShowKeyboard)(void);
-  void (*HideKeyboard)(void);
-} PreloaderInput_Interface;
-
-PLAPI PreloaderInput_Interface *GetPreloaderInput(void);
+struct MouseEvent {
+  int button;
+  bool isDown;
+};
 ```
 
-## GetPreloaderInput
+Callbacks return `true` to consume the event.
 
-### Purpose
+## Functions
 
-Returns the input interface table.
+```cpp
+void registerTouchCallback(pl::input::TouchCallback callback);
+void registerKeyCallback(pl::input::KeyCallback callback);
+void registerMouseCallback(pl::input::MouseCallback callback);
 
-### Parameters
+void showKeyboard();
+void hideKeyboard();
+```
 
-None.
+## Example
 
-### Return Value
+```cpp
+#include <pl/Input.hpp>
 
-Returns `PreloaderInput_Interface *`.
+bool MyMod::enable(pl::mod::ModContext &) {
+  pl::input::registerTouchCallback([](const pl::input::TouchEvent &event) {
+    (void)event;
+    return false;
+  });
 
-### Example
+  pl::input::registerKeyCallback([](const pl::input::KeyEvent &event) {
+    return event.isKeyDown && event.keyCode == 111;
+  });
 
-```c
-static bool on_touch(int action, int pointerId, float x, float y) {
-  (void)action;
-  (void)pointerId;
-  (void)x;
-  (void)y;
-  return false;
-}
-
-bool MyMod::enable() {
-  PreloaderInput_Interface *input = GetPreloaderInput();
-  input->RegisterTouchCallback(on_touch);
   return true;
 }
 ```
 
-## RegisterTouchCallback
-
-### Purpose
-
-Registers a touch event callback.
-
-### Parameters
-
-| Parameter | Description |
-| --- | --- |
-| `callback` | Touch callback |
-
-Callback parameters:
-
-| Parameter | Description |
-| --- | --- |
-| `action` | Android `MotionEvent` action |
-| `pointerId` | Pointer ID |
-| `x` | Pointer X coordinate |
-| `y` | Pointer Y coordinate |
-
-### Return Value
-
-The registration function returns nothing. The callback returns `true` to consume the event.
-
-## RegisterKeyEventCallback
-
-### Purpose
-
-Registers a keyboard event callback.
-
-### Parameters
-
-| Parameter | Description |
-| --- | --- |
-| `callback` | Key event callback |
-
-Callback parameters:
-
-| Parameter | Description |
-| --- | --- |
-| `keyCode` | Android key code |
-| `unicodeChar` | Unicode character code |
-| `isKeyDown` | `true` for key down, `false` for key up |
-
-### Return Value
-
-The registration function returns nothing. The callback returns `true` to consume the event.
-
-## ShowKeyboard / HideKeyboard
-
-### Purpose
-
-Calls the current Activity's `showSoftKeyboard` or `hideSoftKeyboard` method.
-
-### Parameters
-
-None.
-
-### Return Value
-
-None.
-
 ## Notes
 
-- There is currently no unregister API. Avoid registering the same callback repeatedly.
+- There is currently no unregister API; register callbacks once per process or
+  route them through mod-owned enabled state.
 - Keep callbacks short and non-blocking.
-- Soft keyboard calls only work while the game Activity is available.
+- Keyboard functions require the game Activity to be available.
