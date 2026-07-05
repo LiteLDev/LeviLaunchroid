@@ -4,7 +4,7 @@
 #include <string>
 #include <string_view>
 
-#include <pl/cpp/Config.hpp>
+#include <pl/Config.hpp>
 
 namespace fullcppmod {
 

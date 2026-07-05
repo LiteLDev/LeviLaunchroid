@@ -11,10 +11,10 @@ set(PRELOADER_ANDROID_ROOT
     "${LL_REPO_ROOT}/app/src/main/cpp/preloader"
     CACHE PATH "Path to LiteLDev/preloader-android")
 
-if(NOT EXISTS "${PRELOADER_ANDROID_ROOT}/src/pl/cpp/Config.hpp")
+if(NOT EXISTS "${PRELOADER_ANDROID_ROOT}/include/pl/Config.hpp")
     message(FATAL_ERROR
         "PRELOADER_ANDROID_ROOT must point to a preloader-android checkout. "
-        "Missing: ${PRELOADER_ANDROID_ROOT}/src/pl/cpp/Config.hpp")
+        "Missing: ${PRELOADER_ANDROID_ROOT}/include/pl/Config.hpp")
 endif()
 
 include(FetchContent)
@@ -51,7 +51,7 @@ endif()
 function(configure_full_cpp_mod_common target_name)
     target_include_directories("${target_name}" PRIVATE
         "${CMAKE_CURRENT_LIST_DIR}/src"
-        "${PRELOADER_ANDROID_ROOT}/src")
+        "${PRELOADER_ANDROID_ROOT}/include")
     target_link_libraries("${target_name}" PRIVATE
         nlohmann_json::nlohmann_json
         Boost::pfr
@@ -64,7 +64,6 @@ if(NOT ANDROID)
     add_executable(full_cpp_mod_config_gen
         src/GenerateConfig.cpp)
     configure_full_cpp_mod_common(full_cpp_mod_config_gen)
-    target_compile_definitions(full_cpp_mod_config_gen PRIVATE PL_CONFIG_NO_RUNTIME)
 endif()
 
 if(ANDROID)

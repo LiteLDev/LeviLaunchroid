@@ -102,9 +102,7 @@ Invoke-Checked cmake `
 Invoke-Checked cmake `
     --build $BuildDir `
     --target `
-    modmenu_cpp_lifecycle `
-    modmenu_c_lifecycle `
-    modmenu_dlsym_constructor
+    modmenu_cpp_lifecycle
 
 $OutDir = Join-Path $BuildDir "out\$Abi"
 $DistDir = Join-Path $SourceDir "dist\$Abi"
@@ -118,16 +116,6 @@ $Packages = @(
         Name = "cpp-lifecycle"
         Library = "libmodmenu_cpp_lifecycle.so"
         Manifest = "manifests\cpp-lifecycle\manifest.json"
-    },
-    @{
-        Name = "c-lifecycle"
-        Library = "libmodmenu_c_lifecycle.so"
-        Manifest = "manifests\c-lifecycle\manifest.json"
-    },
-    @{
-        Name = "dlsym-constructor"
-        Library = "libmodmenu_dlsym_constructor.so"
-        Manifest = "manifests\dlsym-constructor\manifest.json"
     }
 )
 

@@ -2,133 +2,71 @@
 
 ## Purpose
 
-Patch API reads, writes, and reverts process memory.
+Patch API reads, writes, and reverts process memory through the SDK.
 
 ## Header
 
-C:
-
-```c
-#include <pl/c/Patch.h>
+```cpp
+#include <pl/memory/Patch.hpp>
 ```
 
-C++:
+## Functions
 
 ```cpp
-#include <pl/cpp/Patch.hpp>
+bool writeBytes(uintptr_t address, std::span<const uint8_t> bytes,
+                std::string_view name);
+
+bool writeBytes(uintptr_t address, std::string_view hexBytes,
+                std::string_view name);
+
+std::vector<uint8_t> readBytes(uintptr_t address, size_t length);
+
+bool revertPatch(std::string_view name);
+void revertAllPatches();
 ```
 
-## Signatures
+Patch names identify the saved original bytes used by `revertPatch()`.
 
-C:
-
-```c
-bool pl_patch_write_bytes(uintptr_t addr, const uint8_t *bytes,
-                          size_t len, const char *name);
-bool pl_patch_write_hex(uintptr_t addr, const char *bytes,
-                        const char *name);
-size_t pl_patch_read_bytes(uintptr_t addr, uint8_t *out, size_t len);
-bool pl_patch_revert(const char *name);
-void pl_patch_revert_all(void);
-```
-
-C++:
+## Example
 
 ```cpp
-namespace pl::patch {
-bool writeBytes(uintptr_t addr, const std::string &bytes,
-                const std::string &name);
-bool writeBytes(uintptr_t addr, const std::vector<uint8_t> &bytes,
-                const std::string &name);
-std::vector<uint8_t> readBytes(uintptr_t addr, size_t len);
-bool revert(const std::string &name);
-void revertAll();
+#include <pl/memory/Patch.hpp>
+
+bool installReturnZero(uintptr_t address) {
+  return pl::memory::writeBytes(address, "00 00 80 D2 C0 03 5F D6",
+                                "example.return_zero");
+}
+
+void removeReturnZero() {
+  pl::memory::revertPatch("example.return_zero");
 }
 ```
 
-## pl_patch_write_bytes / writeBytes
-
-### Purpose
-
-Writes bytes to an address and stores original bytes under `name`.
-
-### Parameters
-
-| Parameter | Description |
-| --- | --- |
-| `addr` | Target address |
-| `bytes` | Byte buffer or hex byte string, such as `"00 00 80 D2"` |
-| `len` | Number of bytes in the buffer |
-| `name` | Patch name for later revert |
-
-### Return Value
-
-Returns `true` on success. Returns `false` when bytes are empty, a hex string is invalid, `addr` is `0`, the target range is not readable, the address range overflows, or memory permission changes fail.
-
-### C Example
-
-```c
-#include <pl/c/Patch.h>
-
-const uint8_t bytes[] = {0x00, 0x00, 0x80, 0xD2, 0xC0, 0x03, 0x5F, 0xD6};
-bool ok = pl_patch_write_bytes(address, bytes, sizeof(bytes), "return_zero");
-```
-
-### C++ Example
+## RAII Handle
 
 ```cpp
-#include <pl/cpp/Patch.hpp>
+class MyMod {
+public:
+  bool enable(pl::mod::ModContext &context) {
+    mPatch = pl::memory::PatchHandle(address, "00 00 80 D2 C0 03 5F D6",
+                                     "example.return_zero");
+    return mPatch.applied();
+  }
 
-bool ok = pl::patch::writeBytes(address, "00 00 80 D2 C0 03 5F D6",
-                                "return_zero");
+  bool disable(pl::mod::ModContext &context) {
+    mPatch.reset();
+    return true;
+  }
+
+private:
+  uintptr_t address{};
+  pl::memory::PatchHandle mPatch;
+};
 ```
-
-## pl_patch_read_bytes / readBytes
-
-### Purpose
-
-Reads bytes from an address.
-
-### Parameters
-
-| Parameter | Description |
-| --- | --- |
-| `addr` | Start address |
-| `out` | Caller-owned output buffer |
-| `len` | Number of bytes to read |
-
-### Return Value
-
-The C API returns the number of bytes read. It returns `0` when `out` is `NULL`, `addr` is `0`, `len` is `0`, the address range overflows, or the target range is not readable.
-
-The C++ wrapper returns the read bytes, or an empty vector on failure.
-
-## pl_patch_revert / revert
-
-### Purpose
-
-Reverts one named patch.
-
-### Parameters
-
-| Parameter | Description |
-| --- | --- |
-| `name` | Patch name passed to write |
-
-### Return Value
-
-Returns `true` on success, otherwise `false`.
-
-## pl_patch_revert_all / revertAll
-
-### Purpose
-
-Reverts all recorded patches.
 
 ## Notes
 
-- Reusing a patch name overwrites the previous record.
-- Saved original byte length equals the write length.
-- Hex strings are whitespace-separated bytes. Each byte token must contain one or two hex digits.
-- `writeBytes` and `readBytes` reject invalid addresses where possible, but wrong instruction bytes or patching the wrong function can still crash the process.
-- Prefer the C++ helpers in new C++ mods.
+- Hex strings are whitespace-separated bytes. Each token must contain one or two
+  hex digits.
+- Reusing a patch name replaces the previous saved record.
+- Wrong instruction bytes or a wrong address can still crash the process.

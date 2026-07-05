@@ -12,10 +12,8 @@
 #include <string>
 #include <string_view>
 
-#include <pl/c/PreloaderModMenu.h>
-#include <pl/cpp/ModMenu.hpp>
-#include <pl/cpp/mod/NativeMod.hpp>
-#include <pl/cpp/mod/RegisterHelper.hpp>
+#include <pl/Mod.hpp>
+#include <pl/ModMenu.hpp>
 
 namespace {
 
@@ -70,17 +68,10 @@ static constexpr unsigned char kWebpButtonIcon[] = {
     0x17, 0xF1, 0xA4, 0xDE, 0xC4, 0xE3, 0x2F, 0x72, 0x01, 0x00,
 };
 
-std::string_view viewOrEmpty(const char *value) {
-  return value ? std::string_view(value) : std::string_view();
-}
-
-bool matchesModule(const char *moduleId) {
-  return moduleId && std::string_view(moduleId) == kModuleId;
-}
+bool matchesModule(std::string_view moduleId) { return moduleId == kModuleId; }
 
 bool parseBool(std::string_view value, bool fallback) {
-  if (value == "true" || value == "1" || value == "on" ||
-      value == "enabled") {
+  if (value == "true" || value == "1" || value == "on" || value == "enabled") {
     return true;
   }
   if (value == "false" || value == "0" || value == "off" ||
@@ -177,9 +168,8 @@ std::string doubleToMenuValue(double value) {
 void normalizeConfig(ExampleConfig &config) {
   const ExampleConfig defaults;
   config.version = defaults.version;
-  config.opacity =
-      std::clamp(config.opacity, fullcppmod::kMinOpacity,
-                 fullcppmod::kMaxOpacity);
+  config.opacity = std::clamp(config.opacity, fullcppmod::kMinOpacity,
+                              fullcppmod::kMaxOpacity);
   config.scale =
       std::clamp(config.scale, fullcppmod::kMinScale, fullcppmod::kMaxScale);
   config.mode = modeFromIndex(modeToIndex(config.mode), defaults.mode);
@@ -195,33 +185,32 @@ public:
     return mod;
   }
 
-  bool load() {
-    const auto self = pl::mod::NativeMod::current();
-    if (!self) {
+  bool load(pl::mod::ModContext &context) {
+    mCurrentContext = &context;
+    std::lock_guard lock(mConfigMutex);
+    const auto configDir = context.configDir();
+    mConfigFile.emplace(ExampleConfig{}, configDir / "config.json",
+                        configDir / "config.schema.json");
+    if (!mConfigFile->load()) {
+      context.logger().error("Failed to load config");
+      mConfigFile.reset();
       return false;
     }
 
-    std::lock_guard lock(configMutex);
-    configFile.emplace(ExampleConfig{});
-    if (!configFile->load()) {
-      self->getLogger().error("Failed to load config");
-      configFile.reset();
+    normalizeConfig(mConfigFile->value());
+    if (!mConfigFile->save()) {
+      context.logger().error("Failed to persist normalized config");
+      mConfigFile.reset();
       return false;
     }
 
-    normalizeConfig(configFile->value());
-    if (!configFile->save()) {
-      self->getLogger().error("Failed to persist normalized config");
-      configFile.reset();
-      return false;
-    }
-
-    self->getLogger().info("Loaded config from {}",
-                           configFile->configPath().string());
+    context.logger().info("Loaded config from {}",
+                          mConfigFile->configPath().string());
     return true;
   }
 
-  bool enable() {
+  bool enable(pl::mod::ModContext &context) {
+    mCurrentContext = &context;
     const auto snapshot = snapshotConfig();
     const bool moduleRegistered =
         pl::modmenu::ModuleBuilder(kModuleId, "Full C++ Config Demo")
@@ -229,21 +218,22 @@ public:
                 "Pure C++ lifecycle module with persistent typed config.")
             .defaultEnabled(true)
             .onToggle(onModuleToggle)
-            .config(kShowOverlayKey, "Show Overlay", PL_CONFIG_TOGGLE,
+            .config(kShowOverlayKey, "Show Overlay",
+                    pl::modmenu::ConfigType::Toggle,
                     boolToMenuValue(snapshot.showOverlay))
-            .config(kOpacityKey, "Opacity", PL_CONFIG_SLIDER_INT,
+            .config(kOpacityKey, "Opacity", pl::modmenu::ConfigType::SliderInt,
                     std::to_string(snapshot.opacity),
                     std::to_string(fullcppmod::kMinOpacity),
                     std::to_string(fullcppmod::kMaxOpacity))
-            .config(kScaleKey, "Scale", PL_CONFIG_SLIDER_FLOAT,
+            .config(kScaleKey, "Scale", pl::modmenu::ConfigType::SliderFloat,
                     doubleToMenuValue(snapshot.scale),
                     doubleToMenuValue(fullcppmod::kMinScale),
                     doubleToMenuValue(fullcppmod::kMaxScale))
-            .config(kModeKey, "Display Mode", PL_CONFIG_RADIO,
+            .config(kModeKey, "Display Mode", pl::modmenu::ConfigType::Radio,
                     std::to_string(modeToIndex(snapshot.mode)),
                     std::string(fullcppmod::kModeMenuOptions))
-            .config(kAccentColorKey, "Accent Color", PL_CONFIG_COLOR,
-                    snapshot.accentColor)
+            .config(kAccentColorKey, "Accent Color",
+                    pl::modmenu::ConfigType::Color, snapshot.accentColor)
             .onConfigChanged(onConfigChanged)
             .registerModule();
 
@@ -253,8 +243,8 @@ public:
             .moduleId(kModuleId)
             .label("Q")
             .androidKeyCode(45)
-            .behavior(PL_BUTTON_CLICK)
-            .pngIcon(kPngButtonIcon, static_cast<int>(sizeof(kPngButtonIcon)))
+            .behavior(pl::modmenu::ButtonBehavior::Click)
+            .pngIcon(kPngButtonIcon)
             .registerButton();
 
     const bool holdButtonRegistered =
@@ -262,9 +252,8 @@ public:
         pl::modmenu::ButtonBuilder(kHoldButtonId, "Full C++ Hold Demo")
             .moduleId(kModuleId)
             .label("H")
-            .behavior(PL_BUTTON_HOLD)
-            .webpIcon(kWebpButtonIcon,
-                      static_cast<int>(sizeof(kWebpButtonIcon)))
+            .behavior(pl::modmenu::ButtonBehavior::Hold)
+            .webpIcon(kWebpButtonIcon)
             .onEvent(onButtonEvent)
             .registerButton();
 
@@ -273,12 +262,13 @@ public:
         pl::modmenu::ButtonBuilder(kToggleButtonId, "Full C++ Toggle Demo")
             .moduleId(kModuleId)
             .label("T")
-            .behavior(PL_BUTTON_TOGGLE)
-            .stylePreset(PL_BUTTON_STYLE_ACCENT)
+            .behavior(pl::modmenu::ButtonBehavior::Toggle)
+            .stylePreset(pl::modmenu::ButtonStylePreset::Accent)
             .styleColors(0xCC24282CU, 0xFF4AE0A0U, 0x994AE0A0U)
             .textColor(0xFFFFFFFFU)
             .activeTextColor(0xFF000000U)
-            .svgIcon(R"svg(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+            .svgIcon(
+                R"svg(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
               <rect x="10" y="10" width="44" height="44" rx="10" fill="#4AE0A0"/>
               <path d="M24 21v22l18-11z" fill="#111111"/>
             </svg>)svg")
@@ -290,7 +280,7 @@ public:
         pl::modmenu::ButtonBuilder(kTakeButtonId, "Full C++ Take Demo")
             .moduleId(kModuleId)
             .label("Take")
-            .behavior(PL_BUTTON_CLICK)
+            .behavior(pl::modmenu::ButtonBehavior::Click)
             .sizeScale(2.0f, 1.0f)
             .onEvent(onButtonEvent)
             .registerButton();
@@ -298,177 +288,161 @@ public:
     const bool registered = moduleRegistered && quickDropButtonRegistered &&
                             holdButtonRegistered && toggleButtonRegistered &&
                             takeButtonRegistered;
-    if (const auto self = pl::mod::NativeMod::current()) {
-      if (registered) {
-        self->getLogger().info("Registered Mod Menu module {} and demo buttons",
-                               kModuleId);
-      } else {
-        self->getLogger().error(
-            "Failed to register Mod Menu module/buttons: module={} quickDrop={} "
-            "hold={} toggle={} take={}",
-            moduleRegistered, quickDropButtonRegistered, holdButtonRegistered,
-            toggleButtonRegistered, takeButtonRegistered);
-      }
+    if (registered) {
+      context.logger().info("Registered Mod Menu module {} and demo buttons",
+                            kModuleId);
+    } else {
+      context.logger().error(
+          "Failed to register Mod Menu module/buttons: module={} quickDrop={} "
+          "hold={} toggle={} take={}",
+          moduleRegistered, quickDropButtonRegistered, holdButtonRegistered,
+          toggleButtonRegistered, takeButtonRegistered);
     }
     return registered;
   }
 
-  bool disable() {
+  bool disable(pl::mod::ModContext &context) {
     unregisterModule();
-    if (const auto self = pl::mod::NativeMod::current()) {
-      self->getLogger().info("Disabled");
-    }
+    context.logger().info("Disabled");
     return true;
   }
 
-  bool unload() {
+  bool unload(pl::mod::ModContext &context) {
     unregisterModule();
     {
-      std::lock_guard lock(configMutex);
-      configFile.reset();
+      std::lock_guard lock(mConfigMutex);
+      mConfigFile.reset();
     }
-    if (const auto self = pl::mod::NativeMod::current()) {
-      self->getLogger().info("Unloaded");
-    }
+    context.logger().info("Unloaded");
+    mCurrentContext = nullptr;
     return true;
   }
 
 private:
-  std::mutex configMutex;
-  std::optional<pl::config::ConfigFile<ExampleConfig>> configFile;
-  std::atomic_bool holdButtonDown{false};
-  std::atomic_bool toggleButtonActive{false};
+  pl::mod::ModContext *mCurrentContext{};
+  std::mutex mConfigMutex;
+  std::optional<pl::config::ConfigFile<ExampleConfig>> mConfigFile;
+  std::atomic_bool mHoldButtonDown{false};
+  std::atomic_bool mToggleButtonActive{false};
 
   ExampleConfig snapshotConfig() {
-    std::lock_guard lock(configMutex);
-    if (!configFile) {
+    std::lock_guard lock(mConfigMutex);
+    if (!mConfigFile) {
       return ExampleConfig{};
     }
-    auto snapshot = configFile->value();
+    auto snapshot = mConfigFile->value();
     normalizeConfig(snapshot);
     return snapshot;
   }
 
-  static void onModuleToggle(const char *moduleId, bool enabled) {
+  static void onModuleToggle(std::string_view moduleId, bool enabled) {
     instance().handleModuleToggle(moduleId, enabled);
   }
 
-  static void onConfigChanged(const char *moduleId, const char *key,
-                              const char *value) {
+  static void onConfigChanged(std::string_view moduleId, std::string_view key,
+                              std::string_view value) {
     instance().handleConfigChanged(moduleId, key, value);
   }
 
-  static void onButtonEvent(const char *buttonId, PLModMenu_ButtonEvent event,
-                            float value) {
+  static void onButtonEvent(std::string_view buttonId,
+                            pl::modmenu::ButtonEvent event, float value) {
     instance().handleButtonEvent(buttonId, event, value);
   }
 
-  void handleModuleToggle(const char *moduleId, bool enabled) {
+  void handleModuleToggle(std::string_view moduleId, bool enabled) {
     if (!matchesModule(moduleId)) {
       return;
     }
 
-    if (const auto self = pl::mod::NativeMod::current()) {
-      self->getLogger().info("Module {} {}", moduleId,
-                             enabled ? "enabled" : "disabled");
+    if (mCurrentContext) {
+      mCurrentContext->logger().info("Module {} {}", moduleId,
+                                     enabled ? "enabled" : "disabled");
     }
   }
 
-  void handleConfigChanged(const char *moduleId, const char *key,
-                           const char *value) {
-    if (!matchesModule(moduleId) || !key) {
+  void handleConfigChanged(std::string_view moduleId, std::string_view key,
+                           std::string_view value) {
+    if (!matchesModule(moduleId) || key.empty()) {
       return;
     }
 
-    const std::string_view configKey(key);
-    const std::string_view configValue = viewOrEmpty(value);
-    std::lock_guard lock(configMutex);
-    if (!configFile) {
+    std::lock_guard lock(mConfigMutex);
+    if (!mConfigFile) {
       return;
     }
 
-    auto &config = configFile->value();
-    if (configKey == kShowOverlayKey) {
-      config.showOverlay = parseBool(configValue, config.showOverlay);
-    } else if (configKey == kOpacityKey) {
+    auto &config = mConfigFile->value();
+    if (key == kShowOverlayKey) {
+      config.showOverlay = parseBool(value, config.showOverlay);
+    } else if (key == kOpacityKey) {
       config.opacity =
-          std::clamp(parseInt(configValue, config.opacity),
-                     fullcppmod::kMinOpacity, fullcppmod::kMaxOpacity);
-    } else if (configKey == kScaleKey) {
-      config.scale =
-          std::clamp(parseDouble(configValue, config.scale),
-                     fullcppmod::kMinScale, fullcppmod::kMaxScale);
-    } else if (configKey == kModeKey) {
-      config.mode = parseMode(configValue, config.mode);
-    } else if (configKey == kAccentColorKey) {
-      if (isValidColor(configValue)) {
-        config.accentColor = std::string(configValue);
+          std::clamp(parseInt(value, config.opacity), fullcppmod::kMinOpacity,
+                     fullcppmod::kMaxOpacity);
+    } else if (key == kScaleKey) {
+      config.scale = std::clamp(parseDouble(value, config.scale),
+                                fullcppmod::kMinScale, fullcppmod::kMaxScale);
+    } else if (key == kModeKey) {
+      config.mode = parseMode(value, config.mode);
+    } else if (key == kAccentColorKey) {
+      if (isValidColor(value)) {
+        config.accentColor = std::string(value);
       }
     } else {
       return;
     }
 
-    saveConfigLocked(configKey);
+    saveConfigLocked(key);
   }
 
   bool saveConfigLocked(std::string_view reason) {
-    if (!configFile) {
+    if (!mConfigFile) {
       return false;
     }
 
-    normalizeConfig(configFile->value());
-    const bool saved = configFile->save();
-    if (const auto self = pl::mod::NativeMod::current()) {
+    normalizeConfig(mConfigFile->value());
+    const bool saved = mConfigFile->save();
+    if (mCurrentContext) {
       if (saved) {
-        self->getLogger().info("Persisted config after {}", reason);
+        mCurrentContext->logger().info("Persisted config after {}", reason);
       } else {
-        self->getLogger().warn("Failed to persist config after {}", reason);
+        mCurrentContext->logger().warn("Failed to persist config after {}",
+                                       reason);
       }
     }
     return saved;
   }
 
-  void handleButtonEvent(const char *buttonId, PLModMenu_ButtonEvent event,
-                         float value) {
-    if (!buttonId) {
-      return;
-    }
-
-    const std::string_view id(buttonId);
-    if (id == kHoldButtonId) {
-      if (event == PL_BUTTON_EVENT_DOWN) {
-        holdButtonDown = true;
-      } else if (event == PL_BUTTON_EVENT_UP) {
-        holdButtonDown = false;
+  void handleButtonEvent(std::string_view buttonId,
+                         pl::modmenu::ButtonEvent event, float value) {
+    if (buttonId == kHoldButtonId) {
+      if (event == pl::modmenu::ButtonEvent::Down) {
+        mHoldButtonDown = true;
+      } else if (event == pl::modmenu::ButtonEvent::Up) {
+        mHoldButtonDown = false;
       }
-    } else if (id == kToggleButtonId &&
-               event == PL_BUTTON_EVENT_STATE_CHANGED) {
-      toggleButtonActive = value > 0.5f;
-    } else if (id == kTakeButtonId) {
+    } else if (buttonId == kToggleButtonId &&
+               event == pl::modmenu::ButtonEvent::StateChanged) {
+      mToggleButtonActive = value > 0.5f;
+    } else if (buttonId == kTakeButtonId) {
       // Logged below.
     } else {
       return;
     }
 
-    if (const auto self = pl::mod::NativeMod::current()) {
-      self->getLogger().info(
+    if (mCurrentContext) {
+      mCurrentContext->logger().info(
           "External button {} event={} value={} holdDown={} toggleActive={}",
-          buttonId, static_cast<int>(event), value, holdButtonDown.load(),
-          toggleButtonActive.load());
+          buttonId, static_cast<int>(event), value, mHoldButtonDown.load(),
+          mToggleButtonActive.load());
     }
   }
 
   void unregisterModule() {
-    const auto menu = GetPreloaderModMenu();
-    if (menu && menu->UnregisterButton) {
-      menu->UnregisterButton(kQuickDropButtonId);
-      menu->UnregisterButton(kHoldButtonId);
-      menu->UnregisterButton(kToggleButtonId);
-      menu->UnregisterButton(kTakeButtonId);
-    }
-    if (menu && menu->UnregisterModule) {
-      menu->UnregisterModule(kModuleId);
-    }
+    pl::modmenu::unregisterButton(kQuickDropButtonId);
+    pl::modmenu::unregisterButton(kHoldButtonId);
+    pl::modmenu::unregisterButton(kToggleButtonId);
+    pl::modmenu::unregisterButton(kTakeButtonId);
+    pl::modmenu::unregisterModule(kModuleId);
   }
 };
 

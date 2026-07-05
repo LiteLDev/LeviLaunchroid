@@ -2,145 +2,70 @@
 
 ## 作用
 
-Input API 允许 mod 注册触摸和键盘事件回调，也可以请求显示或隐藏软键盘。
+Input API 让 native mod 监听触摸、按键、鼠标事件，并控制 Android 软键盘。
 
 ## 头文件
 
-```c
-#include <pl/c/PreloaderInput.h>
+```cpp
+#include <pl/Input.hpp>
 ```
 
-C++ 也可以使用：
+## 事件
 
 ```cpp
-#include <pl/cpp/PreloaderInput.hpp>
+struct TouchEvent {
+  int action;
+  int pointerId;
+  float x;
+  float y;
+};
+
+struct KeyEvent {
+  int keyCode;
+  unsigned int unicodeChar;
+  bool isKeyDown;
+};
+
+struct MouseEvent {
+  int button;
+  bool isDown;
+};
 ```
 
-## 类型签名
+callback 返回 `true` 表示消费事件。
 
-```c
-typedef bool (*PreloaderInput_OnTouch_Fn)(int action, int pointerId,
-                                          float x, float y);
+## 函数
 
-typedef bool (*PreloaderInput_OnKeyEvent_Fn)(int keyCode,
-                                             unsigned int unicodeChar,
-                                             bool isKeyDown);
+```cpp
+void registerTouchCallback(pl::input::TouchCallback callback);
+void registerKeyCallback(pl::input::KeyCallback callback);
+void registerMouseCallback(pl::input::MouseCallback callback);
 
-typedef struct PreloaderInput_Interface {
-  void (*RegisterTouchCallback)(PreloaderInput_OnTouch_Fn callback);
-  void (*RegisterKeyEventCallback)(PreloaderInput_OnKeyEvent_Fn callback);
-  void (*ShowKeyboard)(void);
-  void (*HideKeyboard)(void);
-} PreloaderInput_Interface;
-
-PLAPI PreloaderInput_Interface *GetPreloaderInput(void);
+void showKeyboard();
+void hideKeyboard();
 ```
 
-## GetPreloaderInput
+## 示例
 
-### 作用
+```cpp
+#include <pl/Input.hpp>
 
-返回输入接口表。mod 通过这个接口注册回调或控制软键盘。
+bool MyMod::enable(pl::mod::ModContext &) {
+  pl::input::registerTouchCallback([](const pl::input::TouchEvent &event) {
+    (void)event;
+    return false;
+  });
 
-### 参数
+  pl::input::registerKeyCallback([](const pl::input::KeyEvent &event) {
+    return event.isKeyDown && event.keyCode == 111;
+  });
 
-无。
-
-### 返回值
-
-返回 `PreloaderInput_Interface *`。
-
-### 示例
-
-```c
-static bool on_touch(int action, int pointerId, float x, float y) {
-  (void)action;
-  (void)pointerId;
-  (void)x;
-  (void)y;
-  return false;
-}
-
-bool MyMod::enable() {
-  PreloaderInput_Interface *input = GetPreloaderInput();
-  input->RegisterTouchCallback(on_touch);
   return true;
 }
 ```
 
-## RegisterTouchCallback
+## 注意
 
-### 作用
-
-注册触摸事件回调。
-
-### 参数
-
-| 参数 | 说明 |
-| --- | --- |
-| `callback` | 触摸事件回调函数 |
-
-回调参数：
-
-| 参数 | 说明 |
-| --- | --- |
-| `action` | Android `MotionEvent` action |
-| `pointerId` | 指针 ID |
-| `x` | 当前指针 X 坐标 |
-| `y` | 当前指针 Y 坐标 |
-
-### 返回值
-
-注册函数无返回值。回调返回 `true` 表示消费事件，返回 `false` 表示继续传递。
-
-## RegisterKeyEventCallback
-
-### 作用
-
-注册键盘事件回调。
-
-### 参数
-
-| 参数 | 说明 |
-| --- | --- |
-| `callback` | 键盘事件回调函数 |
-
-回调参数：
-
-| 参数 | 说明 |
-| --- | --- |
-| `keyCode` | Android key code |
-| `unicodeChar` | Unicode 字符码 |
-| `isKeyDown` | `true` 表示按下，`false` 表示抬起 |
-
-### 返回值
-
-注册函数无返回值。回调返回 `true` 表示消费事件。
-
-## ShowKeyboard / HideKeyboard
-
-### 作用
-
-调用当前 Activity 的 `showSoftKeyboard` 或 `hideSoftKeyboard` 方法。
-
-### 参数
-
-无。
-
-### 返回值
-
-无。
-
-### 示例
-
-```c
-PreloaderInput_Interface *input = GetPreloaderInput();
-input->ShowKeyboard();
-input->HideKeyboard();
-```
-
-## 注意事项
-
-- 回调列表当前没有注销接口，避免重复注册同一个回调。
-- 回调应保持简短，避免长时间阻塞。
-- 软键盘调用只在游戏 Activity 可用时生效。
+- 当前没有 unregister API；请每进程只注册一次，或通过 mod 自有 enabled 状态转发。
+- callback 保持短小，不要阻塞。
+- 软键盘函数需要游戏 Activity 可用。

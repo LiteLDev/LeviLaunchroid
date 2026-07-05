@@ -2,57 +2,26 @@
 
 ## Purpose
 
-Signature API resolves a function name or byte pattern inside a loaded module and returns the matched address.
+Signature API resolves symbols or byte patterns inside a loaded module.
 
-## Headers
-
-C:
-
-```c
-#include <pl/c/Signature.h>
-```
-
-C++:
+## Header
 
 ```cpp
-#include <pl/cpp/Signature.hpp>
+#include <pl/memory/Signature.hpp>
 ```
 
-## Signatures
-
-```c
-PLAPI uintptr_t pl_resolve_signature(const char *signature,
-                                     const char *moduleName);
-```
-
-C++:
+## Functions
 
 ```cpp
-namespace pl::signature {
-uintptr_t resolveSignature(const std::string &signature,
-                           const std::string &moduleName);
+uintptr_t resolveSignature(std::string_view signature,
+                           std::string_view moduleName);
+
 std::unordered_map<std::string, uintptr_t>
-resolveSignatures(const std::vector<std::string> &signatures,
-                  const std::string &moduleName);
-}
+resolveSignatures(std::span<const std::string> signatures,
+                  std::string_view moduleName);
 ```
 
-## pl_resolve_signature
-
-### Purpose
-
-Resolves `signature` as a function name or byte pattern.
-
-### Parameters
-
-| Parameter | Description |
-| --- | --- |
-| `signature` | Function name or byte pattern; must not be `NULL` |
-| `moduleName` | Module name or path fragment; must not be `NULL` |
-
-### Return Value
-
-Matched address. Returns `0` on failure.
+The functions return `0` for signatures that cannot be resolved.
 
 ## Pattern Format
 
@@ -70,31 +39,18 @@ Wildcards:
 | `A?` | Low nibble wildcard |
 | `?F` | High nibble wildcard |
 
-## C Example
+## Example
 
-```c
-#include <pl/c/Signature.h>
+```cpp
+#include <pl/memory/Signature.hpp>
 
-uintptr_t addr = pl_resolve_signature("SomeSymbol", "libminecraftpe.so");
-if (addr == 0) {
-  addr = pl_resolve_signature("48 8B ?? ?? 89", "libminecraftpe.so");
+uintptr_t update = pl::memory::resolveSignature(
+    "Game_update", "libminecraftpe.so");
+
+if (update == 0) {
+  update = pl::memory::resolveSignature(
+      "48 8B ?? ?? 89", "libminecraftpe.so");
 }
 ```
 
-## C++ Batch Example
-
-```cpp
-#include <pl/cpp/Signature.hpp>
-
-auto results = pl::signature::resolveSignatures(
-    {"SymbolA", "48 8B ?? ?? 89"},
-    "libminecraftpe.so");
-
-uintptr_t symbolA = results["SymbolA"];
-```
-
-## Notes
-
-- `moduleName` should match the target library name.
-- Empty or invalid patterns return `0`.
-- Prefer `resolveSignatures` when resolving multiple patterns.
+Use `resolveSignatures()` when resolving several patterns from the same module.

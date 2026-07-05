@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(levilaunchroid_mod_menu_examples LANGUAGES C CXX)
+project(levilaunchroid_mod_menu_examples LANGUAGES CXX)
 
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -14,10 +11,10 @@ set(PRELOADER_ANDROID_ROOT
     "${LL_REPO_ROOT}/app/src/main/cpp/preloader"
     CACHE PATH "Path to LiteLDev/preloader-android")
 
-if(NOT EXISTS "${PRELOADER_ANDROID_ROOT}/src/pl/c/PreloaderModMenu.h")
+if(NOT EXISTS "${PRELOADER_ANDROID_ROOT}/include/pl/ModMenu.hpp")
     message(FATAL_ERROR
         "PRELOADER_ANDROID_ROOT must point to a preloader-android checkout. "
-        "Missing: ${PRELOADER_ANDROID_ROOT}/src/pl/c/PreloaderModMenu.h")
+        "Missing: ${PRELOADER_ANDROID_ROOT}/include/pl/ModMenu.hpp")
 endif()
 
 option(LL_MOD_MENU_EXAMPLES_LINK_PRELOADER
@@ -37,13 +34,10 @@ endif()
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out/${LL_EXAMPLE_OUTPUT_ABI}")
 
 find_library(LL_LOG_LIB log)
-find_library(LL_DL_LIB dl)
-
 function(configure_mod_menu_example target_name)
     target_include_directories("${target_name}" PRIVATE
-        "${PRELOADER_ANDROID_ROOT}/src")
+        "${PRELOADER_ANDROID_ROOT}/include")
     target_compile_options("${target_name}" PRIVATE
-        $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wall -Wextra -Wpedantic -fvisibility=hidden>
         $<$<COMPILE_LANG_AND_ID:CXX,Clang,GNU>:-Wall -Wextra -Wpedantic -fvisibility=hidden -fvisibility-inlines-hidden>)
     if(LL_LOG_LIB)
         target_link_libraries("${target_name}" PRIVATE "${LL_LOG_LIB}")
@@ -63,15 +57,3 @@ add_library(modmenu_cpp_lifecycle SHARED
     src/cpp_lifecycle_mod.cpp)
 configure_mod_menu_example(modmenu_cpp_lifecycle)
 link_preloader_or_allow_runtime_lookup(modmenu_cpp_lifecycle)
-
-add_library(modmenu_c_lifecycle SHARED
-    src/c_lifecycle_mod.c)
-configure_mod_menu_example(modmenu_c_lifecycle)
-link_preloader_or_allow_runtime_lookup(modmenu_c_lifecycle)
-
-add_library(modmenu_dlsym_constructor SHARED
-    src/dlsym_constructor_mod.cpp)
-configure_mod_menu_example(modmenu_dlsym_constructor)
-if(LL_DL_LIB)
-    target_link_libraries(modmenu_dlsym_constructor PRIVATE "${LL_DL_LIB}")
-endif()

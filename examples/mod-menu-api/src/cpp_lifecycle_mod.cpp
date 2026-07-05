@@ -2,9 +2,10 @@
 
 #include <cstdlib>
 #include <string>
+#include <string_view>
 
-#include <pl/cpp/ModMenu.hpp>
-#include <pl/cpp/mod/RegisterHelper.hpp>
+#include <pl/Mod.hpp>
+#include <pl/ModMenu.hpp>
 
 namespace {
 
@@ -28,64 +29,57 @@ void logInfo(const char *message) {
   __android_log_print(ANDROID_LOG_INFO, kLogTag, "%s", message);
 }
 
-void onModuleToggle(const char *module_id, bool enabled) {
-  if (!module_id)
-    return;
-
-  const std::string id(module_id);
-  if (id == kQuickToggleModule) {
+void onModuleToggle(std::string_view moduleId, bool enabled) {
+  if (moduleId == kQuickToggleModule) {
     g_quickToggleEnabled = enabled;
-  } else if (id == kConfiguredModule) {
+  } else if (moduleId == kConfiguredModule) {
     g_configuredEnabled = enabled;
   }
 
-  __android_log_print(ANDROID_LOG_INFO, kLogTag, "toggle %s = %s", module_id,
+  __android_log_print(ANDROID_LOG_INFO, kLogTag, "toggle %.*s = %s",
+                      static_cast<int>(moduleId.size()), moduleId.data(),
                       enabled ? "true" : "false");
 }
 
-void onConfigChanged(const char *module_id, const char *key,
-                     const char *value) {
-  if (!module_id || !key)
-    return;
-
-  const std::string moduleId(module_id);
+void onConfigChanged(std::string_view moduleId, std::string_view key,
+                     std::string_view value) {
   if (moduleId != kConfiguredModule)
     return;
 
-  const std::string configKey(key);
-  const char *safeValue = value ? value : "";
-  if (configKey == "strength") {
-    g_strength = std::atoi(safeValue);
-  } else if (configKey == "scale") {
-    g_scale = std::strtof(safeValue, nullptr);
-  } else if (configKey == "mode") {
-    g_mode = std::atoi(safeValue);
+  const std::string safeValue(value);
+  if (key == "strength") {
+    g_strength = std::atoi(safeValue.c_str());
+  } else if (key == "scale") {
+    g_scale = std::strtof(safeValue.c_str(), nullptr);
+  } else if (key == "mode") {
+    g_mode = std::atoi(safeValue.c_str());
   }
 
-  __android_log_print(ANDROID_LOG_INFO, kLogTag, "config %s.%s = %s",
-                      module_id, key, safeValue);
+  __android_log_print(ANDROID_LOG_INFO, kLogTag, "config %.*s.%.*s = %s",
+                      static_cast<int>(moduleId.size()), moduleId.data(),
+                      static_cast<int>(key.size()), key.data(),
+                      safeValue.c_str());
 }
 
-void onButtonEvent(const char *button_id, PLModMenu_ButtonEvent event,
+void onButtonEvent(std::string_view buttonId, pl::modmenu::ButtonEvent event,
                    float value) {
-  if (!button_id)
-    return;
-
-  const std::string id(button_id);
-  if (id == kHoldButton) {
-    g_holdButtonDown = event == PL_BUTTON_EVENT_DOWN;
-  } else if (id == kToggleButton &&
-             event == PL_BUTTON_EVENT_STATE_CHANGED) {
+  if (buttonId == kHoldButton) {
+    g_holdButtonDown = event == pl::modmenu::ButtonEvent::Down;
+  } else if (buttonId == kToggleButton &&
+             event == pl::modmenu::ButtonEvent::StateChanged) {
     g_toggleButtonActive = value > 0.5f;
   }
 
-  __android_log_print(ANDROID_LOG_INFO, kLogTag, "button %s event %d value %.2f",
-                      button_id, static_cast<int>(event), value);
+  __android_log_print(ANDROID_LOG_INFO, kLogTag,
+                      "button %.*s event %d value %.2f",
+                      static_cast<int>(buttonId.size()), buttonId.data(),
+                      static_cast<int>(event), value);
 }
 
 class CppLifecycleMod {
 public:
-  bool load() {
+  bool load(pl::mod::ModContext &context) {
+    (void)context;
     logInfo("load");
 
     const bool quickRegistered =
@@ -100,13 +94,15 @@ public:
             .description("Exercises slider, radio and color config entries.")
             .defaultEnabled(g_configuredEnabled)
             .onToggle(onModuleToggle)
-            .config("strength", "Strength", PL_CONFIG_SLIDER_INT, "40", "0",
-                    "100")
-            .config("scale", "Scale", PL_CONFIG_SLIDER_FLOAT, "1.0", "0.5",
+            .config("strength", "Strength",
+                    pl::modmenu::ConfigType::SliderInt, "40", "0", "100")
+            .config("scale", "Scale",
+                    pl::modmenu::ConfigType::SliderFloat, "1.0", "0.5",
                     "2.0")
-            .config("mode", "Mode", PL_CONFIG_RADIO, "1",
+            .config("mode", "Mode", pl::modmenu::ConfigType::Radio, "1",
                     "Off,Normal,Aggressive")
-            .config("accent", "Accent", PL_CONFIG_COLOR, "#4AE0A0")
+            .config("accent", "Accent", pl::modmenu::ConfigType::Color,
+                    "#4AE0A0")
             .onConfigChanged(onConfigChanged)
             .registerModule();
 
@@ -115,14 +111,14 @@ public:
             .moduleId(kQuickToggleModule)
             .label("Q")
             .androidKeyCode(45)
-            .behavior(PL_BUTTON_CLICK)
+            .behavior(pl::modmenu::ButtonBehavior::Click)
             .registerButton();
 
     const bool holdButtonRegistered =
         pl::modmenu::ButtonBuilder(kHoldButton, "CPP Hold Button")
             .moduleId(kQuickToggleModule)
             .label("H")
-            .behavior(PL_BUTTON_HOLD)
+            .behavior(pl::modmenu::ButtonBehavior::Hold)
             .onEvent(onButtonEvent)
             .registerButton();
 
@@ -130,8 +126,8 @@ public:
         pl::modmenu::ButtonBuilder(kToggleButton, "CPP Toggle Button")
             .moduleId(kQuickToggleModule)
             .label("T")
-            .behavior(PL_BUTTON_TOGGLE)
-            .stylePreset(PL_BUTTON_STYLE_ACCENT)
+            .behavior(pl::modmenu::ButtonBehavior::Toggle)
+            .stylePreset(pl::modmenu::ButtonStylePreset::Accent)
             .styleColors(0xCC24282CU, 0xFF4AE0A0U, 0x994AE0A0U)
             .textColor(0xFFFFFFFFU)
             .activeTextColor(0xFF000000U)
@@ -142,7 +138,7 @@ public:
         pl::modmenu::ButtonBuilder(kTakeButton, "CPP Take Button")
             .moduleId(kQuickToggleModule)
             .label("Take")
-            .behavior(PL_BUTTON_CLICK)
+            .behavior(pl::modmenu::ButtonBehavior::Click)
             .sizeScale(2.0f, 1.0f)
             .onEvent(onButtonEvent)
             .registerButton();
@@ -152,17 +148,26 @@ public:
            toggleButtonRegistered && takeButtonRegistered;
   }
 
-  bool enable() {
+  bool enable(pl::mod::ModContext &context) {
+    (void)context;
     logInfo("enable");
     return true;
   }
 
-  bool disable() {
+  bool disable(pl::mod::ModContext &context) {
+    (void)context;
     logInfo("disable");
+    pl::modmenu::unregisterButton(kQuickDropButton);
+    pl::modmenu::unregisterButton(kHoldButton);
+    pl::modmenu::unregisterButton(kToggleButton);
+    pl::modmenu::unregisterButton(kTakeButton);
+    pl::modmenu::unregisterModule(kQuickToggleModule);
+    pl::modmenu::unregisterModule(kConfiguredModule);
     return true;
   }
 
-  bool unload() {
+  bool unload(pl::mod::ModContext &context) {
+    (void)context;
     logInfo("unload");
     return true;
   }

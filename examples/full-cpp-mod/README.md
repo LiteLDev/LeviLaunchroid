@@ -35,7 +35,7 @@ Key files:
 | --- | --- |
 | `src/ExampleConfig.hpp` | Shared config definition used by both runtime and host generator. |
 | `src/FullCppMod.cpp` | Lifecycle, Mod Menu registration, and runtime persistence logic. |
-| `src/GenerateConfig.cpp` | Generates package config with `PL_CONFIG_NO_RUNTIME` enabled. |
+| `src/GenerateConfig.cpp` | Generates package config and schema for the packaged mod. |
 | `manifest.json` | Uses `type: preload-native` and points `entry` to `libfull_cpp_mod.so`. |
 
 ## Build

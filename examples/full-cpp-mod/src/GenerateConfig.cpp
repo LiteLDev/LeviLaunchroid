@@ -1,7 +1,3 @@
-#ifndef PL_CONFIG_NO_RUNTIME
-#define PL_CONFIG_NO_RUNTIME
-#endif
-
 #include "ExampleConfig.hpp"
 
 #include <filesystem>
