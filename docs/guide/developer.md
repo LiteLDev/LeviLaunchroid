@@ -117,8 +117,7 @@ FetchContent_MakeAvailable(preloader_android)
 target_link_libraries(my_mod PRIVATE preloader)
 ```
 
-Pin `GIT_TAG` to a released tag or commit for reproducible builds. The current
-SDK release is `0.2.0`.
+Pin `GIT_TAG` to a released tag or commit for reproducible builds.
 
 If the SDK is vendored or added as a git submodule in your mod project, point
 to that checkout instead:

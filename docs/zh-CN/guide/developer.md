@@ -112,8 +112,7 @@ FetchContent_MakeAvailable(preloader_android)
 target_link_libraries(my_mod PRIVATE preloader)
 ```
 
-实际项目应把 `GIT_TAG` 固定到 release tag 或 commit，避免构建结果漂移。当前 SDK
-release 是 `0.2.0`。
+实际项目应把 `GIT_TAG` 固定到 release tag 或 commit，避免构建结果漂移。
 
 如果 SDK 以 vendored 目录或 git submodule 放在 mod 工程里，就指向对应 checkout：
 
