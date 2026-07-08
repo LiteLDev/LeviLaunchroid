@@ -44,6 +44,8 @@ public class FileHandler {
     private static final String TAG = "FileHandler";
     private static final int BUFFER_SIZE = 8192;
     private static final String MANIFEST_FILE_NAME = "manifest.json";
+    private static final String OVERWRITE_FILES_FIELD = "overwrite_files";
+    private static final String OVERWRITE_FOLDERS_FIELD = "overwrite_folders";
     private static final String PRELOAD_NATIVE_TYPE = "preload-native";
     private static final String DEFAULT_MOD_AUTHOR = "Unknown";
     private static final String DEFAULT_MOD_ICON = "";
@@ -61,12 +63,17 @@ public class FileHandler {
     private static final class PreparedImport {
         final String targetId;
         final String entryPath;
+        final Set<String> overwriteFiles;
+        final Set<String> overwriteFolders;
         final File packageDir;
         final File cleanupRoot;
 
-        PreparedImport(String targetId, String entryPath, File packageDir, File cleanupRoot) {
+        PreparedImport(String targetId, String entryPath, Set<String> overwriteFiles, Set<String> overwriteFolders,
+                       File packageDir, File cleanupRoot) {
             this.targetId = targetId;
             this.entryPath = entryPath;
+            this.overwriteFiles = overwriteFiles;
+            this.overwriteFolders = overwriteFolders;
             this.packageDir = packageDir;
             this.cleanupRoot = cleanupRoot;
         }
@@ -425,7 +432,12 @@ public class FileHandler {
                     }
 
                     if (destinationDir.exists()) {
-                        copyDirectoryPreservingExisting(preparedImport.packageDir, destinationDir, preparedImport.entryPath);
+                        copyDirectoryPreservingExisting(
+                                preparedImport.packageDir,
+                                destinationDir,
+                                preparedImport.entryPath,
+                                preparedImport.overwriteFiles,
+                                preparedImport.overwriteFolders);
                     } else {
                         copyDirectory(preparedImport.packageDir, destinationDir);
                     }
@@ -487,7 +499,7 @@ public class FileHandler {
         copyUriToFile(uri, libraryFile);
         writeManifest(packageDir, createNormalizedManifest(
                 new JsonObject(), displayName, fileName, packageDir, overrideType, overrideVersion));
-        return new PreparedImport(targetId, fileName, packageDir, stagingRoot);
+        return new PreparedImport(targetId, fileName, new HashSet<>(), new HashSet<>(), packageDir, stagingRoot);
     }
 
     private PreparedImport prepareZipImport(
@@ -521,6 +533,8 @@ public class FileHandler {
         }
 
         JsonObject manifest = readManifest(modRoot);
+        Set<String> overwriteFiles = parseOverwriteFiles(manifest);
+        Set<String> overwriteFolders = parseOverwriteFolders(manifest);
         String entryPath = resolveEntryPath(manifest, modRoot, soFiles, fileName);
         if (entryPath == null) {
             throw new IOException("Invalid mod zip: manifest entry is missing or ambiguous");
@@ -534,7 +548,7 @@ public class FileHandler {
 
         String rootName = modRoot.equals(stagingRoot) ? stripExtension(fileName) : modRoot.getName();
         String targetId = buildTargetId(displayName, rootName);
-        return new PreparedImport(targetId, entryPath, modRoot, stagingRoot);
+        return new PreparedImport(targetId, entryPath, overwriteFiles, overwriteFolders, modRoot, stagingRoot);
     }
 
     private JsonObject readManifest(File modRoot) throws IOException {
@@ -738,7 +752,7 @@ public class FileHandler {
         return sanitized.trim();
     }
 
-    private String normalizeEntryPath(String entryPath) {
+    static String normalizeEntryPath(String entryPath) {
         if (entryPath == null) {
             return null;
         }
@@ -755,6 +769,137 @@ public class FileHandler {
             }
         }
         return normalized;
+    }
+
+    static Set<String> parseOverwriteFiles(JsonObject manifest) {
+        Set<String> files = new HashSet<>();
+        JsonElement value = getOverwritePathValue(manifest, OVERWRITE_FILES_FIELD);
+        if (value == null || value.isJsonNull()) {
+            return files;
+        }
+
+        if (value.isJsonArray()) {
+            JsonArray array = value.getAsJsonArray();
+            for (JsonElement element : array) {
+                addOverwriteFile(files, element);
+            }
+            return files;
+        }
+
+        addOverwriteFile(files, value);
+        return files;
+    }
+
+    static Set<String> parseOverwriteFolders(JsonObject manifest) {
+        Set<String> folders = new HashSet<>();
+        JsonElement value = getOverwritePathValue(manifest, OVERWRITE_FOLDERS_FIELD);
+        if (value == null || value.isJsonNull()) {
+            return folders;
+        }
+
+        if (value.isJsonArray()) {
+            JsonArray array = value.getAsJsonArray();
+            for (JsonElement element : array) {
+                addOverwriteFolder(folders, element);
+            }
+            return folders;
+        }
+
+        addOverwriteFolder(folders, value);
+        return folders;
+    }
+
+    private static JsonElement getOverwritePathValue(JsonObject manifest, String fieldName) {
+        if (manifest == null || !manifest.has(fieldName)) {
+            return null;
+        }
+        return manifest.get(fieldName);
+    }
+
+    private static void addOverwriteFile(Set<String> files, JsonElement element) {
+        if (element == null || !element.isJsonPrimitive()) {
+            return;
+        }
+
+        try {
+            String file = normalizeEntryPath(element.getAsString());
+            if (file != null) {
+                files.add(file);
+            }
+        } catch (UnsupportedOperationException | IllegalStateException ignored) {
+        }
+    }
+
+    private static void addOverwriteFolder(Set<String> folders, JsonElement element) {
+        if (element == null || !element.isJsonPrimitive()) {
+            return;
+        }
+
+        try {
+            String folder = normalizeOverwriteFolder(element.getAsString());
+            if (folder != null) {
+                folders.add(folder);
+            }
+        } catch (UnsupportedOperationException | IllegalStateException ignored) {
+        }
+    }
+
+    static String normalizeOverwriteFolder(String folderPath) {
+        if (folderPath == null) {
+            return null;
+        }
+
+        String normalized = folderPath.trim().replace('\\', '/');
+        while (normalized.endsWith("/")) {
+            normalized = normalized.substring(0, normalized.length() - 1);
+        }
+
+        String safePath = normalizeEntryPath(normalized);
+        return safePath == null || safePath.isEmpty() ? null : safePath;
+    }
+
+    static boolean canReplaceImportedPath(
+            String relativePath, String entryPath, Set<String> overwriteFiles, Set<String> overwriteFolders) {
+        String normalizedRelativePath = normalizeEntryPath(relativePath);
+        if (normalizedRelativePath == null) {
+            return false;
+        }
+
+        if (MANIFEST_FILE_NAME.equals(normalizedRelativePath)) {
+            return true;
+        }
+
+        String normalizedEntryPath = normalizeEntryPath(entryPath);
+        if (normalizedRelativePath.equals(normalizedEntryPath)) {
+            return true;
+        }
+
+        if (overwriteFiles != null && overwriteFiles.contains(normalizedRelativePath)) {
+            return true;
+        }
+
+        return isPathInOverwriteFolder(normalizedRelativePath, overwriteFolders);
+    }
+
+    static boolean isPathInOverwriteFolder(String relativePath, Set<String> overwriteFolders) {
+        if (overwriteFolders == null || overwriteFolders.isEmpty()) {
+            return false;
+        }
+
+        String normalizedRelativePath = normalizeEntryPath(relativePath);
+        if (normalizedRelativePath == null) {
+            return false;
+        }
+
+        for (String folder : overwriteFolders) {
+            if (folder == null || folder.isEmpty()) {
+                continue;
+            }
+            if (normalizedRelativePath.startsWith(folder + "/")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String normalizeMatchToken(String value) {
@@ -1023,11 +1168,15 @@ public class FileHandler {
         }
     }
 
-    private void copyDirectoryPreservingExisting(File source, File target, String entryPath) throws IOException {
-        copyDirectoryPreservingExisting(source, source, target, normalizeEntryPath(entryPath));
+    private void copyDirectoryPreservingExisting(
+            File source, File target, String entryPath, Set<String> overwriteFiles, Set<String> overwriteFolders) throws IOException {
+        copyDirectoryPreservingExisting(
+                source, source, target, normalizeEntryPath(entryPath), overwriteFiles, overwriteFolders);
     }
 
-    private void copyDirectoryPreservingExisting(File root, File source, File target, String entryPath) throws IOException {
+    private void copyDirectoryPreservingExisting(
+            File root, File source, File target, String entryPath,
+            Set<String> overwriteFiles, Set<String> overwriteFolders) throws IOException {
         if (source.isDirectory()) {
             if (!target.exists() && !target.mkdirs()) {
                 throw new IOException("Failed to create directory: " + target.getAbsolutePath());
@@ -1039,13 +1188,14 @@ public class FileHandler {
             }
 
             for (File file : files) {
-                copyDirectoryPreservingExisting(root, file, new File(target, file.getName()), entryPath);
+                copyDirectoryPreservingExisting(
+                        root, file, new File(target, file.getName()), entryPath, overwriteFiles, overwriteFolders);
             }
             return;
         }
 
         String relativePath = root.toPath().relativize(source.toPath()).toString().replace('\\', '/');
-        boolean mayReplace = MANIFEST_FILE_NAME.equals(relativePath) || relativePath.equals(entryPath);
+        boolean mayReplace = canReplaceImportedPath(relativePath, entryPath, overwriteFiles, overwriteFolders);
         if (target.exists() && !mayReplace) {
             return;
         }

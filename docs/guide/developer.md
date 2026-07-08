@@ -55,7 +55,9 @@ it is used for paths, Mod Menu ownership, and persisted user state.
   "author": "LiteLDev",
   "version": "1.0.0",
   "entry": "libfull_cpp_mod.so",
-  "minecraft_versions": []
+  "minecraft_versions": [],
+  "overwrite_files": [],
+  "overwrite_folders": []
 }
 ```
 
@@ -68,6 +70,8 @@ it is used for paths, Mod Menu ownership, and persisted user state.
 | `version` | Mod version. |
 | `icon` | Optional relative path to an icon. |
 | `minecraft_versions` | Exact versions and `*` prefix wildcards are supported. Missing or empty means all versions. |
+| `overwrite_files` | Optional relative files that may be replaced when importing over an installed mod. Missing or empty means no extra file replacement. |
+| `overwrite_folders` | Optional relative folders whose existing files may be replaced when importing over an installed mod. Missing or empty keeps existing files outside `manifest.json` and `entry`. |
 
 ## Lifecycle Shape
 

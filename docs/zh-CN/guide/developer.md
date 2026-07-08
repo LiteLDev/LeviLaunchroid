@@ -52,7 +52,9 @@ full-cpp-mod/
   "author": "LiteLDev",
   "version": "1.0.0",
   "entry": "libfull_cpp_mod.so",
-  "minecraft_versions": []
+  "minecraft_versions": [],
+  "overwrite_files": [],
+  "overwrite_folders": []
 }
 ```
 
@@ -65,6 +67,8 @@ full-cpp-mod/
 | `version` | mod 版本。 |
 | `icon` | 可选图标相对路径。 |
 | `minecraft_versions` | 支持精确版本和 `*` 前缀通配；缺失或为空表示全部版本。 |
+| `overwrite_files` | 可选的相对文件列表；重复导入已安装 mod 时，这些已存在文件允许被替换。缺失或为空时不额外覆盖文件。 |
+| `overwrite_folders` | 可选的相对目录列表；重复导入已安装 mod 时，这些目录内已存在的文件允许被替换。缺失或为空时，除 `manifest.json` 和 `entry` 外不覆盖已有文件。 |
 
 ## 生命周期形态
 
