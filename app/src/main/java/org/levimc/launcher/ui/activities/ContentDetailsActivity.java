@@ -272,44 +272,51 @@ public class ContentDetailsActivity extends BaseActivity {
     }
 
     private void showFilesDialog(java.util.List<ContentFile> files) {
-        android.app.Dialog dialog = new android.app.Dialog(this);
+        com.google.android.material.bottomsheet.BottomSheetDialog dialog = new com.google.android.material.bottomsheet.BottomSheetDialog(this);
         dialog.setContentView(R.layout.dialog_file_list);
-        dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        android.view.WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.dimAmount = 0.6f;
-        
-        android.util.DisplayMetrics metrics = getResources().getDisplayMetrics();
-        int width = (int)(metrics.widthPixels * 0.90);
-        int height = (int)(metrics.heightPixels * 0.80);
-        params.width = width;
-        params.height = height;
-        dialog.getWindow().setAttributes(params);
 
         org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(this);
-        View dialogRoot = dialog.findViewById(android.R.id.content);
-        if (dialogRoot instanceof android.view.ViewGroup) {
-            android.view.ViewGroup rootGroup = (android.view.ViewGroup) dialogRoot;
-            for (int i = 0; i < rootGroup.getChildCount(); i++) {
-                pm.applyGlassToView(rootGroup.getChildAt(i));
-            }
-        }
+        int accent = pm.hasCustomAccent() ? pm.getAccentColor() : androidx.core.content.ContextCompat.getColor(this, R.color.primary);
 
         RecyclerView recycler = dialog.findViewById(R.id.recycler_files);
-        View btnClose = dialog.findViewById(R.id.btn_close);
 
         org.levimc.launcher.ui.adapter.FileListAdapter adapter = new org.levimc.launcher.ui.adapter.FileListAdapter(file -> {
             dialog.dismiss();
             downloadAndImport(file);
-        });
+        }, accent);
 
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
         adapter.setFiles(files);
 
-        btnClose.setOnClickListener(v -> dialog.dismiss());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        }
 
         dialog.show();
+        
+        if (dialog.getWindow() != null) {
+            android.view.View decorView = dialog.getWindow().getDecorView();
+            decorView.setSystemUiVisibility(
+                    android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                            | android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            );
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                dialog.getWindow().setDecorFitsSystemWindows(false);
+                android.view.WindowInsetsController controller = decorView.getWindowInsetsController();
+                if (controller != null) {
+                    controller.setSystemBarsBehavior(android.view.WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+                    controller.hide(android.view.WindowInsets.Type.statusBars() | android.view.WindowInsets.Type.navigationBars());
+                }
+            }
+            dialog.getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        }
+
+        dialog.getBehavior().setState(com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED);
     }
 
     private void onBrowserClick() {
