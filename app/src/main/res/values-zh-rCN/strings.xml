@@ -219,16 +219,17 @@
     <!-- Language Setting -->
     <string name="language">语言</string>
     <string name="english">English</string>
-    <string name="chinese">简体中文</string>
-    <string name="russian">Русский</string>
-    <string name="indonesian">Bahasa Indonesia</string>
-    <string name="spanish">Español</string>
-    <string name="portuguese">Português</string>
-    <string name="french">Français</string>
-    <string name="japanese">日本語</string>
-    <string name="hindi">हिन्दी</string>
-    <string name="turkish">Türkçe</string>
-    <string name="vietnamese">Tiếng Việt</string>
+    <string name="chinese">简体中文 (Chinese)</string>
+    <string name="french">Français (French)</string>
+    <string name="gujarati">ગુજરાતી (Gujarati)</string>
+    <string name="hindi">हिन्दी (Hindi)</string>
+    <string name="indonesian">Bahasa Indonesia (Indonesian)</string>
+    <string name="japanese">日本語 (Japanese)</string>
+    <string name="portuguese">Português (Portuguese)</string>
+    <string name="russian">Русский (Russian)</string>
+    <string name="spanish">Español (Spanish)</string>
+    <string name="turkish">Türkçe (Turkish)</string>
+    <string name="vietnamese">Tiếng Việt (Vietnamese)</string>
 
     <!-- 版本重命名 -->
     <string name="rename_version_title">重命名版本</string>

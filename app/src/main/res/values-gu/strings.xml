@@ -1,0 +1,831 @@
+<resources>
+	<!-- Common -->
+	<string name="app_name">લેવિલૉન્ચર</string>
+	<string name="minecraft">Minecraft</string>
+	<string name="launch">લોન્ચ</string>
+	<string name="beta_badge">બીટા</string>
+	<string name="debug_badge">ડીબગ</string>
+	<string name="cursor">કર્સર</string>
+	<string name="bedrock_edition">બેડરોક આવૃત્તિ</string>
+	<string name="current_instance">વર્તમાન ઇન્સ્ટન્સ</string>
+
+	<!-- Mods -->
+	<string name="mods_title">મોડ્સ (%d)</string>
+	<string name="mods_section_title">મોડ્સ</string>
+	<string name="external_mods_label">બાહ્ય મોડ્સ</string>
+	<string name="inbuilt_mods_label">બિલ્ટ-ઇન મોડ્સ</string>
+	<string name="manage_mods">મોડ્સ મેનેજ કરો</string>
+	<string name="no_mods_found">કોઈ મોડ્સ મળ્યા નથી</string>
+	<string name="mod_load_order">લોડ ક્રમ: %d</string>
+	<string name="drag_to_reorder">ફરી ક્રમમાં ગોઠવવા માટે ખેંચો</string>
+	<string name="mod_reordered">મોડ ક્રમ અપડેટ થયો</string>
+
+	<!-- About -->
+	<string name="about_title">☕ વિશે</string>
+	<string name="copyright">©2024–2026 LeviMC. સર્વ હકો સુરક્ષિત.</string>
+	<string name="font_license">આ એપ Misans ફોન્ટનો ઉપયોગ કરે છે.</string>
+	<string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
+	<string name="quick_actions_title">ઝડપી ક્રિયાઓ</string>
+	<string name="content_mgmt_section_title">સામગ્રી વ્યવસ્થાપન</string>
+	<string name="misc_section_title">અન્ય</string>
+	<string name="view_all">બધું જુઓ →</string>
+	<string name="content_management_subtitle">વિશ્વો, resource packs અને behavior packs મેનેજ કરો</string>
+	<string name="import_apk_subtitle">APK અથવા APKS ફાઇલમાંથી Minecraft ઇન્સ્ટોલ કરો</string>
+	<string name="ms_add_account">એકાઉન્ટ ઉમેરો</string>
+	<string name="ms_add_account_subtitle">Microsoft સાથે સાઇન ઇન કરો</string>
+
+	<!-- Dialogs -->
+	<string name="content_detected_title">સામગ્રી મળી</string>
+	<string name="content_detected_message">શું તમે હમણાં રમત લોન્ચ કરવા માંગો છો?\n\nફાઇલ: %s</string>
+	<string name="launch_now">હમણાં લોન્ચ કરો</string>
+	<string name="launch_later">પછી લોન્ચ કરો</string>
+	<string name="loading">લોડ થઈ રહ્યું છે…</string>
+
+	<string name="import_confirmation_title">મોડ્સ આયાત કરો</string>
+	<string name="import_confirmation_message">શું તમે ખરેખર પસંદ કરેલી %d મોડ ફાઇલો આયાત કરવા માંગો છો?</string>
+	<string name="import_so_plugin_title">SO પ્લગઇન આયાત કરો</string>
+	<string name="plugin_name_label">પ્લગઇન નામ</string>
+	<string name="plugin_type_label">પ્રકાર</string>
+	<string name="plugin_version_label">સંસ્કરણ</string>
+	<string name="import_button">આયાત</string>
+	<string name="overwrite_file_title">ફાઇલ પહેલેથી અસ્તિત્વમાં છે</string>
+	<string name="overwrite_file_message">%s નામની ફાઇલ પહેલેથી અસ્તિત્વમાં છે. શું તમે તેને ઓવરરાઇટ કરવા માંગો છો?</string>
+	<string name="overwrite">ઓવરરાઇટ</string>
+	<string name="skip">છોડો</string>
+	<string name="confirm">પુષ્ટિ કરો</string>
+	<string name="retry">ફરી પ્રયાસ કરો</string>
+
+	<string name="installed_packages">ઇન્સ્ટોલ થયેલ પેકેજો</string>
+	<string name="local_custom">સ્થાનિક કસ્ટમ</string>
+
+	<!-- Permissions -->
+	<string name="storage_permission_title">સ્ટોરેજ માઇગ્રેશન પરવાનગી</string>
+	<string name="storage_permission_message">કૃપા કરીને સ્ટોરેજ પરવાનગી આપો જેથી LeviLauncher જૂની games/org.levimc ડિરેક્ટરીમાંથી ડેટા નકલ કરી શકે. આ પરવાનગી ફક્ત માઇગ્રેશન પગલા માટે જરૂરી છે.</string>
+	<string name="grant_permission">પરવાનગી આપો</string>
+	<string name="cancel">રદ કરો</string>
+
+	<!-- Feedback -->
+	<string name="files_processed">%d મોડ ફાઇલો સફળતાપૂર્વક પ્રક્રિયા થઈ</string>
+	<string name="user_cancelled">વપરાશકર્તાએ આયાત રદ કરી</string>
+
+
+	<string name="exit">બહાર નીકળો</string>
+
+	<string name="overlay_permission_message">કૃપા કરીને ઓવરલે પરવાનગી આપો</string>
+	<string name="overlay_permission_denied_message">કૃપા કરીને ઓવરલે પરવાનગી આપો, નહિતર લોગ વિન્ડો દેખાડી શકાશે નહીં.</string>
+	<string name="overlay_permission_not_granted">ઓવરલે પરવાનગી આપવામાં આવી નથી</string>
+	<string name="storage_permission_not_granted">સ્ટોરેજ પરવાનગી આપવામાં આવી નથી</string>
+
+	<string name="import_apk">APK આયાત કરો</string>
+	<string name="install">ઇન્સ્ટોલ કરો</string>
+	<string name="version_name">સંસ્કરણ નામ</string>
+	<string name="name_invalid">આ નામનો ઉપયોગ કરી શકાતો નથી અથવા તે પહેલેથી લેવાઈ ગયું છે!</string>
+	<string name="install_done">ઇન્સ્ટોલ પૂર્ણ થયું, સંસ્કરણ: %1$s</string>
+
+	<string name="illegal_apk_title">ગેરકાયદેસર APK</string>
+	<string name="not_mc_apk">Minecraft APK નથી</string>
+	<string name="not_apk_or_apks">કૃપા કરીને APK અથવા APKS ફાઇલ પસંદ કરો</string>
+
+	<string name="not_found_version">કોઈ સંસ્કરણ મળ્યું નથી</string>
+
+	<string name="installing_title">ઇન્સ્ટોલ થઈ રહ્યું છે…</string>
+	<string name="installing_message">કૃપા કરીને રાહ જુઓ, Minecraft ઇન્સ્ટોલ થઈ રહ્યું છે</string>
+
+	<string name="enable_debug_log">ડીબગ લોગ સક્ષમ કરો</string>
+
+	<string name="settings_title">સેટિંગ્સ</string>
+	<string name="settings_desc">તમારી લોન્ચર સેટિંગ્સ</string>
+	<string name="settings_subtitle">સામાન્ય લોન્ચર વિકલ્પો રૂપરેખાંકિત કરો</string>
+	<string name="settings_tab_basic">મૂળભૂત સેટિંગ્સ</string>
+	<string name="settings_tab_personalize">વ્યક્તિગતીકરણ</string>
+	<string name="settings_tab_updates">અપડેટ્સ</string>
+	<string name="settings_tab_about">વિશે</string>
+	<string name="settings_tab_migration">માઇગ્રેશન</string>
+	<string name="settings_theme_desc">એપ્લિકેશન થીમ પસંદ કરો</string>
+
+
+	<string name="unknown_sources_permission_title">ઇન્સ્ટોલ પરવાનગી</string>
+	<string name="unknown_sources_permission_message">આ એપ ઇન્સ્ટોલ અથવા અપડેટ કરવા માટે, અજાણ્યા એપ્સ ઇન્સ્ટોલ કરવાની પરવાનગી આપો. સિસ્ટમ સેટિંગ્સ ખોલવા માટે "Grant" ક્લિક કરો, આ એપ માટે પરવાનગી સક્ષમ કરો, અને પાછા આવો.</string>
+
+	<string name="check_update">અપડેટ્સ તપાસો</string>
+	<string name="version_prefix">Version: </string>
+	<string name="unknown_error">અજાણી ભૂલ</string>
+	<string name="preloader_sigs_title">રનટાઇમ ડેટા</string>
+	<string name="preloader_sigs_last_update">છેલ્લું અપડેટ: %1$s</string>
+	<string name="preloader_sigs_never_updated">ક્યારેય નહીં</string>
+	<string name="preloader_sigs_update">રનટાઇમ ડેટા અપડેટ કરો</string>
+	<string name="preloader_sigs_updating">અપડેટ થઈ રહ્યું છે…</string>
+	<string name="preloader_sigs_update_success">રનટાઇમ ડેટા અપડેટ થયું</string>
+	<string name="preloader_sigs_update_failed">રનટાઇમ ડેટા અપડેટ કરવામાં નિષ્ફળ: %1$s</string>
+	<string name="preloader_sigs_no_remote_url">રનટાઇમ ડેટા અપડેટ URL રૂપરેખાંકિત નથી</string>
+
+	<string name="dialog_title_no_version">કોઈ સંસ્કરણ પસંદ કર્યું નથી</string>
+	<string name="dialog_message_no_version">કૃપા કરીને લોન્ચ કરતાં પહેલાં ગેમનું સંસ્કરણ પસંદ કરો.</string>
+	<string name="dialog_title_version_isolation">વર્ઝન આઇસોલેશન જરૂરી</string>
+	<string name="dialog_message_version_isolation">આ આયાત કરેલું સંસ્કરણ છે. કૃપા કરીને સેટિંગ્સમાં વર્ઝન આઇસોલેશન સક્ષમ કરો.</string>
+	<string name="dialog_positive_enable">સક્ષમ કરો</string>
+	<string name="dialog_title_launch_failed">લોન્ચ નિષ્ફળ</string>
+	<string name="dialog_message_launch_failed">Minecraft લોન્ચ કરવામાં નિષ્ફળ: %1$s</string>
+	<string name="dialog_title_incompatible_mods">અસંગત મોડ્સ છોડવામાં આવ્યા</string>
+	<string name="dialog_message_incompatible_mods">Some enabled mods are incompatible with your current Minecraft version %1$s and were skipped:\n\n%2$s</string>
+	<string name="dialog_title_disable_version_isolation">વર્ઝન આઇસોલેશન બંધ કરો</string>
+	<string name="dialog_message_disable_version_isolation">તમે વર્ઝન આઇસોલેશન સક્ષમ સાથે ઇન્સ્ટોલ થયેલ સંસ્કરણ લોન્ચ કરવાનો પ્રયાસ કરી રહ્યા છો. આગળ વધવા માટે તેને બંધ કરો.</string>
+	<string name="dialog_positive_disable">બંધ કરો</string>
+	<string name="dialog_positive_ok">OK</string>
+
+
+	<string name="new_version_found">નવું સંસ્કરણ મળ્યું: %1$s</string>
+	<string name="update_question">શું તમે નવીનતમ સંસ્કરણ ડાઉનલોડ કરીને ઇન્સ્ટોલ કરવા માંગો છો?</string>
+	<string name="download_update">અપડેટ ડાઉનલોડ કરો</string>
+	<string name="ignore_this_version">આ સંસ્કરણ અવગણો</string>
+	<string name="update_progress">ડાઉનલોડ પ્રગતિ: %1$d%%</string>
+	<string name="update_failed">ડાઉનલોડ નિષ્ફળ: %1$s</string>
+	<string name="install_failed">અપડેટ ઇન્સ્ટોલ કરવામાં અસમર્થ: %1$s</string>
+	<string name="already_latest_version">પહેલેથી નવીનતમ સંસ્કરણ છે (%1$s)</string>
+	<string name="version_ignored">આ સંસ્કરણ અવગણાયું છે</string>
+	<string name="downloading_update">અપડેટ ડાઉનલોડ થઈ રહ્યું છે…</string>
+
+	<string name="repair_libs_in_progress">ગેમ લાઇબ્રેરી ફાઇલો રિપેર થઈ રહી છે…</string>
+	<string name="repair_completed">રિપેર પૂર્ણ થયું</string>
+	<string name="repair_libs_success_message">ગેમ લાઇબ્રેરી ફાઇલો સફળતાપૂર્વક રિપેર થઈ ગઈ છે. તમે હવે ગેમ લોન્ચ કરી શકો છો.</string>
+	<string name="repair_failed">રિપેર નિષ્ફળ</string>
+	<string name="repair_libs_failed_message">ગેમ લાઇબ્રેરી ફાઇલો રિપેર કરવામાં નિષ્ફળ. કૃપા કરીને ફાઇલ અખંડિતતા તપાસો.</string>
+	<string name="repair_error">રિપેર ભૂલ</string>
+	<string name="repair_libs_error_message">રિપેર દરમિયાન એક ભૂલ આવી: %s</string>
+	<string name="missing_libs_title">ગેમ લાઇબ્રેરી ફાઇલો ગુમ છે - %s</string>
+	<string name="missing_libs_message">જરૂરી ગેમ લાઇબ્રેરી ફાઇલો ગુમ છે. શું તમે હવે તેમને રિપેર કરવા માંગો છો?</string>
+	<string name="repair">રિપેર</string>
+	<string name="repair_libs_dialog_title">ગેમ લાઇબ્રેરીઓ રિપેર થઈ રહી છે</string>
+	<string name="repair_libs_dialog_subtitle">ગેમ લાઇબ્રેરી ફાઇલો તૈયાર કરી રહ્યા છીએ</string>
+	<string name="repair_preparing">તૈયાર કરી રહ્યા છીએ…</string>
+	<string name="repair_processing">લાઇબ્રેરીઓ કાઢી રહ્યા છીએ…</string>
+	<string name="repair_finalizing">રિપેર પૂર્ણ કરી રહ્યા છીએ…</string>
+
+	<string name="storage_migration_title">સ્ટોરેજ માઇગ્રેશન જરૂરી</string>
+	<string name="storage_migration_message">LeviLauncher ને આગળ વધતાં પહેલાં games/org.levimc માંથી %1$s પર ડેટા માઇગ્રેટ કરવું પડશે.
+
+		આ સ્ટોરેજ ફેરફાર Google Play listing compliance માટે જરૂરી છે. જૂની ડિરેક્ટરી જાળવવામાં આવશે, પરંતુ માઇગ્રેશન પછી તેનો ઉપયોગ નહીં થાય.
+
+		માઇગ્રેશનમાં થોડો સમય લાગી શકે છે. તે ચાલે ત્યારે તમે એપ્લિકેશનને બેકગ્રાઉન્ડમાં મૂકી શકો છો; ભારે ફાઇલ કોપીંગ દરમિયાન ફોન ગરમ થઈ શકે છે. તમારા સમજ માટે આભાર.</string>
+	<string name="storage_migration_start">માઇગ્રેટ કરો</string>
+	<string name="storage_migration_permission_denied">માઇગ્રેશન માટે જૂની ડિરેક્ટરી વાંચવા સ્ટોરેજ પરવાનગી જરૂરી છે.</string>
+	<string name="storage_migration_progress_title">સ્ટોરેજ માઇગ્રેટ થઈ રહ્યું છે</string>
+	<string name="storage_migration_progress_subtitle">લોન્ચર ડેટા Android/media માં નકલ કરી રહ્યા છીએ</string>
+	<string name="storage_migration_scanning">જૂની ડિરેક્ટરી સ્કેન થઈ રહી છે…</string>
+	<string name="storage_migration_progress_detail">%1$d/%2$d ફાઇલો · %3$s</string>
+	<string name="storage_migration_eta_pending">બાકી સમયનો અંદાજ લગાવી રહ્યા છીએ…</string>
+	<string name="storage_migration_eta_detail">અંદાજે %1$s બાકી · લગભગ %2$s આસપાસ પૂર્ણ થશે</string>
+	<string name="storage_migration_duration_hours_minutes">%1$d કલાક %2$d મિનિટ</string>
+	<string name="storage_migration_duration_minutes_seconds">%1$d મિનિટ %2$d સેકન્ડ</string>
+	<string name="storage_migration_duration_seconds">%1$d સેકન્ડ</string>
+	<string name="storage_migration_background_hint">માઇગ્રેશન બેકગ્રાઉન્ડમાં ચાલુ રહી શકે છે. ફોન ચાર્જ પર રાખવાની ભલામણ છે; ફાઇલ કોપીંગ દરમિયાન ફોન ગરમ થઈ શકે છે. તમારા સમજ માટે આભાર.</string>
+	<string name="storage_migration_completed_title">માઇગ્રેશન પૂર્ણ થયું</string>
+	<string name="storage_migration_completed_message">%1$d ફાઇલો (%2$s) માઇગ્રેટ થઈ. %3$d ફાઇલો પહેલેથી અપ-ટુ-ડેટ હતી.
+
+		જૂની games/org.levimc ડિરેક્ટરી કાઢી નથી અને હવે ઉપયોગમાં નથી.</string>
+	<string name="storage_migration_partial_title">માઇગ્રેશન અધૂરું</string>
+	<string name="storage_migration_partial_message">%1$d માંથી %2$d ફાઇલો નકલ થઈ શકી નથી. LeviLauncher આગળ વધે તે પહેલાં માઇગ્રેશન પૂર્ણ થવું જોઈએ.</string>
+	<string name="storage_migration_failed_title">માઇગ્રેશન નિષ્ફળ</string>
+	<string name="storage_migration_failed_message">માઇગ્રેશન ચાલુ રાખી શકાયું નથી: %1$s
+
+		LeviLauncher આગળ વધે તે પહેલાં માઇગ્રેશન પૂર્ણ થવું જરૂરી છે.</string>
+	<string name="migration_cleanup_title">ઇતિહાસિક ડિરેક્ટરી સાફ કરો</string>
+	<string name="migration_cleanup_desc">જૂની games/org.levimc ડિરેક્ટરી માત્ર ત્યારે જ કાઢો જ્યારે તમે ખાતરી કરી લો કે દરેક ઇન્સ્ટન્સ સામાન્ય રીતે લોન્ચ થાય છે અને worlds, resource packs, behavior packs, તથા settings ગુમ નથી. કાઢી નાખેલ historical data આ ડિરેક્ટરીમાંથી પાછું લાવી શકાતું નથી.</string>
+	<string name="migration_cleanup_button">ઇતિહાસિક ડિરેક્ટરી સાફ કરો</string>
+	<string name="migration_cleanup_confirm_title">ઇતિહાસિક ડિરેક્ટરી સાફ કરવી છે?</string>
+	<string name="migration_cleanup_confirm_message">This will permanently delete the old games/org.levimc directory.\n\nBefore continuing, make sure all instances launch normally and worlds, resource packs, behavior packs, and settings are not missing.</string>
+	<string name="migration_cleanup_unavailable_not_completed">સ્ટોરેજ માઇગ્રેશન હજી પૂર્ણ થયું નથી. જૂની ડિરેક્ટરી સાફ કરતાં પહેલાં માઇગ્રેશન પૂર્ણ કરો.</string>
+	<string name="migration_cleanup_unavailable_missing">જૂની games/org.levimc ડિરેક્ટરી મળી નથી અથવા પહેલેથી સાફ થઈ ગઈ છે.</string>
+	<string name="migration_cleanup_ready">જૂની ડિરેક્ટરી સાફ કરી શકાય છે. આગળ વધતાં પહેલાં બધા માઇગ્રેટ થયેલ ઇન્સ્ટન્સ સ્વસ્થ છે તેની પુષ્ટિ કરો.</string>
+	<string name="migration_cleanup_success">ઇતિહાસિક ડિરેક્ટરી સાફ થઈ: %1$d ફાઇલો દૂર થઈ (%2$s).</string>
+	<string name="migration_cleanup_failed">ઇતિહાસિક ડિરેક્ટરી સાફ કરવામાં નિષ્ફળ: %1$s</string>
+	<string name="shared_storage_layout_title">શેરડ સામગ્રી ડિરેક્ટરી</string>
+	<string name="shared_storage_layout_desc">Internal અને External shared content માટે નવી _shared ડિરેક્ટરી વાપરો. મૂળ internal અને external ગેમ ડેટા ડિરેક્ટરીઓ વાપરવા માટે આ બંધ કરો. આ ફાઇલોને ખસેડતું નથી.</string>
+	<string name="shared_storage_layout_mode_new">નવી _shared ડિરેક્ટરી</string>
+	<string name="shared_storage_layout_mode_legacy">મૂળ internal/external ડિરેક્ટરીઓ</string>
+	<string name="shared_storage_layout_status">વર્તમાન મોડ: %1$s\nInternal: %2$s\nExternal: %3$s</string>
+	<string name="shared_storage_layout_changed">સ્ટોરેજ ડિરેક્ટરી પસંદગી અપડેટ થઈ. ફેરફાર સંપૂર્ણ રીતે લાગુ કરવા Minecraft ફરી શરૂ કરો અને content management ફરી ખોલો.</string>
+
+	<string name="theme_title">થીમ મોડ</string>
+	<string name="theme_follow_system">સિસ્ટમ અનુસરો</string>
+	<string name="theme_light">લાઇટ મોડ</string>
+	<string name="theme_dark">ડાર્ક મોડ</string>
+
+	<string name="error_no_browser">કોઈ બ્રાઉઝર ઉપલબ્ધ નથી</string>
+
+	<string name="eula_title">LeviLauncher લાયસન્સ કરાર</string>
+	<string name="eula_message"><b>LeviLauncher માં આપનું સ્વાગત છે</b>\n\nઆ સોફ્ટવેરનો ઉપયોગ કરીને તમે નીચેની બાબતો સાથે સંમત થાઓ છો:\n\n• આ <b>અનધિકૃત</b> Minecraft લોન્ચર છે\n• તમારી પાસે Minecraftની <b>લાઇસન્સપ્રાપ્ત</b> નકલ હોવી જરૂરી છે\n• કોઈપણ પ્રકારની piracy અથવા cheating મનાઈ છે\n• Mods/resource packs તમારાં જોખમે વાપરો\n• Mojang/Microsoft સાથે સંબંધિત નથી\n\nઆગળનો ઉપયોગ સંમતિવાળો ગણાશે</string>
+	<string name="eula_agree">સ્વીકારો</string>
+	<string name="eula_exit">નકારી કાઢો</string>
+
+	<string name="allow_unknown_sources">આગળ વધતાં પહેલાં અજાણ્યા સ્ત્રોતોમાંથી ઇન્સ્ટોલેશન મંજૂર કરો</string>
+
+	<string name="dialog_title_delete_version">સંસ્કરણ કાઢો</string>
+	<string name="dialog_message_delete_version">શું તમે ખરેખર આ કસ્ટમ સંસ્કરણ કાઢવા માંગો છો? આ ક્રિયા પાછી ફેરવી શકાતી નથી.</string>
+	<string name="dialog_positive_delete">કાઢો</string>
+	<string name="dialog_negative_cancel">રદ કરો</string>
+	<string name="toast_delete_success">Deleted successfully</string>
+	<string name="toast_delete_failed">કાઢવામાં નિષ્ફળ: %1$s</string>
+	<string name="error_delete_builtin_version">બિલ્ટ-ઇન સંસ્કરણ કાઢી શકાતું નથી</string>
+	<string name="invalid_mod_file">નિષ્ફળ</string>
+	<string name="invalid_mod_file_reason">ફક્ત .so ફાઇલો, .zip મોડ પેકેજો, અથવા .levipack મોડ પેકેજો જ મંજૂર છે. પસંદ કરેલી ફાઇલ માન્ય native mod import package નથી.</string>
+	<string name="invalid_zip_mod_package_title">અમાન્ય ZIP મોડ પેકેજ</string>
+	<string name="invalid_zip_mod_package_message">ZIP મોડ પેકેજમાં manifest.json અને .so ફાઇલ હોવી જોઈએ.</string>
+	<string name="error_versions">ભૂલ સંસ્કરણો</string>
+
+	<string name="dialog_title_delete_mod">મોડ કાઢો</string>
+	<string name="dialog_message_delete_mod">શું તમે ખરેખર આ મોડ કાઢવા માંગો છો?</string>
+
+	<string name="version_isolation">વર્ઝન આઇસોલેશન</string>
+	<string name="launch_vertically">ઊભું લોન્ચ કરો</string>
+	<string name="launch_vertically_desc">ગેમને portrait મોડમાં લોન્ચ કરવા માટે બળપૂર્વક કરો</string>
+
+	<string name="instance_settings_title">ઇન્સ્ટન્સ સેટિંગ્સ</string>
+	<string name="instance_tab_general">સામાન્ય</string>
+	<string name="instance_tab_launch_options">લોન્ચ વિકલ્પો</string>
+	<string name="instance_tab_management">વ્યવસ્થાપન</string>
+	<string name="instance_new_name">નવું નામ</string>
+	<string name="instance_rename_hint">ફક્ત ફોલ્ડરનું નામ બદલો. ગેમ સંસ્કરણ અને પ્રકાર પર અસર થતી નથી.</string>
+	<string name="instance_custom_icon">કસ્ટમ આઇકન (ચોરસ જરૂરી)</string>
+	<string name="instance_clear_icon">સાફ કરો</string>
+	<string name="instance_icon_hint">સંસ્કરણ ફોલ્ડરમાં LargeLogo.png તરીકે સંગ્રહ થશે. બદલવા માટે આઇકન ક્લિક કરો.</string>
+	<string name="instance_isolation_desc">આ ઇન્સ્ટન્સ માટે ગેમ ડેટા અલગ કરો. અન્ય ઇન્સ્ટન્સ પર અસર નહીં થાય.</string>
+	<string name="instance_danger_zone">ખતરાનો વિસ્તાર</string>
+	<string name="instance_danger_zone_desc">આ ક્રિયાઓ ઇન્સ્ટન્સ રજિસ્ટ્રેશન અથવા સ્થાનિક ફાઇલોને અસર કરે છે. આગળ વધતાં પહેલાં ફરી તપાસો.</string>
+	<string name="instance_delete_desc">આ ઇન્સ્ટન્સને તમારા ઉપકરણમાંથી કાયમ માટે કાઢી નાખે છે, જેમાં worlds, configs, અને ઇન્સ્ટોલ થયેલ સામગ્રી શામેલ છે.</string>
+	<string name="instance_delete_warning">આ ક્રિયા પાછી ફેરવી શકાતી નથી.</string>
+	<string name="instance_delete_confirm_title">ઇન્સ્ટન્સ કાઢો</string>
+	<string name="instance_delete_confirm_msg">શું તમે ખરેખર આ ઇન્સ્ટન્સ કાઢવા માંગો છો? worlds સહિતનો બધો ડેટા કાયમ માટે દૂર થઈ જશે.</string>
+	<string name="instance_backup_title">ઇન્સ્ટન્સ બેકઅપ કરો</string>
+	<string name="instance_backup_desc">આ ઇન્સ્ટન્સનો સંપૂર્ણ બેકઅપ Download/LeviLauncher/Backups માં બનાવો.</string>
+	<string name="instance_backup_button">ઇન્સ્ટન્સ બેકઅપ કરો</string>
+	<string name="instance_backup_confirm_message">શું આ ઇન્સ્ટન્સનો સંપૂર્ણ બેકઅપ હમણાં બનાવવો છે? જો Minecraft ચાલી રહ્યું હોય તો બેકઅપ દરમિયાન ફાઇલો બદલાવાથી બચવા માટે પહેલાં તેને બંધ કરો.</string>
+	<string name="instance_backup_in_progress">ઇન્સ્ટન્સ બેકઅપ થઈ રહ્યું છે…</string>
+	<string name="instance_backup_success_title">બેકઅપ બનાવ્યું</string>
+	<string name="instance_backup_success_message">બેકઅપ અહીં સંગ્રહ થયું:\n%1$s</string>
+	<string name="instance_backup_failed_title">બેકઅપ નિષ્ફળ</string>
+	<string name="instance_backup_failed_message">બેકઅપ બનાવી શકાયું નહીં:\n%1$s</string>
+	<string name="instance_import_backup_button">બેકઅપ આયાત કરો</string>
+	<string name="instance_batch_backup_button">બેચ બેકઅપ</string>
+	<string name="instance_batch_backup_title">ઇન્સ્ટન્સોના બેચ બેકઅપ</string>
+	<string name="instance_batch_backup_select_message">બેકઅપ કરવા માટે ઇન્સ્ટન્સ પસંદ કરો. જો Minecraft ચાલી રહ્યું હોય તો બેકઅપ દરમિયાન ફાઇલો બદલાવાથી બચવા પહેલાં તેને બંધ કરો.</string>
+	<string name="instance_batch_backup_select_all">બધા ઇન્સ્ટન્સ પસંદ કરો</string>
+	<string name="instance_batch_backup_no_instances">બેકઅપ કરવા માટે કોઈ ઇન્સ્ટન્સ ઉપલબ્ધ નથી.</string>
+	<string name="instance_batch_backup_no_selection">ઓછામાં ઓછું એક ઇન્સ્ટન્સ પસંદ કરો.</string>
+	<string name="instance_batch_backup_in_progress">%1$s બેકઅપ થઈ રહ્યું છે (%2$d/%3$d)…</string>
+	<string name="instance_batch_backup_success_title">બેકઅપ્સ બનાવાયા</string>
+	<string name="instance_batch_backup_success_message">%1$d બેકઅપ્સ બનાવાયા:\n%2$s</string>
+	<string name="instance_batch_backup_partial_title">બેકઅપ અંશતઃ પૂર્ણ થયું</string>
+	<string name="instance_batch_backup_partial_message">%1$d બેકઅપ્સ બનાવાયા, %2$d નિષ્ફળ.\n\nસંગ્રહિત:\n%3$s\n\nનિષ્ફળ:\n%4$s</string>
+	<string name="instance_batch_backup_failed_title">બેચ બેકઅપ નિષ્ફળ</string>
+	<string name="instance_batch_backup_failed_message">કોઈ પણ બેકઅપ બનાવી શકાયું નહીં:\n%1$s</string>
+	<string name="instance_restore_title">બેકઅપ પુનઃસ્થાપિત કરો</string>
+	<string name="instance_restore_in_progress">ઇન્સ્ટન્સ બેકઅપ પુનઃસ્થાપિત થઈ રહ્યું છે…</string>
+	<string name="instance_restore_success_title">પુનઃસ્થાપન પૂર્ણ થયું</string>
+	<string name="instance_restore_success_message">પુનઃસ્થાપિત: %1$s</string>
+	<string name="instance_restore_failed_title">પુનઃસ્થાપન નિષ્ફળ</string>
+	<string name="instance_restore_failed_message">બેકઅપ પુનઃસ્થાપિત કરી શકાયું નહીં:\n%1$s</string>
+
+	<!-- Language Setting -->
+	<!-- Keep English at the top (default language). -->
+	<!-- Sort all other languages alphabetically by their display name. -->
+	<string name="language">ભાષા</string>
+	<string name="english">English</string>
+	<string name="chinese">简体中文 (Chinese)</string>
+	<string name="french">Français (French)</string>
+	<string name="gujarati">ગુજરાતી (Gujarati)</string>
+	<string name="hindi">हिन्दी (Hindi)</string>
+	<string name="indonesian">Bahasa Indonesia (Indonesian)</string>
+	<string name="japanese">日本語 (Japanese)</string>
+	<string name="portuguese">Português (Portuguese)</string>
+	<string name="russian">Русский (Russian)</string>
+	<string name="spanish">Español (Spanish)</string>
+	<string name="turkish">Türkçe (Turkish)</string>
+	<string name="vietnamese">Tiếng Việt (Vietnamese)</string>
+
+	<!-- Version Rename -->
+	<string name="rename_version_title">વર્ઝનનું નામ બદલો</string>
+	<string name="rename_version_message">આ વર્ઝન માટે નવું નામ દાખલ કરો:</string>
+	<string name="new_version_name">નવું વર્ઝન નામ</string>
+	<string name="rename">નામ બદલો</string>
+	<string name="rename_success">વર્ઝનનું નામ સફળતાપૂર્વક બદલાયું</string>
+	<string name="rename_failed">નામ બદલવામાં નિષ્ફળ: %1$s</string>
+	<string name="cannot_rename_installed">ઇન્સ્ટોલ થયેલ વર્ઝનનું નામ બદલી શકાતું નથી</string>
+
+	<!-- Content Management -->
+	<string name="content_management">Content Management</string>
+	<string name="worlds_title">Worlds</string>
+	<string name="resource_packs_title">Resource Packs</string>
+	<string name="behavior_packs_title">Behavior Packs</string>
+	<string name="skin_packs_title">Skin Packs</string>
+	<string name="worlds_category">Worlds</string>
+	<string name="resource_packs_category">Resource Packs</string>
+	<string name="behavior_packs_category">Behavior Packs</string>
+	<string name="skin_packs_category">Skin Packs</string>
+	<string name="screenshots_category">Screenshots</string>
+	<string name="servers_category">Servers</string>
+	<string name="storage_internal">Internal</string>
+	<string name="storage_external">External</string>
+	<string name="storage_version_isolation">વર્ઝન Isolation</string>
+	<string name="select_storage_label">સ્ટોરેજ પસંદ કરો:</string>
+	<string name="search_hint">શોધો…</string>
+	<string name="search_properties_hint">Properties શોધો…</string>
+	<string name="no_matching_properties">કોઈ મેળ ખાતી properties મળી નથી</string>
+	<string name="transfer">Transfer</string>
+	<string name="transfer_content">Content Transfer</string>
+	<string name="transfer_to">Transfer કરો:</string>
+	<string name="transfer_success">Transfer સફળતાપૂર્વક પૂર્ણ થયું</string>
+	<string name="transfer_failed">Transfer નિષ્ફળ ગયું</string>
+	<string name="transfer_same_location">Content પહેલેથી જ આ locationમાં છે</string>
+	<string name="import_content">આયાત કરો</string>
+	<string name="import_content_title">Content આયાત કરો</string>
+	<string name="import_content_message">આયાત કરવા માટે .mcworld, .mcpack, અથવા .mcaddon ફાઇલ પસંદ કરો</string>
+	<string name="import_success">આયાત સફળતાપૂર્વક પૂર્ણ થઈ</string>
+	<string name="import_failed">આયાત નિષ્ફળ ગઈ</string>
+	<string name="import_addon_success">Addon આયાત થયું: %1$d resource pack(s), %2$d behavior pack(s)</string>
+
+	<!-- World Management -->
+	<string name="world_size">કદ: %s</string>
+	<string name="world_last_played">છેલ્લે રમાયું: %s</string>
+	<string name="import_world">World આયાત કરો</string>
+	<string name="export_world">World Export કરો</string>
+	<string name="delete_world">World કાઢો</string>
+	<string name="backup_world">World Backup કરો</string>
+	<string name="export">Export</string>
+	<string name="backup">Backup</string>
+	<string name="delete">કાઢો</string>
+	<string name="delete_pack">કાઢો</string>
+
+	<!-- Resource Pack Management -->
+	<string name="import_resource_pack">Resource Pack આયાત કરો</string>
+	<string name="import_behavior_pack">Behavior Pack આયાત કરો</string>
+	<string name="import_skin_pack">Skin Pack આયાત કરો</string>
+	<string name="delete_resource_pack">Resource Pack કાઢો</string>
+	<string name="delete_skin_pack">Skin Pack કાઢો</string>
+	<string name="delete_behavior_pack">Behavior Pack કાઢો</string>
+
+	<!-- Content Operations -->
+	<string name="confirm_delete_world">શું તમે ખરેખર આ world કાઢવા માંગો છો? આ action પાછું ફેરવી શકાતી નથી.</string>
+	<string name="confirm_delete_resource_pack">શું તમે ખરેખર આ resource pack કાઢવા માંગો છો? આ action પાછું ફેરવી શકાતી નથી.</string>
+	<string name="confirm_delete_behavior_pack">શું તમે ખરેખર આ behavior pack કાઢવા માંગો છો? આ action પાછું ફેરવી શકાતી નથી.</string>
+	<string name="confirm_delete_skin_pack">શું તમે ખરેખર આ skin pack કાઢવા માંગો છો? આ action પાછું ફેરવી શકાતી નથી.</string>
+	<string name="importing_content">Content આયાત થઈ રહ્યું છે…</string>
+	<string name="exporting_world">World export થઈ રહ્યું છે…</string>
+	<string name="exporting_pack">Pack export થઈ રહ્યું છે…</string>
+	<string name="backing_up_world">World backup થઈ રહ્યું છે…</string>
+	<string name="deleting_world">World કાઢી રહ્યું છે…</string>
+	<string name="deleting_pack">Pack કાઢી રહ્યું છે…</string>
+	<string name="adding_server">Server ઉમેરાઈ રહ્યું છે…</string>
+	<string name="deleting_screenshot">Screenshot કાઢી રહ્યું છે…</string>
+	<string name="deleting_server">Server કાઢી રહ્યું છે…</string>
+
+	<!-- World Editor -->
+	<string name="edit_world">World સંપાદિત કરો</string>
+	<string name="edit">સંપાદિત કરો</string>
+	<string name="save">સાચવો</string>
+	<string name="reset">રીસેટ</string>
+	<string name="saved_to_gallery">Galleryમાં સાચવાયું</string>
+	<string name="level_dat_not_found">level.dat મળ્યું નથી</string>
+	<string name="no_editable_properties">કોઈ સંપાદિત કરી શકાય તેવી properties મળી નથી</string>
+	<string name="no_data">કોઈ data નથી</string>
+	<string name="error_loading_world">World લોડ કરવામાં ભૂલ</string>
+	<string name="world_saved">World સફળતાપૂર્વક સાચવાયું</string>
+	<string name="save_failed">સાચવવામાં નિષ્ફળ</string>
+	<string name="unsaved_changes">Unsaved Changes</string>
+	<string name="discard_changes_message">તમારા પાસે unsaved changes છે. શું તમે તેને discard કરવા માંગો છો?</string>
+	<string name="discard">Discard કરો</string>
+
+	<!-- Custom Flat World -->
+	<string name="custom_flat_world">Custom Flat World</string>
+	<string name="world_name">વિશ્વનું નામ</string>
+	<string name="enter_world_name">World નામ દાખલ કરો</string>
+	<string name="biome">Biome</string>
+	<string name="game_mode">Game Mode</string>
+	<string name="layers">Layers (નીચેથી ઉપર સુધી)</string>
+	<string name="layers_hint">ક્રમ બદલવા drag કરો, કાઢવા માટે ડાબે swipe કરો</string>
+	<string name="add_layer">+ Layer ઉમેરો</string>
+	<string name="create_world">World બનાવો</string>
+	<string name="add_at_least_one_layer">ઓછામાં ઓછું એક layer ઉમેરો</string>
+	<string name="world_created_successfully">World સફળતાપૂર્વક બનાવાયું</string>
+	<string name="failed_to_create_world">World બનાવવામાં નિષ્ફળ</string>
+
+	<!-- Play Store Validation -->
+	<string name="minecraft_playstore_required_title">Play Store Version જરૂરી છે</string>
+	<string name="minecraft_playstore_required_message">આ launcher માત્ર Google Play Storeમાંથી મળેલી official Minecraft app સાથે જ કામ કરે છે. ચાલુ રાખવા માટે Play Store version ઇન્સ્ટોલ કરો.</string>
+	<string name="buy_minecraft">Minecraft મેળવો</string>
+	<string name="minecraft_not_installed_title">Minecraft ઇન્સ્ટોલ નથી</string>
+	<string name="minecraft_not_installed_message">તમારા deviceમાં Minecraft ઇન્સ્ટોલ નથી. આ launcher વાપરવા માટે તેને Google Play Storeમાંથી ઇન્સ્ટોલ કરો.</string>
+	<string name="install_minecraft">Minecraft ઇન્સ્ટોલ કરો</string>
+	<string name="genuine_badge_label">License verify થયું નથી</string>
+	<string name="invalid_license_detected_toast">Non-genuine Minecraft મળ્યું. ખાતરી કરો કે Minecraft Google Play Storeમાંથી છે</string>
+
+	<string name="full_mods_title">Mods</string>
+	<string name="total_mods">કુલ Mods:</string>
+	<string name="enabled_mods">Enabled:</string>
+	<string name="add_mod">Mod ઉમેરો</string>
+
+	<!-- Mod Detail -->
+	<string name="mod_detail_title">Mod વિગતો</string>
+	<string name="delete_mod">Mod કાઢો</string>
+	<string name="error_loading_mod">Mod વિગતો લોડ કરવામાં ભૂલ</string>
+	<string name="mod_enabled">Mod enabled</string>
+	<string name="mod_disabled">Mod disabled</string>
+	<string name="mod_filename_format">ફાઇલ: %s</string>
+	<string name="mod_enable_status">Enable Status</string>
+	<string name="mod_icon_content_description">Mod icon</string>
+	<string name="mod_author_byline">%s દ્વારા</string>
+	<string name="mod_version_chip">Version %s</string>
+	<string name="mod_metadata_title">માહિતી</string>
+	<string name="mod_actions_title">Actions</string>
+	<string name="mod_author_label">લેખક</string>
+	<string name="mod_version_label">વર્ઝન</string>
+	<string name="mod_minecraft_versions_label">Minecraft Versions</string>
+	<string name="mod_entry_label">Entry File</string>
+	<string name="mod_id_label">Mod ID</string>
+	<string name="mod_config_files_label">Config Files</string>
+	<string name="mod_unknown_author">Unknown author</string>
+	<string name="mod_unknown_version">Unknown version</string>
+	<string name="mod_all_versions">બધા supported versions</string>
+	<string name="mod_no_config_files">સંપાદિત કરી શકાય તેવી config નથી</string>
+	<string name="mod_config_badge">CONFIG</string>
+	<string name="mod_config_badge_with_count">CONFIG · %d</string>
+	<string name="mod_config_title_format">%s Config</string>
+	<string name="mod_config_not_found">કોઈ editable config મળી નથી</string>
+	<string name="mod_config_load_failed">Config લોડ કરવામાં નિષ્ફળ: %s</string>
+	<string name="mod_config_save_failed">Config સાચવવામાં નિષ્ફળ</string>
+	<string name="mod_config_saved">Config સાચવાઈ ગઈ</string>
+	<string name="mod_config_restart_hint">Config file સાચવાઈ ગઈ છે અને .backup file પણ રાખવામાં આવી છે. Changes અસરકારક થવા માટે game restart અથવા reload કરો.</string>
+	<string name="mod_config_validation_failed">Config validation નિષ્ફળ</string>
+	<string name="mod_config_invalid_json">Invalid JSON</string>
+	<string name="mod_config_expand">ફેલાવો</string>
+	<string name="mod_config_collapse">સંકોચો</string>
+	<string name="mod_config_raw_json">Raw JSON સંપાદિત કરો</string>
+	<string name="mod_config_raw_json_short">JSON</string>
+	<string name="mod_config_item_label">Item %1$s</string>
+	<string name="mod_config_object_desc">સંબંધિત settingsનો group</string>
+	<string name="mod_config_array_desc">Valuesની list</string>
+	<string name="mod_config_range_prefix">Range</string>
+	<string name="mod_config_error_number">%1$s number હોવું જોઈએ</string>
+	<string name="mod_config_error_minimum">%1$s ઓછામાં ઓછું %2$s હોવું જોઈએ</string>
+	<string name="mod_config_error_maximum">%1$s વધુમાં વધુ %2$s હોવું જોઈએ</string>
+	<string name="mod_config_error_boolean">%1$s on અથવા off હોવું જોઈએ</string>
+	<string name="mod_config_error_string">%1$s text હોવું જોઈએ</string>
+
+	<plurals name="mod_config_files_count">
+		<item quantity="one">%d editable config</item>
+		<item quantity="other">%d editable configs</item>
+	</plurals>
+	<plurals name="mod_config_choices_count">
+		<item quantity="one">%d choice</item>
+		<item quantity="other">%d choices</item>
+	</plurals>
+	<plurals name="mod_config_items_count">
+		<item quantity="one">%d item</item>
+		<item quantity="other">%d items</item>
+	</plurals>
+
+	<!-- Game Version Select Dialog -->
+	<string name="game_version_select_title">Game Version પસંદ કરો</string>
+	<string name="back">પાછા</string>
+
+	<!-- Splash -->
+	<string name="splash_logo_desc">Leaf logo</string>
+	<string name="minecraft_loading_title">Minecraft શરૂ થઈ રહ્યું છે</string>
+	<string name="minecraft_loading_subtitle">Game files અને enabled mods તૈયાર કરી રહ્યા છીએ</string>
+	<string name="minecraft_loading_status_preparing">Game તૈયાર કરી રહ્યા છીએ</string>
+	<string name="minecraft_loading_log_title">Launch Log</string>
+	<string name="minecraft_loading_complete">Game તૈયાર છે</string>
+	<string name="minecraft_loading_entering_game">Minecraftમાં પ્રવેશી રહ્યા છીએ</string>
+	<string name="minecraft_loading_failed">Launch નિષ્ફળ</string>
+	<string name="minecraft_loading_return">Launcher પર પાછા જાઓ</string>
+	<string name="launcher_restart_title">Launcher પર પાછા</string>
+	<string name="launcher_restart_subtitle">તમને પાછા લાવવા માટે થોડો સમય આપો</string>
+	<string name="launcher_restart_status">લગભગ પહોંચી ગયા…</string>
+
+	<!-- Accounts & Microsoft Login -->
+	<string name="accounts_title">Accounts</string>
+	<string name="microsoft_accounts">Microsoft Accounts</string>
+	<string name="manage_accounts">Accounts મેનેજ કરો</string>
+	<string name="not_signed_in">Signed in નથી</string>
+	<string name="xuid">XUID</string>
+	<string name="sign_in">Sign In</string>
+	<string name="sign_out">Sign Out</string>
+	<string name="accounts_active_privilege">Signed in</string>
+
+	<string name="ms_login_title">Microsoft Login</string>
+	<string name="ms_login_starting">Microsoft login શરૂ થઈ રહ્યું છે…</string>
+	<string name="ms_login_exchanging">Token exchange થઈ રહ્યું છે…</string>
+	<string name="ms_login_auth_xbox_device">Xbox device authenticate થઈ રહ્યું છે…</string>
+	<string name="ms_login_fetch_minecraft_identity">Minecraft identity મેળવી રહ્યા છીએ…</string>
+	<string name="ms_login_success">%1$s તરીકે signed in</string>
+	<string name="ms_login_failed">Microsoft login નિષ્ફળ થયું</string>
+	<string name="ms_login_failed_detail">Login નિષ્ફળ: %1$s</string>
+
+	<string name="ms_set_active">Active કરો</string>
+	<string name="ms_delete">કાઢો</string>
+	<string name="ms_active_badge">Active</string>
+	<string name="ms_account_subtitle_format">User ID: %1$s • Updated: %2$s</string>
+	<string name="xbox_avatar">Xbox avatar</string>
+	<string name="launcher_managed_mc_login">LeviLauncher સાથે Minecraftમાં sign in કરો</string>
+	<string name="dialog_title_login_required">Sign-in જરૂરી છે</string>
+	<string name="dialog_message_login_required">Launcher-managed login enabled છે, પણ કોઈ account signed in નથી. Sign in કરવા Accounts પર જાઓ.</string>
+	<string name="disable_launcher_login_and_continue">બંધ કરો</string>
+
+	<!-- Popup labels -->
+	<string name="label_current_account">વર્તમાન એકાઉન્ટ</string>
+	<string name="label_other_accounts">અન્ય એકાઉન્ટ્સ</string>
+
+	<string name="crash_title">એપ્લિકેશન ક્રેશ થઈ</string>
+	<string name="crash_upload">ક્રેશ રિપોર્ટ અપલોડ</string>
+	<string name="crash_details_title">ક્રેશ વિગતો</string>
+	<string name="crash_back_to_main">હોમ પર પાછા જાઓ</string>
+	<string name="crash_share_log">લોગ શેર કરો</string>
+	<string name="crash_log_file_label">લોગ ફાઇલ:</string>
+	<string name="crash_log_file_missing">લોગ ફાઇલ મળી નથી અથવા વાંચી શકાતી નથી.</string>
+	<string name="crash_read_failed">લોગ વાંચવામાં નિષ્ફળ: %1$s</string>
+	<string name="crash_loading_details">ક્રેશ વિગતો લોડ થઈ રહી છે...</string>
+	<string name="crash_type_label">ક્રેશ પ્રકાર:</string>
+	<string name="crash_summary_label">ક્રેશ સારાંશ:</string>
+	<string name="crash_stack_label">ક્રેશ વિગતો અને સ્ટેક:</string>
+	<string name="crash_emergency_label">ઇમરજન્સી:</string>
+	<string name="crash_no_details">કોઈ ક્રેશ વિગતો ઉપલબ્ધ નથી.</string>
+	<string name="dialog_title_exit_app">એપ્લિકેશન બંધ કરો</string>
+	<string name="dialog_message_exit_app">શું તમે ખરેખર બહાર નીકળવા માંગો છો?</string>
+	<string name="dialog_positive_exit">બહાર નીકળો</string>
+	<string name="show_logcat_overlay">Logcat ઓવરલે</string>
+	<string name="logcat_live">Logcat: <b>live</b></string>
+	<string name="logcat_paused">Logcat: રોકાયેલ</string>
+	<!-- Logcat Overlay i18n -->
+	<string name="logcat_filter_hint">કીવર્ડ ફિલ્ટર</string>
+	<string name="logcat_blacklist_hint">બ્લેકલિસ્ટ (અલ્પવિરામથી અલગ)</string>
+	<string name="logcat_filter_clear">ફિલ્ટર્સ સાફ કરો</string>
+	<string name="logcat_filter">ફિલ્ટર</string>
+	<string name="logcat_autoscroll">આપમેળે સ્ક્રોલ</string>
+	<string name="logcat_pause">રોકો</string>
+	<string name="logcat_clear">સાફ કરો</string>
+	<string name="logcat_close">બંધ કરો</string>
+	<string name="logcat_corner_bottom_left">કદ બદલો: નીચે-ડાબે</string>
+	<string name="logcat_corner_bottom_right">કદ બદલો: નીચે-જમણે</string>
+
+	<!-- Inbuilt Mods -->
+	<string name="inbuilt_mods">બિલ્ટ-ઇન મોડ્સ</string>
+	<string name="inbuilt_mods_title">બિલ્ટ-ઇન મોડ્સ</string>
+	<string name="inbuilt_mods_subtitle">વાપરવા માટે તૈયાર બિલ્ટ-ઇન મોડ્સ</string>
+	<string name="no_inbuilt_mods_available">બધા બિલ્ટ-ઇન મોડ્સ ઉમેરાઈ ગયા છે</string>
+	<string name="inbuilt_mod_added">%s મોડ્સમાં ઉમેરાયું</string>
+	<string name="inbuilt_mod_removed">%s મોડ્સમાંથી દૂર થયું</string>
+	<string name="add">ઉમેરો</string>
+	<string name="remove">દૂર કરો</string>
+
+	<!-- Inbuilt Mods -->
+	<string name="inbuilt_mod_quick_drop">ઝડપી ડ્રોપ</string>
+	<string name="inbuilt_mod_quick_drop_desc">વસ્તુઓ ઝડપથી ફેંકો</string>
+	<string name="inbuilt_mod_camera">ઝડપી દૃષ્ટિકોણ</string>
+	<string name="inbuilt_mod_camera_desc">કેમેરા દૃશ્ય બદલો</string>
+	<string name="inbuilt_mod_hud">HUD છુપાવો</string>
+	<string name="inbuilt_mod_hud_desc">હોટબાર અને UI છુપાવો</string>
+	<string name="inbuilt_mod_autosprint">ઓટો સ્પ્રિન્ટ</string>
+	<string name="inbuilt_mod_autosprint_desc">સ્પ્રિન્ટ ચાલુ/બંધ કરો</string>
+	<string name="inbuilt_mod_chick_pet">ચિક પેટ</string>
+	<string name="inbuilt_mod_chick_pet_desc">એક ક્યુટ પિક્સેલેટેડ ચિક જે ફરીને ચાલે છે, સુવે છે, અને સ્પર્શ થતાં દોડે છે!</string>
+	<string name="inbuilt_mod_zoom">ઝૂમ</string>
+	<string name="inbuilt_mod_zoom_desc">ઝૂમ કરવા માટે દબાવી રાખો, OptiFine ઝૂમ જેવું</string>
+	<string name="zoom_level_label">ઝૂમ સ્તર:</string>
+	<string name="zoom_keybind_label">ઝૂમ કીબાઇન્ડ:</string>
+	<string name="zoom_keybind_press">કોઈપણ કી દબાવો…</string>
+	<string name="zoom_keybind_tap_to_change">બદલવા માટે ટેપ કરો</string>
+	<string name="inbuilt_mod_fps_display">FPS પ્રદર્શન</string>
+	<string name="inbuilt_mod_fps_display_desc">હાલના frames per second બતાવે છે</string>
+	<string name="inbuilt_mod_cps_display">CPS પ્રદર્શન</string>
+	<string name="inbuilt_mod_cps_display_desc">ક્લિક્સ પ્રતિ સેકન્ડ બતાવે છે</string>
+	<string name="inbuilt_mod_snaplook">Snaplook</string>
+	<string name="inbuilt_mod_snaplook_desc">ઝડપથી પાછળ જોવા માટે દબાવી રાખો (ત્રીજું વ્યક્તિ આગળ)</string>
+	<string name="inbuilt_mod_virtual_cursor">વર્ચ્યુઅલ કર્સર</string>
+	<string name="inbuilt_mod_virtual_cursor_desc">માઉસ નિયંત્રિત કરવા virtual trackpad વાપરો</string>
+	<string name="virtual_cursor_enabled">કર્સર સક્ષમ</string>
+	<string name="virtual_cursor_disabled">કર્સર નિષ્ક્રિય</string>
+	<string name="cursor_sensitivity_label">કર્સર સંવેદનશીલતા:</string>
+	<string name="inbuilt_badge">INBUILT</string>
+	<string name="autosprint_keybind_label">ઓટો સ્પ્રિન્ટ કીબાઇન્ડ:</string>
+	<string name="autosprint_keybind_press">કોઈપણ કી દબાવો…</string>
+	<string name="configure">રૂપરેખાંકિત કરો</string>
+	<string name="overlay_button_size">ઓવરલે બટન કદ</string>
+	<string name="overlay_button_opacity">ઓવરલે બટન પારદર્શિતા</string>
+	<string name="overlay_button_size_value">કદ: %1$ddp</string>
+	<string name="overlay_button_opacity_value">પારદર્શિતા: %1$d%%</string>
+	<string name="overlay_button_lock">સ્થિતિ લોક કરો</string>
+	<string name="overlay_button_lock_desc">ખેંચવું અને અનિચ્છિત સક્રિયકરણ અટકાવો</string>
+	<string name="settings">સેટિંગ્સ</string>
+
+	<!-- Extract Structures -->
+	<string name="extract_structures">Extract Structures</string>
+	<string name="no_structures_found">No structures found in this world</string>
+	<string name="no_structures_found_title">No Structures Found</string>
+	<string name="no_structures_found_message">No structures were found in this world.\n\nTo extract a structure:\n1. Open this world in Minecraft using this launcher\n2. Place a Structure Block and set it to Save mode\n3. Give your structure a name and press Save\n4. Exit the world and return here\n5. Press \"Extract Structures\" again</string>
+	<string name="structures_exported">Exported %1$d structures to %2$s</string>
+	<string name="structures_exported_zip">Exported %d structures to ZIP</string>
+	<string name="structure_found">Structure Found</string>
+	<string name="structure_found_with_size">%1$s (%2$s)</string>
+	<string name="structure_exported">Exported: %s</string>
+	<string name="extract">Extract</string>
+	<string name="structures_found_title">Structures Found</string>
+	<string name="structures_found_count">%d structures found in this world</string>
+
+	<!-- Mod Menu -->
+	<string name="mod_menu">Mod Menu</string>
+	<string name="mod_menu_modules">Modules</string>
+	<string name="mod_menu_favorites">Favorites</string>
+	<string name="mod_menu_favorite">Add to favorites</string>
+	<string name="mod_menu_unfavorite">Remove from favorites</string>
+	<string name="mod_menu_hud_editor">HUD Editor</string>
+	<string name="mod_menu_filter_enabled">Enabled</string>
+	<string name="mod_menu_filter_inbuilt">Inbuilt</string>
+	<string name="mod_menu_filter_external">External</string>
+	<string name="mod_menu_search_hint">Search mods…</string>
+	<string name="mod_menu_no_mods">No mods added</string>
+	<string name="mod_menu_no_favorites">No favorite mods yet</string>
+	<string name="mod_menu_no_matches">No matching mods</string>
+	<string name="mod_menu_group_inbuilt">Inbuilt Features</string>
+	<string name="mod_menu_group_external_ungrouped">Ungrouped External Mods</string>
+	<string name="mod_menu_module_count">%1$d / %2$d</string>
+	<string name="mod_menu_general_settings">General Settings</string>
+	<string name="mod_menu_appearance">Appearance</string>
+	<string name="mod_menu_pause_menu_only">Pause Menu Only</string>
+	<string name="mod_menu_pause_menu_only_desc">Only show mod menu in pause screen</string>
+	<string name="mod_menu_default_percent" formatted="false">100%</string>
+	<string name="mod_menu_percent_value">%1$d%%</string>
+	<string name="mod_menu_settings_coming">Settings coming soon</string>
+	<string name="mod_menu_notifications">Notifications</string>
+	<string name="mod_menu_notifications_desc">Show notification when enabling mods</string>
+	<string name="mod_menu_opacity">Mod Menu Opacity</string>
+	<string name="mod_menu_button_opacity">Mod Menu Button Opacity</string>
+	<string name="mod_menu_version">v1.0</string>
+	<string name="mod_menu_enabled">Mod Menu enabled</string>
+	<string name="mod_menu_disabled">Mod Menu disabled</string>
+	<string name="mod_menu_active_title">Mod Menu Active</string>
+	<string name="mod_menu_active_desc">All inbuilt mods are now accessible through the in-game Mod Menu. Disable Mod Menu to add individual overlay buttons.</string>
+	<string name="mod_status_enabled">Enabled</string>
+	<string name="mod_status_disabled">Disabled</string>
+	<string name="mod_notification_enabled">%s enabled</string>
+	<string name="mod_overlay_fps_unknown">FPS: --</string>
+	<string name="mod_overlay_fps_value">FPS: %1$d</string>
+	<string name="mod_overlay_cps_value">CPS: %1$d</string>
+	<string name="mod_config_overlay_button_size_dp">Overlay Button Size (dp)</string>
+	<string name="mod_config_overlay_opacity_percent" formatted="false">Overlay Opacity (%)</string>
+	<string name="mod_config_cursor_sensitivity_percent" formatted="false">Cursor Sensitivity (%)</string>
+	<string name="mod_config_zoom_level_percent" formatted="false">Zoom Level (%)</string>
+	<string name="mod_config_auto_sprint_keybind">Auto Sprint Keybind</string>
+	<string name="mod_config_zoom_keybind">Zoom Keybind</string>
+	<string name="mod_config_zoom_transition">Transition Duration (ms)</string>
+	<string name="mod_config_press_any_key">Press any key to bind...</string>
+	<string name="mod_config_key_unknown">UNKNOWN</string>
+	<string name="mod_config_color_alpha_short">A</string>
+	<string name="mod_config_color_red_short">R</string>
+	<string name="mod_config_color_green_short">G</string>
+	<string name="mod_config_color_blue_short">B</string>
+	<string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+
+	<!-- Options Editor -->
+	<string name="edit_options">વિકલ્પો સંપાદિત કરો</string>
+	<string name="options_file_not_found">વિકલ્પોની ફાઇલ મળી નથી</string>
+	<string name="no_options_found">કોઈ વિકલ્પો મળ્યા નથી</string>
+	<string name="search_options_hint">વિકલ્પો શોધો…</string>
+	<string name="no_matching_options">મેળ ખાતા વિકલ્પો મળ્યા નથી</string>
+	<string name="error_loading_options">વિકલ્પો લોડ કરવામાં ભૂલ</string>
+	<string name="options_saved">વિકલ્પો સફળતાપૂર્વક સાચવાયા</string>
+
+	<!-- Quick Launch -->
+	<string name="quick_launch_title">ઝડપી લોન્ચ</string>
+	<string name="quick_launch_subtitle">URI પ્રોટોકોલથી ખાસ ક્રિયાઓ સાથે Minecraft લોન્ચ કરો</string>
+	<string name="quick_launch_how_to_play">કેવી રીતે રમવું</string>
+	<string name="quick_launch_how_to_play_desc">How to Play સ્ક્રીન ખોલો</string>
+	<string name="quick_launch_servers_tab">સર્વર્સ ટેબ</string>
+	<string name="quick_launch_servers_tab_desc">પ્લે મેનુમાં સર્વર્સ ટેબ ખોલો</string>
+	<string name="quick_launch_profile">પ્રોફાઇલ / ડ્રેસિંગ રૂમ</string>
+	<string name="quick_launch_profile_desc">તમારી પાત્ર કસ્ટમાઇઝેશન સ્ક્રીન ખોલો</string>
+	<string name="quick_launch_store_home">Marketplace હોમ</string>
+	<string name="quick_launch_store_home_desc">Marketplace હોમ સ્ક્રીન ખોલો</string>
+	<string name="quick_launch_minecoins">Minecoins</string>
+	<string name="quick_launch_minecoins_desc">Minecoins ખરીદી સ્ક્રીન ખોલો</string>
+	<string name="quick_launch_marketplace_pass">Marketplace Pass</string>
+	<string name="quick_launch_marketplace_pass_desc">Marketplace Pass સબ્સ્ક્રિપ્શન સ્ક્રીન ખોલો</string>
+	<string name="quick_launch_connect_server">સર્વર સાથે જોડાઓ</string>
+	<string name="quick_launch_connect_server_desc">સીધા Bedrock સર્વર સાથે જોડાઓ</string>
+	<string name="quick_launch_add_server">બાહ્ય સર્વર ઉમેરો</string>
+	<string name="quick_launch_add_server_desc">તમારી સર્વર યાદીમાં નવું સર્વર ઉમેરો</string>
+	<string name="quick_launch_realm_invite">Realm જોડાઓ</string>
+	<string name="quick_launch_realm_invite_desc">Realm આમંત્રણ કોડ સ્વીકારો</string>
+	<string name="quick_launch_load_world">વિશ્વ લોડ કરો</string>
+	<string name="quick_launch_load_world_desc">નામ દ્વારા સ્થાનિક વિશ્વ લોડ કરો</string>
+	<string name="quick_launch_command">કમાન્ડ ચલાવો</string>
+	<string name="quick_launch_command_desc">ગેમમાં slash command ચલાવો</string>
+	<string name="quick_launch_custom_uri">કસ્ટમ URI</string>
+	<string name="quick_launch_custom_uri_desc">કસ્ટમ minecraft:// URI દાખલ કરો</string>
+
+	<!-- Quick Launch Dialogs -->
+	<string name="server_ip_hint">સર્વર IP સરનામું</string>
+	<string name="server_port_hint">પોર્ટ (ડિફોલ્ટ: 19132)</string>
+	<string name="server_name_hint">સર્વર નામ</string>
+	<string name="realm_invite_code_hint">Realm આમંત્રણ કોડ</string>
+	<string name="world_name_hint">વિશ્વ નામ</string>
+	<string name="command_hint">કમાન્ડ ( / વગર )</string>
+	<string name="command_warning">નોંધ: સ્થાનિક વિશ્વમાં વાપરશો તો તમે ડિસકનેક્ટ થઈ જશો</string>
+	<string name="uri_hint">minecraft://…</string>
+	<string name="custom_uri_hint">Enter a full minecraft:// URI. Examples:\nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
+	<string name="select_tab">ટેબ પસંદ કરો:</string>
+
+	<!-- Quick Launch Validation -->
+	<string name="server_ip_required">સર્વર IP જરૂરી છે</string>
+	<string name="server_details_required">સર્વર નામ અને IP જરૂરી છે</string>
+	<string name="invalid_port">અમાન્ય પોર્ટ નંબર</string>
+	<string name="invite_code_required">આમંત્રણ કોડ જરૂરી છે</string>
+	<string name="world_name_required">વિશ્વ નામ જરૂરી છે</string>
+	<string name="command_required">કમાન્ડ જરૂરી છે</string>
+	<string name="invalid_minecraft_uri">અમાન્ય minecraft:// URI</string>
+
+	<!-- Quick Launch Actions -->
+	<string name="connect">જોડાઓ</string>
+	<string name="join">જોડાઓ</string>
+	<string name="load">લોડ કરો</string>
+	<string name="execute">ચલાવો</string>
+
+	<!-- Quick Actions Menu -->
+	<string name="quick_launch">ઝડપી લોન્ચ</string>
+	<string name="quick_launch_menu_subtitle">URI ક્રિયાઓ સાથે લોન્ચ કરો</string>
+
+	<!-- CurseForge -->
+	<string name="curseforge_title">CurseForge</string>
+	<string name="curseforge_subtitle">સામગ્રી બ્રાઉઝ અને ડાઉનલોડ કરો</string>
+	<string name="curseforge_search_hint">સામગ્રી શોધો…</string>
+	<string name="curseforge_download">ડાઉનલોડ</string>
+	<string name="curseforge_downloading">ડાઉનલોડ થઈ રહ્યું છે…</string>
+	<string name="curseforge_importing">આયાત થઈ રહ્યું છે…</string>
+	<string name="curseforge_download_failed">ડાઉનલોડ નિષ્ફળ</string>
+	<string name="curseforge_available_files">ઉપલબ્ધ ફાઇલો</string>
+
+	<!-- Navigation Bar -->
+	<string name="nav_launch">લોન્ચ</string>
+	<string name="nav_import">આયાત</string>
+	<string name="nav_instances">ઇન્સ્ટન્સ</string>
+	<string name="nav_about">વિશે</string>
+	<string name="nav_settings">સેટિંગ્સ</string>
+
+	<string name="search_instances_hint">શોધો…</string>
+	<string name="instances_label">ઇન્સ્ટન્સ</string>
+	<string name="select_instance_title">ઇન્સ્ટન્સ પસંદ કરો</string>
+	<string name="filter_all">બધા</string>
+	<string name="filter_custom">કસ્ટમ</string>
+	<string name="sort_version_newest">સંસ્કરણ (નવું)</string>
+	<string name="tag_installed">ઇન્સ્ટોલ થયેલ</string>
+	<string name="tag_custom">કસ્ટમ</string>
+	<string name="vanilla_prefix">Vanilla %s</string>
+
+	<string name="about_page_title">વિશે</string>
+	<string name="about_subtitle">LeviLauncher — આધુનિક Minecraft Bedrock લોન્ચર</string>
+	<string name="about_authors_title">👥 Authors &amp; Maintainers</string>
+	<string name="about_author_name">DreamGuXiang</string>
+	<string name="about_author_badge">લેખક</string>
+	<string name="about_author_role">LeviLauncher લેખકો</string>
+	<string name="about_afdian">Afdian</string>
+	<string name="about_patreon">Patreon</string>
+	<string name="about_source_title">સોર્સ કોડ &amp; ઓપન સોર્સ</string>
+	<string name="about_github_repo">GitHub · LeviLauncher</string>
+	<string name="about_github_org">LiteLDev</string>
+	<string name="about_license_note">લાઇસન્સની વિગતો માટે repository માં LICENSE જુઓ.</string>
+	<string name="about_contribute_title">યોગદાન આપો</string>
+	<string name="about_contribute_desc">LeviLauncher સુધારવા માટે Issues અથવા Pull Requests દ્વારા યોગદાન સ્વાગત છે.</string>
+	<string name="about_issues">ઇશ્યૂ</string>
+	<string name="about_star_fork">સ્ટાર / ફોર્ક</string>
+
+	<string-array name="launcher_tips">
+		<item>Settings તમને તમારી ગોઠવણી મુજબ થીમ, રંગ, બેકગ્રાઉન્ડ, અને અન્ય દેખાવ વિકલ્પો બદલી આપવા દે છે.</item>
+		<item>LeviLauncher ઓપન સોર્સ છે. લોન્ચરની સમસ્યાઓ રિપોર્ટ કરવા અથવા સુધારાઓ સૂચવવા GitHub issues વાપરો.</item>
+		<item>વર્તમાન ઇન્સ્ટન્સ ઝડપથી બદલવા version dropdown વાપરો.</item>
+		<item>લોકો ખરેખર આ વાંચે છે?</item>
+		<item>મોડ્સની લોડ પ્રાથમિકતા બદલવા તેમને ખેંચી શકો છો.</item>
+		<item>Version Isolation અજમાવો!</item>
+		<item>ગેમ ખોલ્યા વગર સીધા સર્વર સાથે જોડાવા Quick Launch વાપરો.</item>
+		<item>.mcworld, .mcpack, અને .mcaddon ફાઇલો Content Management પેજમાંથી આયાત કરી શકો છો.</item>
+		<item>લોન્ચરમાં અનેક Xbox એકાઉન્ટ્સ મેનેજ કરો અને તેમની વચ્ચે સરળતાથી સ્વિચ કરો.</item>
+		<item>CurseForge તમને community content સીધું બ્રાઉઝ અને ડાઉનલોડ કરવાની સગવડ આપે છે.</item>
+		<item>Minecraft ની સુવિધાઓ અને કામગીરી વધારવા અથવા વિસ્તૃત કરવા મોડ્સ આયાત કરો.</item>
+	</string-array>
+
+	<string name="theme_color_title">થીમ રંગ</string>
+	<string name="theme_color_desc">એપ્લિકેશનનો મુખ્ય accent રંગ</string>
+	<string name="preset_colors">પૂર્વનિર્ધારિત રંગો</string>
+	<string name="more_colors">વધુ રંગો</string>
+	<string name="bg_image_title">બેકગ્રાઉન્ડ ઇમેજ</string>
+	<string name="bg_image_desc">બેકગ્રાઉન્ડ તરીકે વાપરવા માટે ઇમેજ પસંદ કરો</string>
+	<string name="bg_image_none">કોઈ ઇમેજ પસંદ નથી</string>
+	<string name="bg_image_selected">કસ્ટમ બેકગ્રાઉન્ડ સક્રિય છે</string>
+	<string name="bg_image_blur">બ્લર</string>
+	<string name="bg_image_blur_value">%1$dpx</string>
+	<string name="bg_image_brightness">ચમક</string>
+	<string name="bg_image_brightness_value">%1$d%%</string>
+	<string name="select_image">ઇમેજ પસંદ કરો</string>
+	<string name="clear">સાફ કરો</string>
+
+	<string name="unsupported_version_title">અસમર્થિત સંસ્કરણ</string>
+	<string name="unsupported_version_msg">આ લોન્ચર 1.21.80 કરતાં જૂના Minecraft સંસ્કરણોને સપોર્ટ કરતું નથી.</string>
+</resources>

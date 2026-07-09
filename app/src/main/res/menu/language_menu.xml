@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Keep English at the top (default language). -->
+    <!-- Sort all other languages alphabetically by their display name. -->
     <item
         android:id="@+id/action_english"
         android:title="@string/english"/>
@@ -7,26 +9,29 @@
         android:id="@+id/action_chinese"
         android:title="@string/chinese"/>
     <item
-        android:id="@+id/action_russian"
-        android:title="@string/russian"/>
+        android:id="@+id/action_french"
+        android:title="@string/french"/>
+    <item
+        android:id="@+id/action_gujarati"
+        android:title="@string/gujarati"/>
+    <item
+        android:id="@+id/action_hindi"
+        android:title="@string/hindi"/>
     <item
         android:id="@+id/action_indonesian"
         android:title="@string/indonesian"/>
     <item
-        android:id="@+id/action_spanish"
-        android:title="@string/spanish"/>
+        android:id="@+id/action_japanese"
+        android:title="@string/japanese"/>
     <item
         android:id="@+id/action_portuguese"
         android:title="@string/portuguese"/>
     <item
-        android:id="@+id/action_french"
-        android:title="@string/french"/>
+        android:id="@+id/action_russian"
+        android:title="@string/russian"/>
     <item
-        android:id="@+id/action_japanese"
-        android:title="@string/japanese"/>
-    <item
-        android:id="@+id/action_hindi"
-        android:title="@string/hindi"/>
+        android:id="@+id/action_spanish"
+        android:title="@string/spanish"/>
     <item
         android:id="@+id/action_turkish"
         android:title="@string/turkish"/>
