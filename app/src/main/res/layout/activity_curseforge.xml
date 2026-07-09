@@ -1,84 +1,110 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/background">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/curseforge_title"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/primary"
-        android:fontFamily="@font/misans"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="8dp" />
-
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="4dp"
-        android:paddingBottom="8dp">
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
 
-        <EditText
-            android:id="@+id/search_box"
+        <!-- Scrollable Header Area -->
+        <LinearLayout
+            android:id="@+id/header_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_search_box"
-            android:padding="12dp"
-            android:hint="@string/curseforge_search_hint"
-            android:textColorHint="@color/on_surface"
-            android:textColor="@color/on_surface"
-            android:fontFamily="@font/misans"
-            android:imeOptions="actionSearch"
-            android:inputType="text"/>
-    </LinearLayout>
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="12dp"
+            android:background="@drawable/bg_rounded_card"
+            android:layout_margin="8dp"
+            android:elevation="4dp"
+            app:layout_scrollFlags="scroll">
 
-    <LinearLayout
-        android:id="@+id/filter_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
-        android:paddingBottom="4dp"
-        app:layout_constraintTop_toBottomOf="@id/search_box"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+            <!-- Top Row: Title and Sort -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
 
-        <Spinner
-            android:id="@+id/spinner_category"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/bg_spinner"
-            tools:listitem="@layout/spinner_item" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/curseforge_title"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary"
+                    android:fontFamily="@font/misans"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"/>
 
-        <Spinner
-            android:id="@+id/spinner_sort"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_spinner"
-            tools:listitem="@layout/spinner_item" />
-    </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_sort"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="Sort"
+                    android:textSize="12sp"
+                    android:textColor="@color/on_surface"
+                    android:paddingHorizontal="12dp"
+                    app:strokeColor="@color/divider"
+                    app:icon="@drawable/ic_arrow_down" 
+                    app:iconTint="@color/on_surface"
+                    app:iconGravity="textEnd"
+                    app:cornerRadius="18dp"/>
+            </RelativeLayout>
 
+            <!-- Search Box -->
+            <EditText
+                android:id="@+id/search_box"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_search_box"
+                android:paddingHorizontal="16dp"
+                android:hint="@string/curseforge_search_hint"
+                android:textColorHint="@color/text_secondary"
+                android:textColor="@color/on_surface"
+                android:fontFamily="@font/misans"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:drawableStart="@drawable/ic_search"
+                android:drawableTint="@color/on_surface"
+                android:drawablePadding="12dp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Horizontal Scrollable Categories -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <RadioGroup
+                    android:id="@+id/category_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Content Area -->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mods_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
+            android:padding="8dp"
             android:clipToPadding="false"/>
 
         <ProgressBar
@@ -89,4 +115,4 @@
             android:visibility="gone"/>
     </FrameLayout>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

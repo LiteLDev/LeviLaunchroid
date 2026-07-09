@@ -11,7 +11,18 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.RadioGroup;
+import android.widget.RadioButton;
+import android.widget.PopupMenu;
+import android.view.ViewGroup;
 import android.widget.Toast;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.content.res.ColorStateList;
+import android.util.TypedValue;
+import androidx.core.content.ContextCompat;
+import org.levimc.launcher.util.PersonalizationManager;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,8 +41,9 @@ import java.util.List;
 public class CurseForgeActivity extends BaseActivity {
 
     private EditText searchBox;
-    private Spinner spinnerCategory;
-    private Spinner spinnerSort;
+    private RadioGroup categoryGroup;
+    private com.google.android.material.button.MaterialButton btnSort;
+    private SortOption currentSort;
     private RecyclerView recyclerView;
     private ProgressBar loadingProgress;
     private CurseForgeContentAdapter adapter;
@@ -93,8 +105,8 @@ public class CurseForgeActivity extends BaseActivity {
 
     private void initViews() {
         searchBox = findViewById(R.id.search_box);
-        spinnerCategory = findViewById(R.id.spinner_category);
-        spinnerSort = findViewById(R.id.spinner_sort);
+        categoryGroup = findViewById(R.id.category_group);
+        btnSort = findViewById(R.id.btn_sort);
         recyclerView = findViewById(R.id.mods_recycler);
         loadingProgress = findViewById(R.id.loading_progress);
 
@@ -130,31 +142,93 @@ public class CurseForgeActivity extends BaseActivity {
             return false;
         });
 
-        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(categoryAdapter);
-        
-        ArrayAdapter<SortOption> sortAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, sortOptions);
-        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerSort.setAdapter(sortAdapter);
-        
-        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
-            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        PersonalizationManager pm = new PersonalizationManager(this);
+        int accentColor = pm.hasCustomAccent() ? pm.getAccentColor() : ContextCompat.getColor(this, R.color.primary);
+        int onSurface = ContextCompat.getColor(this, R.color.on_surface);
+
+        ColorStateList textColors = new ColorStateList(
+            new int[][]{
+                new int[]{android.R.attr.state_checked},
+                new int[]{android.R.attr.state_selected},
+                new int[]{}
+            },
+            new int[]{
+                Color.WHITE,
+                Color.WHITE,
+                onSurface
+            }
+        );
+
+        float radiusPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20f, getResources().getDisplayMetrics());
+
+        for (int i = 0; i < categories.size(); i++) {
+            Category cat = categories.get(i);
+            RadioButton rb = new RadioButton(this);
+            rb.setId(View.generateViewId());
+            rb.setText(cat.name);
+            rb.setTextColor(textColors);
+            rb.setTextSize(14f);
+            rb.setButtonDrawable(android.R.color.transparent);
+            
+            GradientDrawable checkedBg = new GradientDrawable();
+            checkedBg.setShape(GradientDrawable.RECTANGLE);
+            checkedBg.setCornerRadius(radiusPx);
+            checkedBg.setColor(accentColor);
+            
+            GradientDrawable uncheckedBg = new GradientDrawable();
+            uncheckedBg.setShape(GradientDrawable.RECTANGLE);
+            uncheckedBg.setCornerRadius(radiusPx);
+            uncheckedBg.setColor(Color.parseColor("#1A888888"));
+            
+            StateListDrawable sld = new StateListDrawable();
+            sld.addState(new int[]{android.R.attr.state_checked}, checkedBg);
+            sld.addState(new int[]{android.R.attr.state_selected}, checkedBg);
+            sld.addState(new int[]{}, uncheckedBg);
+            
+            rb.setBackground(sld);
+            rb.setPadding(40, 20, 40, 20);
+            RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, 
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 0, 16, 0);
+            categoryGroup.addView(rb, params);
+            if (i == 0) rb.setChecked(true);
+            rb.setTag(cat);
+        }
+
+        categoryGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            currentPage = 1;
+            loadContent();
+        });
+
+        currentSort = sortOptions.get(0);
+        btnSort.setText("Sort: " + currentSort.name);
+        btnSort.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(this, v);
+            for (int i = 0; i < sortOptions.size(); i++) {
+                popup.getMenu().add(0, i, i, sortOptions.get(i).name);
+            }
+            popup.setOnMenuItemClickListener(item -> {
+                currentSort = sortOptions.get(item.getItemId());
+                btnSort.setText("Sort: " + currentSort.name);
                 currentPage = 1;
                 loadContent();
-            }
-
-            @Override public void onNothingSelected(AdapterView<?> parent) {}
-        };
-        
-        spinnerCategory.setOnItemSelectedListener(listener);
-        spinnerSort.setOnItemSelectedListener(listener);
+                return true;
+            });
+            popup.show();
+        });
     }
     
     private void loadContent() {
         String query = searchBox.getText().toString();
-        Category category = (Category) spinnerCategory.getSelectedItem();
-        SortOption sort = (SortOption) spinnerSort.getSelectedItem();
+        
+        Category category = null;
+        int checkedId = categoryGroup.getCheckedRadioButtonId();
+        if (checkedId != -1) {
+            category = (Category) findViewById(checkedId).getTag();
+        }
+        
+        SortOption sort = currentSort;
         
         loadingProgress.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
