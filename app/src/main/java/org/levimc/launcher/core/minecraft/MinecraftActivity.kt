@@ -65,10 +65,6 @@ class MinecraftActivity : MainActivity() {
         
         org.levimc.launcher.preloader.PreloaderInput.setActivity(this)
         MinecraftActivityState.onCreated(this)
-        getSharedPreferences("LauncherPrefs", MODE_PRIVATE)
-            .edit()
-            .putBoolean("game_verified", true)
-            .apply()
         trace.mark("MinecraftActivity onCreate finished")
     }
 

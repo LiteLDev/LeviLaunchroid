@@ -265,10 +265,6 @@ public class InstancesActivity extends BaseActivity {
     private void setupImportButton() {
         TextView btnImport = findViewById(R.id.btn_import_apk);
         if (btnImport == null) return;
-        if (!getSharedPreferences("LauncherPrefs", MODE_PRIVATE).getBoolean("game_verified", false)) {
-            btnImport.setVisibility(View.GONE);
-            return;
-        }
         btnImport.setVisibility(View.VISIBLE);
         btnImport.setSelected(true);
         PersonalizationManager pm = new PersonalizationManager(this);

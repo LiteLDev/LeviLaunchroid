@@ -192,11 +192,6 @@ public class MinecraftLauncher {
         launchIntent.putExtra("VERSION_ISOLATION", version.versionIsolation);
         launchIntent.removeExtra("LAUNCH_WITH_URI");
 
-        activity.getSharedPreferences("LauncherPrefs", Context.MODE_PRIVATE)
-                .edit()
-                .putBoolean("game_verified", true)
-                .apply();
-
         activity.startActivity(launchIntent);
         activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         trace.mark("MinecraftLoadingActivity startActivity called");
