@@ -100,8 +100,11 @@ public class ModMenuOverlay {
             menuContainer.setPivotX(menuContainer.getWidth() / 2f);
             menuContainer.setPivotY(menuContainer.getHeight() / 2f);
             
+            int opacity = InbuiltModManager.getInstance(activity).getModMenuOpacity();
+            float targetAlpha = opacity / 100f;
+            
             menuContainer.animate()
-                .alpha(1f)
+                .alpha(targetAlpha)
                 .scaleX(1f)
                 .scaleY(1f)
                 .setDuration(220)
