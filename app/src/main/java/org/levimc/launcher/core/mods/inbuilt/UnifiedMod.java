@@ -17,7 +17,8 @@ public class UnifiedMod {
         SLIDER_FLOAT,
         RADIO,
         COLOR,
-        KEYBIND
+        KEYBIND,
+        TEXT
     }
 
     public interface EnabledHandler {

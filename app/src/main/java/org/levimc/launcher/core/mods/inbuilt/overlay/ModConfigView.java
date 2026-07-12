@@ -33,7 +33,7 @@ public class ModConfigView {
 
     private static void renderConfigEntries(Context context, ViewGroup container, UnifiedMod mod, int accent, float density, Runnable onConfigChanged) {
         List<UnifiedMod.ConfigEntry> configs = mod.getConfigEntries();
-        
+
         java.util.Map<String, java.util.List<View>> configViews = new java.util.HashMap<>();
         Runnable applyDependencies = () -> {
             for (UnifiedMod.ConfigEntry cfg : configs) {
@@ -82,7 +82,7 @@ public class ModConfigView {
                     float fCur = parseFloatSafe(cfg.currentValue, parseFloatSafe(cfg.defaultValue, fMin));
                     int steps = 100;
                     int curProgress = (int)((fCur - fMin) / (fMax - fMin) * steps);
-                    
+
                     LinearLayout row = createRow(context, container, density);
                     TextView label = createLabel(context, cfg.displayName, density);
                     TextView valText = createValueText(context, String.format("%.2f", fCur), accent, density);
@@ -95,7 +95,7 @@ public class ModConfigView {
                     seekBar.setMax(steps);
                     seekBar.setProgress(Math.max(0, Math.min(steps, curProgress)));
                     applyAccentToSeekBar(seekBar, accent);
-                    
+
                     seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                         @Override
                         public void onProgressChanged(SeekBar sb, int progress, boolean fromUser) {
@@ -119,7 +119,7 @@ public class ModConfigView {
 
                     RadioGroup radioGroup = new RadioGroup(context);
                     radioGroup.setOrientation(LinearLayout.VERTICAL);
-                    
+
                     String[] options = cfg.minValue != null ? cfg.minValue.split(",") : new String[0];
                     int selectedIndex = parseIntSafe(cfg.currentValue, parseIntSafe(cfg.defaultValue, 0));
                     final java.util.Map<Integer, Integer> optionIds = new java.util.HashMap<>();
@@ -134,9 +134,9 @@ public class ModConfigView {
                         int[][] states = {{android.R.attr.state_checked}, {}};
                         rb.setButtonTintList(new ColorStateList(states, new int[]{accent, 0xFFA8B0B8}));
                         optionIds.put(optionId, i);
-                        
+
                         LinearLayout.LayoutParams rbParams = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         rb.setLayoutParams(rbParams);
                         radioGroup.addView(rb);
                         if (i == selectedIndex) rb.setChecked(true);
@@ -151,9 +151,9 @@ public class ModConfigView {
                         mod.updateConfig(cfg, newValue);
                         wrappedOnConfigChanged.run();
                     });
-                    
+
                     LinearLayout.LayoutParams rgParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     rgParams.leftMargin = (int)(4 * density);
                     rgParams.topMargin = (int)(4 * density);
                     container.addView(radioGroup, rgParams);
@@ -164,7 +164,7 @@ public class ModConfigView {
                     headerRow.setOrientation(LinearLayout.HORIZONTAL);
                     headerRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
                     LinearLayout.LayoutParams headerParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     headerParams.topMargin = (int)(12 * density);
                     headerRow.setLayoutParams(headerParams);
 
@@ -173,12 +173,12 @@ public class ModConfigView {
 
                     View colorPreview = new View(context);
                     LinearLayout.LayoutParams previewParams = new LinearLayout.LayoutParams(
-                        (int)(40 * density), (int)(20 * density));
-                    
+                            (int)(40 * density), (int)(20 * density));
+
                     String currentHex = cfg.currentValue.isEmpty() ? cfg.defaultValue : cfg.currentValue;
                     int initialColor = Color.WHITE;
                     try { initialColor = Color.parseColor(currentHex); } catch (Exception ignored) {}
-                    
+
                     android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
                     gd.setColor(initialColor);
                     gd.setCornerRadius(4 * density);
@@ -193,7 +193,7 @@ public class ModConfigView {
                     slidersContainer.setPadding((int)(12 * density), (int)(8 * density), 0, (int)(8 * density));
 
                     final int[] currentColor = {initialColor};
-                    
+
                     ValueChangeListener onSliderChange = val -> {
                         gd.setColor(currentColor[0]);
                         colorPreview.setBackground(gd);
@@ -224,7 +224,7 @@ public class ModConfigView {
                     });
 
                     container.addView(slidersContainer, new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
                     headerRow.setOnClickListener(v -> {
                         boolean isVisible = slidersContainer.getVisibility() == View.VISIBLE;
@@ -238,6 +238,28 @@ public class ModConfigView {
                         mod.updateConfig(cfg, String.valueOf(keyCode));
                         wrappedOnConfigChanged.run();
                     });
+                    break;
+                }
+                case TEXT: {
+                    LinearLayout row = createRow(context, container, density);
+                    TextView label = createLabel(context, cfg.displayName, density);
+                    android.widget.EditText editText = new android.widget.EditText(context);
+                    editText.setText(cfg.currentValue.isEmpty() ? cfg.defaultValue : cfg.currentValue);
+                    editText.setTextColor(0xFFF1F4F6);
+                    editText.setTextSize(14);
+                    editText.setBackgroundTintList(ColorStateList.valueOf(accent));
+                    editText.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+                    editText.addTextChangedListener(new android.text.TextWatcher() {
+                        @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                        @Override public void afterTextChanged(android.text.Editable s) {
+                            mod.updateConfig(cfg, s.toString());
+                            wrappedOnConfigChanged.run();
+                        }
+                    });
+                    row.addView(label);
+                    row.addView(editText);
+                    container.addView(row);
                     break;
                 }
             }
@@ -265,7 +287,7 @@ public class ModConfigView {
         seekBar.setMax(max);
         seekBar.setProgress(cur);
         applyAccentToSeekBar(seekBar, accent);
-        
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar sb, int progress, boolean fromUser) {
@@ -285,14 +307,14 @@ public class ModConfigView {
         TextView label = createLabel(context, labelText, density);
         Switch toggle = new Switch(context);
         toggle.setChecked(isChecked);
-        
+
         int[][] states = {{android.R.attr.state_checked}, {}};
         toggle.setThumbTintList(new ColorStateList(states, new int[]{accent, 0xFFA8B0B8}));
         int trackColor = Color.argb(100, Color.red(accent), Color.green(accent), Color.blue(accent));
         toggle.setTrackTintList(new ColorStateList(states, new int[]{trackColor, 0xFF343A40}));
-        
+
         toggle.setOnCheckedChangeListener((btn, checked) -> listener.onToggleChanged(checked));
-        
+
         row.addView(label);
         row.addView(toggle);
         container.addView(row);
@@ -305,7 +327,7 @@ public class ModConfigView {
         btn.setText(getKeyName(context, currentKey));
         btn.setBackgroundTintList(ColorStateList.valueOf(0xFF24282C));
         btn.setTextColor(accent);
-        
+
         btn.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Base_Theme_FullScreen); // using this to match theme
             builder.setTitle(labelText);
@@ -328,7 +350,7 @@ public class ModConfigView {
             });
             dialog.show();
         });
-        
+
         row.addView(label);
         row.addView(btn);
         container.addView(row);
@@ -348,21 +370,21 @@ public class ModConfigView {
         LinearLayout row = new LinearLayout(context);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(android.view.Gravity.CENTER_VERTICAL);
-        
+
         TextView tv = new TextView(context);
         tv.setText(labelText);
         tv.setTextColor(0xFFF1F4F6);
         tv.setTextSize(12);
         tv.setTypeface(null, android.graphics.Typeface.BOLD);
         tv.setLayoutParams(new LinearLayout.LayoutParams((int)(20 * density), LinearLayout.LayoutParams.WRAP_CONTENT));
-        
+
         SeekBar sb = new SeekBar(context);
         sb.setMax(255);
         sb.setProgress(value);
         sb.setProgressTintList(ColorStateList.valueOf(tint));
         sb.setThumbTintList(ColorStateList.valueOf(tint));
         sb.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
-        
+
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) listener.onValueChanged(progress);
@@ -370,12 +392,12 @@ public class ModConfigView {
             @Override public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        
+
         row.addView(tv);
         row.addView(sb);
-        
+
         LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         rowParams.topMargin = (int)(4 * density);
         container.addView(row, rowParams);
         return sb;
