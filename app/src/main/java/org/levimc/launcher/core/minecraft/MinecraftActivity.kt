@@ -1,15 +1,25 @@
 package org.levimc.launcher.core.minecraft
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Bundle
+import android.text.InputType
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputConnection
+import android.view.inputmethod.InputConnectionWrapper
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.AppCompatEditText
 import com.mojang.minecraftpe.MainActivity
 import org.levimc.launcher.core.crash.CrashReporter
 import org.levimc.launcher.core.mods.ModManager
 import org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager
+import org.levimc.launcher.preloader.PreloaderInput
 import java.io.File
 
 class MinecraftActivity : MainActivity() {
@@ -20,6 +30,54 @@ class MinecraftActivity : MainActivity() {
     private var normalExitPrepared = false
     private var normalExitRestartScheduled = false
     private var gameRuntimeStarted = false
+    private var preloaderTextInput: PreloaderTextInput? = null
+    private var previousInputFocus: View? = null
+
+    private class PreloaderTextInput(context: Context) : AppCompatEditText(context) {
+        override fun onCreateInputConnection(outAttrs: EditorInfo): InputConnection? {
+            val target = super.onCreateInputConnection(outAttrs) ?: return null
+            return object : InputConnectionWrapper(target, true) {
+                override fun commitText(text: CharSequence?, newCursorPosition: Int): Boolean {
+                    if (!text.isNullOrEmpty() && PreloaderInput.onTextInput(text)) {
+                        super.commitText("", newCursorPosition)
+                        return true
+                    }
+                    return super.commitText(text, newCursorPosition)
+                }
+
+                override fun deleteSurroundingText(beforeLength: Int, afterLength: Int): Boolean {
+                    if (beforeLength > 0 && dispatchBackspace()) {
+                        return true
+                    }
+                    return super.deleteSurroundingText(beforeLength, afterLength)
+                }
+
+                override fun deleteSurroundingTextInCodePoints(
+                    beforeLength: Int,
+                    afterLength: Int
+                ): Boolean {
+                    if (beforeLength > 0 && dispatchBackspace()) {
+                        return true
+                    }
+                    return super.deleteSurroundingTextInCodePoints(beforeLength, afterLength)
+                }
+
+                private fun dispatchBackspace(): Boolean {
+                    val downConsumed = PreloaderInput.onKeyEvent(
+                        KeyEvent.KEYCODE_DEL,
+                        0,
+                        true
+                    )
+                    val upConsumed = PreloaderInput.onKeyEvent(
+                        KeyEvent.KEYCODE_DEL,
+                        0,
+                        false
+                    )
+                    return downConsumed || upConsumed
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         trace = LaunchTrace.ensure(intent)
@@ -63,7 +121,8 @@ class MinecraftActivity : MainActivity() {
             requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
         
-        org.levimc.launcher.preloader.PreloaderInput.setActivity(this)
+        initializePreloaderTextInput()
+        PreloaderInput.setActivity(this)
         MinecraftActivityState.onCreated(this)
         trace.mark("MinecraftActivity onCreate finished")
     }
@@ -211,7 +270,9 @@ class MinecraftActivity : MainActivity() {
             prepareNormalExitCleanup()
         }
 
-        org.levimc.launcher.preloader.PreloaderInput.clearActivity()
+        preloaderTextInput = null
+        previousInputFocus = null
+        PreloaderInput.clearActivity()
         MinecraftActivityState.onDestroyed(this)
         MinecraftLaunchSession.clear()
         stopInbuiltModServices()
@@ -303,21 +364,67 @@ class MinecraftActivity : MainActivity() {
         return resolveStorageDir(MinecraftLauncher.EXTRA_STORAGE_CACHE_DIR, super.getCacheDir())
     }
 
+    private fun initializePreloaderTextInput() {
+        val input = PreloaderTextInput(this).apply {
+            isFocusable = true
+            isFocusableInTouchMode = true
+            isEmojiCompatEnabled = false
+            isSingleLine = true
+            inputType = InputType.TYPE_CLASS_TEXT or
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD or
+                InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+            imeOptions = EditorInfo.IME_ACTION_DONE or
+                EditorInfo.IME_FLAG_NO_EXTRACT_UI or
+                EditorInfo.IME_FLAG_NO_FULLSCREEN or
+                EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING
+            setBackgroundColor(Color.TRANSPARENT)
+            setTextColor(Color.TRANSPARENT)
+            isCursorVisible = false
+            alpha = 0f
+            visibility = View.GONE
+        }
+        findViewById<ViewGroup>(android.R.id.content).addView(
+            input,
+            ViewGroup.LayoutParams(1, 1)
+        )
+        preloaderTextInput = input
+    }
+
     fun showSoftKeyboard() {
         runOnUiThread {
-            val inputMethodManager = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
-            val view = window.decorView.findFocus() ?: window.decorView
-            view.requestFocus()
-            inputMethodManager.showSoftInput(view, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
-            inputMethodManager.toggleSoftInput(android.view.inputmethod.InputMethodManager.SHOW_FORCED, 0)
+            val input = preloaderTextInput ?: return@runOnUiThread
+            previousInputFocus = currentFocus?.takeUnless { it === input }
+            input.visibility = View.VISIBLE
+            input.setText("")
+            input.requestFocus()
+            input.setSelection(0)
+
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.restartInput(input)
+            if (!inputMethodManager.showSoftInput(
+                    input,
+                    InputMethodManager.SHOW_IMPLICIT
+                )
+            ) {
+                inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+            }
         }
     }
 
     fun hideSoftKeyboard() {
         runOnUiThread {
-            val inputMethodManager = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
-            val view = window.decorView.findFocus() ?: window.decorView
-            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+            val input = preloaderTextInput ?: return@runOnUiThread
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(input.windowToken, 0)
+            input.clearFocus()
+            input.visibility = View.GONE
+
+            previousInputFocus
+                ?.takeIf { it.isAttachedToWindow && it.visibility == View.VISIBLE }
+                ?.requestFocus()
+            previousInputFocus = null
         }
     }
 }
