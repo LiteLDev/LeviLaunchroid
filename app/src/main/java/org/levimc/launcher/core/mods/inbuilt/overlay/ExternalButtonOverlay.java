@@ -129,7 +129,7 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
             sendKeyDown(button.androidKeyCode);
         }
         ExternalModBridge.dispatchExternalButtonEvent(
-            button.buttonId, ExternalModBridge.ExternalButton.EVENT_DOWN, 1f);
+                button.buttonId, ExternalModBridge.ExternalButton.EVENT_DOWN, 1f);
         updateActiveVisual();
     }
 
@@ -141,7 +141,7 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
             sendKeyUp(button.androidKeyCode);
         }
         ExternalModBridge.dispatchExternalButtonEvent(
-            button.buttonId, ExternalModBridge.ExternalButton.EVENT_UP, 0f);
+                button.buttonId, ExternalModBridge.ExternalButton.EVENT_UP, 0f);
         updateActiveVisual();
     }
 
@@ -159,9 +159,9 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
                 }
             }
             ExternalModBridge.dispatchExternalButtonEvent(
-                button.buttonId,
-                ExternalModBridge.ExternalButton.EVENT_STATE_CHANGED,
-                active ? 1f : 0f);
+                    button.buttonId,
+                    ExternalModBridge.ExternalButton.EVENT_STATE_CHANGED,
+                    active ? 1f : 0f);
             updateActiveVisual();
             return;
         }
@@ -170,17 +170,17 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
             sendKey(button.androidKeyCode);
         }
         ExternalModBridge.dispatchExternalButtonEvent(
-            button.buttonId, ExternalModBridge.ExternalButton.EVENT_CLICK, 1f);
+                button.buttonId, ExternalModBridge.ExternalButton.EVENT_CLICK, 1f);
     }
 
     public boolean onScroll(float delta) {
         if (!active) return false;
         if (button.behavior != ExternalModBridge.ExternalButton.BEHAVIOR_HOLD
-            && button.behavior != ExternalModBridge.ExternalButton.BEHAVIOR_TOGGLE) {
+                && button.behavior != ExternalModBridge.ExternalButton.BEHAVIOR_TOGGLE) {
             return false;
         }
         ExternalModBridge.dispatchExternalButtonEvent(
-            button.buttonId, ExternalModBridge.ExternalButton.EVENT_SCROLL, delta);
+                button.buttonId, ExternalModBridge.ExternalButton.EVENT_SCROLL, delta);
         return true;
     }
 
@@ -193,9 +193,9 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
                 sendKeyUp(button.androidKeyCode);
             }
             ExternalModBridge.dispatchExternalButtonEvent(
-                button.buttonId,
-                ExternalModBridge.ExternalButton.EVENT_STATE_CHANGED,
-                0f);
+                    button.buttonId,
+                    ExternalModBridge.ExternalButton.EVENT_STATE_CHANGED,
+                    0f);
             active = false;
         }
         super.hide();
@@ -250,6 +250,12 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
         if (labelView != null) {
             labelView.setTextColor(resolveTextColor(active));
         }
+        if (iconView != null && iconVisible) {
+            iconView.setColorFilter(resolveTextColor(active), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (button.hasIcon && button.iconFormat == ExternalModBridge.ExternalButton.ICON_RESOURCE) {
+            loadIcon();
+        }
     }
 
     private void loadIcon() {
@@ -265,10 +271,28 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
         }
 
         byte[] iconBytes = ExternalModBridge.getExternalButtonIconBytes(
-            button.buttonId, getButtonWidthPx(), getButtonHeightPx());
+                button.buttonId, getButtonWidthPx(), getButtonHeightPx());
         if (iconBytes == null || iconBytes.length == 0) {
             updateLabelVisibility();
             return;
+        }
+
+        if (button.iconFormat == ExternalModBridge.ExternalButton.ICON_RESOURCE) {
+            String resNamesStr = new String(iconBytes, java.nio.charset.StandardCharsets.UTF_8);
+            String[] resNames = resNamesStr.split(",");
+            String resName = resNames[0];
+            if (active && resNames.length > 1) {
+                resName = resNames[1];
+            }
+            int resId = activity.getResources().getIdentifier(resName, "drawable", activity.getPackageName());
+            if (resId != 0) {
+                iconView.setImageResource(resId);
+                iconView.setContentDescription(button.displayName);
+                iconView.setVisibility(View.VISIBLE);
+                iconVisible = true;
+                updateLabelVisibility();
+                return;
+            }
         }
 
         Bitmap bitmap = BitmapFactory.decodeByteArray(iconBytes, 0, iconBytes.length);

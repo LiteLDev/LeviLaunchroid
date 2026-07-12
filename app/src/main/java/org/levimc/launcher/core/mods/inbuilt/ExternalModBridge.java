@@ -113,6 +113,7 @@ public class ExternalModBridge {
         public static final int ICON_PNG = 1;
         public static final int ICON_WEBP = 2;
         public static final int ICON_SVG = 3;
+        public static final int ICON_RESOURCE = 4;
 
         public String buttonId;
         public String moduleId;
