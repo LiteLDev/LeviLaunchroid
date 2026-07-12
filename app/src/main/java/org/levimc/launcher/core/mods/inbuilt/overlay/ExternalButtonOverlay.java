@@ -251,9 +251,11 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
             labelView.setTextColor(resolveTextColor(active));
         }
         if (iconView != null && iconVisible) {
-            iconView.setColorFilter(resolveTextColor(active), android.graphics.PorterDuff.Mode.SRC_IN);
+            iconView.clearColorFilter();
         }
         if (button.hasIcon && button.iconFormat == ExternalModBridge.ExternalButton.ICON_RESOURCE) {
+            loadIcon();
+        } else if (button.hasIcon) {
             loadIcon();
         }
     }
@@ -271,7 +273,7 @@ public class ExternalButtonOverlay extends BaseOverlayButton {
         }
 
         byte[] iconBytes = ExternalModBridge.getExternalButtonIconBytes(
-                button.buttonId, getButtonWidthPx(), getButtonHeightPx());
+                button.buttonId, getButtonWidthPx(), getButtonHeightPx(), active);
         if (iconBytes == null || iconBytes.length == 0) {
             updateLabelVisibility();
             return;
