@@ -262,6 +262,21 @@ public class ModConfigView {
                     container.addView(row);
                     break;
                 }
+                case BUTTON: {
+                    LinearLayout row = createRow(context, container, density);
+                    Button btn = new Button(context);
+                    btn.setText(cfg.displayName);
+                    btn.setBackgroundTintList(ColorStateList.valueOf(0xFF24282C));
+                    btn.setTextColor(accent);
+                    btn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    btn.setOnClickListener(v -> {
+                        mod.updateConfig(cfg, "true");
+                        wrappedOnConfigChanged.run();
+                    });
+                    row.addView(btn);
+                    container.addView(row);
+                    break;
+                }
             }
 
             int endIndex = container.getChildCount();

@@ -18,7 +18,8 @@ public class UnifiedMod {
         RADIO,
         COLOR,
         KEYBIND,
-        TEXT
+        TEXT,
+        BUTTON
     }
 
     public interface EnabledHandler {
