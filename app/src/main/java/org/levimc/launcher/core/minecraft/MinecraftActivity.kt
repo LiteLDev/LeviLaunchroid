@@ -39,7 +39,7 @@ class MinecraftActivity : MainActivity() {
             return object : InputConnectionWrapper(target, true) {
                 override fun commitText(text: CharSequence?, newCursorPosition: Int): Boolean {
                     if (!text.isNullOrEmpty() && PreloaderInput.onTextInput(text)) {
-                        super.commitText("", newCursorPosition)
+                        super.commitText(text, newCursorPosition)
                         return true
                     }
                     return super.commitText(text, newCursorPosition)
