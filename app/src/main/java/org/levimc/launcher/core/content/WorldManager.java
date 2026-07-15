@@ -105,9 +105,12 @@ public class WorldManager {
                 String tempDirName = "temp_world_" + System.currentTimeMillis();
                 File tempDir = new File(context.getCacheDir(), tempDirName);
                 tempDir.mkdirs();
+                
+                File tempZip = new File(context.getCacheDir(), tempDirName + "_zip.mcworld");
 
                 try {
-                    extractZip(inputStream, tempDir, callback);
+                    copyStreamToFile(inputStream, tempZip);
+                    extractZip(tempZip, tempDir, callback);
 
                     File worldDir = findWorldDirectory(tempDir);
                     if (worldDir == null) {
@@ -124,6 +127,7 @@ public class WorldManager {
                     
                 } finally {
                     deleteDirectory(tempDir);
+                    tempZip.delete();
                     inputStream.close();
                 }
 
@@ -200,26 +204,29 @@ public class WorldManager {
         });
     }
 
-    private void extractZip(InputStream inputStream, File targetDir, WorldOperationCallback callback) throws IOException {
-        ZipInputStream zis = new ZipInputStream(inputStream);
-        ZipEntry entry;
-        byte[] buffer = new byte[BUFFER_SIZE];
-        
-        while ((entry = zis.getNextEntry()) != null) {
-            File entryFile = new File(targetDir, entry.getName());
-
-            if (!entryFile.getCanonicalPath().startsWith(targetDir.getCanonicalPath())) {
-                continue;
-            }
+    private void extractZip(File zipFile, File targetDir, WorldOperationCallback callback) throws IOException {
+        try (java.util.zip.ZipFile zip = new java.util.zip.ZipFile(zipFile)) {
+            java.util.Enumeration<? extends ZipEntry> entries = zip.entries();
+            byte[] buffer = new byte[BUFFER_SIZE];
             
-            if (entry.isDirectory()) {
-                entryFile.mkdirs();
-            } else {
-                entryFile.getParentFile().mkdirs();
-                try (FileOutputStream fos = new FileOutputStream(entryFile)) {
-                    int len;
-                    while ((len = zis.read(buffer)) > 0) {
-                        fos.write(buffer, 0, len);
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                File entryFile = new File(targetDir, entry.getName());
+
+                if (!entryFile.getCanonicalPath().startsWith(targetDir.getCanonicalPath())) {
+                    continue;
+                }
+                
+                if (entry.isDirectory()) {
+                    entryFile.mkdirs();
+                } else {
+                    entryFile.getParentFile().mkdirs();
+                    try (InputStream is = zip.getInputStream(entry);
+                         FileOutputStream fos = new FileOutputStream(entryFile)) {
+                        int len;
+                        while ((len = is.read(buffer)) > 0) {
+                            fos.write(buffer, 0, len);
+                        }
                     }
                 }
             }
@@ -260,6 +267,16 @@ public class WorldManager {
         }
         
         return worldName;
+    }
+
+    private void copyStreamToFile(InputStream input, File output) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(output)) {
+            byte[] buffer = new byte[BUFFER_SIZE];
+            int len;
+            while ((len = input.read(buffer)) > 0) {
+                fos.write(buffer, 0, len);
+            }
+        }
     }
 
     private void copyDirectory(File source, File target) throws IOException {
