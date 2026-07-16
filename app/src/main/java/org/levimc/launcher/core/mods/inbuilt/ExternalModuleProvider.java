@@ -102,6 +102,12 @@ public final class ExternalModuleProvider {
                 return UnifiedMod.ConfigType.RADIO;
             case 4:
                 return UnifiedMod.ConfigType.COLOR;
+            case 5:
+                return UnifiedMod.ConfigType.KEYBIND;
+            case 6:
+                return UnifiedMod.ConfigType.TEXT;
+            case 7:
+                return UnifiedMod.ConfigType.BUTTON;
             default:
                 return UnifiedMod.ConfigType.TOGGLE;
         }

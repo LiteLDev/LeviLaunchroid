@@ -13,7 +13,7 @@ public class ExternalModBridge {
     private static native void nativeSetExternalModConfig(String moduleId, String key, String value);
     private static native int nativeGetExternalButtonCount();
     private static native String nativeGetExternalButtonInfo(int index);
-    private static native byte[] nativeGetExternalButtonIconBytes(String buttonId, int width, int height);
+    private static native byte[] nativeGetExternalButtonIconBytes(String buttonId, int width, int height, boolean active);
     private static native void nativeDispatchExternalButtonEvent(String buttonId, int event, float value);
     public static native byte[] nativeGetRegisteredFontBytes(String fontId);
     public static native Object[] nativeGetRegisteredImage(String imageId);
@@ -85,10 +85,10 @@ public class ExternalModBridge {
         }
     }
 
-    public static byte[] getExternalButtonIconBytes(String buttonId, int width, int height) {
+    public static byte[] getExternalButtonIconBytes(String buttonId, int width, int height, boolean active) {
         if (!ModManager.ensurePreloaderLoaded()) return null;
         try {
-            return nativeGetExternalButtonIconBytes(buttonId, width, height);
+            return nativeGetExternalButtonIconBytes(buttonId, width, height, active);
         } catch (UnsatisfiedLinkError e) {
             Log.e(TAG, "nativeGetExternalButtonIconBytes not available", e);
             return null;
@@ -113,6 +113,7 @@ public class ExternalModBridge {
         public static final int ICON_PNG = 1;
         public static final int ICON_WEBP = 2;
         public static final int ICON_SVG = 3;
+        public static final int ICON_RESOURCE = 4;
 
         public String buttonId;
         public String moduleId;

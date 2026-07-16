@@ -5,6 +5,7 @@ import java.io.File;
 public class PreloaderInput {
     public static native boolean nativeOnTouch(int action, int pointerId, float x, float y);
     public static native boolean nativeOnKeyEvent(int keyCode, int unicodeChar, boolean isKeyDown);
+    public static native boolean nativeOnTextInput(String text);
     public static native boolean nativeOnMouse(int button, boolean isDown);
     public static native void nativeSetActivity(Object activity);
     public static native void nativeClearActivity();
@@ -67,6 +68,17 @@ public class PreloaderInput {
     public static boolean onKeyEvent(int keyCode, int unicodeChar, boolean isKeyDown) {
         try {
             return nativeOnKeyEvent(keyCode, unicodeChar, isKeyDown);
+        } catch (UnsatisfiedLinkError e) {
+            return false;
+        }
+    }
+
+    public static boolean onTextInput(CharSequence text) {
+        if (text == null || text.length() == 0) {
+            return false;
+        }
+        try {
+            return nativeOnTextInput(text.toString());
         } catch (UnsatisfiedLinkError e) {
             return false;
         }
