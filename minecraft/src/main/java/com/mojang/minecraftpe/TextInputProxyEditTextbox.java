@@ -145,7 +145,11 @@ public class TextInputProxyEditTextbox extends AppCompatEditText {
 
     @Override
     public InputConnection onCreateInputConnection(EditorInfo editorInfo) {
-        return new MCPEInputConnection(super.onCreateInputConnection(editorInfo), true, this);
+        InputConnection inputConnection = super.onCreateInputConnection(editorInfo);
+        if (inputConnection == null) {
+            return null;
+        }
+        return new MCPEInputConnection(inputConnection, true, this);
     }
 
     @Override

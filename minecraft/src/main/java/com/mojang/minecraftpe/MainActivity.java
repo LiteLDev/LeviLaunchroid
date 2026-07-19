@@ -722,7 +722,7 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         this.textInputWidget.updateFilters(i, !z3);
         this.textInputWidget.setInputType((z3 ? 131072 : 524288) | (z2 ? 2 : 1));
         this.textInputWidget.setText(str);
-        this.textInputWidget.setVisibility(0);
+        this.textInputWidget.setVisibility(View.VISIBLE);
         this.textInputWidget.requestFocus();
         this.mPauseTextboxUIUpdates = false;
         getInputMethodManager().showSoftInput(this.textInputWidget, 0);
@@ -893,12 +893,23 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
     }
 
     public void dismissTextWidget() {
-        if (isTextWidgetActive()) {
-            getInputMethodManager().hideSoftInputFromWindow(this.textInputWidget.getWindowToken(), 0);
-            this.mPauseTextboxUIUpdates = true;
-            this.textInputWidget.setInputType(524288);
+        if (this.textInputWidget == null) {
+            return;
+        }
+
+        getInputMethodManager().hideSoftInputFromWindow(this.textInputWidget.getWindowToken(), 0);
+
+        this.textInputWidget.clearFocus();
+        View decorView = getWindow().getDecorView();
+        decorView.setFocusableInTouchMode(true);
+        decorView.requestFocus();
+
+        this.mPauseTextboxUIUpdates = true;
+        try {
+            this.textInputWidget.setInputType(InputType.TYPE_NULL);
+            this.textInputWidget.setVisibility(View.GONE);
+        } finally {
             this.mPauseTextboxUIUpdates = false;
-            this.textInputWidget.setVisibility(8);
         }
     }
 
