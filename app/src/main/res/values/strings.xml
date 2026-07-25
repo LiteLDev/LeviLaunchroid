@@ -670,6 +670,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_overlay_cps_value">CPS: %1$d</string>
     <string name="mod_config_overlay_button_size_dp">Overlay Button Size (dp)</string>
     <string name="mod_config_overlay_opacity_percent" formatted="false">Overlay Opacity (%)</string>
+    <string name="mod_config_overlay_show_everywhere" formatted="false">Show Everywhere</string>
     <string name="mod_config_cursor_sensitivity_percent" formatted="false">Cursor Sensitivity (%)</string>
     <string name="mod_config_zoom_level_percent" formatted="false">Zoom Level (%)</string>
     <string name="mod_config_auto_sprint_keybind">Auto Sprint Keybind</string>

@@ -27,6 +27,7 @@ public class InbuiltModManager {
     private static final String KEY_OVERLAY_POSITION_X_PREFIX = "overlay_pos_x_";
     private static final String KEY_OVERLAY_POSITION_Y_PREFIX = "overlay_pos_y_";
     private static final String KEY_OVERLAY_LOCK_PREFIX = "overlay_lock_";
+    private static final String KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX = "overlay_show_everywhere_";
     private static final int DEFAULT_OVERLAY_BUTTON_SIZE = 56;
     private static final int DEFAULT_OVERLAY_OPACITY = 100;
     private static final int MIN_MOD_MENU_OPACITY = 70;
@@ -214,5 +215,13 @@ public class InbuiltModManager {
 
     public void setOverlayLocked(String modId, boolean locked) {
         prefs.edit().putBoolean(KEY_OVERLAY_LOCK_PREFIX + modId, locked).apply();
+    }
+
+    public boolean isOverlayShowEverywhere(String modId) {
+        return prefs.getBoolean(KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX + modId, false);
+    }
+
+    public void setOverlayShowEverywhere(String modId, boolean showEverywhere) {
+        prefs.edit().putBoolean(KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX + modId, showEverywhere).apply();
     }
 }

@@ -683,16 +683,22 @@ public class InbuiltOverlayManager {
 
             for (BaseOverlayButton overlay : overlays) {
                 if (overlay.overlayView != null) {
-                    overlay.overlayView.setVisibility(inbuiltVis);
+                    boolean showEverywhere = manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey());
+                    int vis = (inbuiltVisible || showEverywhere) ? android.view.View.VISIBLE : android.view.View.GONE;
+                    overlay.overlayView.setVisibility(vis);
                 }
             }
 
             if (fpsDisplayOverlay != null) {
-                fpsDisplayOverlay.setVisibility(inbuiltVis);
+                boolean showEverywhere = manager.isOverlayShowEverywhere(ModIds.FPS_DISPLAY);
+                int vis = (inbuiltVisible || showEverywhere) ? android.view.View.VISIBLE : android.view.View.GONE;
+                fpsDisplayOverlay.setVisibility(vis);
             }
 
             if (cpsDisplayOverlay != null) {
-                cpsDisplayOverlay.setVisibility(inbuiltVis);
+                boolean showEverywhere = manager.isOverlayShowEverywhere(ModIds.CPS_DISPLAY);
+                int vis = (inbuiltVisible || showEverywhere) ? android.view.View.VISIBLE : android.view.View.GONE;
+                cpsDisplayOverlay.setVisibility(vis);
             }
 
 

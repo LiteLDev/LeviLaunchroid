@@ -18,6 +18,7 @@ public final class InbuiltModuleProvider {
     private static final String CFG_OVERLAY_SIZE = "overlay_size";
     private static final String CFG_OVERLAY_OPACITY = "overlay_opacity";
     private static final String CFG_OVERLAY_LOCK = "overlay_lock";
+    private static final String CFG_OVERLAY_SHOW_EVERYWHERE = "overlay_show_everywhere";
     private static final String CFG_AUTO_SPRINT_KEYBIND = "auto_sprint_keybind";
     private static final String CFG_CURSOR_SENSITIVITY = "cursor_sensitivity";
     private static final String CFG_ZOOM_LEVEL = "zoom_level";
@@ -109,6 +110,11 @@ public final class InbuiltModuleProvider {
                     UnifiedMod.ConfigType.TOGGLE,
                     "false", "", "",
                     String.valueOf(manager.isOverlayLocked(modId))));
+            configs.add(config(CFG_OVERLAY_SHOW_EVERYWHERE,
+                    context.getString(R.string.mod_config_overlay_show_everywhere),
+                    UnifiedMod.ConfigType.TOGGLE,
+                    "false", "", "",
+                    String.valueOf(manager.isOverlayShowEverywhere(modId))));
         }
 
         if (ModIds.AUTO_SPRINT.equals(modId)) {
@@ -172,6 +178,9 @@ public final class InbuiltModuleProvider {
                 break;
             case CFG_OVERLAY_LOCK:
                 manager.setOverlayLocked(mod.getId(), parseBoolean(value));
+                break;
+            case CFG_OVERLAY_SHOW_EVERYWHERE:
+                manager.setOverlayShowEverywhere(mod.getId(), parseBoolean(value));
                 break;
             case CFG_AUTO_SPRINT_KEYBIND:
                 manager.setAutoSprintKeybind(parseInt(value, manager.getAutoSprintKeybind()));
