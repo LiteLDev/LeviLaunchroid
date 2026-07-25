@@ -190,6 +190,8 @@ public class ContentListActivity extends BaseActivity {
         String worldsPath = getIntent().getStringExtra(EXTRA_WORLDS_DIRECTORY);
         if (worldsPath != null) {
             worldsDirectory = new File(worldsPath);
+        } else {
+            worldsDirectory = getWorldsDirectoryForType(currentStorageType);
         }
 
         switch (contentType) {
