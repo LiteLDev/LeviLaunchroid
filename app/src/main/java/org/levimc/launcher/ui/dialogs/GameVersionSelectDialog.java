@@ -83,11 +83,6 @@ public class GameVersionSelectDialog extends Dialog {
     }
 
     private void showRenameDialog(GameVersion version) {
-        if (version.isInstalled) {
-            Toast.makeText(getContext(), getContext().getString(R.string.cannot_rename_installed), Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         View customView = getLayoutInflater().inflate(R.layout.dialog_rename_entry, null);
         android.widget.EditText editName = customView.findViewById(R.id.edit_version_name);
         View errorText = customView.findViewById(R.id.text_version_error);
@@ -137,7 +132,7 @@ public class GameVersionSelectDialog extends Dialog {
     }
 
     private void performRename(GameVersion version, String newName) {
-        VersionManager.get(getContext()).renameCustomVersion(version, newName, new VersionManager.OnRenameVersionCallback() {
+        VersionManager.get(getContext()).renameVersion(version, newName, new VersionManager.OnRenameVersionCallback() {
             @Override
             public void onRenameCompleted(boolean success) {
                 new Handler(Looper.getMainLooper()).post(() -> {

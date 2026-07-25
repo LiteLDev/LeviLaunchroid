@@ -756,10 +756,10 @@ public class VersionManager {
         confirmDialog.show();
     }
 
-    public void renameCustomVersion(GameVersion version, String newDisplayName, OnRenameVersionCallback callback) {
-        if (version == null || version.isInstalled) {
+    public void renameVersion(GameVersion version, String newDisplayName, OnRenameVersionCallback callback) {
+        if (version == null) {
             if (callback != null)
-                callback.onRenameFailed(new IllegalArgumentException(context.getString(R.string.cannot_rename_installed)));
+                callback.onRenameFailed(new IllegalArgumentException("Version is null"));
             return;
         }
 
@@ -771,10 +771,11 @@ public class VersionManager {
 
         new Thread(() -> {
             try {
-                File metadataDir = LauncherStorage.getProfileMetadataDir(context, version.directoryName);
+                String metaDirName = getMetadataDirectoryName(version);
+                File metadataDir = LauncherStorage.getProfileMetadataDir(context, metaDirName);
                 metadataStore.update(
                         metadataDir,
-                        VersionProfileMetadataStore.Defaults.custom(version.directoryName, version.versionCode),
+                        metadataDefaults(version.isInstalled, version.directoryName, version.packageName, version.versionCode),
                         metadata -> metadata.displayName = newDisplayName.trim()
                 );
                 reload();
