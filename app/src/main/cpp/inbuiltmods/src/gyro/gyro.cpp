@@ -63,9 +63,14 @@ static constexpr const char *APPLY_TURN_DELTA_SIG =
     "?? ?? ?? D1 ?? ?? ?? FD ?? ?? ?? 6D ?? ?? ?? 6D ?? ?? ?? A9 ?? ?? ?? A9 "
     "?? ?? ?? A9 ?? ?? ?? A9 ?? ?? ?? 91 ?? ?? ?? D5 F3 03 00 AA F4 03 01 AA";
 
+static uintptr_t g_applyTurnDeltaTarget = 0;
+
 static bool findAndHookApplyTurnDelta() {
-  const uintptr_t target =
-      pl::memory::resolveSignature(APPLY_TURN_DELTA_SIG, "libminecraftpe.so");
+  uintptr_t target = g_applyTurnDeltaTarget;
+  if (target == 0) {
+    target = pl::memory::resolveSignature(APPLY_TURN_DELTA_SIG, "libminecraftpe.so");
+  }
+
   if (target == 0) {
     LOGE("Failed to resolve LocalPlayer::applyTurnDelta");
     return false;
@@ -86,6 +91,14 @@ static bool findAndHookApplyTurnDelta() {
 }
 
 extern "C" {
+
+JNIEXPORT void JNICALL
+Java_org_levimc_launcher_core_mods_inbuilt_nativemod_GyroMod_nativePreResolve(
+    JNIEnv *env, jclass clazz) {
+  if (g_applyTurnDeltaTarget == 0) {
+    g_applyTurnDeltaTarget = pl::memory::resolveSignature(APPLY_TURN_DELTA_SIG, "libminecraftpe.so");
+  }
+}
 
 JNIEXPORT jboolean JNICALL
 Java_org_levimc_launcher_core_mods_inbuilt_nativemod_GyroMod_nativeInit(
