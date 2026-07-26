@@ -16,6 +16,7 @@ public class ModIconHelper {
             case ModIds.CPS_DISPLAY -> R.drawable.ic_cps;
             case ModIds.SNAPLOOK -> R.drawable.ic_snaplook_disabled;
             case ModIds.VIRTUAL_CURSOR -> R.drawable.ic_virtual_cursor;
+            case ModIds.GYRO -> R.drawable.ic_gyro_disabled;
             default -> R.drawable.ic_settings;
         };
     }

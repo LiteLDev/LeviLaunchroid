@@ -603,6 +603,8 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="virtual_cursor_enabled">Cursor enabled</string>
     <string name="virtual_cursor_disabled">Cursor disabled</string>
     <string name="cursor_sensitivity_label">Cursor Sensitivity:</string>
+    <string name="inbuilt_mod_gyro">Gyro</string>
+    <string name="inbuilt_mod_gyro_desc">Use device gyroscope to control camera rotation</string>
     <string name="inbuilt_badge">INBUILT</string>
     <string name="autosprint_keybind_label">Auto Sprint Keybind:</string>
     <string name="autosprint_keybind_press">Press any key…</string>
@@ -676,6 +678,11 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_config_auto_sprint_keybind">Auto Sprint Keybind</string>
     <string name="mod_config_zoom_keybind">Zoom Keybind</string>
     <string name="mod_config_zoom_transition">Transition Duration (ms)</string>
+    <string name="mod_config_gyro_sensitivity_x" formatted="false">Horizontal Sensitivity (%)</string>
+    <string name="mod_config_gyro_sensitivity_y" formatted="false">Vertical Sensitivity (%)</string>
+    <string name="mod_config_gyro_invert_x">Invert Horizontal Axis</string>
+    <string name="mod_config_gyro_invert_y">Invert Vertical Axis</string>
+    <string name="mod_config_gyro_deadzone">Dead Zone</string>
     <string name="mod_config_press_any_key">Press any key to bind...</string>
     <string name="mod_config_key_unknown">UNKNOWN</string>
     <string name="mod_config_color_alpha_short">A</string>

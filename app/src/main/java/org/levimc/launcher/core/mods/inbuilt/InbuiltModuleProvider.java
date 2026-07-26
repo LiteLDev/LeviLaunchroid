@@ -24,6 +24,11 @@ public final class InbuiltModuleProvider {
     private static final String CFG_ZOOM_LEVEL = "zoom_level";
     private static final String CFG_ZOOM_TRANSITION = "zoom_transition";
     private static final String CFG_ZOOM_KEYBIND = "zoom_keybind";
+    private static final String CFG_GYRO_SENSITIVITY_X = "gyro_sensitivity_x";
+    private static final String CFG_GYRO_SENSITIVITY_Y = "gyro_sensitivity_y";
+    private static final String CFG_GYRO_INVERT_X = "gyro_invert_x";
+    private static final String CFG_GYRO_INVERT_Y = "gyro_invert_y";
+    private static final String CFG_GYRO_DEADZONE = "gyro_deadzone";
 
     private InbuiltModuleProvider() {
     }
@@ -63,6 +68,9 @@ public final class InbuiltModuleProvider {
                 groupName));
         mods.add(create(activity, manager, overlayManager, ModIds.VIRTUAL_CURSOR,
                 R.string.inbuilt_mod_virtual_cursor, R.string.inbuilt_mod_virtual_cursor_desc,
+                groupName));
+        mods.add(create(activity, manager, overlayManager, ModIds.GYRO,
+                R.string.inbuilt_mod_gyro, R.string.inbuilt_mod_gyro_desc,
                 groupName));
 
         return mods;
@@ -145,6 +153,32 @@ public final class InbuiltModuleProvider {
                     UnifiedMod.ConfigType.KEYBIND,
                     "", "", "",
                     String.valueOf(manager.getZoomKeybind())));
+        } else if (ModIds.GYRO.equals(modId)) {
+            configs.add(config(CFG_GYRO_SENSITIVITY_X,
+                    context.getString(R.string.mod_config_gyro_sensitivity_x),
+                    UnifiedMod.ConfigType.SLIDER_INT,
+                    "100", "10", "300",
+                    String.valueOf(manager.getGyroSensitivityX())));
+            configs.add(config(CFG_GYRO_SENSITIVITY_Y,
+                    context.getString(R.string.mod_config_gyro_sensitivity_y),
+                    UnifiedMod.ConfigType.SLIDER_INT,
+                    "100", "10", "300",
+                    String.valueOf(manager.getGyroSensitivityY())));
+            configs.add(config(CFG_GYRO_INVERT_X,
+                    context.getString(R.string.mod_config_gyro_invert_x),
+                    UnifiedMod.ConfigType.TOGGLE,
+                    "false", "", "",
+                    String.valueOf(manager.isGyroInvertX())));
+            configs.add(config(CFG_GYRO_INVERT_Y,
+                    context.getString(R.string.mod_config_gyro_invert_y),
+                    UnifiedMod.ConfigType.TOGGLE,
+                    "false", "", "",
+                    String.valueOf(manager.isGyroInvertY())));
+            configs.add(config(CFG_GYRO_DEADZONE,
+                    context.getString(R.string.mod_config_gyro_deadzone),
+                    UnifiedMod.ConfigType.SLIDER_INT,
+                    "5", "0", "50",
+                    String.valueOf(manager.getGyroDeadzone())));
         }
         return configs;
     }
@@ -196,6 +230,21 @@ public final class InbuiltModuleProvider {
                 break;
             case CFG_ZOOM_KEYBIND:
                 manager.setZoomKeybind(parseInt(value, manager.getZoomKeybind()));
+                break;
+            case CFG_GYRO_SENSITIVITY_X:
+                manager.setGyroSensitivityX(parseInt(value, manager.getGyroSensitivityX()));
+                break;
+            case CFG_GYRO_SENSITIVITY_Y:
+                manager.setGyroSensitivityY(parseInt(value, manager.getGyroSensitivityY()));
+                break;
+            case CFG_GYRO_INVERT_X:
+                manager.setGyroInvertX(parseBoolean(value));
+                break;
+            case CFG_GYRO_INVERT_Y:
+                manager.setGyroInvertY(parseBoolean(value));
+                break;
+            case CFG_GYRO_DEADZONE:
+                manager.setGyroDeadzone(parseInt(value, manager.getGyroDeadzone()));
                 break;
             default:
                 break;

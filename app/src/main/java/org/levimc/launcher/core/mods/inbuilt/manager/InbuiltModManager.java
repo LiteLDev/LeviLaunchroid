@@ -24,6 +24,11 @@ public class InbuiltModManager {
     private static final String KEY_ZOOM_KEYBIND = "zoom_keybind";
     private static final String KEY_ZOOM_TRANSITION_DURATION = "zoom_transition_duration";
     private static final String KEY_CURSOR_SENSITIVITY = "cursor_sensitivity";
+    private static final String KEY_GYRO_SENSITIVITY_X = "gyro_sensitivity_x";
+    private static final String KEY_GYRO_SENSITIVITY_Y = "gyro_sensitivity_y";
+    private static final String KEY_GYRO_INVERT_X = "gyro_invert_x";
+    private static final String KEY_GYRO_INVERT_Y = "gyro_invert_y";
+    private static final String KEY_GYRO_DEADZONE = "gyro_deadzone";
     private static final String KEY_OVERLAY_POSITION_X_PREFIX = "overlay_pos_x_";
     private static final String KEY_OVERLAY_POSITION_Y_PREFIX = "overlay_pos_y_";
     private static final String KEY_OVERLAY_LOCK_PREFIX = "overlay_lock_";
@@ -34,6 +39,8 @@ public class InbuiltModManager {
     private static final int DEFAULT_ZOOM_LEVEL = 10;
     private static final int DEFAULT_ZOOM_TRANSITION_DURATION = 150;
     private static final int DEFAULT_CURSOR_SENSITIVITY = 120;
+    private static final int DEFAULT_GYRO_SENSITIVITY = 100;
+    private static final int DEFAULT_GYRO_DEADZONE = 5;
 
     private static volatile InbuiltModManager instance;
     private final SharedPreferences prefs;
@@ -223,5 +230,45 @@ public class InbuiltModManager {
 
     public void setOverlayShowEverywhere(String modId, boolean showEverywhere) {
         prefs.edit().putBoolean(KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX + modId, showEverywhere).apply();
+    }
+
+    public int getGyroSensitivityX() {
+        return prefs.getInt(KEY_GYRO_SENSITIVITY_X, DEFAULT_GYRO_SENSITIVITY);
+    }
+
+    public void setGyroSensitivityX(int sensitivity) {
+        prefs.edit().putInt(KEY_GYRO_SENSITIVITY_X, Math.max(10, Math.min(300, sensitivity))).apply();
+    }
+
+    public int getGyroSensitivityY() {
+        return prefs.getInt(KEY_GYRO_SENSITIVITY_Y, DEFAULT_GYRO_SENSITIVITY);
+    }
+
+    public void setGyroSensitivityY(int sensitivity) {
+        prefs.edit().putInt(KEY_GYRO_SENSITIVITY_Y, Math.max(10, Math.min(300, sensitivity))).apply();
+    }
+
+    public boolean isGyroInvertX() {
+        return prefs.getBoolean(KEY_GYRO_INVERT_X, false);
+    }
+
+    public void setGyroInvertX(boolean invert) {
+        prefs.edit().putBoolean(KEY_GYRO_INVERT_X, invert).apply();
+    }
+
+    public boolean isGyroInvertY() {
+        return prefs.getBoolean(KEY_GYRO_INVERT_Y, false);
+    }
+
+    public void setGyroInvertY(boolean invert) {
+        prefs.edit().putBoolean(KEY_GYRO_INVERT_Y, invert).apply();
+    }
+
+    public int getGyroDeadzone() {
+        return prefs.getInt(KEY_GYRO_DEADZONE, DEFAULT_GYRO_DEADZONE);
+    }
+
+    public void setGyroDeadzone(int deadzone) {
+        prefs.edit().putInt(KEY_GYRO_DEADZONE, Math.max(0, Math.min(50, deadzone))).apply();
     }
 }
