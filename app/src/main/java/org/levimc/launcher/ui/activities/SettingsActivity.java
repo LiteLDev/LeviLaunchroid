@@ -210,32 +210,34 @@ public class SettingsActivity extends BaseActivity {
         LanguageManager languageManager = new LanguageManager(this);
         FeatureSettings fs = FeatureSettings.getInstance();
 
+        // Keep English at the top (default language).
+        // Sort all other languages alphabetically by their display name.
         String[] languageOptions = {
                 getString(R.string.english),
                 getString(R.string.chinese),
-                getString(R.string.russian),
-                getString(R.string.indonesian),
-                getString(R.string.spanish),
-                getString(R.string.portuguese),
                 getString(R.string.french),
-                getString(R.string.japanese),
                 getString(R.string.hindi),
-		        getString(R.string.turkish),
-			    getString(R.string.vietnamese)
+                getString(R.string.indonesian),
+                getString(R.string.japanese),
+                getString(R.string.portuguese),
+                getString(R.string.russian),
+                getString(R.string.spanish),
+                getString(R.string.turkish),
+                getString(R.string.vietnamese)
         };
 
         String currentCode = languageManager.getCurrentLanguage();
         int defaultIdx = switch (currentCode) {
             case "zh", "zh-CN" -> 1;
-            case "ru" -> 2;
-            case "idn" -> 3;
-            case "es" -> 4;
-            case "pt" -> 5;
-            case "fr" -> 6;
-            case "ja" -> 7;
-            case "hi" -> 8;
-	        case "tr", "tr-TR" -> 9;
-			case "vi" -> 10;
+            case "fr" -> 2;
+            case "hi" -> 3;
+            case "idn" -> 4;
+            case "ja" -> 5;
+            case "pt" -> 6;
+            case "ru" -> 7;
+            case "es" -> 8;
+            case "tr", "tr-TR" -> 9;
+            case "vi" -> 10;
             default -> 0;
         };
 
@@ -253,15 +255,15 @@ public class SettingsActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String code = switch (position) {
                     case 1 -> "zh-CN";
-                    case 2 -> "ru";
-                    case 3 -> "idn";
-                    case 4 -> "es";
-                    case 5 -> "pt";
-                    case 6 -> "fr";
-                    case 7 -> "ja";
-                    case 8 -> "hi";
-		            case 9 -> "tr";
-					case 10 -> "vi";
+                    case 2 -> "fr";
+                    case 3 -> "hi";
+                    case 4 -> "idn";
+                    case 5 -> "ja";
+                    case 6 -> "pt";
+                    case 7 -> "ru";
+                    case 8 -> "es";
+                    case 9 -> "tr";
+                    case 10 -> "vi";
                     default -> "en";
                 };
                 if (!code.equals(languageManager.getCurrentLanguage())) {
