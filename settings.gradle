@@ -25,4 +25,3 @@ dependencyResolutionManagement {
 rootProject.name = "levilauncher"
 include ':app'
 include ':minecraft'
-include ':minecraft-msftauth'

@@ -140,7 +140,9 @@ android {
 
 dependencies {
     implementation project(':minecraft')
-    implementation project(':minecraft-msftauth')
+    implementation libs.minecraftauth
+    implementation libs.commons.httpclient
+    implementation libs.commons.gson
     implementation platform(libs.firebase.bom)
     implementation libs.firebase.analytics
     implementation libs.firebase.crashlytics
