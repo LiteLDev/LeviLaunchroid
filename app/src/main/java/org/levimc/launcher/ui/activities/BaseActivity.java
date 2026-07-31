@@ -227,7 +227,7 @@ public class BaseActivity extends AppCompatActivity {
         refreshNavAccountUI();
     }
 
-    private void refreshNavAccountUI() {
+    protected void refreshNavAccountUI() {
         if (!navBarInjected) return;
         java.util.List<MsftAccountStore.MsftAccount> list = MsftAccountStore.list(this);
         MsftAccountStore.MsftAccount active = null;

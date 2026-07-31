@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Feature Disabled"
+            android:text="@string/ms_feature_disabled_title"
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="@color/primary"
@@ -34,7 +34,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Please enable 'Sign in to Minecraft with LeviLauncher' in Settings to manage Microsoft accounts."
+            android:text="@string/ms_feature_disabled_desc"
             android:textSize="14sp"
             android:textColor="#888888"
             android:textAlignment="center"
@@ -50,14 +50,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/accounts_title"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            android:textColor="@color/primary"
-            android:fontFamily="@font/misans" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -116,21 +108,21 @@
                     android:fontFamily="@font/misans" />
             </LinearLayout>
 
-            <ScrollView
-                android:id="@+id/right_card_container"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/card_background"
-                android:layout_marginStart="16dp"
-                android:elevation="2dp"
-                android:fillViewport="true">
+        <ScrollView
+            android:id="@+id/right_card_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/card_background"
+            android:layout_marginStart="16dp"
+            android:elevation="2dp"
+            android:fillViewport="true">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
 
                 <FrameLayout
                     android:layout_width="64dp"
@@ -210,21 +202,11 @@
                         android:textColor="@color/on_surface"
                         android:fontFamily="@font/misans"/>
                 </LinearLayout>
-                <!-- Space removed -->
 
 
-                <TextView
-                    android:id="@+id/status_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="12sp"
-                    android:layout_marginTop="16dp"
-                    android:textAlignment="center"
-                    android:textColor="#888888"
-                    android:fontFamily="@font/misans"/>
-                </LinearLayout>
-            </ScrollView>
+
+            </LinearLayout>
+        </ScrollView>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>
