@@ -88,6 +88,7 @@ Thumbs.db
 # Alternative builds
 .altbuild
 
-# Mods
+# Test stuffs
 BedrockTools-main
 tntimer-main
+MinecraftAuth

@@ -81,7 +81,7 @@ import java.util.concurrent.Executors;
  import android.view.ViewTreeObserver;
  import androidx.core.content.ContextCompat;
 
-import coelho.msftauth.api.oauth20.OAuth20Token;
+import net.raphimc.minecraftauth.bedrock.BedrockAuthManager;
 import okhttp3.OkHttpClient;
  import okhttp3.Request;
  import okhttp3.Response;
@@ -172,24 +172,17 @@ import okhttp3.OkHttpClient;
         accountLoginLauncher = registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 String code = result.getData().getStringExtra("ms_auth_code");
-                String codeVerifier = result.getData().getStringExtra("ms_code_verifier");
-                if (code != null && codeVerifier != null) {
+                if (code != null) {
                     accountLoadingDialog = org.levimc.launcher.util.DialogUtils.ensure(this, accountLoadingDialog);
                     org.levimc.launcher.util.DialogUtils.showWithMessage(accountLoadingDialog, getString(R.string.ms_login_exchanging));
 
                     accountExecutor.execute(() -> {
-                        okhttp3.OkHttpClient client = new okhttp3.OkHttpClient();
                         try {
-                            OAuth20Token token =MsftAuthManager.exchangeCodeForToken(client, org.levimc.launcher.core.auth.MsftAuthManager.DEFAULT_CLIENT_ID, code, codeVerifier, org.levimc.launcher.core.auth.MsftAuthManager.DEFAULT_SCOPE + " offline_access");
-
-                            runOnUiThread(() -> DialogUtils.showWithMessage(accountLoadingDialog, getString(R.string.ms_login_auth_xbox_device)));
-                            MsftAuthManager.XboxAuthResult xbox = MsftAuthManager.performXboxAuth(client, token, this);
+                            BedrockAuthManager authManager = MsftAuthManager.loginWithCode(code);
 
                             runOnUiThread(() -> DialogUtils.showWithMessage(accountLoadingDialog, getString(R.string.ms_login_fetch_minecraft_identity)));
-                            android.util.Pair<String, String> nameAndXuid = MsftAuthManager.fetchMinecraftIdentity(client, xbox.xstsToken());
-                            String minecraftUsername = nameAndXuid != null ? nameAndXuid.first : null;
-                            String xuid = nameAndXuid != null ? nameAndXuid.second : null;
-                            MsftAuthManager.saveAccount(this, token, xbox.gamertag(), minecraftUsername, xuid, xbox.avatarUrl());
+                            MsftAuthManager.saveAccount(this, authManager);
+                            String minecraftUsername = authManager.getMinecraftCertificateChain().getUpToDate().getIdentityDisplayName();
 
                             runOnUiThread(() -> {
                                 DialogUtils.dismissQuietly(accountLoadingDialog);
@@ -472,15 +465,11 @@ import okhttp3.OkHttpClient;
                      DialogUtils.showWithMessage(accountLoadingDialog, getString(R.string.ms_login_auth_xbox_device));
 
                      accountExecutor.execute(() -> {
-                         OkHttpClient client = new OkHttpClient();
                          try {
-                             MsftAuthManager.XboxAuthResult xbox = MsftAuthManager.refreshAndAuth(client, account, MainActivity.this);
-
-                             android.util.Pair<String, String> nameAndXuid = MsftAuthManager.fetchMinecraftIdentity(client, xbox.xstsToken());
-                             String minecraftUsername = nameAndXuid != null ? nameAndXuid.first : null;
-                             String xuid = nameAndXuid != null ? nameAndXuid.second : null;
-                             MsftAccountStore.addOrUpdate(MainActivity.this, account.msUserId, account.refreshToken, xbox.gamertag(), minecraftUsername, xuid, xbox.avatarUrl());
+                             BedrockAuthManager authManager = MsftAuthManager.refreshAndAuth(account);
+                             MsftAuthManager.saveAccount(MainActivity.this, authManager);
                              MsftAccountStore.setActive(MainActivity.this, account.id);
+                             String minecraftUsername = authManager.getMinecraftCertificateChain().getUpToDate().getIdentityDisplayName();
 
                              runOnUiThread(() -> {
                                  DialogUtils.dismissQuietly(accountLoadingDialog);

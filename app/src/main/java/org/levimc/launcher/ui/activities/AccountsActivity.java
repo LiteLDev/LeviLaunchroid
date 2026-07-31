@@ -36,8 +36,7 @@ import okhttp3.Response;
 
 import android.util.Pair;
 
-import coelho.msftauth.api.oauth20.OAuth20Token;
-import org.levimc.launcher.core.auth.storage.XalStorageManager;
+import net.raphimc.minecraftauth.bedrock.BedrockAuthManager;
 
 public class AccountsActivity extends BaseActivity {
 
@@ -47,7 +46,6 @@ public class AccountsActivity extends BaseActivity {
     private TextView emptyStateText;
     private View emptyStateContainer;
     private Button bottomAddButton;
-    private TextView statusText;
     private androidx.recyclerview.widget.RecyclerView accountsRecyclerView;
     private ImageButton leftAddButton;
     private com.microsoft.xbox.idp.toolkit.CircleImageView xboxAvatar;
@@ -73,7 +71,6 @@ public class AccountsActivity extends BaseActivity {
         xuidText = findViewById(R.id.xuid_text);
         emptyStateText = findViewById(R.id.empty_state_text);
         emptyStateContainer = findViewById(R.id.empty_state_container);
-        statusText = findViewById(R.id.status_text);
         accountsRecyclerView = findViewById(R.id.accounts_recycler_view);
         bottomAddButton = findViewById(R.id.bottom_add_button);
         xboxAvatar = findViewById(R.id.xbox_avatar);
@@ -84,8 +81,7 @@ public class AccountsActivity extends BaseActivity {
         loginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 String code = result.getData().getStringExtra("ms_auth_code");
-                String codeVerifier = result.getData().getStringExtra("ms_code_verifier");
-                if (code != null && codeVerifier != null) {
+                if (code != null) {
                     if (!loginResultHandled.compareAndSet(false, true)) {
                         refreshUI();
                         return;
@@ -94,18 +90,12 @@ public class AccountsActivity extends BaseActivity {
                     org.levimc.launcher.util.DialogUtils.showWithMessage(loadingDialog, getString(R.string.ms_login_exchanging));
 
                     executor.execute(() -> {
-                        OkHttpClient client = new OkHttpClient();
                         try {
-                            OAuth20Token token = MsftAuthManager.exchangeCodeForToken(client, MsftAuthManager.DEFAULT_CLIENT_ID, code, codeVerifier, MsftAuthManager.DEFAULT_SCOPE + " offline_access");
-
-                            runOnUiThread(() -> org.levimc.launcher.util.DialogUtils.showWithMessage(loadingDialog, getString(R.string.ms_login_auth_xbox_device)));
-                            MsftAuthManager.XboxAuthResult xbox = MsftAuthManager.performXboxAuth(client, token, this);
+                            BedrockAuthManager authManager = MsftAuthManager.loginWithCode(code);
 
                             runOnUiThread(() -> org.levimc.launcher.util.DialogUtils.showWithMessage(loadingDialog, getString(R.string.ms_login_fetch_minecraft_identity)));
-                            Pair<String, String> nameAndXuid = MsftAuthManager.fetchMinecraftIdentity(client, xbox.xstsToken());
-                            String minecraftUsername = nameAndXuid != null ? nameAndXuid.first : null;
-                            String xuid = nameAndXuid != null ? nameAndXuid.second : null;
-                            MsftAuthManager.saveAccount(this, token, xbox.gamertag(), minecraftUsername, xuid, xbox.avatarUrl());
+                            MsftAuthManager.saveAccount(this, authManager);
+                            String minecraftUsername = authManager.getMinecraftCertificateChain().getUpToDate().getIdentityDisplayName();
 
                             runOnUiThread(() -> {
                                 if (loadingDialog.isShowing()) loadingDialog.dismiss();
@@ -155,15 +145,11 @@ public class AccountsActivity extends BaseActivity {
                 org.levimc.launcher.util.DialogUtils.showWithMessage(loadingDialog, getString(R.string.ms_login_auth_xbox_device));
 
                 executor.execute(() -> {
-                    OkHttpClient client = new OkHttpClient();
                     try {
-                        MsftAuthManager.XboxAuthResult xbox = MsftAuthManager.refreshAndAuth(client, account, AccountsActivity.this);
-
-                        Pair<String, String> nameAndXuid = MsftAuthManager.fetchMinecraftIdentity(client, xbox.xstsToken());
-                        String minecraftUsername = nameAndXuid != null ? nameAndXuid.first : null;
-                        String xuid = nameAndXuid != null ? nameAndXuid.second : null;
-                        MsftAccountStore.addOrUpdate(AccountsActivity.this, account.msUserId, account.refreshToken, xbox.gamertag(), minecraftUsername, xuid, xbox.avatarUrl());
+                        BedrockAuthManager authManager = MsftAuthManager.refreshAndAuth(account);
+                        MsftAuthManager.saveAccount(AccountsActivity.this, authManager);
                         MsftAccountStore.setActive(AccountsActivity.this, account.id);
+                        String minecraftUsername = authManager.getMinecraftCertificateChain().getUpToDate().getIdentityDisplayName();
 
                         runOnUiThread(() -> {
                             org.levimc.launcher.util.DialogUtils.dismissQuietly(loadingDialog);
@@ -220,6 +206,15 @@ public class AccountsActivity extends BaseActivity {
 
 
     private void refreshUI() {
+        boolean enabled = org.levimc.launcher.settings.FeatureSettings.getInstance().isLauncherManagedMcLoginEnabled();
+        View mainContent = findViewById(R.id.main_content_container);
+        View disabledState = findViewById(R.id.disabled_state_container);
+        
+        if (mainContent != null) mainContent.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        if (disabledState != null) disabledState.setVisibility(enabled ? View.GONE : View.VISIBLE);
+        
+        if (!enabled) return;
+        
         MsftAccountStore.MsftAccount active = getActiveAccount();
         if (active == null) {
             gamertagText.setText(getString(R.string.not_signed_in));
@@ -245,8 +240,8 @@ public class AccountsActivity extends BaseActivity {
 
         boolean isEmpty = list == null || list.isEmpty();
         if (emptyStateContainer != null) emptyStateContainer.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
-        String statusName = AccountTextUtils.displayNameOrNotSigned(this, active);
-        statusText.setText(isEmpty ? getString(R.string.not_signed_in) : getString(R.string.ms_login_success, statusName));
+        
+        refreshNavAccountUI();
     }
 
     @Override

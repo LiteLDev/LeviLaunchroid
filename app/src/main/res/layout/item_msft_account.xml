@@ -3,73 +3,94 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/card_background"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="12dp"
-    android:layout_marginBottom="8dp">
+    android:layout_marginBottom="8dp"
+    android:gravity="center_vertical"
+    android:elevation="1dp">
 
+    <!-- Text Information -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/account_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/on_surface"
+                android:fontFamily="@font/misans"/>
+
+            <TextView
+                android:id="@+id/active_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ms_active_badge"
+                android:textSize="10sp"
+                android:textColor="@color/primary"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/card_background"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:visibility="gone"/>
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/account_title"
-            android:layout_width="0dp"
+            android:id="@+id/account_subtitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:fontFamily="@font/misans"/>
-
-        <TextView
-            android:id="@+id/active_badge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ms_active_badge"
+            android:textColor="#888888"
             android:textSize="12sp"
-            android:textColor="@color/on_surface"
-            android:background="@drawable/card_background"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:visibility="gone"/>
+            android:fontFamily="@font/misans"
+            android:layout_marginTop="2dp"
+            android:maxLines="1"
+            android:ellipsize="end"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/account_subtitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#888888"
-        android:textSize="14sp"
-        android:fontFamily="@font/misans"
-        android:layout_marginTop="4dp"/>
-
+    <!-- Action Buttons -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginTop="8dp">
+        android:layout_marginStart="8dp">
 
         <Button
             android:id="@+id/btn_use"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/ms_set_active" />
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="@string/ms_set_active"
+            android:textSize="12sp"
+            android:textColor="@color/on_primary"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:fontFamily="@font/misans"/>
 
-        <View
-            android:layout_width="8dp"
-            android:layout_height="match_parent"/>
-
-        <Button
+        <ImageButton
             android:id="@+id/btn_delete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/ms_delete" />
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_close"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/ms_delete"
+            android:tint="#D32F2F"/>
 
     </LinearLayout>
 

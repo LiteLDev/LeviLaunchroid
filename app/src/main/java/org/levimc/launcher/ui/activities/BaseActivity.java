@@ -42,7 +42,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.Locale;
 
-import coelho.msftauth.api.oauth20.OAuth20Token;
+import net.raphimc.minecraftauth.bedrock.BedrockAuthManager;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -227,7 +227,7 @@ public class BaseActivity extends AppCompatActivity {
         refreshNavAccountUI();
     }
 
-    private void refreshNavAccountUI() {
+    protected void refreshNavAccountUI() {
         if (!navBarInjected) return;
         java.util.List<MsftAccountStore.MsftAccount> list = MsftAccountStore.list(this);
         MsftAccountStore.MsftAccount active = null;
@@ -319,23 +319,12 @@ public class BaseActivity extends AppCompatActivity {
         DialogUtils.showWithMessage(navAccountLoadingDialog, getString(R.string.ms_login_exchanging));
 
         navAccountExecutor.execute(() -> {
-            OkHttpClient client = new OkHttpClient();
             try {
-                OAuth20Token token = MsftAuthManager.exchangeCodeForToken(
-                        client,
-                        MsftAuthManager.DEFAULT_CLIENT_ID,
-                        code,
-                        codeVerifier,
-                        MsftAuthManager.DEFAULT_SCOPE + " offline_access");
-
-                runOnUiThread(() -> DialogUtils.showWithMessage(navAccountLoadingDialog, getString(R.string.ms_login_auth_xbox_device)));
-                MsftAuthManager.XboxAuthResult xbox = MsftAuthManager.performXboxAuth(client, token, this);
+                BedrockAuthManager authManager = MsftAuthManager.loginWithCode(code);
 
                 runOnUiThread(() -> DialogUtils.showWithMessage(navAccountLoadingDialog, getString(R.string.ms_login_fetch_minecraft_identity)));
-                Pair<String, String> nameAndXuid = MsftAuthManager.fetchMinecraftIdentity(client, xbox.xstsToken());
-                String minecraftUsername = nameAndXuid != null ? nameAndXuid.first : null;
-                String xuid = nameAndXuid != null ? nameAndXuid.second : null;
-                MsftAuthManager.saveAccount(this, token, xbox.gamertag(), minecraftUsername, xuid, xbox.avatarUrl());
+                MsftAuthManager.saveAccount(this, authManager);
+                String minecraftUsername = authManager.getMinecraftCertificateChain().getUpToDate().getIdentityDisplayName();
 
                 runOnUiThread(() -> {
                     DialogUtils.dismissQuietly(navAccountLoadingDialog);

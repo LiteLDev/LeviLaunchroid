@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,7 +58,17 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
         String sub = AccountTextUtils.subtitle(a);
         holder.subtitle.setText(sub);
 
-        holder.activeBadge.setVisibility(a.active ? View.VISIBLE : View.GONE);
+        if (a.active) {
+            holder.activeBadge.setVisibility(View.VISIBLE);
+            holder.btnUse.setEnabled(false);
+            holder.btnUse.setText(R.string.ms_activated);
+            holder.btnUse.setAlpha(0.6f);
+        } else {
+            holder.activeBadge.setVisibility(View.GONE);
+            holder.btnUse.setEnabled(true);
+            holder.btnUse.setText(R.string.ms_set_active);
+            holder.btnUse.setAlpha(1.0f);
+        }
 
         holder.btnUse.setOnClickListener(v -> {
             if (listener != null) listener.onSetActive(a);
@@ -79,9 +90,7 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
         }
         ColorStateList tint = ColorStateList.valueOf(accent);
         holder.btnUse.setBackgroundTintList(tint);
-        holder.btnDelete.setBackgroundTintList(tint);
         holder.btnUse.setTextColor(Color.WHITE);
-        holder.btnDelete.setTextColor(Color.WHITE);
     }
 
     @Override
@@ -94,7 +103,7 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.Accoun
         TextView subtitle;
         TextView activeBadge;
         Button btnUse;
-        Button btnDelete;
+        ImageButton btnDelete;
 
         public AccountViewHolder(@NonNull View itemView) {
             super(itemView);

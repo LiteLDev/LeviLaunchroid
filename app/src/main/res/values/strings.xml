@@ -531,6 +531,10 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="go_to_accounts">Accounts</string>
     <string name="disable_launcher_login_and_continue">Close</string>
 
+    <string name="ms_feature_disabled_title">Feature Disabled</string>
+    <string name="ms_feature_disabled_desc">Please enable \'Sign in to Minecraft with LeviLauncher\' in Settings to manage Microsoft accounts.</string>
+    <string name="ms_activated">Activated</string>
+
     <!-- Popup labels -->
     <string name="label_current_account">Current Account</string>
     <string name="label_other_accounts">Other Accounts</string>
