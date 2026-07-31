@@ -9,6 +9,7 @@ public class FeatureSettings {
     private boolean launcherManagedMcLoginEnabled = false;
     private boolean logcatOverlayEnabled = false;
     private Boolean crashUploadEnabled = true;
+    private int resourcePackCacheLimitMB = 256;
 
     public enum StorageType {
         INTERNAL,
@@ -48,6 +49,8 @@ public class FeatureSettings {
     public boolean isCrashUploadEnabled() { return crashUploadEnabled == null || crashUploadEnabled; }
     public void setCrashUploadEnabled(boolean enabled) { this.crashUploadEnabled = enabled; autoSave(); }
 
+    public int getResourcePackCacheLimitMB() { return resourcePackCacheLimitMB; }
+    public void setResourcePackCacheLimitMB(int limit) { this.resourcePackCacheLimitMB = limit; autoSave(); }
 
     private void autoSave() {
         if (appContext != null) {

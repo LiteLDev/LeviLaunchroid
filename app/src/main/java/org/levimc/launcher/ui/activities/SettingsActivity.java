@@ -297,6 +297,28 @@ public class SettingsActivity extends BaseActivity {
         SwitchMaterial switchManagedLogin = findViewById(R.id.switch_managed_login);
         switchManagedLogin.setChecked(fs.isLauncherManagedMcLoginEnabled());
         switchManagedLogin.setOnCheckedChangeListener((btn, checked) -> fs.setLauncherManagedMcLoginEnabled(checked));
+
+        SeekBar cacheLimitSlider = findViewById(R.id.cache_limit_slider);
+        TextView cacheLimitText = findViewById(R.id.cache_limit_text);
+
+        int currentLimit = fs.getResourcePackCacheLimitMB();
+        cacheLimitSlider.setProgress(currentLimit);
+        cacheLimitText.setText(currentLimit + " MB");
+
+        cacheLimitSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                cacheLimitText.setText(progress + " MB");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                fs.setResourcePackCacheLimitMB(seekBar.getProgress());
+            }
+        });
     }
 
     private void setupPersonalizeSection() {

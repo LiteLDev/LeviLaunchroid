@@ -8,7 +8,8 @@ object MinecraftCacheCleaner {
 
     private const val EPHEMERAL_CACHE_MAX_AGE_MS = 3L * 24 * 60 * 60 * 1000
 
-    private const val PACK_CACHE_MAX_BYTES = 256L * 1024 * 1024
+    private val packCacheMaxBytes: Long
+        get() = org.levimc.launcher.settings.FeatureSettings.getInstance().resourcePackCacheLimitMB * 1024L * 1024L
 
     private val EPHEMERAL_SUBDIRS = arrayOf(
         "WebView",
@@ -53,10 +54,10 @@ object MinecraftCacheCleaner {
         }
 
         if (externalFilesDir != null && externalFilesDir.isDirectory) {
-            total = total + enforceSizeLimit(File(externalFilesDir, "premium_cache"), PACK_CACHE_MAX_BYTES)
-            total = total + enforceSizeLimit(File(externalFilesDir, "server_resource_packs"), PACK_CACHE_MAX_BYTES)
-            total = total + enforceSizeLimit(File(externalFilesDir, "minecraftpe/server_resource_packs"), PACK_CACHE_MAX_BYTES)
-            total = total + enforceSizeLimit(File(externalFilesDir, "minecraftpe/packcache"), PACK_CACHE_MAX_BYTES)
+            total = total + enforceSizeLimit(File(externalFilesDir, "premium_cache"), packCacheMaxBytes)
+            total = total + enforceSizeLimit(File(externalFilesDir, "server_resource_packs"), packCacheMaxBytes)
+            total = total + enforceSizeLimit(File(externalFilesDir, "minecraftpe/server_resource_packs"), packCacheMaxBytes)
+            total = total + enforceSizeLimit(File(externalFilesDir, "minecraftpe/packcache"), packCacheMaxBytes)
             total = total + cleanStaleTempFiles(externalFilesDir)
         }
         
@@ -95,7 +96,7 @@ object MinecraftCacheCleaner {
         for (subdir in SIZE_LIMITED_SUBDIRS) {
             val dir = File(cacheDir, subdir)
             if (!dir.isDirectory) continue
-            result = result + enforceSizeLimit(dir, PACK_CACHE_MAX_BYTES)
+            result = result + enforceSizeLimit(dir, packCacheMaxBytes)
         }
         return result
     }
