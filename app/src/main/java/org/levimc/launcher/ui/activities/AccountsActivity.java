@@ -169,9 +169,16 @@ public class AccountsActivity extends BaseActivity {
 
             @Override
             public void onDelete(MsftAccountStore.MsftAccount account) {
-                MsftAccountStore.remove(AccountsActivity.this, account.id);
-                Toast.makeText(AccountsActivity.this, R.string.ms_delete, Toast.LENGTH_SHORT).show();
-                refreshUI();
+                new org.levimc.launcher.ui.dialogs.CustomAlertDialog(AccountsActivity.this)
+                        .setTitleText(getString(R.string.delete_account_title))
+                        .setMessage(getString(R.string.delete_account_confirm))
+                        .setPositiveButton(getString(R.string.ms_delete), v -> {
+                            MsftAccountStore.remove(AccountsActivity.this, account.id);
+                            Toast.makeText(AccountsActivity.this, R.string.ms_delete, Toast.LENGTH_SHORT).show();
+                            refreshUI();
+                        })
+                        .setNegativeButton(getString(android.R.string.cancel), null)
+                        .show();
             }
         });
 

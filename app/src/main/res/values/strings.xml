@@ -132,6 +132,8 @@
     <string name="dialog_message_disable_version_isolation">You are trying to launch an installed version with version isolation enabled. Please disable version isolation to proceed.</string>
     <string name="dialog_positive_disable">Disable</string>
     <string name="dialog_positive_ok">OK</string>
+    <string name="delete_account_title">Delete Account</string>
+    <string name="delete_account_confirm">Are you sure you want to delete this account?</string>
 
 
     <string name="new_version_found">New version found: %1$s</string>
