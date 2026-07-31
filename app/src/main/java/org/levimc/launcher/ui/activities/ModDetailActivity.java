@@ -96,9 +96,6 @@ public class ModDetailActivity extends BaseActivity {
         infoContainer = findViewById(R.id.mod_detail_info_container);
         actionsContainer = findViewById(R.id.mod_detail_actions_container);
 
-        if (modFilenameArg != null && headerContainer != null) {
-            ViewCompat.setTransitionName(headerContainer, "mod_card_" + modFilenameArg);
-        }
 
         applyPersonalization(heroContainer);
 
@@ -255,6 +252,7 @@ public class ModDetailActivity extends BaseActivity {
     private void runEnterAnimations() {
         float density = getResources().getDisplayMetrics().density;
         float dy = 16f * density;
+        android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
 
         View heroContainer = findViewById(R.id.mod_detail_header_container);
         View[] cards = new View[]{headerContainer, heroContainer, infoContainer, actionsContainer};
@@ -264,7 +262,7 @@ public class ModDetailActivity extends BaseActivity {
             card.setAlpha(0f);
             card.setTranslationY(dy);
             final int delay = 100 + i * 80;
-            card.postDelayed(() -> {
+            handler.postDelayed(() -> {
                 DynamicAnim.springAlphaTo(card, 1f).start();
                 DynamicAnim.springTranslationYTo(card, 0f).start();
             }, delay);

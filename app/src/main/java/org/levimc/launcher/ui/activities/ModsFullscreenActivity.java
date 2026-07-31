@@ -147,12 +147,7 @@ public class ModsFullscreenActivity extends BaseActivity {
             Intent intent = new Intent(this, ModDetailActivity.class);
             intent.putExtra("mod_filename", mod.getId());
             intent.putExtra("mod_position", position);
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this,
-                    sharedView,
-                    ViewCompat.getTransitionName(sharedView)
-            );
-            startActivity(intent, options.toBundle());
+            startActivity(intent);
         });
 
         modsAdapter.setOnModEnableChangeListener((mod, enabled) -> {
