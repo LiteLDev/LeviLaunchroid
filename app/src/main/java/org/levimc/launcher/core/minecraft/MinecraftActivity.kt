@@ -319,10 +319,6 @@ class MinecraftActivity : MainActivity() {
         overlayManager?.tick()
     }
 
-    override fun getDataDir(): File {
-        return resolveStorageDir(MinecraftLauncher.EXTRA_STORAGE_DATA_DIR, super.getDataDir())
-    }
-
     override fun getExternalFilesDir(type: String?): File? {
         val baseDir = resolveStorageDir(
             MinecraftLauncher.EXTRA_STORAGE_EXTERNAL_FILES_DIR,
@@ -358,10 +354,6 @@ class MinecraftActivity : MainActivity() {
             dbDir.mkdirs()
         }
         return File(dbDir, name)
-    }
-
-    override fun getCacheDir(): File {
-        return resolveStorageDir(MinecraftLauncher.EXTRA_STORAGE_CACHE_DIR, super.getCacheDir())
     }
 
     private fun initializePreloaderTextInput() {

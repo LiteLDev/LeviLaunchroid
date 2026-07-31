@@ -121,6 +121,12 @@ public final class LauncherStorage {
         return root;
     }
 
+    public static File getInternalMinecraftRoot(Context context) {
+        File root = new File(context.getFilesDir(), MINECRAFT_DIR);
+        ensureDir(root);
+        return root;
+    }
+
     public static File getSharedRoot(Context context) {
         File dir = new File(getMinecraftRoot(context), SHARED_PROFILE_ID);
         ensureDir(dir);
@@ -251,7 +257,7 @@ public final class LauncherStorage {
     }
 
     public static File getVersionRoot(Context context, String profileId) {
-        File dir = new File(getMinecraftRoot(context), sanitizeProfileId(profileId));
+        File dir = new File(getInternalMinecraftRoot(context), sanitizeProfileId(profileId));
         ensureDir(dir);
         return dir;
     }

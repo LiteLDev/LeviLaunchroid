@@ -51,6 +51,13 @@ object MinecraftRuntimePreparer {
         val gameManager = GamePackageManager.getInstance(context.applicationContext, version, trace, null)
         trace.mark("GamePackageManager ready")
 
+        listener.onProgress(20, "Cleaning stale cache")
+        val profileId = MinecraftLauncher.getStorageProfileId(version)
+        val cacheDir = org.levimc.launcher.util.LauncherStorage.getStorageCacheRoot(context, profileId, version.versionIsolation)
+        val dataDir = org.levimc.launcher.util.LauncherStorage.getStorageDataRoot(context, profileId, version.versionIsolation)
+        val externalFilesDir = org.levimc.launcher.util.LauncherStorage.getStorageFilesRoot(context, profileId, version.versionIsolation, true)
+        MinecraftCacheCleaner.cleanupBeforeLaunch(cacheDir, dataDir, externalFilesDir, trace)
+
         listener.onProgress(26, "Preparing launch")
         prepareMinecraftIntent(context, launchIntent, gameManager, version)
         trace.mark("Launch intent prepared")
