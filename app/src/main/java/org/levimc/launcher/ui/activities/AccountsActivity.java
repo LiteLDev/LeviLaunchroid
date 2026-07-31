@@ -208,6 +208,15 @@ public class AccountsActivity extends BaseActivity {
 
 
     private void refreshUI() {
+        boolean enabled = org.levimc.launcher.settings.FeatureSettings.getInstance().isLauncherManagedMcLoginEnabled();
+        View mainContent = findViewById(R.id.main_content_container);
+        View disabledState = findViewById(R.id.disabled_state_container);
+        
+        if (mainContent != null) mainContent.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        if (disabledState != null) disabledState.setVisibility(enabled ? View.GONE : View.VISIBLE);
+        
+        if (!enabled) return;
+        
         MsftAccountStore.MsftAccount active = getActiveAccount();
         if (active == null) {
             gamertagText.setText(getString(R.string.not_signed_in));
