@@ -288,9 +288,13 @@ public final class LauncherStorage {
     }
 
     public static File getProfileCacheRoot(Context context, String profileId) {
-        File dir = new File(getVersionRoot(context, profileId), PROFILE_CACHE_DIR);
+        File dir = buildProfileCacheRoot(context.getCacheDir(), profileId);
         ensureDir(dir);
         return dir;
+    }
+
+    static File buildProfileCacheRoot(File appCacheDir, String profileId) {
+        return new File(new File(appCacheDir, MINECRAFT_DIR), sanitizeProfileId(profileId));
     }
 
     public static File getProfileModsDir(Context context, String profileId) {
@@ -364,9 +368,7 @@ public final class LauncherStorage {
     }
 
     public static File getStorageCacheRoot(Context context, String profileId, boolean versionIsolation) {
-        return versionIsolation
-                ? getProfileCacheRoot(context, profileId)
-                : getSharedCacheRoot(context);
+        return getProfileCacheRoot(context, profileId);
     }
 
     public static File getCrashLogsDir(Context context) {

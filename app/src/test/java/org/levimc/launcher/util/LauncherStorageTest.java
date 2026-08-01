@@ -52,6 +52,16 @@ public class LauncherStorageTest {
     }
 
     @Test
+    public void profileCacheRootUsesInternalCacheDirectoryAndVersionId() {
+        File appCacheDir = new File("/data/user/0/org.levimc.launcher/cache");
+
+        assertEquals(
+                new File(appCacheDir, "minecraft/Minecraft_1.21.80-beta"),
+                LauncherStorage.buildProfileCacheRoot(appCacheDir, "Minecraft_1.21.80-beta")
+        );
+    }
+
+    @Test
     public void sharedStorageModeUsesNewLayoutWhenLegacySharedRootsAreEmpty() throws Exception {
         File temp = Files.createTempDirectory("levi-shared-layout").toFile();
         File internalRoot = new File(temp, "internal");
