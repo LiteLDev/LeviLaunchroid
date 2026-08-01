@@ -1,35 +1,27 @@
-name: Build Android APK
+ndk-version: r28c
+          link-to-sdk: true
 
-on:
-  push:
-    branches: [ "main" ]
-  workflow_dispatch:
+      - name: Grant Execute Permission to gradlew
+        run: chmod +x ./gradlew
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+      - name: Inject API Keys
+        env:
+          CF_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+        run: echo "curseforge.api_key=${CF_API_KEY}" >> local.properties
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: LeviLauncher-Modded-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-
-    - name: Build Debug APK
-      run: ./gradlew assembleDebug
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: LeviLaunchroid-Modded-Debug
-        path: app/build/outputs/apk/debug/*.apk
+      - name: Release APK to GitHub Releases
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: app/build/outputs/apk/debug/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
