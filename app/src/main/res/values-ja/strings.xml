@@ -659,6 +659,9 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="about_contribute_desc">Issues や Pull Requests を通じた貢献を歓迎します。</string>
     <string name="about_issues">Issue</string>
     <string name="about_star_fork">スター / フォーク</string>
+    <string name="zitsuin_name">Zitsuin</string>
+    <string name="zitsuin_role">Apk Modder</string>
+    <string name="about_discord">Discord</string>
 
     <string-array name="launcher_tips">
         <item>設定でテーマ、色、背景などの外観オプションを調整できます。</item>

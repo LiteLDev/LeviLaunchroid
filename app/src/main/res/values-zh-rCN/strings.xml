@@ -784,6 +784,9 @@
     <string name="about_contribute_desc">欢迎通过 Issues 或 Pull Requests 改进 LeviLauncher。</string>
     <string name="about_issues">Issue</string>
     <string name="about_star_fork">Star / Fork</string>
+    <string name="zitsuin_name">Zitsuin</string>
+    <string name="zitsuin_role">Apk Modder</string>
+    <string name="about_discord">Discord</string>
     <string-array name="launcher_tips">
         <item>在设置中可以调整主题、颜色、背景和其他外观选项，让启动器更符合你的使用习惯。</item>
         <item>LeviLauncher 是开源项目。你可以通过 GitHub Issues 反馈启动器问题或提出改进建议。</item>

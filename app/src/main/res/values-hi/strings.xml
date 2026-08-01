@@ -686,6 +686,9 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="about_contribute_desc">LeviLauncher को बेहतर बनाने के लिए Issues या Pull Requests के माध्यम से योगदान का स्वागत है।</string>
     <string name="about_issues">Issue</string>
     <string name="about_star_fork">Star / Fork</string>
+    <string name="zitsuin_name">Zitsuin</string>
+    <string name="zitsuin_role">Apk Modder</string>
+    <string name="about_discord">Discord</string>
 
     <string-array name="launcher_tips">
         <item>सेटिंग्स आपको अपने सेटअप से मेल खाने के लिए थीम, रंग, पृष्ठभूमि और अन्य उपस्थिति विकल्पों को समायोजित करने देती है।</item>

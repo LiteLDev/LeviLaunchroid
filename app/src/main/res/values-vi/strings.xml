@@ -739,6 +739,9 @@ Quá trình chuyển đổi phải hoàn tất trước khi LeviLauncher có th�
     <string name="about_contribute_desc">Chúng tôi hoan nghênh các đóng góp thông qua Issues hoặc Pull Requests để cải thiện LeviLauncher.</string>
     <string name="about_issues">Issue</string>
     <string name="about_star_fork">Star / Fork</string>
+    <string name="zitsuin_name">Zitsuin</string>
+    <string name="zitsuin_role">Apk Modder</string>
+    <string name="about_discord">Discord</string>
 
     <string-array name="launcher_tips">
        <item>Phần Cài đặt cho phép bạn điều chỉnh chủ đề, màu sắc, hình nền và các tùy chọn hiển thị khác sao cho phù hợp với thiết lập của mình.</item>

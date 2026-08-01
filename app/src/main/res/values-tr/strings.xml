@@ -753,6 +753,9 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="about_contribute_desc">LeviLauncher\'ı geliştirmek için Issue veya Pull Request aracılığıyla katkıda bulunabilirsiniz.</string>
     <string name="about_issues">Sorun Bildir</string>
     <string name="about_star_fork">Yıldızla / Çatalla</string>
+    <string name="zitsuin_name">Zitsuin</string>
+    <string name="zitsuin_role">Apk Modder</string>
+    <string name="about_discord">Discord</string>
 
     <string-array name="launcher_tips">
         <item>Ayarlar; tema, renk, arka plan ve diğer görünüm seçeneklerini isteğinize göre düzenlemenizi sağlar.</item>

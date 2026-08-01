@@ -659,6 +659,9 @@ La migración debe completarse antes de continuar con LeviLauncher.</string>
     <string name="about_contribute_desc">Contribuciones vía Issues o Pull Requests son bienvenidas.</string>
     <string name="about_issues">Issue</string>
     <string name="about_star_fork">Dar Estrella / Hacer Fork</string>
+    <string name="zitsuin_name">Zitsuin</string>
+    <string name="zitsuin_role">Apk Modder</string>
+    <string name="about_discord">Discord</string>
 
     <string-array name="launcher_tips">
         <item>Los Ajustes te permiten cambiar el tema, color, fondo y otras opciones para adaptar tu launcher.</item>

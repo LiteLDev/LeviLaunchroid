@@ -27,6 +27,9 @@ public class AboutActivity extends BaseActivity {
     private static final String URL_ISSUES = "https://github.com/LiteLDev/LeviLaunchroid/issues";
     private static final String MAINTAINER_AVATAR_URL = "https://yt3.googleusercontent.com/ft4khqXZ_fQn-DbSLg91kQy3_JUQ_73rbg18nOcmMtunX5bq25jzrThWQAk9YsFkTKFesUL7sg8=s160-c-k-c0x00ffffff-no-rj";
     private static final String URL_YOUTUBE = "https://www.youtube.com/c/mrpokeg";
+    private static final String ZITSUIN_AVATAR_URL = "https://raw.githubusercontent.com/owjgbxkks/LeviLaunchroid-Modded/refs/heads/main/Shiina%20mahiru%20avatar.png";
+    private static final String ZITSUIN_URL_YOUTUBE = "https://youtube.com/@zitsuin?si=LtTHNfjhqU4xhUJ4";
+    private static final String ZITSUIN_URL_DISCORD = "https://discord.gg/HvCPZtWKxg";
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final OkHttpClient client = new OkHttpClient();
@@ -47,6 +50,7 @@ public class AboutActivity extends BaseActivity {
     private void styleBadges() {
         TextView authorBadge = findViewById(R.id.author_badge);
         TextView maintainerBadge = findViewById(R.id.maintainer_badge);
+        TextView zitsuinBadge = findViewById(R.id.zitsuin_badge);
 
         org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(this);
         int accent = pm.getAccentColor();
@@ -55,13 +59,16 @@ public class AboutActivity extends BaseActivity {
             gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
             gd.setColor(accent);
             gd.setCornerRadius(4 * getResources().getDisplayMetrics().density);
-            if (authorBadge != null) {
-                authorBadge.setBackground(gd);
+            if (authorBadge != null) {authorBadge.setBackground(gd);
                 authorBadge.setTextColor(android.graphics.Color.WHITE);
             }
             if (maintainerBadge != null) {
                 maintainerBadge.setBackground(gd);
                 maintainerBadge.setTextColor(android.graphics.Color.WHITE);
+            }
+            if (zitsuinBadge != null) {
+                zitsuinBadge.setBackground(gd);
+                zitsuinBadge.setTextColor(android.graphics.Color.WHITE);
             }
         }
     }
@@ -74,6 +81,7 @@ public class AboutActivity extends BaseActivity {
     private void loadAvatars() {
         com.microsoft.xbox.idp.toolkit.CircleImageView avatar = findViewById(R.id.author_avatar);
         com.microsoft.xbox.idp.toolkit.CircleImageView maintainerAvatar = findViewById(R.id.maintainer_avatar);
+        com.microsoft.xbox.idp.toolkit.CircleImageView zitsuinAvatar = findViewById(R.id.zitsuin_avatar);
 
         executor.execute(() -> {
             try {
@@ -99,6 +107,18 @@ public class AboutActivity extends BaseActivity {
                     }
                 }
             } catch (Exception ignored) {}
+
+            try {
+                if (zitsuinAvatar != null) {
+                    Response resp = client.newCall(new Request.Builder().url(ZITSUIN_AVATAR_URL).build()).execute();
+                    if (resp.isSuccessful() && resp.body() != null) {
+                        Bitmap bmp = BitmapFactory.decodeStream(resp.body().byteStream());
+                        runOnUiThread(() -> {
+                            if (bmp != null) zitsuinAvatar.setImageBitmap(bmp);
+                        });
+                    }
+                }
+            } catch (Exception ignored) {}
         });
     }
 
@@ -110,6 +130,8 @@ public class AboutActivity extends BaseActivity {
         setupLinkButton(R.id.btn_issues, URL_ISSUES);
         setupLinkButton(R.id.btn_star_fork, URL_REPO);
         setupLinkButton(R.id.btn_youtube_maintainer, URL_YOUTUBE);
+        setupLinkButton(R.id.btn_youtube_zitsuin, ZITSUIN_URL_YOUTUBE);
+        setupLinkButton(R.id.btn_discord_zitsuin, ZITSUIN_URL_DISCORD);
     }
 
     private void setupLinkButton(int viewId, String url) {

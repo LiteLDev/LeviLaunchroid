@@ -684,6 +684,9 @@ Migrasi harus selesai sebelum LeviLauncher dapat melanjutkan.</string>
     <string name="about_contribute_desc">Kontribusi melalui Issues atau Pull Requests dipersilakan untuk meningkatkan LeviLauncher.</string>
     <string name="about_issues">Issue</string>
     <string name="about_star_fork">Star / Fork</string>
+    <string name="zitsuin_name">Zitsuin</string>
+    <string name="zitsuin_role">Apk Modder</string>
+    <string name="about_discord">Discord</string>
     <string-array name="launcher_tips">
         <item>Pengaturan memungkinkan Anda menyesuaikan tema, warna, latar belakang, dan opsi tampilan lain agar sesuai dengan setup Anda.</item>
         <item>LeviLauncher bersifat open source. Gunakan GitHub issues untuk melaporkan masalah launcher atau menyarankan perbaikan.</item>
