@@ -50,10 +50,9 @@ import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.androidgamesdk.GameActivity;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.mojang.android.StringValue;
 import com.mojang.minecraftpe.platforms.Platform;
+import com.microsoft.xbox.idp.interop.Interop;
 
 import org.conscrypt.BuildConfig;
 import org.fmod.FMOD;
@@ -1571,6 +1570,23 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
 
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        NotificationListenerService.initialize(
+                getApplicationContext(),
+                getIntent().getStringExtra("MINECRAFT_FIREBASE_APP_ID"),
+                getIntent().getStringExtra("MINECRAFT_FIREBASE_API_KEY"),
+                getIntent().getStringExtra("MINECRAFT_FIREBASE_PROJECT_ID"),
+                getIntent().getStringExtra("MINECRAFT_FIREBASE_SENDER_ID")
+        );
+        NotificationListenerService.onMinecraftForeground(getApplicationContext());
+        new Handler(Looper.getMainLooper()).postDelayed(
+                () -> Interop.RegisterWithGNS(getApplicationContext()),
+                2000L
+        );
+    }
+
+    @Override
     public void onPause() {
         nativeSuspend();
         super.onPause();
@@ -1591,6 +1607,7 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
 
     @Override
     protected void onDestroy() {
+        NotificationListenerService.setNativeReady(false);
         if (isChangingConfigurations()) {
         }
         System.out.println("onDestroy");
@@ -1943,21 +1960,20 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
     public long initializeXboxLive(final long xalInitArgs, final long xblInitArgs) {
         if (!isEduMode()) {
             final FutureTask<Long> futureTask = new FutureTask<>(() -> {
-                try {
-                    try {
-                        FirebaseApp.getInstance();
-                    } catch (IllegalStateException e) {
-                        FirebaseOptions options = new FirebaseOptions.Builder()
-                                .setApplicationId("1:486187589451:android:b2331110821fe2304bd2ce")
-                                .setProjectId("minecraft-bedrock-57580")
-                                .setApiKey("AIzaSyDummy_API_Key_For_Initialization")
-                                .build();
-                        FirebaseApp.initializeApp(getApplicationContext(), options);
-                    }
-                } catch (Exception e) {
-                    Log.e("MinecraftPE", "Firebase initialization failed: " + e.getMessage());
+                NotificationListenerService.initialize(
+                        getApplicationContext(),
+                        getIntent().getStringExtra("MINECRAFT_FIREBASE_APP_ID"),
+                        getIntent().getStringExtra("MINECRAFT_FIREBASE_API_KEY"),
+                        getIntent().getStringExtra("MINECRAFT_FIREBASE_PROJECT_ID"),
+                        getIntent().getStringExtra("MINECRAFT_FIREBASE_SENDER_ID")
+                );
+                long result = nativeInitializeXboxLive(xalInitArgs, xblInitArgs);
+                if (result >= 0L) {
+                    Interop.RegisterWithGNS(getApplicationContext());
+                } else {
+                    NotificationListenerService.setNativeReady(false);
                 }
-                return nativeInitializeXboxLive(xalInitArgs, xblInitArgs);
+                return result;
             });
             runOnUiThread(futureTask);
             try {

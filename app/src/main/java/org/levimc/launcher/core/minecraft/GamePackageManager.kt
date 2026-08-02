@@ -624,6 +624,21 @@ class GamePackageManager private constructor(
 
     fun getAssets(): AssetManager = assetManager
 
+    fun getGameStringResource(name: String): String? {
+        return try {
+            val resources = android.content.res.Resources(
+                assetManager,
+                context.resources.displayMetrics,
+                context.resources.configuration
+            )
+            val packageName = applicationInfo.packageName ?: MinecraftLauncher.MC_PACKAGE_NAME
+            val identifier = resources.getIdentifier(name, "string", packageName)
+            if (identifier == 0) null else resources.getString(identifier).takeIf { it.isNotBlank() }
+        } catch (error: Exception) {
+            null
+        }
+    }
+
     fun getPackageContext(): Context = packageContext
 
     fun getApplicationInfo(): ApplicationInfo = applicationInfo
