@@ -13,6 +13,9 @@ import org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.DrawCommand;
 public class HudOverlay extends View {
     private boolean isShowing = false;
     private final Paint paint = new Paint();
+    private DrawCommand[] cachedDrawCommands = new DrawCommand[0];
+    private long cachedDrawRevision = Long.MIN_VALUE;
+    private boolean frameCallbackPosted = false;
     private final java.util.Map<String, android.graphics.Typeface> typefaceCache = new java.util.HashMap<>();
 
     private android.graphics.Typeface getFont(String fontId) {
@@ -78,14 +81,27 @@ public class HudOverlay extends View {
     private final android.view.Choreographer.FrameCallback frameCallback = new android.view.Choreographer.FrameCallback() {
         @Override
         public void doFrame(long frameTimeNanos) {
-            if (isShowing) {
-                invalidate();
-                android.view.Choreographer.getInstance().postFrameCallback(this);
-            }
+            frameCallbackPosted = false;
+            if (!isShowing || getVisibility() != VISIBLE) return;
+            long revision = ExternalModBridge.getDrawCommandsRevision();
+            if (revision < 0L || revision != cachedDrawRevision) invalidate();
+            postFrameCallback();
         }
     };
 
     private final android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+
+    private void postFrameCallback() {
+        if (frameCallbackPosted || !isShowing || getVisibility() != VISIBLE) return;
+        frameCallbackPosted = true;
+        android.view.Choreographer.getInstance().postFrameCallback(frameCallback);
+    }
+
+    @Override
+    protected void onVisibilityChanged(View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (visibility == VISIBLE) postFrameCallback();
+    }
 
     public void show() {
         if (isShowing) return;
@@ -104,7 +120,8 @@ public class HudOverlay extends View {
                         );
                         rootView.addView(HudOverlay.this, params);
                         isShowing = true;
-                        android.view.Choreographer.getInstance().postFrameCallback(frameCallback);
+                        cachedDrawRevision = Long.MIN_VALUE;
+                        postFrameCallback();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -124,6 +141,8 @@ public class HudOverlay extends View {
             e.printStackTrace();
         }
         isShowing = false;
+        android.view.Choreographer.getInstance().removeFrameCallback(frameCallback);
+        frameCallbackPosted = false;
     }
 
     private boolean isHudEditorMode = false;
@@ -135,36 +154,62 @@ public class HudOverlay extends View {
     private float draggingHeight = 1f;
 
     private java.util.Map<String, Boolean> hiddenInHudCache = new java.util.HashMap<>();
+    private boolean hiddenInHudCacheLoaded = false;
+
+    private void loadHiddenInHudCache() {
+        if (hiddenInHudCacheLoaded) return;
+        hiddenInHudCache.clear();
+        String bulkJson = ExternalModBridge.getExternalModsInfo();
+        if (bulkJson != null) {
+            try {
+                org.json.JSONArray array = new org.json.JSONArray(bulkJson);
+                for (int i = 0; i < array.length(); i++) {
+                    org.json.JSONObject obj = array.getJSONObject(i);
+                    hiddenInHudCache.put(obj.optString("module_id", ""),
+                        obj.optBoolean("hide_in_hud_editor", false));
+                }
+                hiddenInHudCacheLoaded = true;
+                return;
+            } catch (Exception ignored) {
+                hiddenInHudCache.clear();
+            }
+        }
+        int extCount = ExternalModBridge.getExternalModCount();
+        for (int i = 0; i < extCount; i++) {
+            try {
+                org.json.JSONObject obj = new org.json.JSONObject(ExternalModBridge.getExternalModInfo(i));
+                hiddenInHudCache.put(obj.optString("module_id", ""),
+                    obj.optBoolean("hide_in_hud_editor", false));
+            } catch (Exception ignored) {
+            }
+        }
+        hiddenInHudCacheLoaded = true;
+    }
 
     private boolean isHiddenInHudEditor(String moduleId) {
         if (moduleId == null) return false;
-        if (hiddenInHudCache.containsKey(moduleId)) {
-            return hiddenInHudCache.get(moduleId);
-        }
-        boolean hidden = false;
-        int extCount = ExternalModBridge.getExternalModCount();
-        for (int i = 0; i < extCount; i++) {
-            String json = ExternalModBridge.getExternalModInfo(i);
-            try {
-                org.json.JSONObject obj = new org.json.JSONObject(json);
-                if (moduleId.equals(obj.optString("module_id", ""))) {
-                    hidden = obj.optBoolean("hide_in_hud_editor", false);
-                    break;
-                }
-            } catch (Exception e) {}
-        }
-        hiddenInHudCache.put(moduleId, hidden);
-        return hidden;
+        loadHiddenInHudCache();
+        return hiddenInHudCache.getOrDefault(moduleId, false);
     }
 
     public void setHudEditorMode(boolean active) {
         isHudEditorMode = active;
         hiddenInHudCache.clear();
+        hiddenInHudCacheLoaded = false;
         invalidate();
     }
 
     public boolean isHudEditorMode() {
         return isHudEditorMode;
+    }
+
+    private DrawCommand[] currentDrawCommands() {
+        long revision = ExternalModBridge.getDrawCommandsRevision();
+        if (revision < 0L || revision != cachedDrawRevision) {
+            cachedDrawCommands = ExternalModBridge.getDrawCommands();
+            cachedDrawRevision = revision;
+        }
+        return cachedDrawCommands;
     }
 
     @Override
@@ -173,7 +218,7 @@ public class HudOverlay extends View {
 
         switch (event.getActionMasked()) {
             case android.view.MotionEvent.ACTION_DOWN:
-                DrawCommand[] cmds = ExternalModBridge.getDrawCommands();
+                DrawCommand[] cmds = currentDrawCommands();
                 if (cmds != null) {
                     float touchX = event.getX();
                     float touchY = event.getY();
@@ -355,7 +400,7 @@ public class HudOverlay extends View {
             canvas.drawColor(0x88000000);
         }
 
-        DrawCommand[] cmds = ExternalModBridge.getDrawCommands();
+        DrawCommand[] cmds = currentDrawCommands();
         if (cmds != null) {
             for (DrawCommand cmd : cmds) {
                 if (isHudEditorMode && isHiddenInHudEditor(cmd.moduleId)) continue;

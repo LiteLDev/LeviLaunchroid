@@ -457,7 +457,7 @@ public class FileHandler {
             final int processedCount = processed;
             final String finalError = lastError;
             new Handler(Looper.getMainLooper()).post(() -> {
-                modManager.refreshMods();
+                modManager.reloadMods();
                 if (processedCount > 0) {
                     if (callback != null) {
                         callback.onSuccess(processedCount);

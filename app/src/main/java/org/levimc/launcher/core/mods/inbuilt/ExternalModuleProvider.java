@@ -25,20 +25,34 @@ public final class ExternalModuleProvider {
     public static List<UnifiedMod> load(Activity activity) {
         Map<String, String> externalGroupNames = loadExternalModDisplayNames(activity);
         List<UnifiedMod> modules = new ArrayList<>();
+        String bulkJson = ExternalModBridge.getExternalModsInfo();
+        if (bulkJson != null) {
+            try {
+                JSONArray array = new JSONArray(bulkJson);
+                for (int i = 0; i < array.length(); i++) {
+                    UnifiedMod mod = parse(activity, array.getJSONObject(i), externalGroupNames);
+                    if (mod != null) modules.add(mod);
+                }
+                return modules;
+            } catch (Exception ignored) {
+                modules.clear();
+            }
+        }
+
         int count = ExternalModBridge.getExternalModCount();
         for (int i = 0; i < count; i++) {
-            UnifiedMod mod = parse(activity, ExternalModBridge.getExternalModInfo(i), externalGroupNames);
-            if (mod != null) {
-                modules.add(mod);
+            try {
+                UnifiedMod mod = parse(activity, new JSONObject(ExternalModBridge.getExternalModInfo(i)), externalGroupNames);
+                if (mod != null) modules.add(mod);
+            } catch (Exception ignored) {
             }
         }
         return modules;
     }
 
-    private static UnifiedMod parse(Activity activity, String json,
+    private static UnifiedMod parse(Activity activity, JSONObject obj,
                                     Map<String, String> externalGroupNames) {
         try {
-            JSONObject obj = new JSONObject(json);
             String moduleId = obj.optString("module_id", "");
             if (moduleId.isEmpty()) return null;
 

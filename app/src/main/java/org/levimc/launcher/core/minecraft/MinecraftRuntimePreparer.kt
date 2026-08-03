@@ -62,12 +62,11 @@ object MinecraftRuntimePreparer {
 
         listener.onProgress(40, "Preparing game loader")
         listener.onLog("Loading game loader")
-        try {
-            trace.mark("Game loader load started")
-            System.loadLibrary("preloader")
+        trace.mark("Game loader load started")
+        if (ModManager.ensurePreloaderLoaded()) {
             trace.mark("Game loader load finished")
-        } catch (error: UnsatisfiedLinkError) {
-            trace.mark("Game loader load skipped", error.message ?: error.javaClass.simpleName)
+        } else {
+            trace.mark("Game loader load skipped", "preloader unavailable")
         }
         val signatureRulesFile = PreloaderSignatureRulesManager.getRulesFile(context.applicationContext)
         PreloaderInput.configureSignatureRules(signatureRulesFile, version.versionCode)

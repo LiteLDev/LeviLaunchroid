@@ -9,6 +9,7 @@ public class ExternalModBridge {
 
     private static native int nativeGetExternalModCount();
     private static native String nativeGetExternalModInfo(int index);
+    private static native String nativeGetExternalModsInfo();
     private static native void nativeToggleExternalMod(String moduleId, boolean enabled);
     private static native void nativeSetExternalModConfig(String moduleId, String key, String value);
     private static native int nativeGetExternalButtonCount();
@@ -35,6 +36,15 @@ public class ExternalModBridge {
         } catch (UnsatisfiedLinkError e) {
             Log.e(TAG, "nativeGetExternalModInfo not available", e);
             return "{}";
+        }
+    }
+
+    public static String getExternalModsInfo() {
+        if (!ModManager.ensurePreloaderLoaded()) return null;
+        try {
+            return nativeGetExternalModsInfo();
+        } catch (UnsatisfiedLinkError e) {
+            return null;
         }
     }
 
@@ -184,6 +194,7 @@ public class ExternalModBridge {
     }
 
     public static native Object[] nativeGetDrawCommands();
+    private static native long nativeGetDrawCommandsRevision();
 
     public static class DrawCommand {
         public static final int TYPE_TEXT = 0;
@@ -203,6 +214,15 @@ public class ExternalModBridge {
         public String moduleId;
         public String fontId;
         public String imageId;
+    }
+
+    public static long getDrawCommandsRevision() {
+        if (!ModManager.ensurePreloaderLoaded()) return -1L;
+        try {
+            return nativeGetDrawCommandsRevision();
+        } catch (UnsatisfiedLinkError e) {
+            return -1L;
+        }
     }
 
     public static DrawCommand[] getDrawCommands() {

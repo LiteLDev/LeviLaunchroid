@@ -53,6 +53,8 @@ public class ModMenuOverlay {
     private boolean isShowing = false;
     
     private RecyclerView modsRecycler;
+    private final android.os.Handler searchHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private final Runnable searchRunnable = this::applyFilters;
     private ModMenuAdapter adapter;
     private EditText searchInput;
     private ImageButton clearSearchBtn;
@@ -338,7 +340,8 @@ public class ModMenuOverlay {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterMods(s.toString());
+                searchHandler.removeCallbacks(searchRunnable);
+                searchHandler.postDelayed(searchRunnable, 60L);
                 clearSearchBtn.setVisibility(s.length() > 0 ? View.VISIBLE : View.GONE);
             }
             @Override
@@ -427,6 +430,8 @@ public class ModMenuOverlay {
             }
         });
         modsRecycler.setLayoutManager(layoutManager);
+        modsRecycler.setItemAnimator(null);
+        modsRecycler.setHasFixedSize(true);
         adapter.setOnModActionListener(new ModMenuAdapter.OnModActionListener() {
             @Override
             public void onToggle(UnifiedMod mod, boolean enabled) {
@@ -438,7 +443,9 @@ public class ModMenuOverlay {
                 if (callback != null) {
                     callback.onModToggled(mod.getStableKey(), enabled);
                 }
-                applyFilters();
+                if (activeFilter == ModuleFilter.ENABLED) {
+                    applyFilters();
+                }
             }
             @Override
             public void onConfig(UnifiedMod mod) {
@@ -452,7 +459,9 @@ public class ModMenuOverlay {
                 } else {
                     favoriteKeys.remove(mod.getStableKey());
                 }
-                applyFilters();
+                if (activeFilter == ModuleFilter.FAVORITES) {
+                    applyFilters();
+                }
             }
         });
         modsRecycler.setAdapter(adapter);

@@ -39,6 +39,7 @@ public class InbuiltOverlayManager {
     private int baseY = 150;
     private static final int SPACING = 70;
     private static final int START_X = 50;
+    private long lastVisibilityStateHash = Long.MIN_VALUE;
 
     public InbuiltOverlayManager(Activity activity) {
         this.activity = activity;
@@ -678,61 +679,70 @@ public class InbuiltOverlayManager {
         boolean isPauseOpen = org.levimc.launcher.preloader.PreloaderInput.isPauseMenuOpen();
         boolean isHudScreenOpen = org.levimc.launcher.preloader.PreloaderInput.isHudScreenOpen();
         boolean isShowingMenu = org.levimc.launcher.preloader.PreloaderInput.isShowingMenu();
-
         boolean showGameOverlays = forceGlobalModMenu || (isHudScreenOpen && !isShowingMenu);
         boolean inbuiltVisible = hudEditorMode || showGameOverlays;
+        long stateHash = manager.getOverlayVisibilityRevision();
+        stateHash = 31L * stateHash + (isPauseOnly ? 1L : 0L);
+        stateHash = 31L * stateHash + (forceGlobalModMenu ? 1L : 0L);
+        stateHash = 31L * stateHash + (isPauseOpen ? 1L : 0L);
+        stateHash = 31L * stateHash + (isHudScreenOpen ? 1L : 0L);
+        stateHash = 31L * stateHash + (isShowingMenu ? 1L : 0L);
+        stateHash = 31L * stateHash + (hudEditorMode ? 1L : 0L);
+        stateHash = 31L * stateHash + overlays.size();
+        for (BaseOverlayButton overlay : overlays) {
+            stateHash = 31L * stateHash + System.identityHashCode(overlay);
+        }
+        stateHash = 31L * stateHash + (fpsDisplayOverlay == null ? 0L : System.identityHashCode(fpsDisplayOverlay));
+        stateHash = 31L * stateHash + (cpsDisplayOverlay == null ? 0L : System.identityHashCode(cpsDisplayOverlay));
+        stateHash = 31L * stateHash + (modMenuButton == null ? 0L : System.identityHashCode(modMenuButton));
+        stateHash = 31L * stateHash + (hudOverlay == null ? 0L : System.identityHashCode(hudOverlay));
+        if (stateHash == lastVisibilityStateHash) return;
+        lastVisibilityStateHash = stateHash;
 
         activity.runOnUiThread(() -> {
             if (modMenuButton != null) {
-                if (isPauseOnly && !forceGlobalModMenu) {
-                    if (isPauseOpen) {
-                        modMenuButton.setVisibility(android.view.View.VISIBLE);
-                    } else {
-                        modMenuButton.setVisibility(android.view.View.GONE);
-                        if (modMenuButton.isMenuShowing()) {
-                            modMenuButton.hideMenu();
-                        }
-                    }
-                } else {
-                    modMenuButton.setVisibility(android.view.View.VISIBLE);
+                int visibility = !isPauseOnly || forceGlobalModMenu || isPauseOpen
+                        ? android.view.View.VISIBLE
+                        : android.view.View.GONE;
+                modMenuButton.setVisibility(visibility);
+                if (visibility == android.view.View.GONE && modMenuButton.isMenuShowing()) {
+                    modMenuButton.hideMenu();
                 }
             }
 
             if (hudOverlay != null) {
-                if (hudOverlay.isHudEditorMode()) {
-                    hudOverlay.setVisibility(android.view.View.VISIBLE);
-                } else if (showGameOverlays) {
-                    hudOverlay.setVisibility(android.view.View.VISIBLE);
-                } else {
-                    hudOverlay.setVisibility(android.view.View.GONE);
+                int visibility = hudOverlay.isHudEditorMode() || showGameOverlays
+                        ? android.view.View.VISIBLE
+                        : android.view.View.GONE;
+                if (hudOverlay.getVisibility() != visibility) {
+                    hudOverlay.setVisibility(visibility);
                 }
             }
 
-            int inbuiltVis = inbuiltVisible
-                    ? android.view.View.VISIBLE
-                    : android.view.View.GONE;
-
             for (BaseOverlayButton overlay : overlays) {
                 if (overlay.overlayView != null) {
-                    boolean showEverywhere = manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey());
-                    int vis = (inbuiltVisible || showEverywhere) ? android.view.View.VISIBLE : android.view.View.GONE;
-                    overlay.overlayView.setVisibility(vis);
+                    int visibility = inbuiltVisible || manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey())
+                            ? android.view.View.VISIBLE
+                            : android.view.View.GONE;
+                    if (overlay.overlayView.getVisibility() != visibility) {
+                        overlay.overlayView.setVisibility(visibility);
+                    }
                 }
             }
 
             if (fpsDisplayOverlay != null) {
-                boolean showEverywhere = manager.isOverlayShowEverywhere(ModIds.FPS_DISPLAY);
-                int vis = (inbuiltVisible || showEverywhere) ? android.view.View.VISIBLE : android.view.View.GONE;
-                fpsDisplayOverlay.setVisibility(vis);
+                int visibility = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.FPS_DISPLAY)
+                        ? android.view.View.VISIBLE
+                        : android.view.View.GONE;
+                fpsDisplayOverlay.setVisibility(visibility);
             }
 
             if (cpsDisplayOverlay != null) {
-                boolean showEverywhere = manager.isOverlayShowEverywhere(ModIds.CPS_DISPLAY);
-                int vis = (inbuiltVisible || showEverywhere) ? android.view.View.VISIBLE : android.view.View.GONE;
-                cpsDisplayOverlay.setVisibility(vis);
+                int visibility = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.CPS_DISPLAY)
+                        ? android.view.View.VISIBLE
+                        : android.view.View.GONE;
+                cpsDisplayOverlay.setVisibility(visibility);
             }
-
-
         });
     }
 }

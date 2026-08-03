@@ -6,6 +6,7 @@ import android.view.KeyEvent;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class InbuiltModManager {
     private static final String PREFS_NAME = "inbuilt_mods_prefs";
@@ -44,9 +45,18 @@ public class InbuiltModManager {
 
     private static volatile InbuiltModManager instance;
     private final SharedPreferences prefs;
+    private final AtomicLong overlayVisibilityRevision = new AtomicLong(1L);
+    private final SharedPreferences.OnSharedPreferenceChangeListener preferenceListener;
 
     private InbuiltModManager(Context context) {
         prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        preferenceListener = (sharedPreferences, key) -> {
+            if (KEY_PAUSE_MENU_ONLY.equals(key) ||
+                    (key != null && key.startsWith(KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX))) {
+                overlayVisibilityRevision.incrementAndGet();
+            }
+        };
+        prefs.registerOnSharedPreferenceChangeListener(preferenceListener);
     }
 
     public static InbuiltModManager getInstance(Context context) {
@@ -230,6 +240,10 @@ public class InbuiltModManager {
 
     public void setOverlayShowEverywhere(String modId, boolean showEverywhere) {
         prefs.edit().putBoolean(KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX + modId, showEverywhere).apply();
+    }
+
+    public long getOverlayVisibilityRevision() {
+        return overlayVisibilityRevision.get();
     }
 
     public int getGyroSensitivityX() {

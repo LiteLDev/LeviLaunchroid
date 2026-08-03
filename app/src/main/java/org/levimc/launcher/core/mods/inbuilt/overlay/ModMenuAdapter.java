@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.levimc.launcher.R;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class ModMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -33,6 +35,10 @@ public class ModMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final Map<String, Boolean> favoriteStates = new HashMap<>();
     private OnModActionListener listener;
 
+    public ModMenuAdapter() {
+        setHasStableIds(true);
+    }
+
     public interface OnModActionListener {
         void onToggle(UnifiedMod mod, boolean enabled);
         void onConfig(UnifiedMod mod);
@@ -44,19 +50,68 @@ public class ModMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void updateMods(List<UnifiedMod> mods, Set<String> favoriteKeys) {
-        items.clear();
+        List<MenuItem> nextItems = new ArrayList<>();
+        Map<String, Boolean> nextToggleStates = new HashMap<>();
+        Map<String, Boolean> nextFavoriteStates = new HashMap<>();
         String lastGroupId = null;
         for (UnifiedMod mod : mods) {
             if (!mod.getGroupId().equals(lastGroupId)) {
-                items.add(MenuItem.group(mod.getGroupId(), mod.getGroupName()));
+                nextItems.add(MenuItem.group(mod.getGroupId(), mod.getGroupName()));
                 lastGroupId = mod.getGroupId();
             }
-            items.add(MenuItem.mod(mod));
-            toggleStates.put(mod.getStableKey(), mod.isEnabled());
-            favoriteStates.put(mod.getStableKey(),
+            nextItems.add(MenuItem.mod(mod));
+            nextToggleStates.put(mod.getStableKey(), mod.isEnabled());
+            nextFavoriteStates.put(mod.getStableKey(),
                 favoriteKeys != null && favoriteKeys.contains(mod.getStableKey()));
         }
-        notifyDataSetChanged();
+
+        List<MenuItem> oldItems = new ArrayList<>(items);
+        Map<String, Boolean> oldToggleStates = new HashMap<>(toggleStates);
+        Map<String, Boolean> oldFavoriteStates = new HashMap<>(favoriteStates);
+        DiffUtil.DiffResult diff = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return oldItems.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return nextItems.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return oldItems.get(oldItemPosition).stableKey()
+                    .equals(nextItems.get(newItemPosition).stableKey());
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                MenuItem oldItem = oldItems.get(oldItemPosition);
+                MenuItem newItem = nextItems.get(newItemPosition);
+                if (oldItem.isGroup() || newItem.isGroup()) {
+                    return oldItem.isGroup() == newItem.isGroup()
+                        && Objects.equals(oldItem.groupName, newItem.groupName);
+                }
+                String oldKey = oldItem.mod.getStableKey();
+                String newKey = newItem.mod.getStableKey();
+                return Objects.equals(oldItem.mod.getName(), newItem.mod.getName())
+                    && Objects.equals(oldItem.mod.getDescription(), newItem.mod.getDescription())
+                    && oldItem.mod.hasConfig() == newItem.mod.hasConfig()
+                    && oldToggleStates.getOrDefault(oldKey, false)
+                        .equals(nextToggleStates.getOrDefault(newKey, false))
+                    && oldFavoriteStates.getOrDefault(oldKey, false)
+                        .equals(nextFavoriteStates.getOrDefault(newKey, false));
+            }
+        }, false);
+
+        items.clear();
+        items.addAll(nextItems);
+        toggleStates.clear();
+        toggleStates.putAll(nextToggleStates);
+        favoriteStates.clear();
+        favoriteStates.putAll(nextFavoriteStates);
+        diff.dispatchUpdatesTo(this);
     }
 
     public boolean isGroupHeader(int position) {
@@ -205,6 +260,17 @@ public class ModMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
     @Override
+    public long getItemId(int position) {
+        String key = items.get(position).stableKey();
+        long hash = 0xcbf29ce484222325L;
+        for (int i = 0; i < key.length(); i++) {
+            hash ^= key.charAt(i);
+            hash *= 0x100000001b3L;
+        }
+        return hash;
+    }
+
+    @Override
     public int getItemCount() {
         return items.size();
     }
@@ -230,6 +296,10 @@ public class ModMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         boolean isGroup() {
             return mod == null;
+        }
+
+        String stableKey() {
+            return isGroup() ? "group:" + groupId : "mod:" + mod.getStableKey();
         }
     }
 

@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class ModNativeLoader {
     private static final String TAG = "ModNativeLoader";
-    private static final int CACHE_MANIFEST_VERSION = 3;
+    private static final int CACHE_MANIFEST_VERSION = 4;
     private static final String DATA_DIRECTORY_NAME = "data";
     private static final String CONFIG_DIRECTORY_NAME = "config";
 
@@ -74,7 +74,8 @@ public class ModNativeLoader {
             return;
         }
 
-        Set<String> stagedModIds = new HashSet<>();
+        Set<String> installedModIds = new HashSet<>();
+        for (Mod mod : mods) installedModIds.add(mod.getId());
         int currentIndex = 0;
         for (Mod mod : mods) {
             if (!mod.isEnabled()) {
@@ -103,7 +104,6 @@ public class ModNativeLoader {
                 }
 
                 ensureReadOnly(targetFile);
-                stagedModIds.add(mod.getId());
                 System.load(targetFile.getAbsolutePath());
 
                 if (ModManager.ensurePreloaderLoaded()) {
@@ -125,7 +125,7 @@ public class ModNativeLoader {
             }
         }
 
-        pruneStaleCachedMods(cacheModsDir, stagedModIds);
+        pruneStaleCachedMods(cacheModsDir, installedModIds);
     }
 
     public static boolean isCompatibleWithMinecraftVersion(Mod mod, String minecraftVersion) {
@@ -310,13 +310,11 @@ public class ModNativeLoader {
 
         try (InputStream in = new FileInputStream(src);
              FileOutputStream out = new FileOutputStream(dst)) {
-            markReadOnlyBeforeWrite(dst);
-            byte[] buf = new byte[8192];
+            byte[] buf = new byte[262144];
             int len;
             while ((len = in.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
-            out.getFD().sync();
         }
 
         ensureReadOnly(dst);
@@ -370,34 +368,28 @@ public class ModNativeLoader {
         }
     }
 
-    private static void markReadOnlyBeforeWrite(File file) throws IOException {
-        if (!file.setReadOnly() && file.canWrite()) {
-            throw new IOException("Failed to mark file read-only before write: " + file.getAbsolutePath());
-        }
-    }
-
     private static void ensureReadOnly(File file) throws IOException {
         if (!file.isFile()) {
             throw new IOException("Expected regular file: " + file.getAbsolutePath());
         }
 
-        if (!file.setReadable(true, true) && !file.canRead()) {
+        if (!file.canRead() && !file.setReadable(true, true)) {
             throw new IOException("Failed to mark file readable: " + file.getAbsolutePath());
         }
 
-        if (!file.setReadOnly() && file.canWrite()) {
+        if (file.canWrite() && !file.setReadOnly()) {
             throw new IOException("Failed to keep file read-only: " + file.getAbsolutePath());
         }
     }
 
-    private static void pruneStaleCachedMods(File cacheModsDir, Set<String> stagedModIds) {
+    private static void pruneStaleCachedMods(File cacheModsDir, Set<String> installedModIds) {
         File[] cachedEntries = cacheModsDir.listFiles(File::isDirectory);
         if (cachedEntries == null) {
             return;
         }
 
         for (File cachedEntry : cachedEntries) {
-            if (stagedModIds.contains(cachedEntry.getName())) {
+            if (installedModIds.contains(cachedEntry.getName())) {
                 continue;
             }
             if (cachedEntry.getName().endsWith(".tmp")) {

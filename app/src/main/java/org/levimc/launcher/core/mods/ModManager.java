@@ -58,6 +58,8 @@ public class ModManager {
             .disableHtmlEscaping()
             .create();
     private final ModConfigManager modConfigManager = new ModConfigManager();
+    private List<ModDescriptor> descriptorCache = new ArrayList<>();
+    private boolean descriptorCacheDirty = true;
 
     private static final class ModDescriptor {
         final String id;
@@ -112,24 +114,23 @@ public class ModManager {
         return result;
     }
 
-    public static synchronized boolean ensurePreloaderLoaded() {
-        if (preloaderLoaded) {
-            return true;
-        }
+    public static boolean ensurePreloaderLoaded() {
+        if (preloaderLoaded) return true;
+        if (preloaderLoadAttempted) return false;
 
-        if (preloaderLoadAttempted) {
-            return false;
-        }
+        synchronized (ModManager.class) {
+            if (preloaderLoaded) return true;
+            if (preloaderLoadAttempted) return false;
 
-        preloaderLoadAttempted = true;
-        try {
-            System.loadLibrary("preloader");
-            preloaderLoaded = true;
-        } catch (UnsatisfiedLinkError e) {
-            Log.e(TAG, "Failed to load preloader in launcher process", e);
+            preloaderLoadAttempted = true;
+            try {
+                System.loadLibrary("preloader");
+                preloaderLoaded = true;
+            } catch (UnsatisfiedLinkError e) {
+                Log.e(TAG, "Failed to load preloader in launcher process", e);
+            }
+            return preloaderLoaded;
         }
-
-        return preloaderLoaded;
     }
 
     public static boolean initializeLoadedMod(String libPath, Mod mod) {
@@ -177,6 +178,7 @@ public class ModManager {
         if (Objects.equals(currentVersion, version)) return;
         stopFileObserver();
         currentVersion = version;
+        invalidateDescriptorCache();
 
         if (version != null && version.modsDir != null) {
             modsDir = version.modsDir;
@@ -190,6 +192,7 @@ public class ModManager {
             configFile = null;
             enabledMap.clear();
             modOrder.clear();
+            invalidateDescriptorCache();
         }
         notifyModsChanged();
     }
@@ -307,6 +310,9 @@ public class ModManager {
                 FileObserver.CREATE | FileObserver.DELETE | FileObserver.MOVED_FROM | FileObserver.MOVED_TO) {
             @Override
             public void onEvent(int event, String path) {
+                synchronized (ModManager.this) {
+                    invalidateDescriptorCache();
+                }
                 notifyModsChanged();
             }
         };
@@ -327,6 +333,7 @@ public class ModManager {
         boolean deleted = modDirectory.isDirectory() && deleteRecursively(modDirectory);
 
         if (deleted) {
+            invalidateDescriptorCache();
             enabledMap.remove(modId);
             modOrder.remove(modId);
             saveConfig();
@@ -354,11 +361,23 @@ public class ModManager {
     }
 
     public synchronized void refreshMods() {
+        invalidateDescriptorCache();
         notifyModsChanged();
+    }
+
+    public synchronized List<Mod> reloadMods() {
+        invalidateDescriptorCache();
+        return getMods();
+    }
+
+    private void invalidateDescriptorCache() {
+        descriptorCacheDirty = true;
+        descriptorCache = new ArrayList<>();
     }
 
     private void reconcileModsState() {
         boolean changed = migrateTopLevelSoMods();
+        if (changed) invalidateDescriptorCache();
         changed |= syncConfigWithDiscoveredMods(discoverMods());
         if (changed) {
             saveConfig();
@@ -366,29 +385,24 @@ public class ModManager {
     }
 
     private List<ModDescriptor> discoverMods() {
+        if (!descriptorCacheDirty) return new ArrayList<>(descriptorCache);
+
         List<ModDescriptor> descriptors = new ArrayList<>();
-        if (modsDir == null || !modsDir.exists()) {
-            return descriptors;
-        }
-
-        File[] entries = modsDir.listFiles();
-        if (entries == null) {
-            return descriptors;
-        }
-
-        Arrays.sort(entries, Comparator.comparing(File::getName, String.CASE_INSENSITIVE_ORDER));
-        for (File entry : entries) {
-            if (!entry.isDirectory()) {
-                continue;
-            }
-
-            ModDescriptor descriptor = parseDirectoryMod(entry);
-            if (descriptor != null) {
-                descriptors.add(descriptor);
+        if (modsDir != null && modsDir.exists()) {
+            File[] entries = modsDir.listFiles();
+            if (entries != null) {
+                Arrays.sort(entries, Comparator.comparing(File::getName, String.CASE_INSENSITIVE_ORDER));
+                for (File entry : entries) {
+                    if (!entry.isDirectory()) continue;
+                    ModDescriptor descriptor = parseDirectoryMod(entry);
+                    if (descriptor != null) descriptors.add(descriptor);
+                }
             }
         }
 
-        return descriptors;
+        descriptorCache = descriptors;
+        descriptorCacheDirty = false;
+        return new ArrayList<>(descriptorCache);
     }
 
     private boolean migrateTopLevelSoMods() {
