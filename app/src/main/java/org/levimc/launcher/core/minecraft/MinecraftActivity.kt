@@ -6,6 +6,7 @@ import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
+import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -193,7 +194,42 @@ class MinecraftActivity : MainActivity() {
         }
     }
 
+    private fun isMouseSource(source: Int): Boolean {
+        return (source and InputDevice.SOURCE_MOUSE) == InputDevice.SOURCE_MOUSE ||
+            (source and InputDevice.SOURCE_MOUSE_RELATIVE) == InputDevice.SOURCE_MOUSE_RELATIVE
+    }
+
+    private fun getMouseButton(event: KeyEvent): Int {
+        if (!isMouseSource(event.source)) {
+            return 0
+        }
+        return when (event.keyCode) {
+            KeyEvent.KEYCODE_BUTTON_1 -> MotionEvent.BUTTON_PRIMARY
+            KeyEvent.KEYCODE_BUTTON_2 -> MotionEvent.BUTTON_SECONDARY
+            KeyEvent.KEYCODE_BUTTON_3 -> MotionEvent.BUTTON_TERTIARY
+            KeyEvent.KEYCODE_BUTTON_4 -> MotionEvent.BUTTON_BACK
+            KeyEvent.KEYCODE_BUTTON_5 -> MotionEvent.BUTTON_FORWARD
+            else -> 0
+        }
+    }
+
+    private fun shouldConsumeMouseMotion(event: MotionEvent): Boolean {
+        return isMouseSource(event.source) &&
+            PreloaderInput.onMouseMotion(
+                event.actionMasked,
+                event.actionButton,
+                event.buttonState
+            )
+    }
+
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        val mouseButton = getMouseButton(event)
+        if (mouseButton != 0 &&
+            (event.action == KeyEvent.ACTION_DOWN || event.action == KeyEvent.ACTION_UP) &&
+            PreloaderInput.onMouse(mouseButton, event.action == KeyEvent.ACTION_DOWN)) {
+            return true
+        }
+
         val unicodeChar = event.unicodeChar
         if (event.action == KeyEvent.ACTION_UP) {
             if (org.levimc.launcher.preloader.PreloaderInput.onKeyEvent(event.keyCode, unicodeChar, false)) {
@@ -216,6 +252,10 @@ class MinecraftActivity : MainActivity() {
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (shouldConsumeMouseMotion(event)) {
+            return true
+        }
+
         val actionIndex = event.actionIndex
         if (org.levimc.launcher.preloader.PreloaderInput.onTouch(
                 event.actionMasked,
@@ -245,14 +285,12 @@ class MinecraftActivity : MainActivity() {
     }
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+        if (shouldConsumeMouseMotion(event)) {
+            return true
+        }
+
         if (event.actionMasked == MotionEvent.ACTION_BUTTON_PRESS ||
             event.actionMasked == MotionEvent.ACTION_BUTTON_RELEASE) {
-            
-            val isDown = event.actionMasked == MotionEvent.ACTION_BUTTON_PRESS
-            if (org.levimc.launcher.preloader.PreloaderInput.onMouse(event.actionButton, isDown)) {
-                return true
-            }
-            
             overlayManager?.handleMouseEvent(event)
         }
 
