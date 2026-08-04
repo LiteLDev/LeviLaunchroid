@@ -348,6 +348,14 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         clipboardManager.setPrimaryClip(ClipData.newPlainText("Clipdata", value));
     }
 
+    public String getClipboardText() {
+        ClipData.Item itemAt;
+        if (this.clipboardManager.hasPrimaryClip() && this.clipboardManager.getPrimaryClip() != null && (itemAt = this.clipboardManager.getPrimaryClip().getItemAt(0)) != null) {
+            return itemAt.coerceToText(this).toString();
+        }
+        return "";
+    }
+
     public float getKeyboardHeight() {
         return keyboardHeight;
     }
