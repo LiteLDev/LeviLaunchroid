@@ -30,11 +30,8 @@ import androidx.core.widget.TextViewCompat;
 
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.auth.MsftAccountStore;
-import org.levimc.launcher.core.auth.MsftAuthManager;
 import org.levimc.launcher.ui.animation.DynamicAnim;
-import org.levimc.launcher.ui.dialogs.LoadingDialog;
 import org.levimc.launcher.util.AccountTextUtils;
-import org.levimc.launcher.util.DialogUtils;
 import org.levimc.launcher.util.PersonalizationManager;
 import org.levimc.launcher.util.ThemeManager;
 
@@ -42,7 +39,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.Locale;
 
-import net.raphimc.minecraftauth.bedrock.BedrockAuthManager;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -54,7 +50,6 @@ public class BaseActivity extends AppCompatActivity {
     private final OkHttpClient navAvatarClient = new OkHttpClient();
     private final ExecutorService navAccountExecutor = Executors.newSingleThreadExecutor();
     private ActivityResultLauncher<Intent> navAccountLoginLauncher;
-    private LoadingDialog navAccountLoadingDialog;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -303,44 +298,16 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void handleNavAccountLoginResult(int resultCode, Intent data) {
-        if (resultCode != RESULT_OK || data == null) {
+        if (resultCode == RESULT_OK && data != null
+                && data.getBooleanExtra(MsftLoginActivity.EXTRA_LOGIN_COMPLETED, false)) {
+            String name = data.getStringExtra(MsftLoginActivity.EXTRA_LOGIN_NAME);
+            String statusName = name != null ? name : getString(R.string.not_signed_in);
+            Toast.makeText(this, getString(R.string.ms_login_success, statusName), Toast.LENGTH_SHORT).show();
             refreshNavAccountUI();
+            onNavAccountChanged();
             return;
         }
-
-        String code = data.getStringExtra("ms_auth_code");
-        String codeVerifier = data.getStringExtra("ms_code_verifier");
-        if (code == null || codeVerifier == null) {
-            refreshNavAccountUI();
-            return;
-        }
-
-        navAccountLoadingDialog = DialogUtils.ensure(this, navAccountLoadingDialog);
-        DialogUtils.showWithMessage(navAccountLoadingDialog, getString(R.string.ms_login_exchanging));
-
-        navAccountExecutor.execute(() -> {
-            try {
-                BedrockAuthManager authManager = MsftAuthManager.loginWithCode(code);
-
-                runOnUiThread(() -> DialogUtils.showWithMessage(navAccountLoadingDialog, getString(R.string.ms_login_fetch_minecraft_identity)));
-                MsftAuthManager.saveAccount(this, authManager);
-                String minecraftUsername = authManager.getMinecraftCertificateChain().getUpToDate().getIdentityDisplayName();
-
-                runOnUiThread(() -> {
-                    DialogUtils.dismissQuietly(navAccountLoadingDialog);
-                    String statusName = minecraftUsername != null ? minecraftUsername : getString(R.string.not_signed_in);
-                    Toast.makeText(this, getString(R.string.ms_login_success, statusName), Toast.LENGTH_SHORT).show();
-                    refreshNavAccountUI();
-                    onNavAccountChanged();
-                });
-            } catch (Exception e) {
-                runOnUiThread(() -> {
-                    DialogUtils.dismissQuietly(navAccountLoadingDialog);
-                    Toast.makeText(this, getString(R.string.ms_login_failed_detail, e.getMessage()), Toast.LENGTH_LONG).show();
-                    refreshNavAccountUI();
-                });
-            }
-        });
+        refreshNavAccountUI();
     }
 
     protected void onNavAccountChanged() {

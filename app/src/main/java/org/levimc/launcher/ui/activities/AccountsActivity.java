@@ -28,7 +28,6 @@ import org.levimc.launcher.util.PersonalizationManager;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -58,7 +57,6 @@ public class AccountsActivity extends BaseActivity {
     private ActivityResultLauncher<Intent> loginLauncher;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private LoadingDialog loadingDialog;
-    private final AtomicBoolean loginResultHandled = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,48 +77,17 @@ public class AccountsActivity extends BaseActivity {
         applyAccountAccent();
 
         loginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                String code = result.getData().getStringExtra("ms_auth_code");
-                if (code != null) {
-                    if (!loginResultHandled.compareAndSet(false, true)) {
-                        refreshUI();
-                        return;
-                    }
-                    loadingDialog = org.levimc.launcher.util.DialogUtils.ensure(this, loadingDialog);
-                    org.levimc.launcher.util.DialogUtils.showWithMessage(loadingDialog, getString(R.string.ms_login_exchanging));
-
-                    executor.execute(() -> {
-                        try {
-                            BedrockAuthManager authManager = MsftAuthManager.loginWithCode(code);
-
-                            runOnUiThread(() -> org.levimc.launcher.util.DialogUtils.showWithMessage(loadingDialog, getString(R.string.ms_login_fetch_minecraft_identity)));
-                            MsftAuthManager.saveAccount(this, authManager);
-                            String minecraftUsername = authManager.getMinecraftCertificateChain().getUpToDate().getIdentityDisplayName();
-
-                            runOnUiThread(() -> {
-                                if (loadingDialog.isShowing()) loadingDialog.dismiss();
-                                Toast.makeText(this, getString(R.string.ms_login_success, (minecraftUsername != null ? minecraftUsername : getString(R.string.not_signed_in))), Toast.LENGTH_SHORT).show();
-                                refreshUI();
-                            });
-                        } catch (Exception e) {
-                            runOnUiThread(() -> {
-                                if (loadingDialog != null && loadingDialog.isShowing()) loadingDialog.dismiss();
-                                Toast.makeText(this, getString(R.string.ms_login_failed_detail, e.getMessage()), Toast.LENGTH_LONG).show();
-                                refreshUI();
-                            });
-                        }
-                    });
-                    return;
-                }
+            if (result.getResultCode() == RESULT_OK && result.getData() != null
+                    && result.getData().getBooleanExtra(MsftLoginActivity.EXTRA_LOGIN_COMPLETED, false)) {
+                String name = result.getData().getStringExtra(MsftLoginActivity.EXTRA_LOGIN_NAME);
+                String statusName = name != null ? name : getString(R.string.not_signed_in);
+                Toast.makeText(this, getString(R.string.ms_login_success, statusName), Toast.LENGTH_SHORT).show();
             }
             refreshUI();
+            refreshNavAccountUI();
         });
 
-        View.OnClickListener addAction = v -> {
-            loginResultHandled.set(false);
-            Intent i = new Intent(this, MsftLoginActivity.class);
-            loginLauncher.launch(i);
-        };
+        View.OnClickListener addAction = v -> loginLauncher.launch(new Intent(this, MsftLoginActivity.class));
         if (bottomAddButton != null) bottomAddButton.setOnClickListener(addAction);
         if (bottomAddButton != null) DynamicAnim.applyPressScale(bottomAddButton);
 
@@ -147,7 +114,7 @@ public class AccountsActivity extends BaseActivity {
                 executor.execute(() -> {
                     try {
                         BedrockAuthManager authManager = MsftAuthManager.refreshAndAuth(account);
-                        MsftAuthManager.saveAccount(AccountsActivity.this, authManager);
+                        MsftAuthManager.saveAccountOrThrow(AccountsActivity.this, authManager);
                         MsftAccountStore.setActive(AccountsActivity.this, account.id);
                         String minecraftUsername = authManager.getMinecraftCertificateChain().getUpToDate().getIdentityDisplayName();
 
@@ -160,7 +127,7 @@ public class AccountsActivity extends BaseActivity {
                     } catch (Exception e) {
                         runOnUiThread(() -> {
                             org.levimc.launcher.util.DialogUtils.dismissQuietly(loadingDialog);
-                                Toast.makeText(AccountsActivity.this, getString(R.string.ms_login_failed_detail, e.getMessage()), Toast.LENGTH_LONG).show();
+                                Toast.makeText(AccountsActivity.this, getString(R.string.ms_login_failed_detail, MsftAuthManager.describeError(e)), Toast.LENGTH_LONG).show();
                                 refreshUI();
                         });
                     }

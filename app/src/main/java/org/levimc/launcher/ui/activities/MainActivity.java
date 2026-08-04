@@ -170,37 +170,14 @@ import okhttp3.OkHttpClient;
         setupOnBackPressedCallback();
 
         accountLoginLauncher = registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                String code = result.getData().getStringExtra("ms_auth_code");
-                if (code != null) {
-                    accountLoadingDialog = org.levimc.launcher.util.DialogUtils.ensure(this, accountLoadingDialog);
-                    org.levimc.launcher.util.DialogUtils.showWithMessage(accountLoadingDialog, getString(R.string.ms_login_exchanging));
-
-                    accountExecutor.execute(() -> {
-                        try {
-                            BedrockAuthManager authManager = MsftAuthManager.loginWithCode(code);
-
-                            runOnUiThread(() -> DialogUtils.showWithMessage(accountLoadingDialog, getString(R.string.ms_login_fetch_minecraft_identity)));
-                            MsftAuthManager.saveAccount(this, authManager);
-                            String minecraftUsername = authManager.getMinecraftCertificateChain().getUpToDate().getIdentityDisplayName();
-
-                            runOnUiThread(() -> {
-                                DialogUtils.dismissQuietly(accountLoadingDialog);
-                               Toast.makeText(this, getString(R.string.ms_login_success, (minecraftUsername != null ? minecraftUsername : getString(R.string.not_signed_in))), android.widget.Toast.LENGTH_SHORT).show();
-                                refreshAccountHeaderUI();
-                            });
-                        } catch (Exception e) {
-                            runOnUiThread(() -> {
-                                DialogUtils.dismissQuietly(accountLoadingDialog);
-                                Toast.makeText(this, getString(R.string.ms_login_failed_detail, e.getMessage()), android.widget.Toast.LENGTH_LONG).show();
-                                refreshAccountHeaderUI();
-                            });
-                        }
-                    });
-                    return;
-                }
+            if (result.getResultCode() == RESULT_OK && result.getData() != null
+                    && result.getData().getBooleanExtra(MsftLoginActivity.EXTRA_LOGIN_COMPLETED, false)) {
+                String name = result.getData().getStringExtra(MsftLoginActivity.EXTRA_LOGIN_NAME);
+                String statusName = name != null ? name : getString(R.string.not_signed_in);
+                Toast.makeText(this, getString(R.string.ms_login_success, statusName), Toast.LENGTH_SHORT).show();
             }
             refreshAccountHeaderUI();
+            refreshNavAccountUI();
         });
 
         initAccountHeader();
@@ -467,7 +444,7 @@ import okhttp3.OkHttpClient;
                      accountExecutor.execute(() -> {
                          try {
                              BedrockAuthManager authManager = MsftAuthManager.refreshAndAuth(account);
-                             MsftAuthManager.saveAccount(MainActivity.this, authManager);
+                             MsftAuthManager.saveAccountOrThrow(MainActivity.this, authManager);
                              MsftAccountStore.setActive(MainActivity.this, account.id);
                              String minecraftUsername = authManager.getMinecraftCertificateChain().getUpToDate().getIdentityDisplayName();
 
@@ -480,7 +457,7 @@ import okhttp3.OkHttpClient;
                          } catch (Exception e) {
                              runOnUiThread(() -> {
                                  DialogUtils.dismissQuietly(accountLoadingDialog);
-                                 Toast.makeText(MainActivity.this, getString(R.string.ms_login_failed_detail, e.getMessage()), Toast.LENGTH_LONG).show();
+                                 Toast.makeText(MainActivity.this, getString(R.string.ms_login_failed_detail, MsftAuthManager.describeError(e)), Toast.LENGTH_LONG).show();
                                  refreshAccountHeaderUI();
                              });
                          }
