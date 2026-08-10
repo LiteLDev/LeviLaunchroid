@@ -97,6 +97,7 @@ jobs:
         with:
           java-version: "21"
           distribution: temurin
+          cache: "gradle"
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4.0.1
