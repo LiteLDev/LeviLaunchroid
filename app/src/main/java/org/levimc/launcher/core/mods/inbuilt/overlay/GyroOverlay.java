@@ -8,7 +8,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.ImageButton;
 
 import org.levimc.launcher.R;
@@ -17,7 +16,6 @@ import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
 import org.levimc.launcher.core.mods.inbuilt.nativemod.GyroMod;
 
 public class GyroOverlay extends BaseOverlayButton implements SensorEventListener {
-    private static final String TAG = "GyroOverlay";
     private boolean isActive = false;
     private boolean initialized = false;
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -47,25 +45,20 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
         rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
         if (rotationSensor != null) {
             sensorType = Sensor.TYPE_GAME_ROTATION_VECTOR;
-            Log.i(TAG, "Using GAME_ROTATION_VECTOR sensor");
             return;
         }
 
         rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         if (rotationSensor != null) {
             sensorType = Sensor.TYPE_ROTATION_VECTOR;
-            Log.i(TAG, "Using ROTATION_VECTOR sensor (fallback)");
             return;
         }
 
         rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         if (rotationSensor != null) {
             sensorType = Sensor.TYPE_GYROSCOPE;
-            Log.i(TAG, "Using GYROSCOPE sensor (last resort fallback)");
             return;
         }
-
-        Log.e(TAG, "No suitable rotation sensor found on this device");
     }
 
     @Override
@@ -97,9 +90,6 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
             if (GyroMod.init()) {
                 initialized = true;
                 applyGyroSettings();
-                Log.i(TAG, "Gyro native initialized successfully");
-            } else {
-                Log.e(TAG, "Failed to initialize gyro native");
             }
         }, 1000);
     }
@@ -123,12 +113,10 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
     @Override
     protected void onButtonClick() {
         if (!initialized) {
-            Log.w(TAG, "Gyro not initialized yet");
             return;
         }
 
         if (rotationSensor == null) {
-            Log.e(TAG, "No gyroscope sensor available on this device");
             return;
         }
 
@@ -152,7 +140,6 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
         sensorManager.registerListener(this, rotationSensor, SensorManager.SENSOR_DELAY_GAME);
         GyroMod.nativeSetEnabled(true);
         updateButtonState(true);
-        Log.i(TAG, "Gyro enabled");
     }
 
     private void disableGyro() {
@@ -162,7 +149,6 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
         sensorManager.unregisterListener(this);
         GyroMod.nativeSetEnabled(false);
         updateButtonState(false);
-        Log.i(TAG, "Gyro disabled");
     }
 
     private void calibrate() {

@@ -12,6 +12,7 @@ public final class ModIds {
     public static final String SNAPLOOK = "snaplook";
     public static final String VIRTUAL_CURSOR = "virtual_cursor";
     public static final String GYRO = "gyro";
+    public static final String POJAV_CONTROLS = "pojav_controls";
     public static final String MOD_MENU = "mod_menu";
 
     private ModIds() {}

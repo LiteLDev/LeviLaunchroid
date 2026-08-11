@@ -6,6 +6,9 @@ import android.view.MotionEvent;
 import org.levimc.launcher.core.mods.inbuilt.ExternalModBridge;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
+import org.levimc.launcher.core.mods.inbuilt.nativemod.PojavControlsMod;
+import org.levimc.pojavcontrols.PojavControls;
+import org.levimc.pojavcontrols.PojavControlsHost;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,6 +75,7 @@ public class InbuiltOverlayManager {
         modActiveStates.put(ModIds.SNAPLOOK, false);
         modActiveStates.put(ModIds.VIRTUAL_CURSOR, false);
         modActiveStates.put(ModIds.GYRO, false);
+        modActiveStates.put(ModIds.POJAV_CONTROLS, false);
 
         modPositionMap.put(ModIds.QUICK_DROP, nextY + SPACING);
         modPositionMap.put(ModIds.CAMERA_PERSPECTIVE, nextY + SPACING * 2);
@@ -105,6 +109,7 @@ public class InbuiltOverlayManager {
         restorePersistedInbuiltModState(manager, ModIds.SNAPLOOK);
         restorePersistedInbuiltModState(manager, ModIds.VIRTUAL_CURSOR);
         restorePersistedInbuiltModState(manager, ModIds.GYRO);
+        restorePersistedInbuiltModState(manager, ModIds.POJAV_CONTROLS);
 
         modMenuButton = new ModMenuButton(activity);
         modMenuButton.show(START_X, nextY);
@@ -215,10 +220,22 @@ public class InbuiltOverlayManager {
                 overlays.add(gyroOverlay);
                 modOverlayMap.put(modId, gyroOverlay);
                 break;
+            case ModIds.POJAV_CONTROLS:
+                if (activity instanceof PojavControlsHost && PojavControlsMod.setEnabled(true)) {
+                    PojavControls.setEnabled(activity, (PojavControlsHost) activity, true);
+                }
+                break;
         }
     }
 
     private void hideModOverlay(String modId) {
+        if (modId.equals(ModIds.POJAV_CONTROLS)) {
+            PojavControls.setEnabled(activity,
+                    activity instanceof PojavControlsHost ? (PojavControlsHost) activity : null,
+                    false);
+            PojavControlsMod.setEnabled(false);
+            return;
+        }
         if (modId.equals(ModIds.CHICK_PET)) {
             if (chickPetOverlay != null) {
                 chickPetOverlay.hide();
@@ -388,6 +405,10 @@ public class InbuiltOverlayManager {
 
 
     public void hideAllOverlays() {
+        PojavControls.setEnabled(activity,
+                activity instanceof PojavControlsHost ? (PojavControlsHost) activity : null,
+                false);
+        PojavControlsMod.setEnabled(false);
         selectHudEditorOverlay(null);
         for (BaseOverlayButton overlay : overlays) {
             overlay.hide();

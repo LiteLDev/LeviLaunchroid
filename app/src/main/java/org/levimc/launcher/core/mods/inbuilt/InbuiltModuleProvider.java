@@ -7,6 +7,7 @@ import org.levimc.launcher.R;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
 import org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager;
+import org.levimc.pojavcontrols.PojavControls;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,9 @@ public final class InbuiltModuleProvider {
         mods.add(create(activity, manager, overlayManager, ModIds.GYRO,
                 R.string.inbuilt_mod_gyro, R.string.inbuilt_mod_gyro_desc,
                 groupName));
+        mods.add(create(activity, manager, overlayManager, ModIds.POJAV_CONTROLS,
+                R.string.inbuilt_mod_pojav_controls, R.string.inbuilt_mod_pojav_controls_desc,
+                groupName));
 
         return mods;
     }
@@ -82,6 +86,7 @@ public final class InbuiltModuleProvider {
         boolean active = overlayManager != null
                 ? overlayManager.isModActive(id)
                 : manager.resolveInbuiltModEnabled(id, false);
+        boolean customConfig = ModIds.POJAV_CONTROLS.equals(id);
         return new UnifiedMod(
                 id,
                 activity.getString(nameRes),
@@ -90,11 +95,12 @@ public final class InbuiltModuleProvider {
                 UnifiedMod.Source.INBUILT,
                 active,
                 createConfigs(activity, manager, id),
-                false,
+                customConfig,
                 GROUP_ID,
                 groupName,
                 (mod, enabled) -> setEnabled(manager, mod, enabled),
-                (mod, config, value) -> setConfig(manager, mod, config, value)
+                (mod, config, value) -> setConfig(manager, mod, config, value),
+                customConfig ? mod -> PojavControls.launchEditor(activity) : null
         );
     }
 
@@ -102,6 +108,7 @@ public final class InbuiltModuleProvider {
                                                               InbuiltModManager manager,
                                                               String modId) {
         List<UnifiedMod.ConfigEntry> configs = new ArrayList<>();
+        if (ModIds.POJAV_CONTROLS.equals(modId)) return configs;
         if (!ModIds.CHICK_PET.equals(modId)) {
             configs.add(config(CFG_OVERLAY_SIZE,
                     context.getString(R.string.mod_config_overlay_button_size_dp),

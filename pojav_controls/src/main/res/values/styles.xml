@@ -1,0 +1,13 @@
+<resources>
+    <style name="Theme.PojavControls" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:colorAccent">#4AE0A0</item>
+        <item name="colorPrimary">#202428</item>
+        <item name="colorPrimaryVariant">#15181B</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="android:navigationBarColor">#15181B</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

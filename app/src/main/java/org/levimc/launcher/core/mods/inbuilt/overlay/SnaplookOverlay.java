@@ -3,7 +3,6 @@ package org.levimc.launcher.core.mods.inbuilt.overlay;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.ImageButton;
 
 import org.levimc.launcher.R;
@@ -11,7 +10,6 @@ import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
 import org.levimc.launcher.core.mods.inbuilt.nativemod.SnaplookMod;
 
 public class SnaplookOverlay extends BaseOverlayButton {
-    private static final String TAG = "SnaplookOverlay";
     private boolean isActive = false;
     private boolean initialized = false;
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -48,9 +46,6 @@ public class SnaplookOverlay extends BaseOverlayButton {
         handler.postDelayed(() -> {
             if (SnaplookMod.init()) {
                 initialized = true;
-                Log.i(TAG, "Snaplook native initialized successfully");
-            } else {
-                Log.e(TAG, "Failed to initialize snaplook native");
             }
         }, 1000);
     }
@@ -58,7 +53,6 @@ public class SnaplookOverlay extends BaseOverlayButton {
     @Override
     protected void onButtonClick() {
         if (!initialized) {
-            Log.w(TAG, "Snaplook not initialized yet");
             return;
         }
 
@@ -75,7 +69,6 @@ public class SnaplookOverlay extends BaseOverlayButton {
 
     public void onKeyDown() {
         if (!initialized) {
-            Log.w(TAG, "Snaplook not initialized yet");
             return;
         }
         if (isActive) return;

@@ -81,9 +81,7 @@ object MinecraftRuntimePreparer {
         try {
             org.levimc.launcher.core.mods.inbuilt.nativemod.InbuiltModsNative.loadLibrary()
             org.levimc.launcher.core.mods.inbuilt.nativemod.GyroMod.nativePreResolve()
-        } catch (e: Throwable) {
-            listener.onLog("Failed to pre-resolve GyroMod: ${e.message}")
-        }
+        } catch (_: Throwable) {}
 
         //nativeSetupRuntime(modManager.currentVersion?.modsDir?.absolutePath.toString())
         val skippedIncompatibleMods = loadNativeMods(context, launchIntent, modManager, listener, trace)

@@ -516,6 +516,10 @@ public class ModMenuOverlay {
     }
     
     private void showConfigSection(UnifiedMod mod) {
+        if (mod.openCustomConfig()) {
+            hide();
+            return;
+        }
         updateNavItem(navModules, false);
         updateNavItem(navSettings, false);
         updateNavItem(navHudEditor, false);

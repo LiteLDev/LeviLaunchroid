@@ -9,8 +9,7 @@ public class InbuiltModsNative {
             System.loadLibrary("inbuiltmods");
             libraryLoaded = true;
             return true;
-        } catch (UnsatisfiedLinkError e) {
-            e.printStackTrace();
+        } catch (UnsatisfiedLinkError ignored) {
             return false;
         }
     }

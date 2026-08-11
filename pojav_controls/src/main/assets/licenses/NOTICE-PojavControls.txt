@@ -1,0 +1,8 @@
+Pojav Controls compatibility library
+
+This library is a modified Android/Bedrock port of the PojavLauncher custom-controls system and control-profile format from the supplied PojavLauncher-3_openjdk source distribution.
+
+Upstream project: https://github.com/PojavLauncherTeam/PojavLauncher
+Upstream license: GNU Lesser General Public License version 3
+
+All source under this module is distributed under LGPL-3.0-or-later. The host LeviLauncher application remains separately licensed under Apache-2.0. The host communicates with this library through PojavControlsHost and may be rebuilt or relinked with a modified version of this library from the complete source tree.

@@ -19,11 +19,14 @@ import androidx.appcompat.widget.AppCompatEditText
 import com.mojang.minecraftpe.MainActivity
 import org.levimc.launcher.core.crash.CrashReporter
 import org.levimc.launcher.core.mods.ModManager
+import org.levimc.launcher.core.mods.inbuilt.nativemod.PojavControlsMod
 import org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager
 import org.levimc.launcher.preloader.PreloaderInput
+import org.levimc.pojavcontrols.PojavControls
+import org.levimc.pojavcontrols.PojavControlsHost
 import java.io.File
 
-class MinecraftActivity : MainActivity() {
+class MinecraftActivity : MainActivity(), PojavControlsHost {
 
     private lateinit var gameManager: GamePackageManager
     private lateinit var trace: LaunchTrace
@@ -117,7 +120,7 @@ class MinecraftActivity : MainActivity() {
             return
         }
         trace.mark("Mojang MainActivity super.onCreate finished")
-        
+
         val launchVertically = intent.getBooleanExtra("LAUNCH_VERTICALLY", false)
         if (launchVertically) {
             requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -179,6 +182,16 @@ class MinecraftActivity : MainActivity() {
     override fun onNewIntent(intent: Intent) {
         setIntent(intent)
         super.onNewIntent(intent)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (PojavControls.onActivityResult(requestCode, resultCode, data)) return
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onBackPressed() {
+        if (PojavControls.closeEditor()) return
+        super.onBackPressed()
     }
 
     override fun onResume() {
@@ -256,6 +269,15 @@ class MinecraftActivity : MainActivity() {
             return true
         }
 
+        if (org.levimc.launcher.core.mods.inbuilt.overlay.VirtualCursorMod.isActive()) {
+            org.levimc.launcher.core.mods.inbuilt.overlay.VirtualCursorMod.processTouchEvent(event, this)
+            return true
+        }
+
+        if (PojavControls.ownsTouchInput()) {
+            return super.dispatchTouchEvent(event)
+        }
+
         val actionIndex = event.actionIndex
         if (org.levimc.launcher.preloader.PreloaderInput.onTouch(
                 event.actionMasked,
@@ -267,11 +289,6 @@ class MinecraftActivity : MainActivity() {
         }
 
         overlayManager?.handleTouchEvent(event)
-
-        if (org.levimc.launcher.core.mods.inbuilt.overlay.VirtualCursorMod.isActive()) {
-            org.levimc.launcher.core.mods.inbuilt.overlay.VirtualCursorMod.processTouchEvent(event, this)
-            return true
-        }
 
         return super.dispatchTouchEvent(event)
     }
@@ -307,6 +324,39 @@ class MinecraftActivity : MainActivity() {
         return super.dispatchGenericMotionEvent(event)
     }
 
+    override fun pojavSendKey(bedrockKeyCode: Int, down: Boolean) {
+        PojavControlsMod.nativeSendKey(bedrockKeyCode, down)
+    }
+
+    override fun pojavSendMouseButton(androidButton: Int, down: Boolean) {
+        PojavControlsMod.nativeSendMouseButton(androidButton, down)
+    }
+
+    override fun pojavSendScroll(vertical: Float) {
+        PojavControlsMod.nativeSendScroll(vertical)
+    }
+
+    override fun pojavSendLookDelta(deltaX: Float, deltaY: Float) {
+        PojavControlsMod.nativeSendLookDelta(deltaX, deltaY)
+    }
+
+    override fun pojavSendPointer(x: Float, y: Float) {
+        PojavControlsMod.nativeSendPointer(x, y)
+    }
+
+    override fun pojavSendTouch(event: MotionEvent): Boolean {
+        return super.onTouchEvent(event)
+    }
+
+    override fun pojavShowKeyboard() {
+        showSoftKeyboard()
+    }
+
+    override fun pojavIsMenuOpen(): Boolean {
+        if (PreloaderInput.isShowingMenu() || PreloaderInput.isPauseMenuOpen()) return true
+        return !PreloaderInput.shouldForceGlobalModMenu() && !PreloaderInput.isHudScreenOpen()
+    }
+
     override fun onPause() {
         val shouldRestartAfterNormalExit = shouldRestartAfterNormalExit()
         if (shouldRestartAfterNormalExit) {
@@ -320,7 +370,6 @@ class MinecraftActivity : MainActivity() {
 
     override fun onDestroy() {
         ModManager.disableAndUnloadLoadedMods()
-
         val shouldPrepareNormalExit = shouldRestartAfterNormalExit()
         if (shouldPrepareNormalExit) {
             prepareNormalExitCleanup()

@@ -3,7 +3,6 @@ package org.levimc.launcher.core.mods.inbuilt.overlay;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.ImageButton;
 
 import org.levimc.launcher.R;
@@ -12,7 +11,6 @@ import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
 import org.levimc.launcher.core.mods.inbuilt.nativemod.ZoomMod;
 
 public class ZoomOverlay extends BaseOverlayButton {
-    private static final String TAG = "ZoomOverlay";
     private boolean isZooming = false;
     private boolean initialized = false;
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -50,9 +48,6 @@ public class ZoomOverlay extends BaseOverlayButton {
             if (ZoomMod.init()) {
                 initialized = true;
                 applyZoomLevel();
-                Log.i(TAG, "Zoom native initialized successfully");
-            } else {
-                Log.e(TAG, "Failed to initialize zoom native");
             }
         }, 1000);
     }
@@ -75,7 +70,6 @@ public class ZoomOverlay extends BaseOverlayButton {
 
     public void onKeyDown() {
         if (!initialized) {
-            Log.w(TAG, "Zoom not initialized yet");
             return;
         }
         if (isZooming) return;
@@ -96,7 +90,6 @@ public class ZoomOverlay extends BaseOverlayButton {
 
     private void toggleZoom() {
         if (!initialized) {
-            Log.w(TAG, "Zoom not initialized yet");
             return;
         }
 

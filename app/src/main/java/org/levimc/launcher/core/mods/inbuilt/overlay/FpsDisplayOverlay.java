@@ -5,7 +5,6 @@ import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -21,7 +20,6 @@ import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
 import org.levimc.launcher.core.mods.inbuilt.nativemod.FpsMod;
 
 public class FpsDisplayOverlay {
-    private static final String TAG = "FpsDisplayOverlay";
     private static final int UPDATE_INTERVAL = 250;
     private static final float DRAG_THRESHOLD = 10f;
 
@@ -69,9 +67,6 @@ public class FpsDisplayOverlay {
         handler.postDelayed(() -> {
             if (FpsMod.init()) {
                 initialized = true;
-                Log.i(TAG, "FPS native initialized successfully");
-            } else {
-                Log.e(TAG, "Failed to initialize FPS native");
             }
         }, 1000);
     }

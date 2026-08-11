@@ -30,6 +30,10 @@ public class UnifiedMod {
         void onConfigChanged(UnifiedMod mod, ConfigEntry config, String value);
     }
 
+    public interface ConfigOpenHandler {
+        void onOpenConfig(UnifiedMod mod);
+    }
+
     public static class ConfigEntry {
         public final String key;
         public final String displayName;
@@ -67,11 +71,21 @@ public class UnifiedMod {
     private final boolean forceHasConfig;
     private final EnabledHandler enabledHandler;
     private final ConfigHandler configHandler;
+    private final ConfigOpenHandler configOpenHandler;
 
     public UnifiedMod(String id, String name, String description, String modId,
                       Source source, boolean enabled, List<ConfigEntry> configEntries,
                       boolean forceHasConfig, String groupId, String groupName,
                       EnabledHandler enabledHandler, ConfigHandler configHandler) {
+        this(id, name, description, modId, source, enabled, configEntries,
+                forceHasConfig, groupId, groupName, enabledHandler, configHandler, null);
+    }
+
+    public UnifiedMod(String id, String name, String description, String modId,
+                      Source source, boolean enabled, List<ConfigEntry> configEntries,
+                      boolean forceHasConfig, String groupId, String groupName,
+                      EnabledHandler enabledHandler, ConfigHandler configHandler,
+                      ConfigOpenHandler configOpenHandler) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -85,6 +99,7 @@ public class UnifiedMod {
         this.forceHasConfig = forceHasConfig;
         this.enabledHandler = enabledHandler;
         this.configHandler = configHandler;
+        this.configOpenHandler = configOpenHandler;
     }
 
     public String getId() { return id; }
@@ -98,6 +113,12 @@ public class UnifiedMod {
     public boolean isEnabled() { return enabled; }
     public List<ConfigEntry> getConfigEntries() { return configEntries; }
     public boolean hasConfig() { return forceHasConfig || !configEntries.isEmpty(); }
+
+    public boolean openCustomConfig() {
+        if (configOpenHandler == null) return false;
+        configOpenHandler.onOpenConfig(this);
+        return true;
+    }
 
     public void applyEnabled(boolean enabled) {
         this.enabled = enabled;
