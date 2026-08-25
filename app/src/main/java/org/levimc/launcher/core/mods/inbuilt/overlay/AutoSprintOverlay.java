@@ -24,7 +24,7 @@ public class AutoSprintOverlay extends BaseOverlayButton {
 
     @Override
     protected int getIconResource() {
-        return isActive ? R.drawable.ic_sprint_enabled : R.drawable.ic_sprint_disabled;
+        return isActive ? R.drawable.ic_sprint_pressed : R.drawable.ic_sprint_normal;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class AutoSprintOverlay extends BaseOverlayButton {
             if (btn != null) {
                 float userOpacity = getButtonOpacity();
                 btn.setAlpha(userOpacity);
-                btn.setImageResource(active ? R.drawable.ic_sprint_enabled : R.drawable.ic_sprint_disabled);
+                btn.setImageResource(active ? R.drawable.ic_sprint_pressed : R.drawable.ic_sprint_normal);
             }
         }
     }

@@ -68,7 +68,7 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
 
     @Override
     protected int getIconResource() {
-        return isActive ? R.drawable.ic_gyro_enabled : R.drawable.ic_gyro_disabled;
+        return isActive ? R.drawable.ic_gyro_pressed : R.drawable.ic_gyro_normal;
     }
 
     @Override
@@ -162,7 +162,7 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
             ImageButton btn = (ImageButton) overlayView;
             float userOpacity = getButtonOpacity();
             btn.setAlpha(userOpacity);
-            btn.setImageResource(active ? R.drawable.ic_gyro_enabled : R.drawable.ic_gyro_disabled);
+            btn.setImageResource(active ? R.drawable.ic_gyro_pressed : R.drawable.ic_gyro_normal);
         }
     }
 

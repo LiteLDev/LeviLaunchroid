@@ -26,7 +26,7 @@ public class ZoomOverlay extends BaseOverlayButton {
 
     @Override
     protected int getIconResource() {
-        return isZooming ? R.drawable.ic_zoom_enabled : R.drawable.ic_zoom_disabled;
+        return isZooming ? R.drawable.ic_zoom_pressed : R.drawable.ic_zoom_normal;
     }
 
     @Override
@@ -110,7 +110,7 @@ public class ZoomOverlay extends BaseOverlayButton {
             ImageButton btn = (ImageButton) overlayView;
             float userOpacity = getButtonOpacity();
             btn.setAlpha(userOpacity);
-            btn.setImageResource(active ? R.drawable.ic_zoom_enabled : R.drawable.ic_zoom_disabled);
+            btn.setImageResource(active ? R.drawable.ic_zoom_pressed : R.drawable.ic_zoom_normal);
         }
     }
 
