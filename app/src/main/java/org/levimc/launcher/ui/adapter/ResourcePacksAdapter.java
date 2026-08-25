@@ -52,7 +52,7 @@ public class ResourcePacksAdapter extends RecyclerView.Adapter<ResourcePacksAdap
 
         holder.packName.setText(pack.getPackName());
         holder.packDescription.setText(pack.getDescription());
-        holder.packSize.setText("Size: " + pack.getFormattedSize());
+        holder.packSize.setText(holder.itemView.getContext().getString(R.string.world_size, pack.getFormattedSize()));
 
         holder.exportButton.setOnClickListener(v -> {
             if (onResourcePackActionListener != null) {

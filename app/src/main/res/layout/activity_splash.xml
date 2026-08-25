@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:alpha="0.6"
-        android:text="Preparing to launch"
+        android:text="@string/preparing_to_launch"
         android:textColor="@color/on_background"
         android:textSize="12sp"
         android:letterSpacing="0.08"

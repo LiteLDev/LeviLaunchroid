@@ -164,7 +164,7 @@ public class LogcatOverlay extends FrameLayout {
             autoScrollButton.setAlpha(enabled ? 1f : 0.5f);
         });
 
-        String[] levels = {"ALL", "V", "D", "I", "W", "E", "F"};
+        String[] levels = {getContext().getString(R.string.logcat_filter_all), "V", "D", "I", "W", "E", "F"};
         ArrayAdapter<String> levelAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_dropdown_item_dark, levels);
         levelFilterView.setText(levels[0]);
         levelFilterView.setOnClickListener(v -> {
@@ -220,7 +220,7 @@ public class LogcatOverlay extends FrameLayout {
         if (filterClearButton != null) {
             filterClearButton.setOnClickListener(v -> {
                 levelFilterChar = 0;
-                if (levelFilterView != null) levelFilterView.setText("ALL");
+                if (levelFilterView != null) levelFilterView.setText(R.string.logcat_filter_all);
                 filterInput.setText("");
                 excludeInput.setText("");
                 scheduleFilterRefresh();

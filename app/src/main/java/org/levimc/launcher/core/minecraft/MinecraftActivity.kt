@@ -185,11 +185,13 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (org.levimc.launcher.core.mods.inbuilt.overlay.MoreButtonsEditor.onActivityResult(requestCode, resultCode, data)) return
         if (PojavControls.onActivityResult(requestCode, resultCode, data)) return
         super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onBackPressed() {
+        if (org.levimc.launcher.core.mods.inbuilt.overlay.MoreButtonsEditor.closeEditor()) return
         if (PojavControls.closeEditor()) return
         super.onBackPressed()
     }
@@ -201,6 +203,7 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
             normalExitRestartScheduled = false
         }
         MinecraftActivityState.onResumed(this)
+        org.levimc.launcher.core.mods.inbuilt.overlay.MoreButtonsEditor.onResume()
 
         if (overlayManager == null) {
             startInbuiltModServices()

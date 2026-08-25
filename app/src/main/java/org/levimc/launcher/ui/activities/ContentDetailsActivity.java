@@ -150,7 +150,7 @@ public class ContentDetailsActivity extends BaseActivity {
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(ContentDetailsActivity.this, "Cannot open link: " + uri.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ContentDetailsActivity.this, getString(R.string.cannot_open_link, uri.toString()), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -179,7 +179,7 @@ public class ContentDetailsActivity extends BaseActivity {
         title.setText(content.name);
         
         if (content.authors != null && !content.authors.isEmpty()) {
-            author.setText("by " + content.authors.get(0).name);
+            author.setText(getString(R.string.mod_author_byline, content.authors.get(0).name));
         } else {
             author.setText("");
         }
@@ -255,7 +255,7 @@ public class ContentDetailsActivity extends BaseActivity {
                     if (result != null && result.data != null) {
                         showFilesDialog(result.data);
                     } else {
-                        Toast.makeText(ContentDetailsActivity.this, "No files found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ContentDetailsActivity.this, R.string.no_files_found, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -265,7 +265,7 @@ public class ContentDetailsActivity extends BaseActivity {
                 runOnUiThread(() -> {
                     progressBar.setVisibility(View.GONE);
                     btnInstall.setEnabled(true);
-                    Toast.makeText(ContentDetailsActivity.this, "Failed to load files: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ContentDetailsActivity.this, getString(R.string.failed_to_load_files, t.getMessage()), Toast.LENGTH_SHORT).show();
                 });
             }
         });
@@ -324,7 +324,7 @@ public class ContentDetailsActivity extends BaseActivity {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(content.links.websiteUrl));
             startActivity(intent);
         } else {
-            Toast.makeText(this, "No website link available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.no_website_link_available, Toast.LENGTH_SHORT).show();
         }
     }
 

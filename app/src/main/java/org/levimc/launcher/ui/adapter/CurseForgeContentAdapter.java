@@ -113,7 +113,7 @@ public class CurseForgeContentAdapter extends RecyclerView.Adapter<RecyclerView.
             description.setText(content.summary);
             
             if (content.authors != null && !content.authors.isEmpty()) {
-                author.setText("by " + content.authors.get(0).name);
+                author.setText(itemView.getContext().getString(R.string.mod_author_byline, content.authors.get(0).name));
             } else {
                 author.setText("");
             }
@@ -174,7 +174,7 @@ public class CurseForgeContentAdapter extends RecyclerView.Adapter<RecyclerView.
         }
 
         void bind(int currentPage, int totalPages, final OnPageChangeListener listener) {
-            tvPageInfo.setText("Page " + currentPage + " of " + (totalPages > 0 ? totalPages : "?"));
+            tvPageInfo.setText(itemView.getContext().getString(R.string.pagination_page_of, currentPage, totalPages > 0 ? String.valueOf(totalPages) : "?"));
             
             btnPrev.setEnabled(currentPage > 1);
             btnPrev.setAlpha(currentPage > 1 ? 1.0f : 0.5f);

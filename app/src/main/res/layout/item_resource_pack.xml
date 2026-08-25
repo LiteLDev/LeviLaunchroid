@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/misans"
-                android:text="Resource Pack Name"
+                android:text="@string/resource_pack_name_placeholder"
                 android:textColor="@color/on_surface"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:fontFamily="@font/misans"
-                android:text="Size: 2.5 MB"
+                android:text="@string/resource_pack_size_placeholder"
                 android:textColor="@color/on_surface"
                 android:textSize="11sp" />
 
@@ -97,7 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/misans"
-        android:text="Pack description goes here"
+        android:text="@string/resource_pack_description_placeholder"
         android:textColor="@color/on_surface"
         android:textSize="12sp" />
 

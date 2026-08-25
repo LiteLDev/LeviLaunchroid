@@ -62,7 +62,7 @@ public class ScreenshotsAdapter extends RecyclerView.Adapter<ScreenshotsAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ScreenshotItem screenshot = screenshots.get(position);
         holder.nameText.setText(screenshot.name);
-        holder.dateText.setText("Date: " + dateFormat.format(new Date(screenshot.captureTime)));
+        holder.dateText.setText(holder.itemView.getContext().getString(R.string.screenshot_date_format, dateFormat.format(new Date(screenshot.captureTime))));
 
         holder.imageView.setImageBitmap(null);
         holder.imageView.setTag(screenshot.file.getAbsolutePath());

@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/misans"
-            android:text="Property Name"
+            android:text="@string/property_name_placeholder"
             android:textColor="@color/on_surface"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:fontFamily="@font/misans"
-            android:text="Int"
+            android:text="@string/property_type_int"
             android:textColor="@color/on_surface"
             android:textSize="11sp"
             android:alpha="0.7" />
@@ -44,7 +44,7 @@
         android:background="@drawable/bg_edit_text"
         android:fontFamily="@font/misans"
         android:gravity="end"
-        android:hint="Value"
+        android:hint="@string/value_hint"
         android:inputType="text"
         android:maxLines="1"
         android:padding="8dp"

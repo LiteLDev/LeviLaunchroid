@@ -50,7 +50,7 @@
                     android:layout_height="36dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:text="Sort"
+                    android:text="@string/sort"
                     android:textSize="12sp"
                     android:textColor="@color/on_surface"
                     android:paddingHorizontal="12dp"

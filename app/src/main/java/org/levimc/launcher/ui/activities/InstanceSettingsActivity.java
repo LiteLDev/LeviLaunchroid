@@ -187,7 +187,7 @@ public class InstanceSettingsActivity extends BaseActivity {
                             btnOk.setAlpha(1.0f);
                         }
                         Toast.makeText(InstanceSettingsActivity.this,
-                                "Rename failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                getString(R.string.rename_failed, e.getMessage()), Toast.LENGTH_SHORT).show();
                     });
                 }
             });
@@ -214,7 +214,7 @@ public class InstanceSettingsActivity extends BaseActivity {
                         @Override
                         public void onDeleteFailed(Exception e) {
                             runOnUiThread(() -> Toast.makeText(InstanceSettingsActivity.this,
-                                    "Delete failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                                    getString(R.string.toast_delete_failed, e.getMessage()), Toast.LENGTH_SHORT).show());
                         }
                     });
                 })

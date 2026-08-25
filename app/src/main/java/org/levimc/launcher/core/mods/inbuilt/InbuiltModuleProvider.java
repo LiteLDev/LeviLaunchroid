@@ -7,6 +7,7 @@ import org.levimc.launcher.R;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
 import org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager;
+import org.levimc.launcher.core.mods.inbuilt.overlay.MoreButtonsEditor;
 import org.levimc.pojavcontrols.PojavControls;
 
 import java.util.ArrayList;
@@ -76,6 +77,9 @@ public final class InbuiltModuleProvider {
         mods.add(create(activity, manager, overlayManager, ModIds.POJAV_CONTROLS,
                 R.string.inbuilt_mod_pojav_controls, R.string.inbuilt_mod_pojav_controls_desc,
                 groupName));
+        mods.add(create(activity, manager, overlayManager, ModIds.MORE_BUTTONS,
+                R.string.inbuilt_mod_more_buttons, R.string.inbuilt_mod_more_buttons_desc,
+                groupName));
 
         return mods;
     }
@@ -86,7 +90,7 @@ public final class InbuiltModuleProvider {
         boolean active = overlayManager != null
                 ? overlayManager.isModActive(id)
                 : manager.resolveInbuiltModEnabled(id, false);
-        boolean customConfig = ModIds.POJAV_CONTROLS.equals(id);
+        boolean customConfig = ModIds.POJAV_CONTROLS.equals(id) || ModIds.MORE_BUTTONS.equals(id);
         return new UnifiedMod(
                 id,
                 activity.getString(nameRes),
@@ -100,7 +104,9 @@ public final class InbuiltModuleProvider {
                 groupName,
                 (mod, enabled) -> setEnabled(manager, mod, enabled),
                 (mod, config, value) -> setConfig(manager, mod, config, value),
-                customConfig ? mod -> PojavControls.launchEditor(activity) : null
+                ModIds.POJAV_CONTROLS.equals(id)
+                        ? mod -> PojavControls.launchEditor(activity)
+                        : (ModIds.MORE_BUTTONS.equals(id) ? mod -> MoreButtonsEditor.show(activity) : null)
         );
     }
 
@@ -108,7 +114,7 @@ public final class InbuiltModuleProvider {
                                                               InbuiltModManager manager,
                                                               String modId) {
         List<UnifiedMod.ConfigEntry> configs = new ArrayList<>();
-        if (ModIds.POJAV_CONTROLS.equals(modId)) return configs;
+        if (ModIds.POJAV_CONTROLS.equals(modId) || ModIds.MORE_BUTTONS.equals(modId)) return configs;
         if (!ModIds.CHICK_PET.equals(modId)) {
             configs.add(config(CFG_OVERLAY_SIZE,
                     context.getString(R.string.mod_config_overlay_button_size_dp),

@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/misans"
-            android:text="World Name"
+            android:text="@string/world_name_placeholder"
             android:textColor="@color/on_surface"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/misans"
-        android:text="Game Mode: Survival"
+        android:text="@string/world_game_mode_survival_placeholder"
         android:textColor="@color/on_surface"
         android:textSize="12sp" />
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/misans"
-            android:text="Size: 15.2 MB"
+            android:text="@string/world_size_placeholder"
             android:textColor="@color/on_surface"
             android:textSize="11sp" />
 
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/misans"
-            android:text="Last played: Dec 25, 2024 14:30"
+            android:text="@string/world_last_played_placeholder"
             android:textColor="@color/on_surface"
             android:textSize="11sp" />
     </LinearLayout>

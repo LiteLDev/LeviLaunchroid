@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/misans"
-                android:text="Screenshot Name"
+                android:text="@string/screenshot_name_placeholder"
                 android:textColor="@color/on_surface"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:fontFamily="@font/misans"
-                android:text="Date: 2024-01-01 12:00:00"
+                android:text="@string/screenshot_date_placeholder"
                 android:textColor="@color/on_surface"
                 android:textSize="11sp" />
 

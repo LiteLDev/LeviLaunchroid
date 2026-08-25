@@ -59,7 +59,7 @@ public class CustomFlatWorldActivity extends BaseActivity {
 
         String worldsPath = getIntent().getStringExtra(EXTRA_WORLDS_DIRECTORY);
         if (worldsPath == null) {
-            Toast.makeText(this, "Invalid worlds directory", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.invalid_worlds_directory, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }

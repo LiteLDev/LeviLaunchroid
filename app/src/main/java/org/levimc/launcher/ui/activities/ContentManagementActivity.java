@@ -249,7 +249,7 @@ public class ContentManagementActivity extends BaseActivity {
             updateStorageDirectories();
         } else {
             binding.versionText.setText(getString(R.string.not_found_version));
-            Toast.makeText(this, "No version selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.dialog_title_no_version, Toast.LENGTH_SHORT).show();
         }
     }
 

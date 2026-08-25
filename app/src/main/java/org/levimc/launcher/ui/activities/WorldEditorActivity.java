@@ -57,7 +57,7 @@ public class WorldEditorActivity extends BaseActivity {
         String worldName = getIntent().getStringExtra(EXTRA_WORLD_NAME);
 
         if (worldPath == null) {
-            Toast.makeText(this, "Invalid world path", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.invalid_world_path, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }

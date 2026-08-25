@@ -200,7 +200,7 @@ public class MinecraftLauncher {
     private void showLaunchErrorOnUi(String message) {
         Activity activity = (Activity) context;
         activity.runOnUiThread(() -> Toast.makeText(
-                activity, "Failed to launch Minecraft: " + message, Toast.LENGTH_LONG).show()
+                activity, activity.getString(R.string.dialog_message_launch_failed, message), Toast.LENGTH_LONG).show()
         );
     }
 

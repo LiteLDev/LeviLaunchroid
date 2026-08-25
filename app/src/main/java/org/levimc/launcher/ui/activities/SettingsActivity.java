@@ -386,7 +386,7 @@ public class SettingsActivity extends BaseActivity {
                     personalizationManager.setAccentColor(color);
                     refreshColorPickerInPlace();
                 } catch (Exception e) {
-                    Toast.makeText(this, "Invalid color format", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.invalid_color_format, Toast.LENGTH_SHORT).show();
                 }
             });
         }

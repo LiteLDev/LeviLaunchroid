@@ -242,6 +242,19 @@ public class InbuiltModManager {
         prefs.edit().putBoolean(KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX + modId, showEverywhere).apply();
     }
 
+    public void clearOverlaySettings(String modId) {
+        if (modId == null || modId.isEmpty()) return;
+        prefs.edit()
+                .remove(KEY_OVERLAY_BUTTON_SIZE_PREFIX + modId)
+                .remove(KEY_OVERLAY_OPACITY_PREFIX + modId)
+                .remove(KEY_OVERLAY_POSITION_X_PREFIX + modId)
+                .remove(KEY_OVERLAY_POSITION_Y_PREFIX + modId)
+                .remove(KEY_OVERLAY_LOCK_PREFIX + modId)
+                .remove(KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX + modId)
+                .apply();
+        overlayVisibilityRevision.incrementAndGet();
+    }
+
     public long getOverlayVisibilityRevision() {
         return overlayVisibilityRevision.get();
     }

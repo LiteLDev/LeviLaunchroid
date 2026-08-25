@@ -202,7 +202,7 @@ public class CurseForgeActivity extends BaseActivity {
         });
 
         currentSort = sortOptions.get(0);
-        btnSort.setText("Sort: " + currentSort.name);
+        btnSort.setText(getString(R.string.sort_label_format, currentSort.name));
         btnSort.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(this, v);
             for (int i = 0; i < sortOptions.size(); i++) {
@@ -210,7 +210,7 @@ public class CurseForgeActivity extends BaseActivity {
             }
             popup.setOnMenuItemClickListener(item -> {
                 currentSort = sortOptions.get(item.getItemId());
-                btnSort.setText("Sort: " + currentSort.name);
+                btnSort.setText(getString(R.string.sort_label_format, currentSort.name));
                 currentPage = 1;
                 loadContent();
                 return true;
@@ -272,7 +272,7 @@ public class CurseForgeActivity extends BaseActivity {
                 handler.post(() -> {
                     loadingProgress.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
-                    Toast.makeText(CurseForgeActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CurseForgeActivity.this, getString(R.string.error_message_format, t.getMessage()), Toast.LENGTH_SHORT).show();
                 });
             }
         });

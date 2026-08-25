@@ -5,6 +5,8 @@ import android.view.MotionEvent;
 
 import org.levimc.launcher.core.mods.inbuilt.ExternalModBridge;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
+import org.levimc.launcher.core.mods.inbuilt.manager.MoreButtonsManager;
+import org.levimc.launcher.core.mods.inbuilt.model.MoreButtonConfig;
 import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
 import org.levimc.launcher.core.mods.inbuilt.nativemod.PojavControlsMod;
 import org.levimc.pojavcontrols.PojavControls;
@@ -26,6 +28,8 @@ public class InbuiltOverlayManager {
     private final Map<String, Boolean> modActiveStates = new HashMap<>();
     private final Map<String, BaseOverlayButton> modOverlayMap = new HashMap<>();
     private final Map<String, ExternalButtonOverlay> externalButtonOverlayMap = new HashMap<>();
+    private final Map<String, MoreButtonOverlay> moreButtonOverlayMap = new HashMap<>();
+    private boolean moreButtonsEditorOpen;
     private final Map<String, Integer> modPositionMap = new HashMap<>();
     private ChickPetOverlay chickPetOverlay;
     private ZoomOverlay zoomOverlay;
@@ -76,6 +80,7 @@ public class InbuiltOverlayManager {
         modActiveStates.put(ModIds.VIRTUAL_CURSOR, false);
         modActiveStates.put(ModIds.GYRO, false);
         modActiveStates.put(ModIds.POJAV_CONTROLS, false);
+        modActiveStates.put(ModIds.MORE_BUTTONS, false);
 
         modPositionMap.put(ModIds.QUICK_DROP, nextY + SPACING);
         modPositionMap.put(ModIds.CAMERA_PERSPECTIVE, nextY + SPACING * 2);
@@ -110,6 +115,7 @@ public class InbuiltOverlayManager {
         restorePersistedInbuiltModState(manager, ModIds.VIRTUAL_CURSOR);
         restorePersistedInbuiltModState(manager, ModIds.GYRO);
         restorePersistedInbuiltModState(manager, ModIds.POJAV_CONTROLS);
+        restorePersistedInbuiltModState(manager, ModIds.MORE_BUTTONS);
 
         modMenuButton = new ModMenuButton(activity);
         modMenuButton.show(START_X, nextY);
@@ -220,6 +226,9 @@ public class InbuiltOverlayManager {
                 overlays.add(gyroOverlay);
                 modOverlayMap.put(modId, gyroOverlay);
                 break;
+            case ModIds.MORE_BUTTONS:
+                refreshMoreButtons();
+                break;
             case ModIds.POJAV_CONTROLS:
                 if (activity instanceof PojavControlsHost && PojavControlsMod.setEnabled(true)) {
                     PojavControls.setEnabled(activity, (PojavControlsHost) activity, true);
@@ -229,6 +238,10 @@ public class InbuiltOverlayManager {
     }
 
     private void hideModOverlay(String modId) {
+        if (modId.equals(ModIds.MORE_BUTTONS)) {
+            hideMoreButtons();
+            return;
+        }
         if (modId.equals(ModIds.POJAV_CONTROLS)) {
             PojavControls.setEnabled(activity,
                     activity instanceof PojavControlsHost ? (PojavControlsHost) activity : null,
@@ -305,6 +318,71 @@ public class InbuiltOverlayManager {
             overlays.remove(overlay);
             modOverlayMap.remove(modId);
         }
+    }
+
+    public void refreshMoreButtons() {
+        if (moreButtonsEditorOpen || !modActiveStates.getOrDefault(ModIds.MORE_BUTTONS, false)) return;
+
+        MoreButtonsManager buttonsManager = MoreButtonsManager.getInstance(activity);
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        java.util.List<MoreButtonConfig> configs = buttonsManager.getButtons();
+        java.util.Set<String> validIds = new java.util.HashSet<>();
+        android.util.DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
+        int centerX = metrics.widthPixels / 2 - (int)(28 * metrics.density);
+        int centerY = metrics.heightPixels / 2 - (int)(28 * metrics.density);
+        int visibleIndex = 0;
+
+        for (MoreButtonConfig config : configs) {
+            validIds.add(config.id);
+            MoreButtonOverlay existing = moreButtonOverlayMap.get(config.id);
+            if (!config.visible) {
+                if (existing != null) removeMoreButtonOverlay(existing);
+                continue;
+            }
+
+            if (existing != null) {
+                existing.applyConfigurationChanges();
+                continue;
+            }
+
+            int defaultX = centerX + (int)((visibleIndex % 4) * 64 * metrics.density);
+            int defaultY = centerY + (int)((visibleIndex / 4) * 64 * metrics.density);
+            int savedX = manager.getOverlayPositionX(config.overlayKey(), defaultX);
+            int savedY = manager.getOverlayPositionY(config.overlayKey(), defaultY);
+            MoreButtonOverlay overlay = new MoreButtonOverlay(activity, config);
+            overlay.show(savedX, savedY);
+            overlays.add(overlay);
+            moreButtonOverlayMap.put(config.id, overlay);
+            modOverlayMap.put(config.overlayKey(), overlay);
+            visibleIndex++;
+        }
+
+        java.util.List<MoreButtonOverlay> stale = new java.util.ArrayList<>();
+        for (java.util.Map.Entry<String, MoreButtonOverlay> entry : moreButtonOverlayMap.entrySet()) {
+            if (!validIds.contains(entry.getKey())) stale.add(entry.getValue());
+        }
+        for (MoreButtonOverlay overlay : stale) removeMoreButtonOverlay(overlay);
+    }
+
+    public void setMoreButtonsEditorOpen(boolean open) {
+        if (moreButtonsEditorOpen == open) return;
+        moreButtonsEditorOpen = open;
+        if (open) hideMoreButtons();
+        else refreshMoreButtons();
+    }
+
+    private void hideMoreButtons() {
+        java.util.List<MoreButtonOverlay> copy = new java.util.ArrayList<>(moreButtonOverlayMap.values());
+        for (MoreButtonOverlay overlay : copy) removeMoreButtonOverlay(overlay);
+    }
+
+    private void removeMoreButtonOverlay(MoreButtonOverlay overlay) {
+        if (overlay == null) return;
+        if (overlay == selectedHudEditorOverlay) selectHudEditorOverlay(null);
+        overlay.hide();
+        overlays.remove(overlay);
+        moreButtonOverlayMap.remove(overlay.getButtonId());
+        modOverlayMap.remove(overlay.getOverlayConfigKey());
     }
 
     public void handleExternalModuleToggle(String moduleId, boolean enabled) {
@@ -416,6 +494,7 @@ public class InbuiltOverlayManager {
         overlays.clear();
         modOverlayMap.clear();
         externalButtonOverlayMap.clear();
+        moreButtonOverlayMap.clear();
         modActiveStates.clear();
         modPositionMap.clear();
         if (chickPetOverlay != null) {
@@ -535,6 +614,9 @@ public class InbuiltOverlayManager {
         }
         if (modId.equals(ModIds.CPS_DISPLAY) && cpsDisplayOverlay != null) {
             cpsDisplayOverlay.applyConfigurationChanges();
+        }
+        if (modId.equals(ModIds.MORE_BUTTONS)) {
+            refreshMoreButtons();
         }
     }
 

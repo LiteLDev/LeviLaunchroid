@@ -40,7 +40,7 @@ public class CustomControls {
                 "${margin} * 2 + ${width}", "${margin}", 80, 30));
         controls.mControlDataList.add(button("Players", KeyMapper.GLFW_KEY_TAB,
                 "${margin} * 3 + ${width} * 2", "${margin}", 80, 30));
-        controls.mControlDataList.add(button("View", KeyMapper.GLFW_KEY_F5,
+        controls.mControlDataList.add(button("View", KeyMapper.GLFW_KEY_F1 + 4,
                 "${margin}", "${height} + ${margin} * 2", 80, 30));
         controls.mControlDataList.add(button("W", KeyMapper.GLFW_KEY_W,
                 "${margin} * 2 + ${width}", "${bottom} - ${margin} * 3 - ${height} * 2", 50, 50));

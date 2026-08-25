@@ -328,7 +328,7 @@ public class ContentListActivity extends BaseActivity {
     private void openWorldEditor(WorldItem world) {
         File worldFile = world.getFile();
         if (worldFile == null || !worldFile.exists()) {
-            Toast.makeText(this, "World directory not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.world_directory_not_found, Toast.LENGTH_SHORT).show();
             return;
         }
         
@@ -670,7 +670,7 @@ public class ContentListActivity extends BaseActivity {
             }
             runOnUiThread(() -> {
                 showLoading(false);
-                Toast.makeText(ContentListActivity.this, "Save failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ContentListActivity.this, R.string.save_failed, Toast.LENGTH_SHORT).show();
             });
         }).start();
     }
@@ -678,7 +678,7 @@ public class ContentListActivity extends BaseActivity {
     private void showDeleteScreenshotDialog(org.levimc.launcher.core.content.ScreenshotItem screenshot) {
         new CustomAlertDialog(this)
             .setTitleText(getString(R.string.delete))
-            .setMessage("Are you sure you want to delete this screenshot?")
+            .setMessage(getString(R.string.delete_screenshot_confirm))
             .setPositiveButton(getString(R.string.dialog_positive_delete), v -> deleteScreenshot(screenshot))
             .setNegativeButton(getString(R.string.cancel), null)
             .show();
@@ -765,7 +765,7 @@ public class ContentListActivity extends BaseActivity {
     private void showDeleteServerDialog(org.levimc.launcher.core.content.ServerItem server) {
         new CustomAlertDialog(this)
             .setTitleText(getString(R.string.delete))
-            .setMessage("Are you sure you want to delete this server?")
+            .setMessage(getString(R.string.delete_server_confirm))
             .setPositiveButton(getString(R.string.dialog_positive_delete), v -> deleteServer(server))
             .setNegativeButton(getString(R.string.cancel), null)
             .show();
@@ -794,7 +794,7 @@ public class ContentListActivity extends BaseActivity {
 
     private void openCustomFlatWorld() {
         if (worldsDirectory == null || !worldsDirectory.exists()) {
-            Toast.makeText(this, "Worlds directory not available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.worlds_directory_unavailable, Toast.LENGTH_SHORT).show();
             return;
         }
         
@@ -806,7 +806,7 @@ public class ContentListActivity extends BaseActivity {
     private void showExtractStructuresDialog(WorldItem world) {
         File worldFile = world.getFile();
         if (worldFile == null || !worldFile.exists()) {
-            Toast.makeText(this, "World directory not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.world_directory_not_found, Toast.LENGTH_SHORT).show();
             return;
         }
 
