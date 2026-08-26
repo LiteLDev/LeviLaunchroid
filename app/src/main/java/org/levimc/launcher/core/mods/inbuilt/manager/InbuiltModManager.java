@@ -36,6 +36,7 @@ public class InbuiltModManager {
     private static final String KEY_OVERLAY_POSITION_Y_PREFIX = "overlay_pos_y_";
     private static final String KEY_OVERLAY_LOCK_PREFIX = "overlay_lock_";
     private static final String KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX = "overlay_show_everywhere_";
+    private static final String KEY_HOTBAR_ITEM_ICONS = "hotbar_item_icons";
     private static final int DEFAULT_OVERLAY_BUTTON_SIZE = 56;
     private static final int DEFAULT_OVERLAY_OPACITY = 100;
     private static final int MIN_MOD_MENU_OPACITY = 70;
@@ -305,4 +306,12 @@ public class InbuiltModManager {
     public void setGyroDeadzone(int deadzone) {
         prefs.edit().putInt(KEY_GYRO_DEADZONE, Math.max(0, Math.min(50, deadzone))).apply();
     }
+    public boolean isHotbarItemIconsEnabled() {
+        return prefs.getBoolean(KEY_HOTBAR_ITEM_ICONS, false);
+    }
+
+    public void setHotbarItemIconsEnabled(boolean enabled) {
+        prefs.edit().putBoolean(KEY_HOTBAR_ITEM_ICONS, enabled).apply();
+    }
+
 }

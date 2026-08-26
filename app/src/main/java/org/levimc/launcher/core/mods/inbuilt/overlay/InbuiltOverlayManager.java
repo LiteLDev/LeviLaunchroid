@@ -859,6 +859,10 @@ public class InbuiltOverlayManager {
         boolean isShowingMenu = org.levimc.launcher.preloader.PreloaderInput.isShowingMenu();
         boolean showGameOverlays = forceGlobalModMenu || (isHudScreenOpen && !isShowingMenu);
         boolean inbuiltVisible = hudEditorMode || showGameOverlays;
+        boolean hotbarVisible = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.HOTBAR_SLOT);
+        for (HotbarSlotOverlay hotbar : hotbarSlotOverlayMap.values()) {
+            hotbar.setRenderVisible(hotbarVisible);
+        }
         long stateHash = manager.getOverlayVisibilityRevision();
         stateHash = 31L * stateHash + (isPauseOnly ? 1L : 0L);
         stateHash = 31L * stateHash + (forceGlobalModMenu ? 1L : 0L);

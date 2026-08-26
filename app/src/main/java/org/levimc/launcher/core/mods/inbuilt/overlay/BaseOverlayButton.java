@@ -102,6 +102,21 @@ public abstract class BaseOverlayButton {
 
     public void tick() {}
 
+    protected void onOverlayGeometryChanged(int x, int y, int width, int height) {}
+
+    private void notifyOverlayGeometryChanged() {
+        if (overlayView == null) return;
+        if (wmParams != null) {
+            onOverlayGeometryChanged(wmParams.x, wmParams.y, wmParams.width, wmParams.height);
+            return;
+        }
+        ViewGroup.LayoutParams params = overlayView.getLayoutParams();
+        if (params instanceof FrameLayout.LayoutParams) {
+            FrameLayout.LayoutParams frameParams = (FrameLayout.LayoutParams) params;
+            onOverlayGeometryChanged(frameParams.leftMargin, frameParams.topMargin, frameParams.width, frameParams.height);
+        }
+    }
+
     public void show(int startX, int startY) {
         if (isShowing || isHiding) return;
         if (pendingShowRunnable != null) {
@@ -150,6 +165,7 @@ public abstract class BaseOverlayButton {
             isShowing = true;
             applyOpacity();
             updateLockState();
+            notifyOverlayGeometryChanged();
         } catch (Exception e) {
             showFallback(startX, startY);
         }
@@ -190,6 +206,7 @@ public abstract class BaseOverlayButton {
         wmParams = null;
         applyOpacity();
         updateLockState();
+        notifyOverlayGeometryChanged();
     }
 
     public void hide() {
@@ -316,6 +333,7 @@ public abstract class BaseOverlayButton {
                     wmParams.x = position.x;
                     wmParams.y = position.y;
                     windowManager.updateViewLayout(overlayView, wmParams);
+                    notifyOverlayGeometryChanged();
                 }
                 return isHudEditorMode || !isDragging;
 
@@ -408,6 +426,7 @@ public abstract class BaseOverlayButton {
                     params.leftMargin = position.x;
                     params.topMargin = position.y;
                     overlayView.setLayoutParams(params);
+                    notifyOverlayGeometryChanged();
                 }
                 return isHudEditorMode || !isLocked || !isDragging;
 
@@ -517,6 +536,7 @@ public abstract class BaseOverlayButton {
         applyOpacity();
 
         updateLockState();
+        notifyOverlayGeometryChanged();
         onButtonSizeChanged();
     }
 

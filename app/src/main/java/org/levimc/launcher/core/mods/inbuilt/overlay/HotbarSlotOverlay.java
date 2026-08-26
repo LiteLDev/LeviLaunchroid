@@ -6,27 +6,46 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 
 import org.levimc.launcher.R;
+import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
+import org.levimc.launcher.core.mods.inbuilt.nativemod.HotbarSlotMod;
 import org.levimc.launcher.core.mods.inbuilt.nativemod.MoreButtonsMod;
 
 public final class HotbarSlotOverlay extends BaseOverlayButton {
     private static final float PRESSED_Y = 8f;
+    private static final float ICON_WINDOW_LEFT = 93f;
+    private static final float ICON_WINDOW_TOP = 93f;
+    private static final float ICON_WINDOW_RIGHT = 419f;
+    private static final float ICON_WINDOW_BOTTOM = 396f;
 
     private final int slot;
     private Bitmap normalBitmap;
     private Bitmap pressedBitmap;
     private boolean pressed;
     private boolean keyDown;
+    private volatile boolean renderVisible = true;
+    private volatile int nativeX;
+    private volatile int nativeY;
+    private volatile int nativeWidth;
+    private volatile int nativeHeight;
+    private volatile int nativeSurfaceWidth;
+    private volatile int nativeSurfaceHeight;
+    private volatile boolean hasItem;
+    private volatile boolean lastBitmapItemState;
 
     public HotbarSlotOverlay(Activity activity, int slot) {
         super(activity);
         this.slot = slot;
+        boolean enabled = InbuiltModManager.getInstance(activity).isHotbarItemIconsEnabled();
+        HotbarSlotMod.setEnabled(enabled);
     }
 
     public int getSlot() {
@@ -56,12 +75,29 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
     }
 
     @Override
+    protected void onOverlayGeometryChanged(int x, int y, int width, int height) {
+        nativeX = x;
+        nativeY = y;
+        nativeWidth = width;
+        nativeHeight = height;
+        View decor = activity.getWindow() != null ? activity.getWindow().getDecorView() : null;
+        nativeSurfaceWidth = decor != null && decor.getWidth() > 0
+                ? decor.getWidth()
+                : activity.getResources().getDisplayMetrics().widthPixels;
+        nativeSurfaceHeight = decor != null && decor.getHeight() > 0
+                ? decor.getHeight()
+                : activity.getResources().getDisplayMetrics().heightPixels;
+        syncNativeState();
+    }
+
+    @Override
     protected void onButtonPressStart() {
         if (keyDown) return;
         keyDown = true;
         pressed = true;
         sendSlotKey(true);
         updateVisual();
+        syncNativeState();
     }
 
     @Override
@@ -71,6 +107,7 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
         keyDown = false;
         pressed = false;
         updateVisual();
+        syncNativeState();
     }
 
     @Override
@@ -78,19 +115,57 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
     }
 
     @Override
+    public void tick() {
+        if (!itemIconsEnabled()) return;
+        boolean current = HotbarSlotMod.hasItem(slot - 1);
+        hasItem = current;
+        if (current != lastBitmapItemState) {
+            lastBitmapItemState = current;
+            activity.runOnUiThread(() -> {
+                rebuildBitmaps();
+                updateVisual();
+            });
+        }
+    }
+
+    public void setRenderVisible(boolean visible) {
+        renderVisible = visible;
+        syncNativeState();
+    }
+
+    @Override
     public void hide() {
         if (keyDown) sendSlotKey(false);
         keyDown = false;
         pressed = false;
+        renderVisible = false;
+        HotbarSlotMod.clearSlot(slot - 1);
         super.hide();
         recycleBitmaps();
     }
 
     @Override
     public void applyConfigurationChanges() {
+        boolean enabled = itemIconsEnabled();
+        HotbarSlotMod.setEnabled(enabled);
+        if (!enabled) {
+            hasItem = false;
+            lastBitmapItemState = false;
+        }
         super.applyConfigurationChanges();
         rebuildBitmaps();
         updateVisual();
+        syncNativeState();
+    }
+
+    private boolean itemIconsEnabled() {
+        return InbuiltModManager.getInstance(activity).isHotbarItemIconsEnabled();
+    }
+
+    private void syncNativeState() {
+        if (!itemIconsEnabled()) return;
+        HotbarSlotMod.setSlotState(slot - 1, nativeX, nativeY, nativeWidth, nativeHeight,
+                nativeSurfaceWidth, nativeSurfaceHeight, getButtonOpacity(), renderVisible, pressed);
     }
 
     private void sendSlotKey(boolean down) {
@@ -104,6 +179,9 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
         if (!(overlayView instanceof ImageButton)) return;
         ImageButton button = (ImageButton) overlayView;
         button.setImageBitmap(pressed ? pressedBitmap : normalBitmap);
+        if (button.getDrawable() instanceof BitmapDrawable) {
+            ((BitmapDrawable) button.getDrawable()).setFilterBitmap(false);
+        }
         button.setScaleType(ImageButton.ScaleType.FIT_CENTER);
         button.setAlpha(getButtonOpacity());
     }
@@ -122,6 +200,14 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
         if (base != result && !base.isRecycled()) base.recycle();
 
         Canvas canvas = new Canvas(result);
+        if (itemIconsEnabled() && hasItem) {
+            Paint clear = new Paint();
+            clear.setXfermode(new android.graphics.PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+            canvas.drawRect(ICON_WINDOW_LEFT, ICON_WINDOW_TOP, ICON_WINDOW_RIGHT, ICON_WINDOW_BOTTOM, clear);
+            clear.setXfermode(null);
+            return result;
+        }
+
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(down ? Color.rgb(230, 230, 230) : Color.BLACK);
         paint.setTextAlign(Paint.Align.CENTER);

@@ -31,6 +31,7 @@ public final class InbuiltModuleProvider {
     private static final String CFG_GYRO_INVERT_X = "gyro_invert_x";
     private static final String CFG_GYRO_INVERT_Y = "gyro_invert_y";
     private static final String CFG_GYRO_DEADZONE = "gyro_deadzone";
+    private static final String CFG_HOTBAR_ITEM_ICONS = "hotbar_item_icons";
 
     private InbuiltModuleProvider() {
     }
@@ -139,6 +140,14 @@ public final class InbuiltModuleProvider {
                     UnifiedMod.ConfigType.TOGGLE,
                     "false", "", "",
                     String.valueOf(manager.isOverlayShowEverywhere(modId))));
+        }
+
+        if (ModIds.HOTBAR_SLOT.equals(modId)) {
+            configs.add(config(CFG_HOTBAR_ITEM_ICONS,
+                    context.getString(R.string.mod_config_hotbar_item_icons),
+                    UnifiedMod.ConfigType.TOGGLE,
+                    "false", "", "",
+                    String.valueOf(manager.isHotbarItemIconsEnabled())));
         }
 
         if (ModIds.AUTO_SPRINT.equals(modId)) {
@@ -261,6 +270,9 @@ public final class InbuiltModuleProvider {
                 break;
             case CFG_GYRO_DEADZONE:
                 manager.setGyroDeadzone(parseInt(value, manager.getGyroDeadzone()));
+                break;
+            case CFG_HOTBAR_ITEM_ICONS:
+                manager.setHotbarItemIconsEnabled(parseBoolean(value));
                 break;
             default:
                 break;
