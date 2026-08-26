@@ -148,6 +148,7 @@ dependencies {
     implementation libs.firebase.analytics
     implementation libs.firebase.crashlytics
     implementation libs.firebase.crashlytics.ndk
+    implementation libs.firebase.messaging
     implementation libs.core.splashscreen
     implementation libs.appcompat
     implementation libs.conscrypt.android

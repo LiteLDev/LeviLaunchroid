@@ -132,6 +132,36 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
+            <FrameLayout
+                android:id="@+id/nav_news_container"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="7dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/news_title"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/nav_news_button"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/news_title"
+                    android:src="@drawable/ic_nav_news"
+                    app:tint="@color/text_secondary" />
+
+                <View
+                    android:id="@+id/nav_news_badge"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/bg_news_unread_dot"
+                    android:visibility="gone" />
+            </FrameLayout>
+
             <Button
                 android:id="@+id/nav_sign_in_button"
                 style="@style/Widget.MaterialComponents.Button"

@@ -1,0 +1,109 @@
+name: Publish launcher news
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - resources/launcher/news.json
+      - scripts/prepare_news_notification.py
+      - scripts/validate_release_content.py
+      - .github/workflows/publish-news.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-launcher-news
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Validate release content
+        run: python3 scripts/validate_release_content.py
+
+      - name: Find the newly published item
+        id: news
+        run: |
+          previous_file="${RUNNER_TEMP}/previous-news.json"
+          message_file="${RUNNER_TEMP}/news-message.json"
+          if ! git show HEAD^:resources/launcher/news.json > "$previous_file" 2>/dev/null; then
+            printf '{"schemaVersion":1,"items":[]}' > "$previous_file"
+          fi
+          python3 scripts/prepare_news_notification.py \
+            resources/launcher/news.json \
+            "$previous_file" \
+            "$message_file" \
+            "$GITHUB_OUTPUT"
+          echo "message_file=$message_file" >> "$GITHUB_OUTPUT"
+
+      - name: Check Firebase sender configuration
+        id: firebase
+        if: steps.news.outputs.should_send == 'true'
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -n "${FIREBASE_SERVICE_ACCOUNT_JSON:-}" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+            project_id=$(python3 -c 'import json, os; print(json.loads(os.environ["FIREBASE_SERVICE_ACCOUNT_JSON"])["project_id"])')
+            echo "project_id=$project_id" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::News was published, but FCM push was skipped because FIREBASE_SERVICE_ACCOUNT_JSON is not configured."
+          fi
+
+      - name: Authenticate to Firebase
+        id: auth
+        if: steps.news.outputs.should_send == 'true' && steps.firebase.outputs.enabled == 'true'
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/firebase.messaging
+          access_token_lifetime: 600s
+
+      - name: Send the news notification
+        if: steps.news.outputs.should_send == 'true' && steps.firebase.outputs.enabled == 'true'
+        env:
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          FIREBASE_PROJECT_ID: ${{ steps.firebase.outputs.project_id }}
+          MESSAGE_FILE: ${{ steps.news.outputs.message_file }}
+        run: |
+          request_file="${RUNNER_TEMP}/fcm-request.json"
+          python3 - "$MESSAGE_FILE" "$request_file" <<'PY'
+          import json
+          import sys
+
+          with open(sys.argv[1], encoding="utf-8") as source:
+              item = json.load(source)
+          data = {
+              "news_id": item["id"],
+              "title": item["title"],
+              "summary": item["summary"],
+              "published_at": item["publishedAt"],
+              "url": item.get("url", ""),
+          }
+          request = {
+              "message": {
+                  "topic": "levilauncher-news",
+                  "data": data,
+                  "android": {"priority": "high", "ttl": "86400s"},
+              }
+          }
+          with open(sys.argv[2], "w", encoding="utf-8") as destination:
+              json.dump(request, destination)
+          PY
+          curl --fail-with-body --silent --show-error \
+            -X POST \
+            -H "Authorization: Bearer $ACCESS_TOKEN" \
+            -H "Content-Type: application/json; UTF-8" \
+            --data-binary "@$request_file" \
+            "https://fcm.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/messages:send"

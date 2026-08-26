@@ -38,6 +38,7 @@ import org.levimc.launcher.core.minecraft.MinecraftLauncher;
 import org.levimc.launcher.core.mods.FileHandler;
 import org.levimc.launcher.core.mods.Mod;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
+import org.levimc.launcher.core.news.ChangelogManager;
 import org.levimc.launcher.core.versions.GameVersion;
 import org.levimc.launcher.core.versions.VersionManager;
 import org.levimc.launcher.databinding.ActivityMainBinding;
@@ -128,6 +129,7 @@ import okhttp3.OkHttpClient;
     private boolean migrationPromptShown;
     private boolean migrationPromptCheckInFlight;
     private boolean postMigrationInitialized;
+    private boolean postEulaFlowRunning;
     private StorageMigrationService storageMigrationService;
     private boolean storageMigrationBound;
     private LibsRepairDialog storageMigrationDialog;
@@ -181,7 +183,7 @@ import okhttp3.OkHttpClient;
         });
 
         initAccountHeader();
-        binding.getRoot().post(this::showStorageMigrationPromptAfterEula);
+        binding.getRoot().post(this::showPostEulaFlow);
     }
 
     @Override
@@ -719,10 +721,14 @@ import okhttp3.OkHttpClient;
         dialog.show();
     }
 
-    private void showStorageMigrationPromptAfterEula() {
+    private void showPostEulaFlow() {
         SharedPreferences prefs = getSharedPreferences("LauncherPrefs", MODE_PRIVATE);
-        if (!prefs.getBoolean("eula_accepted", false)) return;
-        showStorageMigrationPromptIfNeeded();
+        if (!prefs.getBoolean("eula_accepted", false) || postEulaFlowRunning) return;
+        postEulaFlowRunning = true;
+        ChangelogManager.showIfNeeded(this, () -> {
+            postEulaFlowRunning = false;
+            showStorageMigrationPromptIfNeeded();
+        });
     }
 
     private void startStorageMigrationService() {
@@ -947,7 +953,7 @@ import okhttp3.OkHttpClient;
                 .setPositiveButton(getString(R.string.eula_agree), v -> {
                     getSharedPreferences("LauncherPrefs", MODE_PRIVATE)
                             .edit().putBoolean("eula_accepted", true).apply();
-                    binding.getRoot().post(this::showStorageMigrationPromptIfNeeded);
+                    binding.getRoot().postDelayed(this::showPostEulaFlow, 220L);
                 })
                 .setNegativeButton(getString(R.string.eula_exit), v -> finishAffinity());
         dia.setCancelable(false);
@@ -963,7 +969,7 @@ import okhttp3.OkHttpClient;
             return;
         }
         if (!postMigrationInitialized) {
-            showStorageMigrationPromptAfterEula();
+            showPostEulaFlow();
             return;
         }
         if (versionManager != null) {
@@ -1532,4 +1538,3 @@ import okhttp3.OkHttpClient;
     }
 
  }
-

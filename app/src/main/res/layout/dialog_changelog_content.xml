@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/changelog_version"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:background="@drawable/bg_news_category"
+        android:fontFamily="@font/misans"
+        android:gravity="center"
+        android:paddingHorizontal="10dp"
+        android:textColor="@color/primary"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/changelog_headline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/misans"
+        android:textColor="@color/on_surface"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/changelog_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/misans"
+        android:lineSpacingMultiplier="1.08"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginTop="2dp"
+        android:fadeScrollbars="true"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/changelog_sections"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="6dp" />
+    </ScrollView>
+</LinearLayout>

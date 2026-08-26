@@ -997,4 +997,19 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_config_hotbar_slot_enabled">Show hotbar slot %1$d</string>
     <string name="mod_config_hotbar_slot_size">Hotbar slot %1$d size (dp)</string>
     <string name="mod_config_hotbar_slot_opacity">Hotbar slot %1$d opacity</string>
+    <string name="changelog_title">What’s new</string>
+    <string name="changelog_version">LeviLauncher %1$s</string>
+    <string name="changelog_continue">Continue</string>
+    <string name="news_title">Launcher news</string>
+    <string name="news_subtitle">Updates, announcements, and important notices from the LeviLauncher team.</string>
+    <string name="news_enable_notifications">Enable notifications</string>
+    <string name="news_refresh">Refresh news</string>
+    <string name="news_empty">No news has been published yet.</string>
+    <string name="news_read_more">Read more</string>
+    <string name="news_important">Important</string>
+    <string name="news_refreshed">News updated</string>
+    <string name="news_refresh_failed">Could not refresh. Showing saved news.</string>
+    <string name="news_unread_description">Launcher news, %1$d unread</string>
+    <string name="news_notification_channel">Launcher news</string>
+    <string name="news_notification_channel_description">New LeviLauncher announcements and important notices</string>
 </resources>

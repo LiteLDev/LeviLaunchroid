@@ -86,6 +86,21 @@
             android:exported="false"
             android:foregroundServiceType="dataSync" />
 
+        <service
+            android:name="org.levimc.launcher.core.news.LauncherNewsMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="org.levimc.launcher.ui.activities.NewsActivity"
+            android:exported="false"
+            android:screenOrientation="sensorLandscape"
+            android:configChanges="fontScale|density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard|touchscreen|locale|mnc|mcc"
+            tools:ignore="DiscouragedApi" />
+
         <activity
             android:name="org.levimc.launcher.ui.activities.ContentListActivity"
             android:exported="false"

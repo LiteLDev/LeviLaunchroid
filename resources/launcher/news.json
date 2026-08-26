@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "2026-08-26-launcher-news",
+      "title": "Launcher news is now built in",
+      "summary": "Tap the bell at the top of LeviLauncher to see announcements, release information, and important notices in one place.",
+      "publishedAt": "2026-08-26T18:00:00Z",
+      "category": "Launcher",
+      "url": "https://github.com/LiteLDev/LeviLaunchroid/releases",
+      "important": false,
+      "notify": false
+    }
+  ]
+}
