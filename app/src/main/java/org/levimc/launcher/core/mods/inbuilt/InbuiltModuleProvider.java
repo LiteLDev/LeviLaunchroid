@@ -32,6 +32,10 @@ public final class InbuiltModuleProvider {
     private static final String CFG_GYRO_INVERT_Y = "gyro_invert_y";
     private static final String CFG_GYRO_DEADZONE = "gyro_deadzone";
     private static final String CFG_HOTBAR_ITEM_ICONS = "hotbar_item_icons";
+    private static final String CFG_HOTBAR_SLOT_PREFIX = "hotbar_slot_";
+    private static final String CFG_HOTBAR_SLOT_ENABLED = "enabled";
+    private static final String CFG_HOTBAR_SLOT_SIZE = "size";
+    private static final String CFG_HOTBAR_SLOT_OPACITY = "opacity";
 
     private InbuiltModuleProvider() {
     }
@@ -120,16 +124,18 @@ public final class InbuiltModuleProvider {
         List<UnifiedMod.ConfigEntry> configs = new ArrayList<>();
         if (ModIds.POJAV_CONTROLS.equals(modId) || ModIds.MORE_BUTTONS.equals(modId)) return configs;
         if (!ModIds.CHICK_PET.equals(modId)) {
-            configs.add(config(CFG_OVERLAY_SIZE,
-                    context.getString(R.string.mod_config_overlay_button_size_dp),
-                    UnifiedMod.ConfigType.SLIDER_INT,
-                    "56", "20", "100",
-                    String.valueOf(manager.getOverlayButtonSize(modId))));
-            configs.add(config(CFG_OVERLAY_OPACITY,
-                    context.getString(R.string.mod_config_overlay_opacity_percent),
-                    UnifiedMod.ConfigType.SLIDER_INT,
-                    "100", "10", "100",
-                    String.valueOf(manager.getOverlayOpacity(modId))));
+            if (!ModIds.HOTBAR_SLOT.equals(modId)) {
+                configs.add(config(CFG_OVERLAY_SIZE,
+                        context.getString(R.string.mod_config_overlay_button_size_dp),
+                        UnifiedMod.ConfigType.SLIDER_INT,
+                        "56", "20", "100",
+                        String.valueOf(manager.getOverlayButtonSize(modId))));
+                configs.add(config(CFG_OVERLAY_OPACITY,
+                        context.getString(R.string.mod_config_overlay_opacity_percent),
+                        UnifiedMod.ConfigType.SLIDER_INT,
+                        "100", "10", "100",
+                        String.valueOf(manager.getOverlayOpacity(modId))));
+            }
             configs.add(config(CFG_OVERLAY_LOCK,
                     context.getString(R.string.overlay_button_lock),
                     UnifiedMod.ConfigType.TOGGLE,
@@ -148,6 +154,25 @@ public final class InbuiltModuleProvider {
                     UnifiedMod.ConfigType.TOGGLE,
                     "false", "", "",
                     String.valueOf(manager.isHotbarItemIconsEnabled())));
+            for (int slot = 1; slot <= 9; slot++) {
+                String enabledKey = hotbarSlotConfigKey(slot, CFG_HOTBAR_SLOT_ENABLED);
+                String overlayKey = ModIds.HOTBAR_SLOT + ":" + slot;
+                configs.add(config(enabledKey,
+                        context.getString(R.string.mod_config_hotbar_slot_enabled, slot),
+                        UnifiedMod.ConfigType.TOGGLE,
+                        "true", "", "",
+                        String.valueOf(manager.isHotbarSlotEnabled(slot))));
+                configs.add(config(hotbarSlotConfigKey(slot, CFG_HOTBAR_SLOT_SIZE),
+                        context.getString(R.string.mod_config_hotbar_slot_size, slot),
+                        UnifiedMod.ConfigType.SLIDER_INT,
+                        "56", "20", "100",
+                        String.valueOf(manager.getOverlayButtonSize(overlayKey)), enabledKey));
+                configs.add(config(hotbarSlotConfigKey(slot, CFG_HOTBAR_SLOT_OPACITY),
+                        context.getString(R.string.mod_config_hotbar_slot_opacity, slot),
+                        UnifiedMod.ConfigType.SLIDER_INT,
+                        "100", "10", "100",
+                        String.valueOf(manager.getOverlayOpacity(overlayKey)), enabledKey));
+            }
         }
 
         if (ModIds.AUTO_SPRINT.equals(modId)) {
@@ -212,10 +237,22 @@ public final class InbuiltModuleProvider {
                                                  UnifiedMod.ConfigType type,
                                                  String defaultValue, String minValue,
                                                  String maxValue, String currentValue) {
+        return config(key, displayName, type, defaultValue, minValue, maxValue, currentValue, "");
+    }
+
+    private static UnifiedMod.ConfigEntry config(String key, String displayName,
+                                                 UnifiedMod.ConfigType type,
+                                                 String defaultValue, String minValue,
+                                                 String maxValue, String currentValue,
+                                                 String dependsOn) {
         return new UnifiedMod.ConfigEntry(
                 key, displayName, type, defaultValue, minValue, maxValue,
-                currentValue, ""
+                currentValue, dependsOn
         );
+    }
+
+    private static String hotbarSlotConfigKey(int slot, String setting) {
+        return CFG_HOTBAR_SLOT_PREFIX + slot + "_" + setting;
     }
 
     private static void setEnabled(InbuiltModManager manager, UnifiedMod mod, boolean enabled) {
@@ -228,6 +265,7 @@ public final class InbuiltModuleProvider {
 
     private static void setConfig(InbuiltModManager manager, UnifiedMod mod, UnifiedMod.ConfigEntry config,
                                   String value) {
+        if (ModIds.HOTBAR_SLOT.equals(mod.getId()) && setHotbarSlotConfig(manager, config.key, value)) return;
         switch (config.key) {
             case CFG_OVERLAY_SIZE:
                 manager.setOverlayButtonSize(mod.getId(), parseInt(value, manager.getOverlayButtonSize(mod.getId())));
@@ -277,6 +315,25 @@ public final class InbuiltModuleProvider {
             default:
                 break;
         }
+    }
+
+    private static boolean setHotbarSlotConfig(InbuiltModManager manager, String key, String value) {
+        for (int slot = 1; slot <= 9; slot++) {
+            String overlayKey = ModIds.HOTBAR_SLOT + ":" + slot;
+            if (hotbarSlotConfigKey(slot, CFG_HOTBAR_SLOT_ENABLED).equals(key)) {
+                manager.setHotbarSlotEnabled(slot, parseBoolean(value));
+                return true;
+            }
+            if (hotbarSlotConfigKey(slot, CFG_HOTBAR_SLOT_SIZE).equals(key)) {
+                manager.setOverlayButtonSize(overlayKey, parseInt(value, manager.getOverlayButtonSize(overlayKey)));
+                return true;
+            }
+            if (hotbarSlotConfigKey(slot, CFG_HOTBAR_SLOT_OPACITY).equals(key)) {
+                manager.setOverlayOpacity(overlayKey, parseInt(value, manager.getOverlayOpacity(overlayKey)));
+                return true;
+            }
+        }
+        return false;
     }
 
     private static int parseInt(String value, int fallback) {

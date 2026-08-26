@@ -994,4 +994,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="inbuilt_mod_hotbar_slot_desc">Adds separate 1–9 buttons for selecting hotbar slots</string>
     <string name="hotbar_slot_content_description">Hotbar slot %1$d</string>
     <string name="mod_config_hotbar_item_icons">Use item icons from hotbar</string>
+    <string name="mod_config_hotbar_slot_enabled">Show hotbar slot %1$d</string>
+    <string name="mod_config_hotbar_slot_size">Hotbar slot %1$d size (dp)</string>
+    <string name="mod_config_hotbar_slot_opacity">Hotbar slot %1$d opacity</string>
 </resources>

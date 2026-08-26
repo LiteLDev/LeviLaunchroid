@@ -21,6 +21,7 @@ import org.levimc.launcher.core.mods.inbuilt.nativemod.MoreButtonsMod;
 
 public final class HotbarSlotOverlay extends BaseOverlayButton {
     private static final float PRESSED_Y = 8f;
+    private static final float NUMBER_Y = -8f;
     private static final float ICON_WINDOW_LEFT = 93f;
     private static final float ICON_WINDOW_TOP = 93f;
     private static final float ICON_WINDOW_RIGHT = 419f;
@@ -59,7 +60,7 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
 
     @Override
     public String getOverlayConfigKey() {
-        return ModIds.HOTBAR_SLOT;
+        return getModId();
     }
 
     @Override
@@ -214,7 +215,7 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         paint.setTextSize(250f);
         Paint.FontMetrics fm = paint.getFontMetrics();
-        float yOffset = down ? PRESSED_Y : 0f;
+        float yOffset = NUMBER_Y + (down ? PRESSED_Y : 0f);
         float y = 256f - (fm.ascent + fm.descent) / 2f + yOffset;
         canvas.drawText(Integer.toString(slot), 256f, y, paint);
         return result;

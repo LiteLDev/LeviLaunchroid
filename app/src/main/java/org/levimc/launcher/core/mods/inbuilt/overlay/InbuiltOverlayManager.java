@@ -399,37 +399,59 @@ public class InbuiltOverlayManager {
         if (!modActiveStates.getOrDefault(ModIds.HOTBAR_SLOT, false)) return;
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
         android.util.DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
-        int button = (int)(manager.getOverlayButtonSize(ModIds.HOTBAR_SLOT) * metrics.density);
         int gap = (int)(4 * metrics.density);
-        int total = button * 9 + gap * 8;
+        int enabledCount = 0;
+        int total = 0;
+        for (int slot = 1; slot <= 9; slot++) {
+            if (!manager.isHotbarSlotEnabled(slot)) continue;
+            total += getHotbarSlotButtonSizePx(manager, metrics, slot);
+            enabledCount++;
+        }
+        if (enabledCount > 1) total += gap * (enabledCount - 1);
         int startX = Math.max(0, (metrics.widthPixels - total) / 2);
         int defaultY = Math.max(0, metrics.heightPixels - (int)(120 * metrics.density));
+        int nextX = startX;
         for (int slot = 1; slot <= 9; slot++) {
             HotbarSlotOverlay existing = hotbarSlotOverlayMap.get(slot);
-            if (existing != null) {
-                existing.applyConfigurationChanges();
+            if (!manager.isHotbarSlotEnabled(slot)) {
+                removeHotbarSlotOverlay(existing);
                 continue;
             }
-            String key = ModIds.HOTBAR_SLOT + ":" + slot;
-            int defaultX = startX + (slot - 1) * (button + gap);
-            int savedX = manager.getOverlayPositionX(key, defaultX);
-            int savedY = manager.getOverlayPositionY(key, defaultY);
-            HotbarSlotOverlay overlay = new HotbarSlotOverlay(activity, slot);
-            overlay.show(savedX, savedY);
-            overlays.add(overlay);
-            hotbarSlotOverlayMap.put(slot, overlay);
-            modOverlayMap.put(key, overlay);
+            int button = getHotbarSlotButtonSizePx(manager, metrics, slot);
+            if (existing != null) {
+                existing.applyConfigurationChanges();
+            } else {
+                String key = ModIds.HOTBAR_SLOT + ":" + slot;
+                int savedX = manager.getOverlayPositionX(key, nextX);
+                int savedY = manager.getOverlayPositionY(key, defaultY);
+                HotbarSlotOverlay overlay = new HotbarSlotOverlay(activity, slot);
+                overlay.show(savedX, savedY);
+                overlays.add(overlay);
+                hotbarSlotOverlayMap.put(slot, overlay);
+                modOverlayMap.put(key, overlay);
+            }
+            nextX += button + gap;
         }
+    }
+
+    private int getHotbarSlotButtonSizePx(InbuiltModManager manager,
+                                           android.util.DisplayMetrics metrics, int slot) {
+        String key = ModIds.HOTBAR_SLOT + ":" + slot;
+        return (int)(manager.getOverlayButtonSize(key) * metrics.density);
+    }
+
+    private void removeHotbarSlotOverlay(HotbarSlotOverlay overlay) {
+        if (overlay == null) return;
+        if (overlay == selectedHudEditorOverlay) selectHudEditorOverlay(null);
+        overlay.hide();
+        overlays.remove(overlay);
+        hotbarSlotOverlayMap.remove(overlay.getSlot());
+        modOverlayMap.remove(ModIds.HOTBAR_SLOT + ":" + overlay.getSlot());
     }
 
     private void hideHotbarSlots() {
         java.util.List<HotbarSlotOverlay> copy = new java.util.ArrayList<>(hotbarSlotOverlayMap.values());
-        for (HotbarSlotOverlay overlay : copy) {
-            if (overlay == selectedHudEditorOverlay) selectHudEditorOverlay(null);
-            overlay.hide();
-            overlays.remove(overlay);
-            modOverlayMap.remove(ModIds.HOTBAR_SLOT + ":" + overlay.getSlot());
-        }
+        for (HotbarSlotOverlay overlay : copy) removeHotbarSlotOverlay(overlay);
         hotbarSlotOverlayMap.clear();
     }
 
@@ -763,11 +785,6 @@ public class InbuiltOverlayManager {
             String configKey = selectedHudEditorOverlay.getOverlayConfigKey();
             manager.setOverlayButtonSize(configKey, sizeDp);
             selectedHudEditorOverlay.applyConfigurationChanges();
-            if (ModIds.HOTBAR_SLOT.equals(configKey)) {
-                for (HotbarSlotOverlay hotbar : hotbarSlotOverlayMap.values()) {
-                    if (hotbar != selectedHudEditorOverlay) hotbar.applyConfigurationChanges();
-                }
-            }
         } else if (selectedDisplayModId != null) {
             manager.setOverlayButtonSize(selectedDisplayModId, sizeDp);
             if (selectedDisplayModId.equals(ModIds.FPS_DISPLAY) && fpsDisplayOverlay != null) {
@@ -809,18 +826,25 @@ public class InbuiltOverlayManager {
         }
 
         if (!hotbarSlotOverlayMap.isEmpty()) {
-            int button = (int)(manager.getOverlayButtonSize(ModIds.HOTBAR_SLOT) * metrics.density);
             int gap = (int)(4 * metrics.density);
-            int total = button * 9 + gap * 8;
+            int total = 0;
+            int enabledCount = 0;
+            for (int slot = 1; slot <= 9; slot++) {
+                if (!hotbarSlotOverlayMap.containsKey(slot)) continue;
+                total += getHotbarSlotButtonSizePx(manager, metrics, slot);
+                enabledCount++;
+            }
+            if (enabledCount > 1) total += gap * (enabledCount - 1);
             int startX = Math.max(0, (metrics.widthPixels - total) / 2);
             int defaultY = Math.max(0, metrics.heightPixels - (int)(120 * metrics.density));
+            int nextX = startX;
             for (int slot = 1; slot <= 9; slot++) {
                 HotbarSlotOverlay overlay = hotbarSlotOverlayMap.get(slot);
                 if (overlay == null) continue;
-                int x = startX + (slot - 1) * (button + gap);
                 String key = ModIds.HOTBAR_SLOT + ":" + slot;
-                manager.setOverlayPosition(key, x, defaultY);
-                overlay.updatePosition(x, defaultY);
+                manager.setOverlayPosition(key, nextX, defaultY);
+                overlay.updatePosition(nextX, defaultY);
+                nextX += getHotbarSlotButtonSizePx(manager, metrics, slot) + gap;
             }
         }
         

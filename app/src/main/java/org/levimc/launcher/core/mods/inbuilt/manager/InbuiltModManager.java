@@ -37,6 +37,7 @@ public class InbuiltModManager {
     private static final String KEY_OVERLAY_LOCK_PREFIX = "overlay_lock_";
     private static final String KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX = "overlay_show_everywhere_";
     private static final String KEY_HOTBAR_ITEM_ICONS = "hotbar_item_icons";
+    private static final String KEY_HOTBAR_SLOT_ENABLED_PREFIX = "hotbar_slot_enabled_";
     private static final int DEFAULT_OVERLAY_BUTTON_SIZE = 56;
     private static final int DEFAULT_OVERLAY_OPACITY = 100;
     private static final int MIN_MOD_MENU_OPACITY = 70;
@@ -87,7 +88,13 @@ public class InbuiltModManager {
     }
 
     public int getOverlayButtonSize(String modId) {
-        return prefs.getInt(KEY_OVERLAY_BUTTON_SIZE_PREFIX + sharedOverlaySettingsId(modId), DEFAULT_OVERLAY_BUTTON_SIZE);
+        String key = KEY_OVERLAY_BUTTON_SIZE_PREFIX + modId;
+        if (prefs.contains(key)) return prefs.getInt(key, DEFAULT_OVERLAY_BUTTON_SIZE);
+        String sharedId = sharedOverlaySettingsId(modId);
+        if (sharedId != null && !sharedId.equals(modId)) {
+            return prefs.getInt(KEY_OVERLAY_BUTTON_SIZE_PREFIX + sharedId, DEFAULT_OVERLAY_BUTTON_SIZE);
+        }
+        return DEFAULT_OVERLAY_BUTTON_SIZE;
     }
 
     public void setOverlayButtonSize(String modId, int sizeDp) {
@@ -95,7 +102,13 @@ public class InbuiltModManager {
     }
 
     public int getOverlayOpacity(String modId) {
-        return prefs.getInt(KEY_OVERLAY_OPACITY_PREFIX + sharedOverlaySettingsId(modId), DEFAULT_OVERLAY_OPACITY);
+        String key = KEY_OVERLAY_OPACITY_PREFIX + modId;
+        if (prefs.contains(key)) return prefs.getInt(key, DEFAULT_OVERLAY_OPACITY);
+        String sharedId = sharedOverlaySettingsId(modId);
+        if (sharedId != null && !sharedId.equals(modId)) {
+            return prefs.getInt(KEY_OVERLAY_OPACITY_PREFIX + sharedId, DEFAULT_OVERLAY_OPACITY);
+        }
+        return DEFAULT_OVERLAY_OPACITY;
     }
 
     public void setOverlayOpacity(String modId, int opacity) {
@@ -239,7 +252,7 @@ public class InbuiltModManager {
     }
 
     public void setOverlayLocked(String modId, boolean locked) {
-        prefs.edit().putBoolean(KEY_OVERLAY_LOCK_PREFIX + modId, locked).apply();
+        prefs.edit().putBoolean(KEY_OVERLAY_LOCK_PREFIX + sharedOverlaySettingsId(modId), locked).apply();
     }
 
     public boolean isOverlayShowEverywhere(String modId) {
@@ -247,7 +260,7 @@ public class InbuiltModManager {
     }
 
     public void setOverlayShowEverywhere(String modId, boolean showEverywhere) {
-        prefs.edit().putBoolean(KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX + modId, showEverywhere).apply();
+        prefs.edit().putBoolean(KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX + sharedOverlaySettingsId(modId), showEverywhere).apply();
     }
 
     public void clearOverlaySettings(String modId) {
@@ -312,6 +325,16 @@ public class InbuiltModManager {
 
     public void setHotbarItemIconsEnabled(boolean enabled) {
         prefs.edit().putBoolean(KEY_HOTBAR_ITEM_ICONS, enabled).apply();
+    }
+
+    public boolean isHotbarSlotEnabled(int slot) {
+        if (slot < 1 || slot > 9) return false;
+        return prefs.getBoolean(KEY_HOTBAR_SLOT_ENABLED_PREFIX + slot, true);
+    }
+
+    public void setHotbarSlotEnabled(int slot, boolean enabled) {
+        if (slot < 1 || slot > 9) return;
+        prefs.edit().putBoolean(KEY_HOTBAR_SLOT_ENABLED_PREFIX + slot, enabled).apply();
     }
 
 }
