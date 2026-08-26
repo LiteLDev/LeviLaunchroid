@@ -953,4 +953,9 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="more_buttons_save_failed">Impossible d\'enregistrer ce bouton.</string>
     <string name="more_buttons_no_svg_selected">Aucun SVG sélectionné</string>
     <string name="more_buttons_default_name">Bouton</string>
+
+    <!-- Hotbar Slot -->
+    <string name="inbuilt_mod_hotbar_slot">Emplacement de barre rapide</string>
+    <string name="inbuilt_mod_hotbar_slot_desc">Ajoute des boutons séparés de 1 à 9 pour sélectionner les emplacements de la barre rapide</string>
+    <string name="hotbar_slot_content_description">Emplacement de barre rapide %1$d</string>
 </resources>

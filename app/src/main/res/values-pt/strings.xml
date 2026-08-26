@@ -953,4 +953,9 @@ A migração deve ser concluída antes que o LeviLauncher continue.</string>
     <string name="more_buttons_save_failed">Não foi possível salvar este botão.</string>
     <string name="more_buttons_no_svg_selected">Nenhum SVG selecionado</string>
     <string name="more_buttons_default_name">Botão</string>
+
+    <!-- Hotbar Slot -->
+    <string name="inbuilt_mod_hotbar_slot">Slot da barra rápida</string>
+    <string name="inbuilt_mod_hotbar_slot_desc">Adiciona botões separados de 1 a 9 para selecionar slots da barra rápida</string>
+    <string name="hotbar_slot_content_description">Slot da barra rápida %1$d</string>
 </resources>

@@ -979,4 +979,9 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="more_buttons_save_failed">Bu düğme kaydedilemedi.</string>
     <string name="more_buttons_no_svg_selected">SVG seçilmedi</string>
     <string name="more_buttons_default_name">Düğme</string>
+
+    <!-- Hotbar Slot -->
+    <string name="inbuilt_mod_hotbar_slot">Hızlı Erişim Yuvası</string>
+    <string name="inbuilt_mod_hotbar_slot_desc">Hızlı erişim yuvalarını seçmek için ayrı 1–9 düğmeleri ekler</string>
+    <string name="hotbar_slot_content_description">Hızlı erişim yuvası %1$d</string>
 </resources>

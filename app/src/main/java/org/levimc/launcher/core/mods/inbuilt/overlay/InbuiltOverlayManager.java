@@ -29,6 +29,7 @@ public class InbuiltOverlayManager {
     private final Map<String, BaseOverlayButton> modOverlayMap = new HashMap<>();
     private final Map<String, ExternalButtonOverlay> externalButtonOverlayMap = new HashMap<>();
     private final Map<String, MoreButtonOverlay> moreButtonOverlayMap = new HashMap<>();
+    private final Map<Integer, HotbarSlotOverlay> hotbarSlotOverlayMap = new HashMap<>();
     private boolean moreButtonsEditorOpen;
     private final Map<String, Integer> modPositionMap = new HashMap<>();
     private ChickPetOverlay chickPetOverlay;
@@ -81,6 +82,7 @@ public class InbuiltOverlayManager {
         modActiveStates.put(ModIds.GYRO, false);
         modActiveStates.put(ModIds.POJAV_CONTROLS, false);
         modActiveStates.put(ModIds.MORE_BUTTONS, false);
+        modActiveStates.put(ModIds.HOTBAR_SLOT, false);
 
         modPositionMap.put(ModIds.QUICK_DROP, nextY + SPACING);
         modPositionMap.put(ModIds.CAMERA_PERSPECTIVE, nextY + SPACING * 2);
@@ -116,6 +118,7 @@ public class InbuiltOverlayManager {
         restorePersistedInbuiltModState(manager, ModIds.GYRO);
         restorePersistedInbuiltModState(manager, ModIds.POJAV_CONTROLS);
         restorePersistedInbuiltModState(manager, ModIds.MORE_BUTTONS);
+        restorePersistedInbuiltModState(manager, ModIds.HOTBAR_SLOT);
 
         modMenuButton = new ModMenuButton(activity);
         modMenuButton.show(START_X, nextY);
@@ -229,6 +232,9 @@ public class InbuiltOverlayManager {
             case ModIds.MORE_BUTTONS:
                 refreshMoreButtons();
                 break;
+            case ModIds.HOTBAR_SLOT:
+                refreshHotbarSlots();
+                break;
             case ModIds.POJAV_CONTROLS:
                 if (activity instanceof PojavControlsHost && PojavControlsMod.setEnabled(true)) {
                     PojavControls.setEnabled(activity, (PojavControlsHost) activity, true);
@@ -238,6 +244,10 @@ public class InbuiltOverlayManager {
     }
 
     private void hideModOverlay(String modId) {
+        if (modId.equals(ModIds.HOTBAR_SLOT)) {
+            hideHotbarSlots();
+            return;
+        }
         if (modId.equals(ModIds.MORE_BUTTONS)) {
             hideMoreButtons();
             return;
@@ -385,6 +395,44 @@ public class InbuiltOverlayManager {
         modOverlayMap.remove(overlay.getOverlayConfigKey());
     }
 
+    public void refreshHotbarSlots() {
+        if (!modActiveStates.getOrDefault(ModIds.HOTBAR_SLOT, false)) return;
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        android.util.DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
+        int button = (int)(manager.getOverlayButtonSize(ModIds.HOTBAR_SLOT) * metrics.density);
+        int gap = (int)(4 * metrics.density);
+        int total = button * 9 + gap * 8;
+        int startX = Math.max(0, (metrics.widthPixels - total) / 2);
+        int defaultY = Math.max(0, metrics.heightPixels - (int)(120 * metrics.density));
+        for (int slot = 1; slot <= 9; slot++) {
+            HotbarSlotOverlay existing = hotbarSlotOverlayMap.get(slot);
+            if (existing != null) {
+                existing.applyConfigurationChanges();
+                continue;
+            }
+            String key = ModIds.HOTBAR_SLOT + ":" + slot;
+            int defaultX = startX + (slot - 1) * (button + gap);
+            int savedX = manager.getOverlayPositionX(key, defaultX);
+            int savedY = manager.getOverlayPositionY(key, defaultY);
+            HotbarSlotOverlay overlay = new HotbarSlotOverlay(activity, slot);
+            overlay.show(savedX, savedY);
+            overlays.add(overlay);
+            hotbarSlotOverlayMap.put(slot, overlay);
+            modOverlayMap.put(key, overlay);
+        }
+    }
+
+    private void hideHotbarSlots() {
+        java.util.List<HotbarSlotOverlay> copy = new java.util.ArrayList<>(hotbarSlotOverlayMap.values());
+        for (HotbarSlotOverlay overlay : copy) {
+            if (overlay == selectedHudEditorOverlay) selectHudEditorOverlay(null);
+            overlay.hide();
+            overlays.remove(overlay);
+            modOverlayMap.remove(ModIds.HOTBAR_SLOT + ":" + overlay.getSlot());
+        }
+        hotbarSlotOverlayMap.clear();
+    }
+
     public void handleExternalModuleToggle(String moduleId, boolean enabled) {
         if (enabled) {
             showExternalButtonsForModule(moduleId);
@@ -495,6 +543,7 @@ public class InbuiltOverlayManager {
         modOverlayMap.clear();
         externalButtonOverlayMap.clear();
         moreButtonOverlayMap.clear();
+        hotbarSlotOverlayMap.clear();
         modActiveStates.clear();
         modPositionMap.clear();
         if (chickPetOverlay != null) {
@@ -618,6 +667,9 @@ public class InbuiltOverlayManager {
         if (modId.equals(ModIds.MORE_BUTTONS)) {
             refreshMoreButtons();
         }
+        if (modId.equals(ModIds.HOTBAR_SLOT)) {
+            refreshHotbarSlots();
+        }
     }
 
     public void setHudEditorMode(boolean active) {
@@ -708,8 +760,14 @@ public class InbuiltOverlayManager {
     public void setSelectedHudEditorButtonSize(int sizeDp) {
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
         if (selectedHudEditorOverlay != null) {
-            manager.setOverlayButtonSize(selectedHudEditorOverlay.getOverlayConfigKey(), sizeDp);
+            String configKey = selectedHudEditorOverlay.getOverlayConfigKey();
+            manager.setOverlayButtonSize(configKey, sizeDp);
             selectedHudEditorOverlay.applyConfigurationChanges();
+            if (ModIds.HOTBAR_SLOT.equals(configKey)) {
+                for (HotbarSlotOverlay hotbar : hotbarSlotOverlayMap.values()) {
+                    if (hotbar != selectedHudEditorOverlay) hotbar.applyConfigurationChanges();
+                }
+            }
         } else if (selectedDisplayModId != null) {
             manager.setOverlayButtonSize(selectedDisplayModId, sizeDp);
             if (selectedDisplayModId.equals(ModIds.FPS_DISPLAY) && fpsDisplayOverlay != null) {
@@ -745,8 +803,25 @@ public class InbuiltOverlayManager {
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
         
         for (java.util.Map.Entry<String, BaseOverlayButton> entry : modOverlayMap.entrySet()) {
+            if (entry.getKey().startsWith(ModIds.HOTBAR_SLOT + ":")) continue;
             manager.setOverlayPosition(entry.getKey(), centerX, centerY);
             entry.getValue().updatePosition(centerX, centerY);
+        }
+
+        if (!hotbarSlotOverlayMap.isEmpty()) {
+            int button = (int)(manager.getOverlayButtonSize(ModIds.HOTBAR_SLOT) * metrics.density);
+            int gap = (int)(4 * metrics.density);
+            int total = button * 9 + gap * 8;
+            int startX = Math.max(0, (metrics.widthPixels - total) / 2);
+            int defaultY = Math.max(0, metrics.heightPixels - (int)(120 * metrics.density));
+            for (int slot = 1; slot <= 9; slot++) {
+                HotbarSlotOverlay overlay = hotbarSlotOverlayMap.get(slot);
+                if (overlay == null) continue;
+                int x = startX + (slot - 1) * (button + gap);
+                String key = ModIds.HOTBAR_SLOT + ":" + slot;
+                manager.setOverlayPosition(key, x, defaultY);
+                overlay.updatePosition(x, defaultY);
+            }
         }
         
         if (fpsDisplayOverlay != null) {

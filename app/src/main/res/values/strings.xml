@@ -879,7 +879,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="unsupported_version_title">Unsupported Version</string>
     <string name="unsupported_version_msg">This launcher does not support Minecraft versions older than 1.21.80.</string>
 
-    <!-- Generic UI strings-->
+    <!-- Generic UI strings added during localization cleanup -->
     <string name="close">Close</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
@@ -988,4 +988,9 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="more_buttons_no_svg_selected">No SVG selected</string>
     <string name="more_buttons_default_name">Button</string>
 
+
+    <!-- Hotbar Slot -->
+    <string name="inbuilt_mod_hotbar_slot">Hotbar Slot</string>
+    <string name="inbuilt_mod_hotbar_slot_desc">Adds separate 1–9 buttons for selecting hotbar slots</string>
+    <string name="hotbar_slot_content_description">Hotbar slot %1$d</string>
 </resources>

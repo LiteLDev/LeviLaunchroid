@@ -983,4 +983,9 @@
     <string name="more_buttons_save_failed">Не удалось сохранить эту кнопку.</string>
     <string name="more_buttons_no_svg_selected">SVG не выбран</string>
     <string name="more_buttons_default_name">Кнопка</string>
+
+    <!-- Hotbar Slot -->
+    <string name="inbuilt_mod_hotbar_slot">Слот панели быстрого доступа</string>
+    <string name="inbuilt_mod_hotbar_slot_desc">Добавляет отдельные кнопки 1–9 для выбора слотов панели быстрого доступа</string>
+    <string name="hotbar_slot_content_description">Слот панели быстрого доступа %1$d</string>
 </resources>

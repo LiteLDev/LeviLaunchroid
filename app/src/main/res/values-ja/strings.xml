@@ -950,4 +950,9 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="more_buttons_save_failed">このボタンを保存できませんでした。</string>
     <string name="more_buttons_no_svg_selected">SVG が選択されていません</string>
     <string name="more_buttons_default_name">ボタン</string>
+
+    <!-- Hotbar Slot -->
+    <string name="inbuilt_mod_hotbar_slot">ホットバースロット</string>
+    <string name="inbuilt_mod_hotbar_slot_desc">ホットバースロットを選択するための1～9の個別ボタンを追加します</string>
+    <string name="hotbar_slot_content_description">ホットバースロット %1$d</string>
 </resources>

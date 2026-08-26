@@ -982,4 +982,9 @@ Quá trình chuyển đổi phải hoàn tất trước khi LeviLauncher có th�
     <string name="more_buttons_save_failed">Không thể lưu nút này.</string>
     <string name="more_buttons_no_svg_selected">Chưa chọn SVG</string>
     <string name="more_buttons_default_name">Nút</string>
+
+    <!-- Hotbar Slot -->
+    <string name="inbuilt_mod_hotbar_slot">Ô thanh nhanh</string>
+    <string name="inbuilt_mod_hotbar_slot_desc">Thêm các nút 1–9 riêng để chọn ô trên thanh nhanh</string>
+    <string name="hotbar_slot_content_description">Ô thanh nhanh %1$d</string>
 </resources>

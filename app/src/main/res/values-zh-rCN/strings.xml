@@ -970,4 +970,9 @@
     <string name="more_buttons_save_failed">无法保存此按钮。</string>
     <string name="more_buttons_no_svg_selected">未选择 SVG</string>
     <string name="more_buttons_default_name">按钮</string>
+
+    <!-- Hotbar Slot -->
+    <string name="inbuilt_mod_hotbar_slot">快捷栏槽位</string>
+    <string name="inbuilt_mod_hotbar_slot_desc">添加独立的 1–9 按钮，用于选择快捷栏槽位</string>
+    <string name="hotbar_slot_content_description">快捷栏槽位 %1$d</string>
 </resources>

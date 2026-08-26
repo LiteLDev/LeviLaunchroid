@@ -976,4 +976,9 @@ Migrasi harus selesai sebelum LeviLauncher dapat melanjutkan.</string>
     <string name="more_buttons_save_failed">Tombol ini tidak dapat disimpan.</string>
     <string name="more_buttons_no_svg_selected">Tidak ada SVG yang dipilih</string>
     <string name="more_buttons_default_name">Tombol</string>
+
+    <!-- Hotbar Slot -->
+    <string name="inbuilt_mod_hotbar_slot">Slot Hotbar</string>
+    <string name="inbuilt_mod_hotbar_slot_desc">Menambahkan tombol 1–9 terpisah untuk memilih slot hotbar</string>
+    <string name="hotbar_slot_content_description">Slot hotbar %1$d</string>
 </resources>

@@ -80,6 +80,9 @@ public final class InbuiltModuleProvider {
         mods.add(create(activity, manager, overlayManager, ModIds.MORE_BUTTONS,
                 R.string.inbuilt_mod_more_buttons, R.string.inbuilt_mod_more_buttons_desc,
                 groupName));
+        mods.add(create(activity, manager, overlayManager, ModIds.HOTBAR_SLOT,
+                R.string.inbuilt_mod_hotbar_slot, R.string.inbuilt_mod_hotbar_slot_desc,
+                groupName));
 
         return mods;
     }

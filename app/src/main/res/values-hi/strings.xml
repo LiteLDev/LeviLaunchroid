@@ -980,4 +980,9 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="more_buttons_save_failed">यह बटन सहेजा नहीं जा सका।</string>
     <string name="more_buttons_no_svg_selected">कोई SVG चयनित नहीं</string>
     <string name="more_buttons_default_name">बटन</string>
+
+    <!-- Hotbar Slot -->
+    <string name="inbuilt_mod_hotbar_slot">हॉटबार स्लॉट</string>
+    <string name="inbuilt_mod_hotbar_slot_desc">हॉटबार स्लॉट चुनने के लिए अलग-अलग 1–9 बटन जोड़ता है</string>
+    <string name="hotbar_slot_content_description">हॉटबार स्लॉट %1$d</string>
 </resources>
