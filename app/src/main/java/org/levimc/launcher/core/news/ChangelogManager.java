@@ -8,8 +8,11 @@ import android.content.pm.PackageInfo;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -71,6 +74,85 @@ public final class ChangelogManager {
                 .setOnDismissAnimationEndListener(onComplete);
         dialog.setCancelable(false);
         dialog.show();
+        prepareContinueButton(activity, dialog);
+        fitDialogToScreen(activity, dialog, content);
+    }
+
+    private static void prepareContinueButton(Context context, CustomAlertDialog dialog) {
+        Button button = dialog.getPositiveButton();
+        if (button == null) return;
+        int horizontalPadding = dp(context, 12);
+        int verticalPadding = dp(context, 6);
+        button.setGravity(Gravity.CENTER);
+        button.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        button.setIncludeFontPadding(true);
+        button.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding);
+        button.setMinHeight(dp(context, 48));
+        button.setMinimumHeight(dp(context, 48));
+        ViewGroup.LayoutParams params = button.getLayoutParams();
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        button.setLayoutParams(params);
+        View parent = (View) button.getParent();
+        if (parent != null) {
+            parent.setMinimumHeight(dp(context, 48));
+            ViewGroup.LayoutParams parentParams = parent.getLayoutParams();
+            parentParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            parent.setLayoutParams(parentParams);
+            parent.requestLayout();
+        }
+        button.requestLayout();
+    }
+
+    private static void fitDialogToScreen(Activity activity, CustomAlertDialog dialog, View content) {
+        View dialogContent = dialog.findViewById(android.R.id.content);
+        if (!(dialogContent instanceof ViewGroup)) return;
+        ViewGroup contentGroup = (ViewGroup) dialogContent;
+        if (contentGroup.getChildCount() == 0) return;
+        View dialogRoot = contentGroup.getChildAt(0);
+        dialogRoot.post(() -> dialogRoot.post(() -> {
+            if (!dialog.isShowing()) return;
+            View customContainerView = dialog.findViewById(R.id.custom_view_container);
+            View buttonContainer = dialog.findViewById(R.id.btn_container);
+            if (!(dialogRoot instanceof LinearLayout) || !(customContainerView instanceof LinearLayout)) return;
+
+            int availableHeight = getAvailableHeight(activity);
+            int maxDialogHeight = Math.min(dp(activity, 500), Math.max(dp(activity, 240), (int) (availableHeight * 0.92f)));
+            int measuredHeight = dialogRoot.getMeasuredHeight();
+            if (measuredHeight <= 0 || measuredHeight <= maxDialogHeight) return;
+
+            ViewGroup.LayoutParams rootParams = dialogRoot.getLayoutParams();
+            rootParams.height = maxDialogHeight;
+            dialogRoot.setLayoutParams(rootParams);
+
+            LinearLayout.LayoutParams customParams = (LinearLayout.LayoutParams) customContainerView.getLayoutParams();
+            customParams.height = 0;
+            customParams.weight = 1f;
+            customContainerView.setLayoutParams(customParams);
+
+            ViewGroup.LayoutParams contentParams = content.getLayoutParams();
+            contentParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+            content.setLayoutParams(contentParams);
+
+            if (buttonContainer != null) {
+                buttonContainer.setMinimumHeight(dp(activity, 48));
+                buttonContainer.requestLayout();
+            }
+            customContainerView.requestLayout();
+            dialogRoot.requestLayout();
+        }));
+    }
+
+    private static int getAvailableHeight(Activity activity) {
+        int height = activity.getResources().getDisplayMetrics().heightPixels;
+        View decor = activity.getWindow().getDecorView();
+        if (decor != null && decor.getHeight() > 0) {
+            height = Math.min(height, decor.getHeight());
+        }
+        return height;
+    }
+
+    private static int dp(Context context, int value) {
+        return Math.round(value * context.getResources().getDisplayMetrics().density);
     }
 
     private static void addSection(Context context, LinearLayout parent, Section section) {
