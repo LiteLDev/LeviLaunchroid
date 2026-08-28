@@ -539,7 +539,7 @@ public final class MoreButtonsEditor {
                 updatePreview();
             }, d);
             addSlider(content, activity.getString(R.string.more_buttons_button_size), 24, 100, buttonSize, " " + activity.getString(R.string.more_buttons_unit_dp), value -> buttonSize = value, d);
-            addSlider(content, activity.getString(R.string.more_buttons_opacity), 10, 100, opacity, "%", value -> opacity = value, d);
+            addSlider(content, activity.getString(R.string.more_buttons_opacity), 0, 100, opacity, "%", value -> opacity = value, d);
 
             Switch lock = switchView(activity, activity.getString(R.string.more_buttons_lock_position), locked);
             Switch everywhere = switchView(activity, activity.getString(R.string.more_buttons_show_outside_hud), showEverywhere);

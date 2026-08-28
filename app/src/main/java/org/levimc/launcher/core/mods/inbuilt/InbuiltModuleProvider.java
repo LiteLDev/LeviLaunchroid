@@ -133,7 +133,7 @@ public final class InbuiltModuleProvider {
                 configs.add(config(CFG_OVERLAY_OPACITY,
                         context.getString(R.string.mod_config_overlay_opacity_percent),
                         UnifiedMod.ConfigType.SLIDER_INT,
-                        "100", "10", "100",
+                        "100", "0", "100",
                         String.valueOf(manager.getOverlayOpacity(modId))));
             }
             configs.add(config(CFG_OVERLAY_LOCK,
@@ -170,7 +170,7 @@ public final class InbuiltModuleProvider {
                 configs.add(config(hotbarSlotConfigKey(slot, CFG_HOTBAR_SLOT_OPACITY),
                         context.getString(R.string.mod_config_hotbar_slot_opacity, slot),
                         UnifiedMod.ConfigType.SLIDER_INT,
-                        "100", "10", "100",
+                        "100", "0", "100",
                         String.valueOf(manager.getOverlayOpacity(overlayKey)), enabledKey));
             }
         }
