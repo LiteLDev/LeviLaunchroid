@@ -1,18 +1,39 @@
 {
   "schemaVersion": 1,
-  "headline": "More controls, clearer overlays, and launcher news",
-  "summary": "This update expands the built-in overlay tools and introduces an easier way to follow every launcher update.",
+  "headline": "Better built-in mods, compact menus, and Minecraft 1.26.45 support",
+  "summary": "This update improves built-in mods and overlays, adds a more compact Mod Menu layout, and updates compatibility for Minecraft 1.26.45.",
   "sections": [
     {
       "title": "Built-in mods",
       "items": [
         {
-          "text": "Added the More Buttons built-in mod.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/9c3193026a987758acdc4f44f361c3a4ec5923dd"
+          "text": "Added Minecraft 1.26.45 support to built-in mods.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/3e29cdd4c86320edcb1c5da3f166d2fe46aa7dc2"
         },
         {
-          "text": "Added the Hotbar Slot built-in mod.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/e6d3941531086f176ec8a390b11300b8ed2a2167"
+          "text": "Improved AutoSprint with a more reliable native sprint implementation.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/d0b48b011b64559230496b89e6b06d44f26d7a3a"
+        },
+        {
+          "text": "Improved Quick Drop so holding the button continuously drops items.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/4b5ee20a183f8418eb2841d476ce690177679a86"
+        },
+        {
+          "text": "Built-in overlay button opacity can now be lowered all the way to 0%.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/46b42daa6be240b180016bb55fa36018e7784506"
+        }
+      ]
+    },
+    {
+      "title": "Mod Menu",
+      "items": [
+        {
+          "text": "Added Compact Mode with a cleaner layout for the Mod Menu.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/84a58a039d568b22c124ef0ab94be5e1e53d9de7"
+        },
+        {
+          "text": "Removed the long-press resize and opacity editor from built-in overlay buttons.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/4b5ee20a183f8418eb2841d476ce690177679a86"
         }
       ]
     },
@@ -20,11 +41,8 @@
       "title": "Launcher experience",
       "items": [
         {
-          "text": "Updated button icons for overlays.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/43dfa62f45849e0ec416161160035233af4aa9c6"
-        },
-        {
-          "text": "Added Launcher news with live notifications, unread indicators, offline caching, and a one-time What’s new dialog after updates."
+          "text": "Updated the changelog dialog layout for a better experience across different screen sizes.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/1cd6aeb834d652566a74d53f51ab21ead5c79061"
         }
       ]
     }
