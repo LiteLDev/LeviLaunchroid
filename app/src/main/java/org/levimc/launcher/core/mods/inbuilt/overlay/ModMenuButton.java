@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
+import org.levimc.launcher.preloader.PreloaderInput;
 
 public class ModMenuButton {
 
@@ -70,9 +71,11 @@ public class ModMenuButton {
             wmParams.token = activity.getWindow().getDecorView().getWindowToken();
             
             btn.setOnTouchListener(this::handleTouch);
+            buttonView.setVisibility(View.GONE);
             windowManager.addView(buttonView, wmParams);
             isShowing = true;
             applyOpacity();
+            applyRuntimeVisibility();
         } catch (Exception e) {
             showFallback(startX, startY);
         }
@@ -95,10 +98,12 @@ public class ModMenuButton {
         params.topMargin = startY;
         
         btn.setOnTouchListener(this::handleTouchFallback);
+        buttonView.setVisibility(View.GONE);
         rootView.addView(buttonView, params);
         isShowing = true;
         wmParams = null;
         applyOpacity();
+        applyRuntimeVisibility();
     }
 
     private void applyOpacity() {
@@ -110,6 +115,21 @@ public class ModMenuButton {
 
     private void applyButtonOpacity() {
         applyOpacity();
+    }
+
+    private void applyRuntimeVisibility() {
+        if (buttonView == null) return;
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        boolean visible = !manager.isPauseMenuOnly() ||
+                (PreloaderInput.isPauseMenuOpen() && PreloaderInput.isShowingMenu());
+        if (!visible) {
+            hideMenu();
+        }
+        buttonView.setVisibility(visible ? View.VISIBLE : View.GONE);
+        InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
+        if (overlayManager != null) {
+            overlayManager.refreshRuntimeVisibility();
+        }
     }
 
     private boolean handleTouch(View v, MotionEvent event) {
@@ -186,6 +206,13 @@ public class ModMenuButton {
     }
     
     private void onButtonClick() {
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        if (manager.isPauseMenuOnly() &&
+                (!PreloaderInput.isPauseMenuOpen() || !PreloaderInput.isShowingMenu())) {
+            hideMenu();
+            return;
+        }
+
         if (menuOverlay == null) {
             menuOverlay = new ModMenuOverlay(activity);
             menuOverlay.setCallback(new ModMenuOverlay.ModMenuCallback() {
@@ -238,6 +265,9 @@ public class ModMenuButton {
     }
     
     public void setVisibility(int visibility) {
+        if (visibility != View.VISIBLE) {
+            hideMenu();
+        }
         if (buttonView != null) {
             buttonView.setVisibility(visibility);
         }

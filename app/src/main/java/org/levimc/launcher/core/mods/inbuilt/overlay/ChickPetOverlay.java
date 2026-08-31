@@ -128,12 +128,23 @@ public class ChickPetOverlay {
         chickView.setOnTouchListener(this::handleTouch);
 
         try {
+            chickView.setVisibility(View.GONE);
             windowManager.addView(chickView, wmParams);
             isShowing = true;
+            InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+            if (manager != null) {
+                manager.refreshRuntimeVisibility();
+            }
             handler.post(animationRunnable);
             scheduleNextStateChange();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setVisibility(int visibility) {
+        if (chickView != null) {
+            chickView.setVisibility(visibility);
         }
     }
 

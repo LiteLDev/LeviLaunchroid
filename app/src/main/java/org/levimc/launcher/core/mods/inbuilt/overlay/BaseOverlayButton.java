@@ -161,11 +161,13 @@ public abstract class BaseOverlayButton {
             wmParams.token = activity.getWindow().getDecorView().getWindowToken();
 
             overlayView.setOnTouchListener(this::handleTouch);
+            overlayView.setVisibility(View.GONE);
             windowManager.addView(overlayView, wmParams);
             isShowing = true;
             applyOpacity();
             updateLockState();
             notifyOverlayGeometryChanged();
+            refreshRuntimeVisibility();
         } catch (Exception e) {
             showFallback(startX, startY);
         }
@@ -201,12 +203,21 @@ public abstract class BaseOverlayButton {
         params.topMargin = position.y;
 
         overlayView.setOnTouchListener(this::handleTouchFallback);
+        overlayView.setVisibility(View.GONE);
         rootView.addView(overlayView, params);
         isShowing = true;
         wmParams = null;
         applyOpacity();
         updateLockState();
         notifyOverlayGeometryChanged();
+        refreshRuntimeVisibility();
+    }
+
+    private void refreshRuntimeVisibility() {
+        InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+        if (manager != null) {
+            manager.refreshRuntimeVisibility();
+        }
     }
 
     public void hide() {

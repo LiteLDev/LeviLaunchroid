@@ -99,6 +99,7 @@ public class FpsDisplayOverlay {
             wmParams.token = activity.getWindow().getDecorView().getWindowToken();
 
             overlayView.setOnTouchListener(this::handleTouch);
+            overlayView.setVisibility(View.GONE);
             windowManager.addView(overlayView, wmParams);
             isShowing = true;
 
@@ -107,6 +108,7 @@ public class FpsDisplayOverlay {
             updateLockState();
             applySize();
             updatePosition(wmParams.x, wmParams.y);
+            refreshRuntimeVisibility();
         } catch (Exception e) {
             showFallback(startX, startY);
         }
@@ -131,6 +133,7 @@ public class FpsDisplayOverlay {
         params.topMargin = position.y;
 
         overlayView.setOnTouchListener(this::handleTouchFallback);
+        overlayView.setVisibility(View.GONE);
         rootView.addView(overlayView, params);
         isShowing = true;
         wmParams = null;
@@ -139,6 +142,14 @@ public class FpsDisplayOverlay {
         applyOpacity();
         updateLockState();
         applySize();
+        refreshRuntimeVisibility();
+    }
+
+    private void refreshRuntimeVisibility() {
+        InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+        if (manager != null) {
+            manager.refreshRuntimeVisibility();
+        }
     }
 
     private void updateDisplay() {

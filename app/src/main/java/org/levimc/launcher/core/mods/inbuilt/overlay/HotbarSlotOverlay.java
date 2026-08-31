@@ -32,7 +32,7 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
     private Bitmap pressedBitmap;
     private boolean pressed;
     private boolean keyDown;
-    private volatile boolean renderVisible = true;
+    private volatile boolean renderVisible = false;
     private volatile int nativeX;
     private volatile int nativeY;
     private volatile int nativeWidth;
@@ -130,7 +130,14 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
     }
 
     public void setRenderVisible(boolean visible) {
+        if (renderVisible == visible) return;
         renderVisible = visible;
+        if (!visible && keyDown) {
+            sendSlotKey(false);
+            keyDown = false;
+            pressed = false;
+            updateVisual();
+        }
         syncNativeState();
     }
 

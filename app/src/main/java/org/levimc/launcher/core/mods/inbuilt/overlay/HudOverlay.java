@@ -118,9 +118,14 @@ public class HudOverlay extends View {
                                 FrameLayout.LayoutParams.MATCH_PARENT,
                                 FrameLayout.LayoutParams.MATCH_PARENT
                         );
+                        HudOverlay.this.setVisibility(GONE);
                         rootView.addView(HudOverlay.this, params);
                         isShowing = true;
                         cachedDrawRevision = Long.MIN_VALUE;
+                        InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+                        if (manager != null) {
+                            manager.refreshRuntimeVisibility();
+                        }
                         postFrameCallback();
                     }
                 } catch (Exception e) {

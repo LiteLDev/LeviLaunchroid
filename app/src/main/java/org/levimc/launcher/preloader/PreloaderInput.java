@@ -70,7 +70,7 @@ public class PreloaderInput {
         try {
             return nativeShouldForceGlobalModMenu();
         } catch (UnsatisfiedLinkError e) {
-            return true;
+            return false;
         }
     }
 

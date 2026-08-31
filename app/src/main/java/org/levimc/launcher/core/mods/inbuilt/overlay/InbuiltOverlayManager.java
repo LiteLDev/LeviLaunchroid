@@ -123,6 +123,7 @@ public class InbuiltOverlayManager {
         modMenuButton = new ModMenuButton(activity);
         modMenuButton.show(START_X, nextY);
         refreshExternalButtons();
+        refreshRuntimeVisibility();
     }
 
     private void restorePersistedInbuiltModState(InbuiltModManager manager, String modId) {
@@ -713,12 +714,12 @@ public class InbuiltOverlayManager {
             if (active) {
                 modMenuButton.setVisibility(android.view.View.GONE);
             } else {
-                modMenuButton.setVisibility(android.view.View.VISIBLE);
                 int savedX = InbuiltModManager.getInstance(activity).getOverlayPositionX(ModIds.MOD_MENU, START_X);
                 int savedY = InbuiltModManager.getInstance(activity).getOverlayPositionY(ModIds.MOD_MENU, baseY);
                 modMenuButton.show(savedX, savedY);
             }
         }
+        refreshRuntimeVisibility();
 
         if (active) {
             selectFirstHudEditorOverlay();
@@ -870,26 +871,32 @@ public class InbuiltOverlayManager {
         }
     }
 
-    public void tick() {
-        for (BaseOverlayButton overlay : overlays) {
-            overlay.tick();
-        }
+    public void refreshRuntimeVisibility() {
+        lastVisibilityStateHash = Long.MIN_VALUE;
+        tick();
+    }
 
+    public void tick() {
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
         boolean isPauseOnly = manager.isPauseMenuOnly();
-        boolean forceGlobalModMenu = org.levimc.launcher.preloader.PreloaderInput.shouldForceGlobalModMenu();
         boolean isPauseOpen = org.levimc.launcher.preloader.PreloaderInput.isPauseMenuOpen();
         boolean isHudScreenOpen = org.levimc.launcher.preloader.PreloaderInput.isHudScreenOpen();
         boolean isShowingMenu = org.levimc.launcher.preloader.PreloaderInput.isShowingMenu();
-        boolean showGameOverlays = forceGlobalModMenu || (isHudScreenOpen && !isShowingMenu);
+        boolean showGameOverlays = isHudScreenOpen && !isShowingMenu && !isPauseOpen;
         boolean inbuiltVisible = hudEditorMode || showGameOverlays;
         boolean hotbarVisible = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.HOTBAR_SLOT);
+
+        for (BaseOverlayButton overlay : overlays) {
+            if (inbuiltVisible || manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey())) {
+                overlay.tick();
+            }
+        }
         for (HotbarSlotOverlay hotbar : hotbarSlotOverlayMap.values()) {
             hotbar.setRenderVisible(hotbarVisible);
         }
+
         long stateHash = manager.getOverlayVisibilityRevision();
         stateHash = 31L * stateHash + (isPauseOnly ? 1L : 0L);
-        stateHash = 31L * stateHash + (forceGlobalModMenu ? 1L : 0L);
         stateHash = 31L * stateHash + (isPauseOpen ? 1L : 0L);
         stateHash = 31L * stateHash + (isHudScreenOpen ? 1L : 0L);
         stateHash = 31L * stateHash + (isShowingMenu ? 1L : 0L);
@@ -900,6 +907,7 @@ public class InbuiltOverlayManager {
         }
         stateHash = 31L * stateHash + (fpsDisplayOverlay == null ? 0L : System.identityHashCode(fpsDisplayOverlay));
         stateHash = 31L * stateHash + (cpsDisplayOverlay == null ? 0L : System.identityHashCode(cpsDisplayOverlay));
+        stateHash = 31L * stateHash + (chickPetOverlay == null ? 0L : System.identityHashCode(chickPetOverlay));
         stateHash = 31L * stateHash + (modMenuButton == null ? 0L : System.identityHashCode(modMenuButton));
         stateHash = 31L * stateHash + (hudOverlay == null ? 0L : System.identityHashCode(hudOverlay));
         if (stateHash == lastVisibilityStateHash) return;
@@ -907,13 +915,10 @@ public class InbuiltOverlayManager {
 
         activity.runOnUiThread(() -> {
             if (modMenuButton != null) {
-                int visibility = !isPauseOnly || forceGlobalModMenu || isPauseOpen
+                int visibility = !hudEditorMode && (!isPauseOnly || (isPauseOpen && isShowingMenu))
                         ? android.view.View.VISIBLE
                         : android.view.View.GONE;
                 modMenuButton.setVisibility(visibility);
-                if (visibility == android.view.View.GONE && modMenuButton.isMenuShowing()) {
-                    modMenuButton.hideMenu();
-                }
             }
 
             if (hudOverlay != null) {
@@ -934,6 +939,13 @@ public class InbuiltOverlayManager {
                         overlay.overlayView.setVisibility(visibility);
                     }
                 }
+            }
+
+            if (chickPetOverlay != null) {
+                int visibility = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.CHICK_PET)
+                        ? android.view.View.VISIBLE
+                        : android.view.View.GONE;
+                chickPetOverlay.setVisibility(visibility);
             }
 
             if (fpsDisplayOverlay != null) {

@@ -122,15 +122,16 @@ public final class PreloaderSignatureRulesManager {
 
     private static File ensureLocalRulesFile(Context context) {
         File localFile = getLocalRulesFile(context);
-        if (hasValidRules(JsonIOUtils.read(localFile))) {
+        String localRules = JsonIOUtils.read(localFile);
+        String bundledRules = readAsset(context, ASSET_DEFAULT_RULES);
+
+        if (!hasValidRules(bundledRules)) {
+            Log.w(TAG, "Bundled preloader signature rules are invalid");
             return localFile;
         }
 
-        String bundledRules = readAsset(context, ASSET_DEFAULT_RULES);
-        if (hasValidRules(bundledRules)) {
+        if (!hasValidRules(localRules) || getRulesRevision(bundledRules) > getRulesRevision(localRules)) {
             writeFileIfChanged(localFile, bundledRules);
-        } else {
-            Log.w(TAG, "Bundled preloader signature rules are invalid");
         }
         return localFile;
     }
@@ -164,7 +165,18 @@ public final class PreloaderSignatureRulesManager {
             );
         }
 
-        WriteResult writeResult = writeFileIfChanged(getLocalRulesFile(context), remoteRules);
+        File localFile = getLocalRulesFile(context);
+        String localRules = JsonIOUtils.read(localFile);
+        if (hasValidRules(localRules) && getRulesRevision(remoteRules) < getRulesRevision(localRules)) {
+            return new RefreshResult(
+                    true,
+                    false,
+                    "Remote preloader signature rules are older than the installed rules",
+                    getLastSuccessfulUpdateTime(context)
+            );
+        }
+
+        WriteResult writeResult = writeFileIfChanged(localFile, remoteRules);
         if (!writeResult.success) {
             return new RefreshResult(
                     false,
@@ -228,7 +240,19 @@ public final class PreloaderSignatureRulesManager {
                 && !isBlank(sigs.optString("pauseMenuOpenSig", ""))
                 && !isBlank(sigs.optString("hudScreenDtorSig", ""))
                 && !isBlank(sigs.optString("hudScreenOpenSig", ""))
-                && !isBlank(sigs.optString("isShowingMenuSig", ""));
+                && (!isBlank(sigs.optString("isShowingMenuSig", ""))
+                    || rule.optInt("isShowingMenuVtableIndex", -1) >= 0);
+    }
+
+    private static int getRulesRevision(String content) {
+        if (isBlank(content)) {
+            return 0;
+        }
+        try {
+            return Math.max(0, new JSONObject(content).optInt("revision", 0));
+        } catch (Exception ignored) {
+            return 0;
+        }
     }
 
     private static File getLocalRulesFile(Context context) {

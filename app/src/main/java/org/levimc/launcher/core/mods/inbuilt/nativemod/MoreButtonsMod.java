@@ -2,11 +2,14 @@ package org.levimc.launcher.core.mods.inbuilt.nativemod;
 
 public final class MoreButtonsMod {
     private static boolean initialized;
+    private static boolean initAttempted;
 
     private MoreButtonsMod() {}
 
     public static synchronized boolean initialize() {
         if (initialized) return true;
+        if (initAttempted) return false;
+        initAttempted = true;
         if (!InbuiltModsNative.loadLibrary()) return false;
         initialized = nativeInit();
         return initialized;
