@@ -265,9 +265,6 @@ public class ModMenuButton {
     }
     
     public void setVisibility(int visibility) {
-        if (visibility != View.VISIBLE) {
-            hideMenu();
-        }
         if (buttonView != null) {
             buttonView.setVisibility(visibility);
         }

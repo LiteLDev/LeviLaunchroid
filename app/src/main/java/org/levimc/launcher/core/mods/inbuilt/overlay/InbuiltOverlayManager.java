@@ -919,6 +919,9 @@ public class InbuiltOverlayManager {
                         ? android.view.View.VISIBLE
                         : android.view.View.GONE;
                 modMenuButton.setVisibility(visibility);
+                if (!hudEditorMode && visibility == android.view.View.GONE && modMenuButton.isMenuShowing()) {
+                    modMenuButton.hideMenu();
+                }
             }
 
             if (hudOverlay != null) {
