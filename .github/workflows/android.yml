@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           submodules: "recursive"
@@ -96,13 +96,14 @@ jobs:
           echo "HAS_GOOGLE_SERVICES=true" >> "$GITHUB_ENV"
 
       - name: Setup Java JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: "21"
           distribution: temurin
+          cache: "gradle"
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4.0.1
 
       - name: Accept Licenses
         run: yes | sdkmanager --licenses
@@ -114,7 +115,7 @@ jobs:
         run: sdkmanager --list
 
       - name: Setup Xmake
-        uses: xmake-io/github-action-setup-xmake@v1
+        uses: xmake-io/github-action-setup-xmake@v1.2.5
         with:
           xmake-version: "2.9.9"
           actions-cache-folder: ".xmake-cache"
@@ -144,21 +145,21 @@ jobs:
 
       - name: Upload Debug APK
         if: env.HAS_GOOGLE_SERVICES == 'true'
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: LeviLauncher-debug-apk
           path: app/build/outputs/apk/debug/*.apk
 
       - name: Upload Unsigned Release APK
         if: env.HAS_GOOGLE_SERVICES == 'true'
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: LeviLauncher-release-unsigned-apk
           path: app/build/outputs/apk/release/*-unsigned.apk
 
       - name: Upload Beta APK
         if: env.HAS_GOOGLE_SERVICES == 'true'
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: LeviLauncher-beta-apk
           path: app/build/outputs/apk/beta/*.apk
@@ -188,7 +189,7 @@ jobs:
 
       - name: Upload Signed APK Artifact
         if: env.HAS_GOOGLE_SERVICES == 'true' && startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: LeviLauncher-${{ github.ref_name }}-release.apk
           path: LeviLauncher-${{ github.ref_name }}-release.apk
@@ -199,7 +200,7 @@ jobs:
 
       - name: Release APK to GitHub Releases
         if: env.HAS_GOOGLE_SERVICES == 'true' && startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.2
         with:
           files: LeviLauncher-${{ github.ref_name }}-release.apk
           body_path: release-notes.md
