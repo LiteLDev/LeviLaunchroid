@@ -252,6 +252,16 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="instance_clear_icon">Clear</string>
     <string name="instance_icon_hint">Will be saved as LargeLogo.png under the version folder. Click the icon to change.</string>
     <string name="instance_isolation_desc">Isolate game data for this instance. Other instances will not be affected.</string>
+    <string name="instance_shortcut_title">Home Screen Shortcut</string>
+    <string name="instance_shortcut_desc">Name and icon changes save automatically. Tap Add Shortcut to create or update the home screen shortcut.</string>
+    <string name="instance_shortcut_name">Shortcut Name</string>
+    <string name="instance_shortcut_icon">Shortcut Icon</string>
+    <string name="instance_shortcut_choose_icon">Choose Icon</string>
+    <string name="instance_shortcut_default_icon">Use Default</string>
+    <string name="instance_shortcut_add_button">Add Shortcut</string>
+    <string name="instance_settings_auto_save_failed">Could not save this instance setting.</string>
+    <string name="instance_shortcut_not_supported">Your home screen launcher does not support pinned shortcuts.</string>
+    <string name="instance_shortcut_missing">This Minecraft instance is no longer available.</string>
     <string name="instance_danger_zone">Danger Zone</string>
     <string name="instance_danger_zone_desc">These actions affect the instance registration or local files. Double-check before continuing.</string>
     <string name="instance_delete_desc">Permanently deletes this instance from your device, including worlds, configs, and installed content.</string>

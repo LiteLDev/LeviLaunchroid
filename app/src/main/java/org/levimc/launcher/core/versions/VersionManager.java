@@ -532,6 +532,29 @@ public class VersionManager {
         } catch (Exception ignored) {}
     }
 
+    public boolean setInstanceDisplayName(GameVersion version, String displayName) {
+        if (version == null || displayName == null || displayName.trim().isEmpty()) return false;
+        String value = displayName.trim();
+        try {
+            File metadataDir = LauncherStorage.getProfileMetadataDir(context, getMetadataDirectoryName(version));
+            metadataStore.update(
+                    metadataDir,
+                    metadataDefaults(version.isInstalled, version.directoryName, version.packageName, version.versionCode),
+                    metadata -> metadata.displayName = value
+            );
+            String fullDisplayName = value;
+            if (version.versionCode != null && !version.versionCode.trim().isEmpty()) {
+                fullDisplayName = value + " (" + version.versionCode.trim() + ")";
+            }
+            String finalDisplayName = fullDisplayName;
+            version.displayName = finalDisplayName;
+            updateCachedInstance(version, cached -> cached.displayName = finalDisplayName);
+            return true;
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
     private void updateCachedInstance(GameVersion source, GameVersionMutator mutator) {
         if (source == null || mutator == null) return;
         for (GameVersion version : installedVersions) {
