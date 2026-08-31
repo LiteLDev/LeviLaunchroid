@@ -25,6 +25,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/mod_menu_sidebar"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:background="#151719"
@@ -33,6 +34,7 @@
                 android:paddingBottom="14dp">
 
                 <ImageView
+                    android:id="@+id/mod_menu_logo"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:layout_gravity="center_horizontal"
@@ -59,6 +61,21 @@
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
+                <ImageButton
+                    android:id="@+id/nav_modules_compact"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/bg_mod_menu_nav_compact_selected"
+                    android:contentDescription="@string/mod_menu_modules"
+                    android:defaultFocusHighlightEnabled="false"
+                    android:padding="12dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_modules"
+                    android:tint="#4AE0A0"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/nav_hud_editor"
                     android:layout_width="match_parent"
@@ -78,6 +95,21 @@
                     android:textColor="#A8B0B8"
                     android:textSize="13sp" />
 
+                <ImageButton
+                    android:id="@+id/nav_hud_editor_compact"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="6dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/mod_menu_hud_editor"
+                    android:defaultFocusHighlightEnabled="false"
+                    android:padding="12dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_edit"
+                    android:tint="#A8B0B8"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/nav_settings"
                     android:layout_width="match_parent"
@@ -96,6 +128,21 @@
                     android:text="@string/settings"
                     android:textColor="#A8B0B8"
                     android:textSize="13sp" />
+
+                <ImageButton
+                    android:id="@+id/nav_settings_compact"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="6dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/settings"
+                    android:defaultFocusHighlightEnabled="false"
+                    android:padding="12dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_settings"
+                    android:tint="#A8B0B8"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -302,6 +349,50 @@
                     </LinearLayout>
                 </HorizontalScrollView>
 
+                <LinearLayout
+                    android:id="@+id/compact_filter_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="#1C1F22"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="12dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/compact_filter_selector"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="@drawable/bg_search_field"
+                        android:defaultFocusHighlightEnabled="false"
+                        android:drawableEnd="@drawable/ic_arrow_down"
+                        android:drawablePadding="6dp"
+                        android:drawableTint="#A8B0B8"
+                        android:gravity="center_vertical"
+                        android:minWidth="94dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/filter_all"
+                        android:textColor="#4AE0A0"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/compact_module_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:textColor="#A8B0B8"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -491,6 +582,56 @@
                             android:textColor="#4AE0A0"
                             android:textSize="12sp"
                             android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:id="@+id/setting_compact_mod_menu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:background="@drawable/bg_mod_status_disabled"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_menu"
+                                android:tint="#888888" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/mod_menu_compact"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/mod_menu_compact_desc"
+                                    android:textColor="#888888"
+                                    android:textSize="11sp" />
+
+                            </LinearLayout>
+
+                            <Switch
+                                android:id="@+id/switch_compact_mod_menu"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:thumbTint="#4AE0A0"
+                                android:trackTint="@color/switch_track_color" />
+
+                        </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/setting_mod_menu_opacity"

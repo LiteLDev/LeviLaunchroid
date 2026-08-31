@@ -19,6 +19,7 @@ public class InbuiltModManager {
     private static final String KEY_NOTIFICATIONS_ENABLED = "notifications_enabled";
     private static final String KEY_MOD_MENU_OPACITY = "mod_menu_opacity";
     private static final String KEY_MOD_MENU_BUTTON_OPACITY = "mod_menu_button_opacity";
+    private static final String KEY_MOD_MENU_COMPACT = "mod_menu_compact";
     private static final String KEY_PAUSE_MENU_ONLY = "pause_menu_only";
     private static final String KEY_FAVORITE_MOD_KEYS = "favorite_mod_keys";
     private static final String KEY_INBUILT_MOD_ENABLED_PREFIX = "inbuilt_mod_enabled_";
@@ -145,6 +146,14 @@ public class InbuiltModManager {
 
     public void setModMenuButtonOpacity(int opacity) {
         prefs.edit().putInt(KEY_MOD_MENU_BUTTON_OPACITY, Math.max(0, Math.min(100, opacity))).apply();
+    }
+
+    public boolean isModMenuCompact() {
+        return prefs.getBoolean(KEY_MOD_MENU_COMPACT, false);
+    }
+
+    public void setModMenuCompact(boolean compact) {
+        prefs.edit().putBoolean(KEY_MOD_MENU_COMPACT, compact).apply();
     }
 
     public boolean isPauseMenuOnly() {

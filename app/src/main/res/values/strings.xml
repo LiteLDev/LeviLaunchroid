@@ -703,6 +703,8 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_menu_notifications_desc">Show notification when enabling mods</string>
     <string name="mod_menu_opacity">Mod Menu Opacity</string>
     <string name="mod_menu_button_opacity">Mod Menu Button Opacity</string>
+    <string name="mod_menu_compact">Compact Mod Menu</string>
+    <string name="mod_menu_compact_desc">Use a smaller menu with a dense module list and compact filters</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">Mod Menu enabled</string>
     <string name="mod_menu_disabled">Mod Menu disabled</string>
