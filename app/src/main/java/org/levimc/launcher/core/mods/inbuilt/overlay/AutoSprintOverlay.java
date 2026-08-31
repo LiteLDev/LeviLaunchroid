@@ -4,17 +4,14 @@ import android.app.Activity;
 import android.widget.ImageButton;
 
 import org.levimc.launcher.R;
-
-import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
+import org.levimc.launcher.core.mods.inbuilt.nativemod.AutoSprintMod;
 
 public class AutoSprintOverlay extends BaseOverlayButton {
     private boolean isActive = false;
-    private int sprintKey;
 
-    public AutoSprintOverlay(Activity activity, int sprintKey) {
+    public AutoSprintOverlay(Activity activity) {
         super(activity);
-        this.sprintKey = sprintKey;
     }
 
     @Override
@@ -29,22 +26,19 @@ public class AutoSprintOverlay extends BaseOverlayButton {
 
     @Override
     protected void onButtonClick() {
-        isActive = !isActive;
-        if (isActive) {
-            sendKeyDown(sprintKey);
-            updateButtonState(true);
-        } else {
-            sendKeyUp(sprintKey);
-            updateButtonState(false);
+        boolean nextState = !isActive;
+        if (!AutoSprintMod.setEnabled(nextState)) {
+            nextState = false;
         }
+        isActive = nextState;
+        updateButtonState(isActive);
     }
 
     private void updateButtonState(boolean active) {
         if (overlayView != null) {
             ImageButton btn = overlayView.findViewById(R.id.mod_overlay_button);
             if (btn != null) {
-                float userOpacity = getButtonOpacity();
-                btn.setAlpha(userOpacity);
+                btn.setAlpha(getButtonOpacity());
                 btn.setImageResource(active ? R.drawable.ic_sprint_pressed : R.drawable.ic_sprint_normal);
             }
         }
@@ -53,28 +47,10 @@ public class AutoSprintOverlay extends BaseOverlayButton {
     @Override
     public void hide() {
         if (isActive) {
-            sendKeyUp(sprintKey);
+            AutoSprintMod.setEnabled(false);
             isActive = false;
+            updateButtonState(false);
         }
         super.hide();
-    }
-
-    @Override
-    public void applyConfigurationChanges() {
-        sprintKey = InbuiltModManager.getInstance(activity).getAutoSprintKeybind();
-        super.applyConfigurationChanges();
-    }
-
-    private int tickCount = 0;
-    
-    @Override
-    public void tick() {
-        if (!isActive) return;
-        
-        tickCount++;
-        if (tickCount >= 20) { 
-            tickCount = 0;
-            sendKeyDown(sprintKey);
-        }
     }
 }

@@ -177,7 +177,7 @@ public class InbuiltOverlayManager {
                 modOverlayMap.put(modId, hud);
                 break;
             case ModIds.AUTO_SPRINT:
-                AutoSprintOverlay sprint = new AutoSprintOverlay(activity, manager.getAutoSprintKeybind());
+                AutoSprintOverlay sprint = new AutoSprintOverlay(activity);
                 sprint.show(savedX, savedY);
                 overlays.add(sprint);
                 modOverlayMap.put(modId, sprint);
