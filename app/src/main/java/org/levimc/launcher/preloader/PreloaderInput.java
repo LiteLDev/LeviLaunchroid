@@ -24,6 +24,7 @@ public class PreloaderInput {
     public static native boolean nativeOnKeyEvent(int keyCode, int unicodeChar, boolean isKeyDown);
     public static native boolean nativeOnTextInput(String text);
     public static native boolean nativeOnMouse(int button, boolean isDown);
+    public static native void nativeOnDocumentResult(boolean success, String path, String displayName, String error);
     public static native void nativeSetActivity(Object activity);
     public static native void nativeClearActivity();
     public static native boolean nativeIsPauseMenuOpen();
@@ -99,6 +100,22 @@ public class PreloaderInput {
         } catch (UnsatisfiedLinkError e) {
             return false;
         }
+    }
+
+    public static void onDocumentResult(boolean success, String path, String displayName, String error) {
+        try {
+            nativeOnDocumentResult(
+                    success,
+                    path == null ? "" : path,
+                    displayName == null ? "" : displayName,
+                    error == null ? "" : error
+            );
+        } catch (UnsatisfiedLinkError e) {
+        }
+    }
+
+    public static void cancelDocumentRequest(String reason) {
+        onDocumentResult(false, "", "", reason == null ? "Import cancelled" : reason);
     }
 
     private static boolean dispatchMouseTransition(int button, boolean isDown) {

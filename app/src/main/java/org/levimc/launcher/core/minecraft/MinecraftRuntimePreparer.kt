@@ -20,6 +20,11 @@ object MinecraftRuntimePreparer {
         val skippedIncompatibleMods: List<String> = emptyList()
     )
 
+    private data class NativeModLoadResult(
+        val skippedIncompatibleMods: List<String>,
+        val loadedModIds: Set<String>
+    )
+
     interface ProgressListener {
         fun onProgress(progress: Int, status: String, detail: String? = null)
         fun onLog(message: String)
@@ -84,11 +89,30 @@ object MinecraftRuntimePreparer {
         } catch (_: Throwable) {}
 
         //nativeSetupRuntime(modManager.currentVersion?.modsDir?.absolutePath.toString())
-        val skippedIncompatibleMods = loadNativeMods(context, launchIntent, modManager, listener, trace)
+        val nativeModResult = loadNativeMods(context, launchIntent, modManager, listener, trace)
+
+        try {
+            val profileId = MinecraftLauncher.getStorageProfileId(version)
+            val internalGameData = LauncherStorage.getStorageGameDataDir(context, profileId, version.versionIsolation, false)
+            val externalGameData = LauncherStorage.getStorageGameDataDir(context, profileId, version.versionIsolation, true)
+            val bundledPackCount = BundledResourcePackInstaller.sync(
+                modManager.mods,
+                nativeModResult.loadedModIds,
+                internalGameData,
+                externalGameData
+            )
+            if (bundledPackCount > 0) {
+                listener.onLog("Prepared $bundledPackCount bundled native-mod pack(s)")
+            }
+            trace.mark("Bundled native-mod packs synchronized", bundledPackCount.toString())
+        } catch (error: Exception) {
+            trace.error("Bundled native-mod pack synchronization failed", error.message ?: error.javaClass.simpleName)
+            throw RuntimeException("Failed to prepare bundled native-mod packs", error)
+        }
 
         listener.onProgress(100, "Runtime ready", "Entering Minecraft")
         trace.milestone("Runtime preparation finished")
-        return PreparedRuntime(version, gameManager, skippedIncompatibleMods)
+        return PreparedRuntime(version, gameManager, nativeModResult.skippedIncompatibleMods)
     }
 
     @JvmStatic
@@ -268,7 +292,7 @@ object MinecraftRuntimePreparer {
         modManager: ModManager,
         listener: ProgressListener,
         trace: LaunchTrace
-    ): List<String> {
+    ): NativeModLoadResult {
         val cacheDir = resolveNativeModCacheDir(context, launchIntent)
         trace.mark(
             "Native mod loading started",
@@ -276,6 +300,7 @@ object MinecraftRuntimePreparer {
         )
         val modLoadLabels = java.util.IdentityHashMap<Mod, String>()
         val skippedIncompatibleMods = mutableListOf<String>()
+        val loadedModIds = linkedSetOf<String>()
         ModNativeLoader.loadEnabledSoMods(
             modManager,
             cacheDir,
@@ -298,6 +323,7 @@ object MinecraftRuntimePreparer {
 
                 override fun onModLoadFinished(mod: Mod) {
                     val label = modLoadLabels.remove(mod)?.let { "$it " }.orEmpty()
+                    loadedModIds.add(mod.id)
                     listener.onLog("Loaded mod: $label${mod.displayName}")
                     trace.mark("Native mod load finished", mod.displayName)
                 }
@@ -323,7 +349,7 @@ object MinecraftRuntimePreparer {
         listener.onProgress(96, "Native mods ready")
         listener.onLog("Native mods ready")
         trace.mark("Native mod loading finished")
-        return skippedIncompatibleMods
+        return NativeModLoadResult(skippedIncompatibleMods, loadedModIds)
     }
 
     private fun resolveNativeModCacheDir(context: Context, launchIntent: Intent): File {
