@@ -2,6 +2,16 @@
   "schemaVersion": 1,
   "items": [
     {
+      "id": "2026-09-02-xbox-servers-down",
+      "title": "Xbox servers are currently down",
+      "summary": "Xbox servers are experiencing an outage right now. If you can't log in to your account, this is not a launcher issue — it's an issue with Xbox itself. Please wait for Xbox to resolve the problem.",
+      "publishedAt": "2026-09-02T14:00:00Z",
+      "category": "Important",
+      "url": "",
+      "important": true,
+      "notify": true
+    },
+    {
       "id": "2026-08-26-android-17-compatibility",
       "title": "Android 17 compatibility issue",
       "summary": "LeviLauncher currently does not support Android 17. If you rely on LeviLauncher, do not update your device to Android 17 yet. Please wait until Android 17 support is announced.",
