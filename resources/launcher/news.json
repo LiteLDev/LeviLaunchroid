@@ -2,6 +2,16 @@
   "schemaVersion": 1,
   "items": [
     {
+      "id": "2026-09-02-xbox-servers-restored",
+      "title": "Xbox servers are back online",
+      "summary": "Xbox servers have been restored and are working again. You should now be able to log in to your account normally. Thank you for your patience!",
+      "publishedAt": "2026-09-02T14:50:00Z",
+      "category": "Important",
+      "url": "",
+      "important": true,
+      "notify": true
+    },
+    {
       "id": "2026-09-02-xbox-servers-down",
       "title": "Xbox servers are currently down",
       "summary": "Xbox servers are experiencing an outage right now. If you can't log in to your account, this is not a launcher issue — it's an issue with Xbox itself. Please wait for Xbox to resolve the problem.",
