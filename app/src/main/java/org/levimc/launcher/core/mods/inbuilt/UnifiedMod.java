@@ -74,6 +74,7 @@ public class UnifiedMod {
     private final EnabledHandler enabledHandler;
     private final ConfigHandler configHandler;
     private final ConfigOpenHandler configOpenHandler;
+    private RuntimeConfigSchema localConfigSchema;
     private long runtimeConfigSchemaRevision;
     private final Map<String, String> runtimeConfigValues = new HashMap<>();
 
@@ -116,7 +117,9 @@ public class UnifiedMod {
     public String getStableKey() { return stableKey; }
     public boolean isEnabled() { return enabled; }
     public List<ConfigEntry> getConfigEntries() { return configEntries; }
-    public boolean hasConfig() { return forceHasConfig || !configEntries.isEmpty() || runtimeConfigSchemaRevision > 0; }
+    public boolean hasConfig() { return forceHasConfig || !configEntries.isEmpty() || localConfigSchema != null || runtimeConfigSchemaRevision > 0; }
+    public RuntimeConfigSchema getLocalConfigSchema() { return localConfigSchema; }
+    public void setLocalConfigSchema(RuntimeConfigSchema schema) { localConfigSchema = schema; }
     public long getRuntimeConfigSchemaRevision() { return runtimeConfigSchemaRevision; }
     public void setRuntimeConfigSchemaRevision(long revision) { runtimeConfigSchemaRevision = Math.max(0L, revision); }
 

@@ -1026,4 +1026,11 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="news_unread_description">Launcher news, %1$d unread</string>
     <string name="news_notification_channel">Launcher news</string>
     <string name="news_notification_channel_description">New LeviLauncher announcements and important notices</string>
+    <string name="mod_config_category_slots">Slots</string>
+    <string name="mod_config_category_appearance">Appearance</string>
+    <string name="mod_config_category_behavior">Behavior</string>
+    <string name="mod_config_category_motion">Motion</string>
+    <string name="mod_config_category_button">Button</string>
+    <string name="mod_config_visible_slots">Visible Slots</string>
+    <string name="mod_config_hotbar_slot_section">Hotbar Slot %1$d</string>
 </resources>

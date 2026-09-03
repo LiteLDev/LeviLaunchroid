@@ -117,7 +117,7 @@ public class InbuiltModManager {
     }
 
     public boolean isModMenuEnabled() {
-        return prefs.getBoolean(KEY_MOD_MENU_ENABLED, false);
+        return prefs.getBoolean(KEY_MOD_MENU_ENABLED, true);
     }
 
     public void setModMenuEnabled(boolean enabled) {

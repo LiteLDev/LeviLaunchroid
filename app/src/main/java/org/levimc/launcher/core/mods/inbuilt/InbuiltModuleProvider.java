@@ -3,6 +3,10 @@ package org.levimc.launcher.core.mods.inbuilt;
 import android.app.Activity;
 import android.content.Context;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
@@ -99,7 +103,7 @@ public final class InbuiltModuleProvider {
                 ? overlayManager.isModActive(id)
                 : manager.resolveInbuiltModEnabled(id, false);
         boolean customConfig = ModIds.POJAV_CONTROLS.equals(id) || ModIds.MORE_BUTTONS.equals(id);
-        return new UnifiedMod(
+        UnifiedMod result = new UnifiedMod(
                 id,
                 activity.getString(nameRes),
                 activity.getString(descRes),
@@ -116,6 +120,77 @@ public final class InbuiltModuleProvider {
                         ? mod -> PojavControls.launchEditor(activity)
                         : (ModIds.MORE_BUTTONS.equals(id) ? mod -> MoreButtonsEditor.show(activity) : null)
         );
+        result.setLocalConfigSchema(createLocalConfigSchema(activity, result));
+        return result;
+    }
+
+    private static RuntimeConfigSchema createLocalConfigSchema(Context context, UnifiedMod mod) {
+        boolean hotbar = ModIds.HOTBAR_SLOT.equals(mod.getId());
+        if (!hotbar && !ModIds.GYRO.equals(mod.getId())) return null;
+        try {
+            JSONArray categories = new JSONArray();
+            JSONArray nodes = new JSONArray();
+            if (hotbar) {
+                categories.put(configCategory(context, "slots", R.string.mod_config_category_slots));
+                categories.put(configCategory(context, "appearance", R.string.mod_config_category_appearance));
+                categories.put(configCategory(context, "behavior", R.string.mod_config_category_behavior));
+                nodes.put(configNode(mod, CFG_HOTBAR_ITEM_ICONS, "slots"));
+                JSONArray slots = new JSONArray();
+                for (int slot = 1; slot <= 9; slot++) {
+                    String key = hotbarSlotConfigKey(slot, CFG_HOTBAR_SLOT_ENABLED);
+                    slots.put(new JSONObject().put("key", key).put("value", key)
+                            .put("label", mod.findConfigEntry(key).displayName));
+                    String section = "slot_" + slot;
+                    nodes.put(new JSONObject().put("id", section).put("type", "section")
+                            .put("category", "appearance").put("collapsible", true)
+                            .put("title", context.getString(R.string.mod_config_hotbar_slot_section, slot)));
+                    nodes.put(configNode(mod, hotbarSlotConfigKey(slot, CFG_HOTBAR_SLOT_SIZE), "appearance")
+                            .put("section", section));
+                    nodes.put(configNode(mod, hotbarSlotConfigKey(slot, CFG_HOTBAR_SLOT_OPACITY), "appearance")
+                            .put("section", section));
+                }
+                nodes.put(new JSONObject().put("id", "visible_slots").put("type", "toggle_group")
+                        .put("category", "slots").put("title", context.getString(R.string.mod_config_visible_slots))
+                        .put("options", slots));
+                nodes.put(configNode(mod, CFG_OVERLAY_LOCK, "behavior"));
+                nodes.put(configNode(mod, CFG_OVERLAY_SHOW_EVERYWHERE, "behavior"));
+            } else {
+                categories.put(configCategory(context, "motion", R.string.mod_config_category_motion));
+                categories.put(configCategory(context, "button", R.string.mod_config_category_button));
+                nodes.put(configNode(mod, CFG_GYRO_SENSITIVITY_X, "motion"));
+                nodes.put(configNode(mod, CFG_GYRO_SENSITIVITY_Y, "motion"));
+                nodes.put(configNode(mod, CFG_GYRO_INVERT_X, "motion"));
+                nodes.put(configNode(mod, CFG_GYRO_INVERT_Y, "motion"));
+                nodes.put(configNode(mod, CFG_GYRO_DEADZONE, "motion"));
+                nodes.put(configNode(mod, CFG_OVERLAY_SIZE, "button"));
+                nodes.put(configNode(mod, CFG_OVERLAY_OPACITY, "button"));
+                nodes.put(configNode(mod, CFG_OVERLAY_LOCK, "button"));
+                nodes.put(configNode(mod, CFG_OVERLAY_SHOW_EVERYWHERE, "button"));
+            }
+            return RuntimeConfigSchema.parse(new JSONObject().put("version", 2)
+                    .put("default_category", hotbar ? "slots" : "motion")
+                    .put("categories", categories).put("nodes", nodes).toString());
+        } catch (JSONException e) {
+            throw new IllegalStateException("Unable to build inbuilt config schema", e);
+        }
+    }
+
+    private static JSONObject configCategory(Context context, String id, int titleRes) throws JSONException {
+        return new JSONObject().put("id", id).put("title", context.getString(titleRes));
+    }
+
+    private static JSONObject configNode(UnifiedMod mod, String key, String category) throws JSONException {
+        UnifiedMod.ConfigEntry config = mod.findConfigEntry(key);
+        JSONObject node = new JSONObject().put("id", key).put("key", key)
+                .put("category", category).put("title", config.displayName)
+                .put("type", config.type == UnifiedMod.ConfigType.TOGGLE ? "toggle" : "slider_int")
+                .put("default_value", config.defaultValue)
+                .put("min_value", config.minValue).put("max_value", config.maxValue);
+        if (!config.dependsOn.isEmpty()) {
+            node.put("enabled_when", new JSONArray().put(new JSONObject()
+                    .put("key", config.dependsOn).put("op", "truthy")));
+        }
+        return node;
     }
 
     private static List<UnifiedMod.ConfigEntry> createConfigs(Context context,

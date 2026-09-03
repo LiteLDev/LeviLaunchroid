@@ -131,11 +131,13 @@ final class RuntimeConfigView {
 
     static boolean render(Context context, ViewGroup host, UnifiedMod mod,
                           boolean compact, Runnable onConfigChanged) {
-        if (mod.getSource() != UnifiedMod.Source.EXTERNAL || mod.getRuntimeConfigSchemaRevision() <= 0) {
-            return false;
+        RuntimeConfigSchema schema = mod.getLocalConfigSchema();
+        if (schema == null) {
+            if (mod.getSource() != UnifiedMod.Source.EXTERNAL || mod.getRuntimeConfigSchemaRevision() <= 0) {
+                return false;
+            }
+            schema = RuntimeConfigSchema.parse(ExternalModBridge.getExternalModConfigSchema(mod.getId()));
         }
-        String json = ExternalModBridge.getExternalModConfigSchema(mod.getId());
-        RuntimeConfigSchema schema = RuntimeConfigSchema.parse(json);
         if (schema == null) return false;
         RuntimeConfigView view = new RuntimeConfigView(context, host, mod, compact, onConfigChanged);
         view.revision = mod.getRuntimeConfigSchemaRevision();
@@ -185,7 +187,9 @@ final class RuntimeConfigView {
             }
         });
         applySchema(initial);
-        handler.postDelayed(pollRunnable, 900L);
+        if (mod.getSource() == UnifiedMod.Source.EXTERNAL) {
+            handler.postDelayed(pollRunnable, 900L);
+        }
     }
 
     private void applySchema(RuntimeConfigSchema updated) {
@@ -264,7 +268,8 @@ final class RuntimeConfigView {
         // Apply that schema on the next UI turn, outside RecyclerView/Spinner binding.
         handler.post(() -> {
             if (stopped) return;
-            long current = ExternalModBridge.getExternalModConfigSchemaRevision(mod.getId());
+            long current = mod.getSource() == UnifiedMod.Source.EXTERNAL
+                    ? ExternalModBridge.getExternalModConfigSchemaRevision(mod.getId()) : 0L;
             if (current > 0 && current != revision) {
                 RuntimeConfigSchema updated = RuntimeConfigSchema.parse(
                         ExternalModBridge.getExternalModConfigSchema(mod.getId()));
