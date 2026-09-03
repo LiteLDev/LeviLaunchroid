@@ -3,6 +3,8 @@ package org.levimc.launcher.core.mods.inbuilt;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UnifiedMod {
 
@@ -72,6 +74,8 @@ public class UnifiedMod {
     private final EnabledHandler enabledHandler;
     private final ConfigHandler configHandler;
     private final ConfigOpenHandler configOpenHandler;
+    private long runtimeConfigSchemaRevision;
+    private final Map<String, String> runtimeConfigValues = new HashMap<>();
 
     public UnifiedMod(String id, String name, String description, String modId,
                       Source source, boolean enabled, List<ConfigEntry> configEntries,
@@ -112,7 +116,9 @@ public class UnifiedMod {
     public String getStableKey() { return stableKey; }
     public boolean isEnabled() { return enabled; }
     public List<ConfigEntry> getConfigEntries() { return configEntries; }
-    public boolean hasConfig() { return forceHasConfig || !configEntries.isEmpty(); }
+    public boolean hasConfig() { return forceHasConfig || !configEntries.isEmpty() || runtimeConfigSchemaRevision > 0; }
+    public long getRuntimeConfigSchemaRevision() { return runtimeConfigSchemaRevision; }
+    public void setRuntimeConfigSchemaRevision(long revision) { runtimeConfigSchemaRevision = Math.max(0L, revision); }
 
     public boolean openCustomConfig() {
         if (configOpenHandler == null) return false;
@@ -132,9 +138,50 @@ public class UnifiedMod {
             return;
         }
         config.currentValue = value == null ? "" : value;
+        runtimeConfigValues.put(config.key, config.currentValue);
         if (configHandler != null) {
             configHandler.onConfigChanged(this, config, config.currentValue);
         }
+    }
+
+    public void updateConfig(String key, String value) {
+        if (key == null || key.isEmpty()) return;
+        ConfigEntry existing = findConfigEntry(key);
+        if (existing != null) {
+            updateConfig(existing, value);
+            return;
+        }
+        String safeValue = value == null ? "" : value;
+        runtimeConfigValues.put(key, safeValue);
+        if (configHandler != null) {
+            ConfigEntry transientEntry = new ConfigEntry(
+                    key, key, ConfigType.TEXT, "", "", "", safeValue, "");
+            configHandler.onConfigChanged(this, transientEntry, safeValue);
+        }
+    }
+
+    public ConfigEntry findConfigEntry(String key) {
+        if (key == null) return null;
+        for (ConfigEntry entry : configEntries) {
+            if (key.equals(entry.key)) return entry;
+        }
+        return null;
+    }
+
+    public void setRuntimeConfigValue(String key, String value) {
+        if (key == null || key.isEmpty()) return;
+        runtimeConfigValues.put(key, value == null ? "" : value);
+    }
+
+    public String getConfigValue(String key, String fallback) {
+        String runtime = runtimeConfigValues.get(key);
+        if (runtime != null) return runtime;
+        ConfigEntry entry = findConfigEntry(key);
+        if (entry != null) {
+            if (entry.currentValue != null && !entry.currentValue.isEmpty()) return entry.currentValue;
+            if (entry.defaultValue != null && !entry.defaultValue.isEmpty()) return entry.defaultValue;
+        }
+        return fallback;
     }
 
     private static String defaultGroupId(Source source, String modId) {

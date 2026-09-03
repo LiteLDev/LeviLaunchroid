@@ -583,7 +583,7 @@ public class ModMenuOverlay {
             if (configTitle != null) configTitle.setText(mod.getName());
             
             if (modConfigContent != null) {
-                ModConfigView.render(activity, modConfigContent, mod, () -> {
+                ModConfigView.render(activity, modConfigContent, mod, compactMode, () -> {
                     InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
                     if (overlayManager != null) {
                         overlayManager.applyConfigurationChanges(mod.getId());

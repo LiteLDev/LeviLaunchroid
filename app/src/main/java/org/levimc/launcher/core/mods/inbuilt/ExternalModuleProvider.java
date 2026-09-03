@@ -66,7 +66,7 @@ public final class ExternalModuleProvider {
                     ? activity.getString(R.string.mod_menu_group_external_ungrouped)
                     : externalGroupNames.getOrDefault(modId, modId);
 
-            return new UnifiedMod(
+            UnifiedMod result = new UnifiedMod(
                     moduleId,
                     displayName,
                     description,
@@ -80,6 +80,8 @@ public final class ExternalModuleProvider {
                     (mod, enabledValue) -> setEnabled(activity, mod, enabledValue),
                     ExternalModuleProvider::setConfig
             );
+            result.setRuntimeConfigSchemaRevision(obj.optLong("config_schema_revision", 0L));
+            return result;
         } catch (Exception ignored) {
             return null;
         }

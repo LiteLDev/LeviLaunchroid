@@ -10,6 +10,8 @@ public class ExternalModBridge {
     private static native int nativeGetExternalModCount();
     private static native String nativeGetExternalModInfo(int index);
     private static native String nativeGetExternalModsInfo();
+    private static native String nativeGetExternalModConfigSchema(String moduleId);
+    private static native long nativeGetExternalModConfigSchemaRevision(String moduleId);
     private static native void nativeToggleExternalMod(String moduleId, boolean enabled);
     private static native void nativeSetExternalModConfig(String moduleId, String key, String value);
     private static native int nativeGetExternalButtonCount();
@@ -45,6 +47,24 @@ public class ExternalModBridge {
             return nativeGetExternalModsInfo();
         } catch (UnsatisfiedLinkError e) {
             return null;
+        }
+    }
+
+    public static String getExternalModConfigSchema(String moduleId) {
+        if (!ModManager.ensurePreloaderLoaded()) return null;
+        try {
+            return nativeGetExternalModConfigSchema(moduleId);
+        } catch (UnsatisfiedLinkError e) {
+            return null;
+        }
+    }
+
+    public static long getExternalModConfigSchemaRevision(String moduleId) {
+        if (!ModManager.ensurePreloaderLoaded()) return 0L;
+        try {
+            return nativeGetExternalModConfigSchemaRevision(moduleId);
+        } catch (UnsatisfiedLinkError e) {
+            return 0L;
         }
     }
 

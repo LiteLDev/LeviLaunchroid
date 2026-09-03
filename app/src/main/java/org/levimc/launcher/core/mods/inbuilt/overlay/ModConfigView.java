@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -24,11 +25,26 @@ import java.util.List;
 public class ModConfigView {
 
     public static void render(Context context, ViewGroup container, UnifiedMod mod, Runnable onConfigChanged) {
+        render(context, container, mod, false, onConfigChanged);
+    }
+
+    public static void render(Context context, ViewGroup container, UnifiedMod mod, boolean compact, Runnable onConfigChanged) {
+        RuntimeConfigView.stop(container);
         container.removeAllViews();
+        if (RuntimeConfigView.render(context, container, mod, compact, onConfigChanged)) return;
+
         float density = context.getResources().getDisplayMetrics().density;
         int accent = 0xFF4AE0A0;
-
-        renderConfigEntries(context, container, mod, accent, density, onConfigChanged);
+        ScrollView scroll = new ScrollView(context);
+        scroll.setFillViewport(true);
+        LinearLayout content = new LinearLayout(context);
+        content.setOrientation(LinearLayout.VERTICAL);
+        content.setPadding((int)(16 * density), (int)(16 * density), (int)(16 * density), (int)(16 * density));
+        scroll.addView(content, new ScrollView.LayoutParams(
+                ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.WRAP_CONTENT));
+        container.addView(scroll, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        renderConfigEntries(context, content, mod, accent, density, onConfigChanged);
     }
 
     private static void renderConfigEntries(Context context, ViewGroup container, UnifiedMod mod, int accent, float density, Runnable onConfigChanged) {
