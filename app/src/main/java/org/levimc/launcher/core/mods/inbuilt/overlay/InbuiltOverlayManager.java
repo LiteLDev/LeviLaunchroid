@@ -858,14 +858,26 @@ public class InbuiltOverlayManager {
             cpsDisplayOverlay.updatePosition(centerX, centerY);
         }
         
-        org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.DrawCommand[] cmds = org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.getDrawCommands();
+        java.util.Set<String> explicitHudModules = new java.util.HashSet<>();
+        ExternalModBridge.HudEditorElement[] hudElements = ExternalModBridge.getHudEditorElements();
+        if (hudElements != null) {
+            for (ExternalModBridge.HudEditorElement element : hudElements) {
+                if (element == null || element.moduleId == null || element.positionKeyX == null || element.positionKeyY == null) continue;
+                explicitHudModules.add(element.moduleId);
+                float elementX = metrics.widthPixels * 0.5f - Math.max(1f, element.width) * 0.5f;
+                float elementY = metrics.heightPixels * 0.5f - Math.max(1f, element.height) * 0.5f;
+                ExternalModBridge.setExternalModConfig(element.moduleId, element.positionKeyX, String.valueOf(elementX));
+                ExternalModBridge.setExternalModConfig(element.moduleId, element.positionKeyY, String.valueOf(elementY));
+            }
+        }
+
+        ExternalModBridge.DrawCommand[] cmds = ExternalModBridge.getDrawCommands();
         if (cmds != null) {
             java.util.Set<String> processed = new java.util.HashSet<>();
-            for (org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.DrawCommand cmd : cmds) {
-                if (cmd.moduleId != null && !processed.contains(cmd.moduleId)) {
-                    processed.add(cmd.moduleId);
-                    org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.setExternalModConfig(cmd.moduleId, "hudPosX", String.valueOf(centerX));
-                    org.levimc.launcher.core.mods.inbuilt.ExternalModBridge.setExternalModConfig(cmd.moduleId, "hudPosY", String.valueOf(centerY));
+            for (ExternalModBridge.DrawCommand cmd : cmds) {
+                if (cmd.moduleId != null && !explicitHudModules.contains(cmd.moduleId) && processed.add(cmd.moduleId)) {
+                    ExternalModBridge.setExternalModConfig(cmd.moduleId, "hudPosX", String.valueOf(centerX));
+                    ExternalModBridge.setExternalModConfig(cmd.moduleId, "hudPosY", String.valueOf(centerY));
                 }
             }
         }
