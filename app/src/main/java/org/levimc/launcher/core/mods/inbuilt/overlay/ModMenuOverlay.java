@@ -11,6 +11,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -290,6 +292,8 @@ public class ModMenuOverlay {
         compactModeSwitch = overlayView.findViewById(R.id.switch_compact_mod_menu);
 
         View hudEditorTools = overlayView.findViewById(R.id.hud_editor_tools);
+        View hudEditorDragHandle = overlayView.findViewById(R.id.hud_editor_drag_handle);
+        if (hudEditorDragHandle != null) setupHudEditorDragHandle(hudEditorDragHandle, hudEditorTools);
         View btnHudSave = overlayView.findViewById(R.id.btn_hud_save);
         View btnHudCancel = overlayView.findViewById(R.id.btn_hud_cancel);
         View modMenuContainer = overlayView.findViewById(R.id.mod_menu_container);
@@ -593,6 +597,74 @@ public class ModMenuOverlay {
         }
     }
 
+    private void setupHudEditorDragHandle(View handle, View tools) {
+        final int touchSlop = ViewConfiguration.get(activity).getScaledTouchSlop();
+        handle.setOnTouchListener(new View.OnTouchListener() {
+            private float downX, downY;
+            private int startX, startY;
+            private int pointerId = -1;
+            private boolean dragging;
+
+            @Override public boolean onTouch(View view, MotionEvent event) {
+                if (overlayView == null || tools == null || tools.getVisibility() != View.VISIBLE) return false;
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        pointerId = event.getPointerId(0);
+                        downX = event.getRawX();
+                        downY = event.getRawY();
+                        dragging = false;
+                        if (wmParams != null) {
+                            startX = wmParams.x;
+                            startY = wmParams.y;
+                        } else {
+                            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) overlayView.getLayoutParams();
+                            startX = params.leftMargin;
+                            startY = params.topMargin;
+                        }
+                        view.getParent().requestDisallowInterceptTouchEvent(true);
+                        return true;
+                    case MotionEvent.ACTION_MOVE:
+                        if (pointerId < 0 || event.getPointerId(0) != pointerId) return true;
+                        float dx = event.getRawX() - downX;
+                        float dy = event.getRawY() - downY;
+                        if (Math.abs(dx) > touchSlop || Math.abs(dy) > touchSlop) dragging = true;
+                        if (dragging) moveHudEditorTools(startX + Math.round(dx), startY + Math.round(dy));
+                        return true;
+                    case MotionEvent.ACTION_POINTER_UP:
+                        if (event.getPointerId(event.getActionIndex()) != pointerId) return true;
+                        pointerId = -1;
+                        view.getParent().requestDisallowInterceptTouchEvent(false);
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        if (pointerId >= 0 && !dragging) view.performClick();
+                        // Fall through to release the gesture on both up and cancellation.
+                    case MotionEvent.ACTION_CANCEL:
+                        pointerId = -1;
+                        dragging = false;
+                        view.getParent().requestDisallowInterceptTouchEvent(false);
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        });
+    }
+
+    private void moveHudEditorTools(int x, int y) {
+        if (overlayView == null) return;
+        OverlayBounds.Position position = OverlayBounds.clampPosition(activity, overlayView, x, y);
+        if (wmParams != null && windowManager != null) {
+            wmParams.x = position.x;
+            wmParams.y = position.y;
+            windowManager.updateViewLayout(overlayView, wmParams);
+        } else if (overlayView.getLayoutParams() instanceof FrameLayout.LayoutParams) {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) overlayView.getLayoutParams();
+            params.leftMargin = position.x;
+            params.topMargin = position.y;
+            overlayView.setLayoutParams(params);
+        }
+    }
+
     private void enterHudEditorMode(View modMenuContainer, View hudEditorTools) {
         updateNavigationItem(navModules, compactNavModules, false);
         updateNavigationItem(navSettings, compactNavSettings, false);
@@ -603,7 +675,8 @@ public class ModMenuOverlay {
         }
         if (hudEditorTools != null) {
             hudEditorTools.setVisibility(View.VISIBLE);
-            crossfade(hudEditorTools);
+            hudEditorTools.setAlpha(1f);
+            hudEditorTools.setTranslationX(0f);
         }
         if (overlayView != null) {
             overlayView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
@@ -612,9 +685,27 @@ public class ModMenuOverlay {
         if (wmParams != null && windowManager != null) {
             wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
             wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-            wmParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+            wmParams.gravity = Gravity.TOP | Gravity.LEFT;
+            wmParams.x = 0;
+            wmParams.y = 0;
             windowManager.updateViewLayout(overlayView, wmParams);
+        } else if (overlayView != null && overlayView.getLayoutParams() instanceof FrameLayout.LayoutParams) {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) overlayView.getLayoutParams();
+            params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            params.gravity = Gravity.TOP | Gravity.LEFT;
+            params.leftMargin = 0;
+            params.topMargin = 0;
+            overlayView.setLayoutParams(params);
         }
+        // Wait for the compact tool window to be measured before centering it.
+        final View editorRoot = overlayView;
+        if (editorRoot != null) editorRoot.post(() -> {
+            if (overlayView != editorRoot || hudEditorTools == null || hudEditorTools.getVisibility() != View.VISIBLE) return;
+            OverlayBounds.Position rightEdge = OverlayBounds.clampPosition(
+                    activity, editorRoot, Integer.MAX_VALUE, 0);
+            moveHudEditorTools(rightEdge.x / 2, 0);
+        });
         InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
         if (overlayManager != null) {
             overlayManager.setHudEditorSelectionListener(this::updateHudEditorSizeControls);
@@ -633,7 +724,17 @@ public class ModMenuOverlay {
             wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
             wmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
             wmParams.gravity = Gravity.CENTER;
+            wmParams.x = 0;
+            wmParams.y = 0;
             windowManager.updateViewLayout(overlayView, wmParams);
+        } else if (overlayView != null && overlayView.getLayoutParams() instanceof FrameLayout.LayoutParams) {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) overlayView.getLayoutParams();
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+            params.gravity = Gravity.CENTER;
+            params.leftMargin = 0;
+            params.topMargin = 0;
+            overlayView.setLayoutParams(params);
         }
         if (modMenuContainer != null) {
             modMenuContainer.setVisibility(View.VISIBLE);

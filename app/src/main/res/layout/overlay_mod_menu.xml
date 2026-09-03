@@ -790,21 +790,56 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_hud"
-                    android:tint="#4AE0A0" />
-
-                <TextView
-                    android:layout_width="110dp"
+                <LinearLayout
+                    android:id="@+id/hud_editor_drag_handle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="170dp"
+                    android:minHeight="56dp"
                     android:layout_marginEnd="12dp"
-                    android:text="@string/mod_menu_hud_editor"
-                    android:textColor="#F1F4F6"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:background="@drawable/bg_mod_status_enabled"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="@string/hud_editor_drag_description">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="8dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_drag_handle"
+                        android:tint="#4AE0A0" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:importantForAccessibility="noHideDescendants">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mod_menu_hud_editor"
+                            android:textColor="#F1F4F6"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/hud_editor_drag_hint"
+                            android:textColor="#4AE0A0"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
 
                 <ImageButton
                     android:id="@+id/btn_hud_save"

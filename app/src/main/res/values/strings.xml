@@ -746,6 +746,8 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_config_color_green_short">G</string>
     <string name="mod_config_color_blue_short">B</string>
     <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="hud_editor_drag_hint">Drag to move panel</string>
+    <string name="hud_editor_drag_description">HUD Editor. Drag this area to move the panel.</string>
 
     <!-- Options Editor -->
     <string name="edit_options">Edit Options</string>
