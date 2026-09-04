@@ -1,13 +1,31 @@
 {
   "schemaVersion": 1,
-  "headline": "HUD Editor Fix",
-  "summary": "This update fixes a regression that prevented the HUD Editor from opening correctly.",
+  "headline": "HUD and Mod Improvements",
+  "summary": "More control over your HUD, clearer mod settings, and support for bundled resource and behavior packs.",
   "sections": [
     {
-      "title": "Fixes",
+      "title": "HUD Editor",
       "items": [
         {
-          "text": "Fixed an issue where opening the HUD Editor would close the editor and return to the game instead."
+          "text": "Manage individual HUD elements and align them with grid, element, and screen-center snapping.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/7637292753f286290233d7cbfcf1c2d4afccb3b7"
+        },
+        {
+          "text": "Move the HUD Editor panel out of the way using its drag handle.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/41f97071b64f13584722077d8ba4565b973771d3"
+        }
+      ]
+    },
+    {
+      "title": "Mods",
+      "items": [
+        {
+          "text": "Gyro and Hotbar Slot Button settings are now organized into clearer categories.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/42f4007878ed9da2e18c34af801cf2176928fd2e"
+        },
+        {
+          "text": "Mods can now bundle resource and behavior packs for the launcher to install automatically.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/b3d1f7ae2ae335f7c3ec7cca1c992500d3438c1c"
         }
       ]
     }
