@@ -21,6 +21,12 @@ public final class HotbarSlotMod {
         nativeSetEnabled(enabled);
     }
 
+    public static void setItemIconsEnabled(boolean enabled) {
+        if (enabled && !initialize()) return;
+        if (!InbuiltModsNative.isLoaded()) return;
+        nativeSetItemIconsEnabled(enabled);
+    }
+
     public static void setSlotState(int slot, float x, float y, float width, float height,
                                     float surfaceWidth, float surfaceHeight, float alpha,
                                     boolean visible, boolean pressed) {
@@ -32,6 +38,10 @@ public final class HotbarSlotMod {
         return initialize() && nativeHasItem(slot);
     }
 
+    public static int getItemCount(int slot) {
+        return initialize() ? nativeGetItemCount(slot) : 0;
+    }
+
     public static void clearSlot(int slot) {
         if (!InbuiltModsNative.isLoaded()) return;
         nativeClearSlot(slot);
@@ -39,9 +49,11 @@ public final class HotbarSlotMod {
 
     private static native boolean nativeInit();
     private static native void nativeSetEnabled(boolean enabled);
+    private static native void nativeSetItemIconsEnabled(boolean enabled);
     private static native void nativeSetSlotState(int slot, float x, float y, float width, float height,
                                                    float surfaceWidth, float surfaceHeight, float alpha,
                                                    boolean visible, boolean pressed);
     private static native boolean nativeHasItem(int slot);
+    private static native int nativeGetItemCount(int slot);
     private static native void nativeClearSlot(int slot);
 }

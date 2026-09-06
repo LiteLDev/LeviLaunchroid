@@ -26,6 +26,9 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
     private static final float ICON_WINDOW_TOP = 93f;
     private static final float ICON_WINDOW_RIGHT = 419f;
     private static final float ICON_WINDOW_BOTTOM = 396f;
+    private static final float COUNT_RIGHT = 400f;
+    private static final float COUNT_BASELINE = 365f;
+    private static final float COUNT_SHADOW_OFFSET = 5f;
 
     private final int slot;
     private Bitmap normalBitmap;
@@ -41,12 +44,13 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
     private volatile int nativeSurfaceHeight;
     private volatile boolean hasItem;
     private volatile boolean lastBitmapItemState;
+    private volatile int itemCount;
+    private volatile int lastBitmapItemCount;
 
     public HotbarSlotOverlay(Activity activity, int slot) {
         super(activity);
         this.slot = slot;
-        boolean enabled = InbuiltModManager.getInstance(activity).isHotbarItemIconsEnabled();
-        HotbarSlotMod.setEnabled(enabled);
+        updateNativeMode();
     }
 
     public int getSlot() {
@@ -117,11 +121,18 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
 
     @Override
     public void tick() {
-        if (!itemIconsEnabled()) return;
-        boolean current = HotbarSlotMod.hasItem(slot - 1);
-        hasItem = current;
-        if (current != lastBitmapItemState) {
-            lastBitmapItemState = current;
+        boolean iconsEnabled = itemIconsEnabled();
+        boolean countsEnabled = itemCountsEnabled();
+        if (!iconsEnabled && !countsEnabled) return;
+        int currentCount = HotbarSlotMod.getItemCount(slot - 1);
+        boolean currentHasItem = currentCount > 0;
+        boolean itemStateChanged = currentHasItem != lastBitmapItemState;
+        boolean itemCountChanged = countsEnabled && currentCount != lastBitmapItemCount;
+        hasItem = currentHasItem;
+        itemCount = currentCount;
+        if (itemStateChanged || itemCountChanged) {
+            lastBitmapItemState = currentHasItem;
+            lastBitmapItemCount = currentCount;
             activity.runOnUiThread(() -> {
                 rebuildBitmaps();
                 updateVisual();
@@ -154,11 +165,12 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
 
     @Override
     public void applyConfigurationChanges() {
-        boolean enabled = itemIconsEnabled();
-        HotbarSlotMod.setEnabled(enabled);
-        if (!enabled) {
+        boolean trackingEnabled = updateNativeMode();
+        if (!trackingEnabled) {
             hasItem = false;
             lastBitmapItemState = false;
+            itemCount = 0;
+            lastBitmapItemCount = 0;
         }
         super.applyConfigurationChanges();
         rebuildBitmaps();
@@ -168,6 +180,18 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
 
     private boolean itemIconsEnabled() {
         return InbuiltModManager.getInstance(activity).isHotbarItemIconsEnabled();
+    }
+
+    private boolean itemCountsEnabled() {
+        return InbuiltModManager.getInstance(activity).isHotbarItemCountsEnabled();
+    }
+
+    private boolean updateNativeMode() {
+        boolean iconsEnabled = itemIconsEnabled();
+        boolean trackingEnabled = iconsEnabled || itemCountsEnabled();
+        HotbarSlotMod.setEnabled(trackingEnabled);
+        HotbarSlotMod.setItemIconsEnabled(iconsEnabled);
+        return trackingEnabled;
     }
 
     private void syncNativeState() {
@@ -213,19 +237,35 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
             clear.setXfermode(new android.graphics.PorterDuffXfermode(PorterDuff.Mode.CLEAR));
             canvas.drawRect(ICON_WINDOW_LEFT, ICON_WINDOW_TOP, ICON_WINDOW_RIGHT, ICON_WINDOW_BOTTOM, clear);
             clear.setXfermode(null);
-            return result;
+        } else {
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setColor(down ? Color.rgb(230, 230, 230) : Color.BLACK);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            paint.setTextSize(250f);
+            Paint.FontMetrics fm = paint.getFontMetrics();
+            float yOffset = NUMBER_Y + (down ? PRESSED_Y : 0f);
+            float y = 256f - (fm.ascent + fm.descent) / 2f + yOffset;
+            canvas.drawText(Integer.toString(slot), 256f, y, paint);
         }
 
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(down ? Color.rgb(230, 230, 230) : Color.BLACK);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        paint.setTextSize(250f);
-        Paint.FontMetrics fm = paint.getFontMetrics();
-        float yOffset = NUMBER_Y + (down ? PRESSED_Y : 0f);
-        float y = 256f - (fm.ascent + fm.descent) / 2f + yOffset;
-        canvas.drawText(Integer.toString(slot), 256f, y, paint);
+        if (itemCountsEnabled() && itemCount > 0) {
+            drawItemCount(canvas, down);
+        }
         return result;
+    }
+
+    private void drawItemCount(Canvas canvas, boolean down) {
+        String text = Integer.toString(itemCount);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        paint.setTextSize(text.length() >= 3 ? 72f : (text.length() == 2 ? 88f : 96f));
+        float y = COUNT_BASELINE + (down ? PRESSED_Y : 0f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText(text, COUNT_RIGHT + COUNT_SHADOW_OFFSET, y + COUNT_SHADOW_OFFSET, paint);
+        paint.setColor(Color.WHITE);
+        canvas.drawText(text, COUNT_RIGHT, y, paint);
     }
 
     private void recycleBitmaps() {

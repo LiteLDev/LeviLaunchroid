@@ -38,6 +38,7 @@ public class InbuiltModManager {
     private static final String KEY_OVERLAY_LOCK_PREFIX = "overlay_lock_";
     private static final String KEY_OVERLAY_SHOW_EVERYWHERE_PREFIX = "overlay_show_everywhere_";
     private static final String KEY_HOTBAR_ITEM_ICONS = "hotbar_item_icons";
+    private static final String KEY_HOTBAR_ITEM_COUNTS = "hotbar_item_counts";
     private static final String KEY_HOTBAR_SLOT_ENABLED_PREFIX = "hotbar_slot_enabled_";
     private static final int DEFAULT_OVERLAY_BUTTON_SIZE = 56;
     private static final int DEFAULT_OVERLAY_OPACITY = 100;
@@ -334,6 +335,14 @@ public class InbuiltModManager {
 
     public void setHotbarItemIconsEnabled(boolean enabled) {
         prefs.edit().putBoolean(KEY_HOTBAR_ITEM_ICONS, enabled).apply();
+    }
+
+    public boolean isHotbarItemCountsEnabled() {
+        return prefs.getBoolean(KEY_HOTBAR_ITEM_COUNTS, false);
+    }
+
+    public void setHotbarItemCountsEnabled(boolean enabled) {
+        prefs.edit().putBoolean(KEY_HOTBAR_ITEM_COUNTS, enabled).apply();
     }
 
     public boolean isHotbarSlotEnabled(int slot) {

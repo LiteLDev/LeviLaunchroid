@@ -36,6 +36,7 @@ public final class InbuiltModuleProvider {
     private static final String CFG_GYRO_INVERT_Y = "gyro_invert_y";
     private static final String CFG_GYRO_DEADZONE = "gyro_deadzone";
     private static final String CFG_HOTBAR_ITEM_ICONS = "hotbar_item_icons";
+    private static final String CFG_HOTBAR_ITEM_COUNTS = "hotbar_item_counts";
     private static final String CFG_HOTBAR_SLOT_PREFIX = "hotbar_slot_";
     private static final String CFG_HOTBAR_SLOT_ENABLED = "enabled";
     private static final String CFG_HOTBAR_SLOT_SIZE = "size";
@@ -135,6 +136,7 @@ public final class InbuiltModuleProvider {
                 categories.put(configCategory(context, "appearance", R.string.mod_config_category_appearance));
                 categories.put(configCategory(context, "behavior", R.string.mod_config_category_behavior));
                 nodes.put(configNode(mod, CFG_HOTBAR_ITEM_ICONS, "slots"));
+                nodes.put(configNode(mod, CFG_HOTBAR_ITEM_COUNTS, "slots"));
                 JSONArray slots = new JSONArray();
                 for (int slot = 1; slot <= 9; slot++) {
                     String key = hotbarSlotConfigKey(slot, CFG_HOTBAR_SLOT_ENABLED);
@@ -229,6 +231,11 @@ public final class InbuiltModuleProvider {
                     UnifiedMod.ConfigType.TOGGLE,
                     "false", "", "",
                     String.valueOf(manager.isHotbarItemIconsEnabled())));
+            configs.add(config(CFG_HOTBAR_ITEM_COUNTS,
+                    context.getString(R.string.mod_config_hotbar_item_counts),
+                    UnifiedMod.ConfigType.TOGGLE,
+                    "false", "", "",
+                    String.valueOf(manager.isHotbarItemCountsEnabled())));
             for (int slot = 1; slot <= 9; slot++) {
                 String enabledKey = hotbarSlotConfigKey(slot, CFG_HOTBAR_SLOT_ENABLED);
                 String overlayKey = ModIds.HOTBAR_SLOT + ":" + slot;
@@ -386,6 +393,9 @@ public final class InbuiltModuleProvider {
                 break;
             case CFG_HOTBAR_ITEM_ICONS:
                 manager.setHotbarItemIconsEnabled(parseBoolean(value));
+                break;
+            case CFG_HOTBAR_ITEM_COUNTS:
+                manager.setHotbarItemCountsEnabled(parseBoolean(value));
                 break;
             default:
                 break;
