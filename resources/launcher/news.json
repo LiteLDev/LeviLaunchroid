@@ -2,6 +2,16 @@
   "schemaVersion": 1,
   "items": [
     {
+      "id": "2026-09-09-android-17-supported",
+      "title": "Android 17 is now supported",
+      "summary": "LeviLauncher now supports Android 17. You can now use the launcher on devices running Android 17.",
+      "publishedAt": "2026-09-08T23:02:00Z",
+      "category": "Important",
+      "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/8dce7b88a53b57883d69885357d027cf8c2763e4",
+      "important": true,
+      "notify": false
+    },
+    {
       "id": "2026-09-02-xbox-servers-restored",
       "title": "Xbox servers are back online",
       "summary": "Xbox servers have been restored and are working again. You should now be able to log in to your account normally. Thank you for your patience!",
