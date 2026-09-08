@@ -1,31 +1,27 @@
 {
   "schemaVersion": 1,
-  "headline": "HUD and Mod Improvements",
-  "summary": "More control over your HUD, clearer mod settings, and support for bundled resource and behavior packs.",
+  "headline": "QuickLaunch, OTG, and Hotbar Improvements",
+  "summary": "This update restores QuickLaunch, fixes an OTG keyboard chat issue that could leave the game screen white, and adds item counts to hotbar slots.",
   "sections": [
     {
-      "title": "HUD Editor",
+      "title": "Fixes",
       "items": [
         {
-          "text": "Manage individual HUD elements and align them with grid, element, and screen-center snapping.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/7637292753f286290233d7cbfcf1c2d4afccb3b7"
+          "text": "Fixed QuickLaunch not opening the selected destination when launching Minecraft (#320).",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/4b8358b29646ca9737e4e6b8307876982fa4f49e"
         },
         {
-          "text": "Move the HUD Editor panel out of the way using its drag handle.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/41f97071b64f13584722077d8ba4565b973771d3"
+          "text": "Fixed OTG keyboard Escape handling in chat causing the game screen to turn white after returning to gameplay.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/1abb24d2ea52c9a9902a84b3e886167d3d960c61"
         }
       ]
     },
     {
-      "title": "Mods",
+      "title": "Hotbar",
       "items": [
         {
-          "text": "Gyro and Hotbar Slot Button settings are now organized into clearer categories.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/42f4007878ed9da2e18c34af801cf2176928fd2e"
-        },
-        {
-          "text": "Mods can now bundle resource and behavior packs for the launcher to install automatically.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/b3d1f7ae2ae335f7c3ec7cca1c992500d3438c1c"
+          "text": "Added support for showing item counts in hotbar slots.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/ad49ffe252923ee35fb424ef37adfbb6f31a2e5e"
         }
       ]
     }
