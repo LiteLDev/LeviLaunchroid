@@ -98,6 +98,7 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
     private ThermalMonitor mThermalMonitor;
 
     public TextInputProxyEditTextbox textInputWidget;
+    private View textInputFocusSink;
     private TextToSpeech textToSpeechManager;
     private Thread mMainThread = null;
     public int virtualKeyboardHeight = 0;
@@ -613,8 +614,27 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         return super.dispatchGenericMotionEvent(event);
     }
 
+    private boolean handleActiveTextInputBackKey(@NonNull KeyEvent event) {
+        if (!isTextWidgetActive()) {
+            return false;
+        }
+
+        int keyCode = event.getKeyCode();
+        if (keyCode != KeyEvent.KEYCODE_ESCAPE && keyCode != KeyEvent.KEYCODE_BACK) {
+            return false;
+        }
+
+        if (event.getAction() == KeyEvent.ACTION_UP) {
+            nativeBackPressed();
+        }
+        return true;
+    }
+
     @Override
     public boolean dispatchKeyEvent(@NonNull KeyEvent event) {
+        if (handleActiveTextInputBackKey(event)) {
+            return true;
+        }
         if (nativeKeyHandler(event.getKeyCode(), event.getAction())) {
             return true;
         }
@@ -840,8 +860,21 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
                 });
             }
         });
-        ((ViewGroup) findViewById(android.R.id.content)).addView(textInputProxyEditTextbox, new ViewGroup.LayoutParams(1, 1));
-        final View rootView = findViewById(android.R.id.content).getRootView();
+        ViewGroup contentView = (ViewGroup) findViewById(android.R.id.content);
+        contentView.addView(textInputProxyEditTextbox, new ViewGroup.LayoutParams(1, 1));
+
+        this.textInputFocusSink = new View(this);
+        this.textInputFocusSink.setFocusable(true);
+        this.textInputFocusSink.setFocusableInTouchMode(true);
+        this.textInputFocusSink.setClickable(false);
+        this.textInputFocusSink.setLongClickable(false);
+        this.textInputFocusSink.setAlpha(0.0f);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.textInputFocusSink.setDefaultFocusHighlightEnabled(false);
+        }
+        contentView.addView(this.textInputFocusSink, new ViewGroup.LayoutParams(1, 1));
+
+        final View rootView = contentView.getRootView();
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -907,9 +940,9 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         getInputMethodManager().hideSoftInputFromWindow(this.textInputWidget.getWindowToken(), 0);
 
         this.textInputWidget.clearFocus();
-        View decorView = getWindow().getDecorView();
-        decorView.setFocusableInTouchMode(true);
-        decorView.requestFocus();
+        if (this.textInputFocusSink != null) {
+            this.textInputFocusSink.requestFocus();
+        }
 
         this.mPauseTextboxUIUpdates = true;
         try {

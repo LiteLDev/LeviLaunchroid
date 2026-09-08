@@ -294,6 +294,11 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (isTextWidgetActive() &&
+            (event.keyCode == KeyEvent.KEYCODE_ESCAPE || event.keyCode == KeyEvent.KEYCODE_BACK)) {
+            return super.dispatchKeyEvent(event)
+        }
+
         val mouseButton = getMouseButton(event)
         if (mouseButton != 0 &&
             (event.action == KeyEvent.ACTION_DOWN || event.action == KeyEvent.ACTION_UP) &&
