@@ -1260,8 +1260,21 @@ import okhttp3.OkHttpClient;
         Intent sourceIntent = getIntent();
         if (sourceIntent == null) return launchIntent;
 
-        if (sourceIntent.hasExtra("MINECRAFT_URI")) {
-            launchIntent.putExtra("MINECRAFT_URI", sourceIntent.getStringExtra("MINECRAFT_URI"));
+        String minecraftUri = sourceIntent.getStringExtra("MINECRAFT_URI");
+        Uri sourceData = sourceIntent.getData();
+        if (sourceData != null && "minecraft".equalsIgnoreCase(sourceData.getScheme())) {
+            launchIntent.setAction(Intent.ACTION_VIEW);
+            launchIntent.setData(sourceData);
+        } else if (!TextUtils.isEmpty(minecraftUri)) {
+            Uri restoredData = Uri.parse(minecraftUri);
+            if ("minecraft".equalsIgnoreCase(restoredData.getScheme())) {
+                launchIntent.setAction(Intent.ACTION_VIEW);
+                launchIntent.setData(restoredData);
+            }
+        }
+
+        if (!TextUtils.isEmpty(minecraftUri)) {
+            launchIntent.putExtra("MINECRAFT_URI", minecraftUri);
         }
         if (sourceIntent.hasExtra("MINECRAFT_URI_ACTION")) {
             launchIntent.putExtra("MINECRAFT_URI_ACTION", sourceIntent.getStringExtra("MINECRAFT_URI_ACTION"));
