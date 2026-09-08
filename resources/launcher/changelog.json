@@ -1,27 +1,14 @@
 {
   "schemaVersion": 1,
-  "headline": "QuickLaunch, OTG, and Hotbar Improvements",
-  "summary": "This update restores QuickLaunch, fixes an OTG keyboard chat issue that could leave the game screen white, and adds item counts to hotbar slots.",
+  "headline": "Android 17 Support",
+  "summary": "This update adds support for Android 17.",
   "sections": [
     {
-      "title": "Fixes",
+      "title": "Features",
       "items": [
         {
-          "text": "Fixed QuickLaunch not opening the selected destination when launching Minecraft (#320).",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/4b8358b29646ca9737e4e6b8307876982fa4f49e"
-        },
-        {
-          "text": "Fixed OTG keyboard Escape handling in chat causing the game screen to turn white after returning to gameplay.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/1abb24d2ea52c9a9902a84b3e886167d3d960c61"
-        }
-      ]
-    },
-    {
-      "title": "Hotbar",
-      "items": [
-        {
-          "text": "Added support for showing item counts in hotbar slots.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/ad49ffe252923ee35fb424ef37adfbb6f31a2e5e"
+          "text": "Added support for Android 17.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/8dce7b88a53b57883d69885357d027cf8c2763e4"
         }
       ]
     }
