@@ -55,11 +55,15 @@ public class ContentManager {
     }
 
     public void setStorageDirectories(File worldsDir, File resourcePacksDir, File behaviorPacksDir, File skinPacksDir, File screenshotsDir, File minecraftPeDir) {
+        configureStorageDirectories(worldsDir, resourcePacksDir, behaviorPacksDir, skinPacksDir, screenshotsDir, minecraftPeDir);
+        refreshContent();
+    }
+
+    public void configureStorageDirectories(File worldsDir, File resourcePacksDir, File behaviorPacksDir, File skinPacksDir, File screenshotsDir, File minecraftPeDir) {
         worldManager.setWorldsDirectory(worldsDir);
         resourcePackManager.setPackDirectories(resourcePacksDir, behaviorPacksDir, skinPacksDir);
         screenshotManager.setScreenshotsDirectory(screenshotsDir);
         serverManager.setMinecraftPeDirectory(minecraftPeDir);
-        refreshContent();
     }
 
     public void refreshContent() {
@@ -249,11 +253,15 @@ public class ContentManager {
     }
 
     public void deleteWorld(WorldItem world, WorldManager.WorldOperationCallback callback) {
+        deleteWorld(world, true, callback);
+    }
+
+    public void deleteWorld(WorldItem world, boolean refreshAfter, WorldManager.WorldOperationCallback callback) {
         setStatus("Deleting world...");
         worldManager.deleteWorld(world, new WorldManager.WorldOperationCallback() {
             @Override
             public void onSuccess(String message) {
-                refreshWorlds();
+                if (refreshAfter) refreshWorlds();
                 setStatus(message);
                 if (callback != null) callback.onSuccess(message);
             }
@@ -321,13 +329,19 @@ public class ContentManager {
     }
 
     public void deleteResourcePack(ResourcePackItem pack, ResourcePackManager.PackOperationCallback callback) {
+        deleteResourcePack(pack, true, callback);
+    }
+
+    public void deleteResourcePack(ResourcePackItem pack, boolean refreshAfter, ResourcePackManager.PackOperationCallback callback) {
         setStatus("Deleting resource pack...");
         resourcePackManager.deletePack(pack, new ResourcePackManager.PackOperationCallback() {
             @Override
             public void onSuccess(String message) {
-                refreshResourcePacks();
-                refreshBehaviorPacks();
-                refreshSkinPacks();
+                if (refreshAfter) {
+                    refreshResourcePacks();
+                    refreshBehaviorPacks();
+                    refreshSkinPacks();
+                }
                 setStatus(message);
                 if (callback != null) callback.onSuccess(message);
             }
@@ -368,11 +382,15 @@ public class ContentManager {
     }
 
     public void transferWorld(WorldItem world, java.io.File targetDirectory, WorldManager.WorldOperationCallback callback) {
+        transferWorld(world, targetDirectory, true, callback);
+    }
+
+    public void transferWorld(WorldItem world, java.io.File targetDirectory, boolean refreshAfter, WorldManager.WorldOperationCallback callback) {
         setStatus("Transferring world...");
         worldManager.transferWorld(world, targetDirectory, new WorldManager.WorldOperationCallback() {
             @Override
             public void onSuccess(String message) {
-                refreshWorlds();
+                if (refreshAfter) refreshWorlds();
                 setStatus(message);
                 if (callback != null) callback.onSuccess(message);
             }
@@ -392,13 +410,19 @@ public class ContentManager {
     }
 
     public void transferResourcePack(ResourcePackItem pack, java.io.File targetDirectory, ResourcePackManager.PackOperationCallback callback) {
+        transferResourcePack(pack, targetDirectory, true, callback);
+    }
+
+    public void transferResourcePack(ResourcePackItem pack, java.io.File targetDirectory, boolean refreshAfter, ResourcePackManager.PackOperationCallback callback) {
         setStatus("Transferring pack...");
         resourcePackManager.transferPack(pack, targetDirectory, new ResourcePackManager.PackOperationCallback() {
             @Override
             public void onSuccess(String message) {
-                refreshResourcePacks();
-                refreshBehaviorPacks();
-                refreshSkinPacks();
+                if (refreshAfter) {
+                    refreshResourcePacks();
+                    refreshBehaviorPacks();
+                    refreshSkinPacks();
+                }
                 setStatus(message);
                 if (callback != null) callback.onSuccess(message);
             }

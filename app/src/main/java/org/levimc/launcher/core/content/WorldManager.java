@@ -405,7 +405,10 @@ public class WorldManager {
                 File targetDir = new File(targetDirectory, worldName);
 
                 copyDirectory(sourceDir, targetDir);
-                deleteDirectory(sourceDir);
+                if (!deleteDirectory(sourceDir)) {
+                    callback.onError("World copied, but the original could not be removed");
+                    return;
+                }
 
                 callback.onSuccess("World transferred successfully");
 

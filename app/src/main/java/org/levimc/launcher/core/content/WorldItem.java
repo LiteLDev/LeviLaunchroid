@@ -45,6 +45,20 @@ public class WorldItem extends ContentItem {
         return worldName;
     }
 
+    public String getGameMode() {
+        return gameMode != null ? gameMode : "Unknown";
+    }
+
+    public File getIconFile() {
+        if (file == null) return null;
+        String[] names = {"world_icon.jpeg", "world_icon.jpg", "world_icon.png"};
+        for (String name : names) {
+            File icon = new File(file, name);
+            if (icon.isFile()) return icon;
+        }
+        return null;
+    }
+
     private void loadWorldInfo() {
         if (file == null || !file.exists() || !file.isDirectory()) {
             isValid = false;

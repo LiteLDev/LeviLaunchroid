@@ -1,104 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pack_card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:background="@drawable/bg_rounded_card"
-    android:orientation="vertical"
-    android:padding="12dp">
+    android:layout_height="76dp"
+    android:layout_marginHorizontal="4dp"
+    android:layout_marginVertical="3dp"
+    android:background="@drawable/bg_content_item"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="8dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/pack_icon"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_photo"
+        app:shapeAppearanceOverlay="@style/LeviContentThumbnailShape" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/pack_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/pack_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/misans"
-                android:text="@string/resource_pack_name_placeholder"
-                android:textColor="@color/on_surface"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/pack_size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:fontFamily="@font/misans"
-                android:text="@string/resource_pack_size_placeholder"
-                android:textColor="@color/on_surface"
-                android:textSize="11sp" />
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/pack_export_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/primary"
+            android:ellipsize="end"
             android:fontFamily="@font/misans"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:paddingHorizontal="14dp"
-            android:paddingVertical="6dp"
-            android:text="@string/export"
-            android:textAllCaps="false"
-            android:textColor="@color/on_primary"
+            android:maxLines="1"
+            android:text="@string/resource_pack_name_placeholder"
+            android:textColor="@color/on_surface"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/pack_meta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/misans"
+            android:maxLines="1"
+            android:textColor="@color/text_secondary"
             android:textSize="11sp" />
 
-        <Button
-            android:id="@+id/pack_transfer_button"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/pack_description"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/secondary"
+            android:layout_marginTop="1dp"
+            android:ellipsize="end"
             android:fontFamily="@font/misans"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:paddingHorizontal="14dp"
-            android:paddingVertical="6dp"
-            android:text="@string/transfer"
-            android:textAllCaps="false"
-            android:textColor="@color/on_secondary"
+            android:maxLines="1"
+            android:text="@string/resource_pack_description_placeholder"
+            android:textColor="@color/text_secondary"
             android:textSize="11sp" />
-
-        <Button
-            android:id="@+id/pack_delete_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/error"
-            android:fontFamily="@font/misans"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:paddingHorizontal="14dp"
-            android:paddingVertical="6dp"
-            android:text="@string/delete_pack"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="11sp" />
-
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/pack_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/misans"
-        android:text="@string/resource_pack_description_placeholder"
-        android:textColor="@color/on_surface"
-        android:textSize="12sp" />
+    <ImageButton
+        android:id="@+id/pack_export_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/export"
+        android:padding="9dp"
+        android:src="@drawable/ic_export"
+        app:tint="@color/on_surface" />
 
+    <ImageButton
+        android:id="@+id/pack_overflow_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/more_actions"
+        android:padding="8dp"
+        android:src="@drawable/ic_more_vert"
+        app:tint="@color/on_surface" />
+
+    <ImageView
+        android:id="@+id/pack_selection_indicator"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_search_box"
+        android:contentDescription="@string/selected"
+        android:padding="7dp"
+        android:src="@drawable/ic_check"
+        android:visibility="gone"
+        app:tint="@color/primary" />
 </LinearLayout>

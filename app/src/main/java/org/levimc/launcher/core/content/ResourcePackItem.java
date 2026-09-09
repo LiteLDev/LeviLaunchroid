@@ -90,6 +90,12 @@ public class ResourcePackItem extends ContentItem {
         return version;
     }
 
+    public File getIconFile() {
+        if (file == null) return null;
+        File icon = new File(file, "pack_icon.png");
+        return icon.isFile() ? icon : null;
+    }
+
     private void loadPackInfo() {
         if (file == null || !file.exists()) {
             isValid = false;

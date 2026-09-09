@@ -691,7 +691,10 @@ public class ResourcePackManager {
                 File targetDir = new File(targetDirectory, packName);
 
                 copyDirectory(sourceDir, targetDir);
-                deleteFile(sourceDir);
+                if (!deleteFile(sourceDir)) {
+                    callback.onError("Pack copied, but the original could not be removed");
+                    return;
+                }
 
                 callback.onSuccess("Pack transferred successfully");
 
