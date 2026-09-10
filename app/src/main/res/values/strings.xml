@@ -419,6 +419,20 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="add_at_least_one_layer">Add at least one layer</string>
     <string name="world_created_successfully">World created successfully</string>
     <string name="failed_to_create_world">Failed to create world</string>
+    <string name="custom_flat_world_subtitle">Create a world with your own biome and block layers</string>
+    <string name="world_settings">World Settings</string>
+    <string name="world_settings_hint">Choose the basic settings for the new world</string>
+    <string name="layers_title">Layers</string>
+    <string name="add_layer_compact">Add Layer</string>
+    <string name="no_layers_title">No layers yet</string>
+    <string name="no_layers_hint">Add at least one block layer to create the world</string>
+    <string name="reorder_layer">Reorder layer</string>
+    <string name="delete_layer">Delete layer</string>
+    <string name="block_id_hint">minecraft:stone</string>
+    <plurals name="flat_layers_count">
+        <item quantity="one">%1$d layer • bottom → top</item>
+        <item quantity="other">%1$d layers • bottom → top</item>
+    </plurals>
 
     <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">Play Store Version Required</string>
@@ -1034,6 +1048,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_config_category_button">Button</string>
     <string name="mod_config_visible_slots">Visible Slots</string>
     <string name="mod_config_hotbar_slot_section">Hotbar Slot %1$d</string>
+
     <string name="select">Select</string>
     <string name="select_all">Select All</string>
     <string name="selected">Selected</string>
