@@ -28,6 +28,7 @@ public class InbuiltModManager {
     private static final String KEY_ZOOM_KEYBIND = "zoom_keybind";
     private static final String KEY_ZOOM_TRANSITION_DURATION = "zoom_transition_duration";
     private static final String KEY_CURSOR_SENSITIVITY = "cursor_sensitivity";
+    private static final String KEY_GYRO_SENSITIVITY_MULTIPLIER = "gyro_sensitivity_multiplier";
     private static final String KEY_GYRO_SENSITIVITY_X = "gyro_sensitivity_x";
     private static final String KEY_GYRO_SENSITIVITY_Y = "gyro_sensitivity_y";
     private static final String KEY_GYRO_INVERT_X = "gyro_invert_x";
@@ -46,6 +47,7 @@ public class InbuiltModManager {
     private static final int DEFAULT_ZOOM_LEVEL = 10;
     private static final int DEFAULT_ZOOM_TRANSITION_DURATION = 150;
     private static final int DEFAULT_CURSOR_SENSITIVITY = 120;
+    private static final int DEFAULT_GYRO_SENSITIVITY_MULTIPLIER = 100;
     private static final int DEFAULT_GYRO_SENSITIVITY = 100;
     private static final int DEFAULT_GYRO_DEADZONE = 5;
 
@@ -290,6 +292,14 @@ public class InbuiltModManager {
         return overlayVisibilityRevision.get();
     }
 
+    public int getGyroSensitivityMultiplier() {
+        return prefs.getInt(KEY_GYRO_SENSITIVITY_MULTIPLIER, DEFAULT_GYRO_SENSITIVITY_MULTIPLIER);
+    }
+
+    public void setGyroSensitivityMultiplier(int multiplier) {
+        prefs.edit().putInt(KEY_GYRO_SENSITIVITY_MULTIPLIER, Math.max(25, Math.min(5000, multiplier))).apply();
+    }
+
     public int getGyroSensitivityX() {
         return prefs.getInt(KEY_GYRO_SENSITIVITY_X, DEFAULT_GYRO_SENSITIVITY);
     }
@@ -327,7 +337,7 @@ public class InbuiltModManager {
     }
 
     public void setGyroDeadzone(int deadzone) {
-        prefs.edit().putInt(KEY_GYRO_DEADZONE, Math.max(0, Math.min(50, deadzone))).apply();
+        prefs.edit().putInt(KEY_GYRO_DEADZONE, Math.max(0, Math.min(100, deadzone))).apply();
     }
     public boolean isHotbarItemIconsEnabled() {
         return prefs.getBoolean(KEY_HOTBAR_ITEM_ICONS, false);

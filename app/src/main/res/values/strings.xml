@@ -801,6 +801,10 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_config_auto_sprint_keybind">Auto Sprint Keybind</string>
     <string name="mod_config_zoom_keybind">Zoom Keybind</string>
     <string name="mod_config_zoom_transition">Transition Duration (ms)</string>
+    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">Sensitivity Multiplier (100% = 1x)</string>
+    <string name="mod_config_gyro_horizontal_speed" formatted="false">Horizontal Speed (%)</string>
+    <string name="mod_config_gyro_vertical_speed" formatted="false">Vertical Speed (%)</string>
+    <string name="mod_config_gyro_small_movement_filter">Small Movement Filter (0 = Off)</string>
     <string name="mod_config_gyro_sensitivity_x" formatted="false">Horizontal Sensitivity (%)</string>
     <string name="mod_config_gyro_sensitivity_y" formatted="false">Vertical Sensitivity (%)</string>
     <string name="mod_config_gyro_invert_x">Invert Horizontal Axis</string>

@@ -34,6 +34,7 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
 
     private float prevDeltaYaw = 0f;
     private float prevDeltaPitch = 0f;
+    private long lastGyroTimestampNs = 0L;
 
     public GyroOverlay(Activity activity) {
         super(activity);
@@ -96,12 +97,13 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
 
     private void applyGyroSettings() {
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
-        float sensX = manager.getGyroSensitivityX() / 100f;
-        float sensY = manager.getGyroSensitivityY() / 100f;
+        float multiplier = manager.getGyroSensitivityMultiplier() / 100f;
+        float sensX = manager.getGyroSensitivityX() / 100f * multiplier;
+        float sensY = manager.getGyroSensitivityY() / 100f * multiplier;
         boolean invertX = manager.isGyroInvertX();
         boolean invertY = manager.isGyroInvertY();
-        float deadzone = manager.getGyroDeadzone() / 10f;
-        float deadzoneRad = (float) Math.toRadians(deadzone);
+        float filterDegrees = manager.getGyroDeadzone() / 100f;
+        float deadzoneRad = (float) Math.toRadians(filterDegrees);
 
         GyroMod.nativeSetSensitivityX(sensX);
         GyroMod.nativeSetSensitivityY(sensY);
@@ -136,6 +138,7 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
         hasReference = false;
         prevDeltaYaw = 0f;
         prevDeltaPitch = 0f;
+        lastGyroTimestampNs = 0L;
 
         sensorManager.registerListener(this, rotationSensor, SensorManager.SENSOR_DELAY_GAME);
         GyroMod.nativeSetEnabled(true);
@@ -155,6 +158,7 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
         hasReference = false;
         prevDeltaYaw = 0f;
         prevDeltaPitch = 0f;
+        lastGyroTimestampNs = 0L;
     }
 
     private void updateButtonState(boolean active) {
@@ -229,7 +233,17 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
     }
 
     private void handleGyroscopeEvent(SensorEvent event) {
-        float dt = 0.02f;
+        if (lastGyroTimestampNs == 0L) {
+            lastGyroTimestampNs = event.timestamp;
+            return;
+        }
+
+        float dt = (event.timestamp - lastGyroTimestampNs) * 1.0e-9f;
+        lastGyroTimestampNs = event.timestamp;
+        if (dt <= 0f) {
+            return;
+        }
+        dt = Math.min(dt, 0.05f);
 
         float gyroX = event.values[0];
         float gyroY = event.values[1];
