@@ -1,14 +1,43 @@
 {
   "schemaVersion": 1,
-  "headline": "Android 17 Support",
-  "summary": "This update adds support for Android 17.",
+  "headline": "LeviLauncher v1.5.22",
+  "summary": "This update adds foreground service support, improved gyroscope sensitivity, an external mods catalog, mod scanning improvements, redesigned content management, and updated translations.",
   "sections": [
     {
       "title": "Features",
       "items": [
         {
-          "text": "Added support for Android 17.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/8dce7b88a53b57883d69885357d027cf8c2763e4"
+          "text": "Added foreground service support to keep Minecraft active while the launcher is in the background.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/bad68971aa17b8fd45096c86fe632fcfa89d22b6"
+        },
+        {
+          "text": "Greatly increased gyroscope sensitivity and improved gyro controls.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/7df568702dae976734fddeeaed9685a31e63ccb7"
+        },
+        {
+          "text": "Added an external mods catalog with built-in mod download functionality.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/fae70e53378b7d9b90487addbaca32ef60b13d29"
+        },
+        {
+          "text": "Added a Community Discord button and improved scanned mods so users can choose which mods to add.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/e867b9fa87d8a236fac9d3c60b8e0e1c9f09b923"
+        }
+      ]
+    },
+    {
+      "title": "Improvements",
+      "items": [
+        {
+          "text": "Redesigned the custom flat world editor.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/2c0224728cdc930190647523726c2f01cc9dfcb7"
+        },
+        {
+          "text": "Redesigned content management lists for a cleaner and easier-to-use interface.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/c71c5247dffd9a678c67ceb419c9f725dbdb7bb7"
+        },
+        {
+          "text": "Updated and completed strings and translations across supported languages.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/54902df4f923b4237bb4b6cb23378f69575bc674"
         }
       ]
     }
