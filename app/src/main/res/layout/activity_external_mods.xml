@@ -41,6 +41,30 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/external_mods_discord"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="#5865F2"
+            android:fontFamily="@font/misans"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="11dp"
+            android:text="@string/external_mods_join_discord"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:cornerRadius="9dp"
+            app:icon="@drawable/ic_discord"
+            app:iconPadding="6dp"
+            app:iconSize="17dp"
+            app:iconTint="@android:color/white" />
+
         <ImageButton
             android:id="@+id/external_mods_refresh"
             android:layout_width="38dp"

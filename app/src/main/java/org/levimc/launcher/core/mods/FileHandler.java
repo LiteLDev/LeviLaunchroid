@@ -172,6 +172,34 @@ public class FileHandler {
         }).start();
     }
 
+    public void processScannedFile(Uri uri, FileOperationCallback callback) {
+        if (uri == null) {
+            postError(callback, context.getString(R.string.invalid_mod_file_reason));
+            return;
+        }
+
+        String fileName = resolveImportFileName(uri);
+        if (!isSupportedImportFile(uri, fileName)) {
+            postError(callback, context.getString(R.string.invalid_mod_file_reason));
+            return;
+        }
+
+        new Thread(() -> {
+            if (isZipModPackageFile(uri, fileName) && !isValidZipModPackage(uri)) {
+                postError(callback, context.getString(R.string.invalid_zip_mod_package_message));
+                return;
+            }
+
+            if (needsMetadataInput(fileName)) {
+                new Handler(Looper.getMainLooper()).post(() -> showNextMetadataDialog(
+                        java.util.Collections.singletonList(uri), 0, callback));
+            } else {
+                handleFilesWithOverwriteCheck(
+                        java.util.Collections.singletonList(uri), null, null, null, callback);
+            }
+        }).start();
+    }
+
     public void processCatalogModDirectly(Intent intent, String name, String author, String version,
                                           List<String> minecraftVersions, FileOperationCallback callback) {
         List<Uri> fileUris = extractFileUris(intent);

@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import android.widget.TextView;
@@ -27,6 +29,7 @@ import org.levimc.launcher.core.mods.Mod;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.versions.VersionManager;
 import org.levimc.launcher.ui.adapter.ModsAdapter;
+import org.levimc.launcher.ui.adapter.ScannedModsAdapter;
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.views.MainViewModel;
@@ -184,11 +187,6 @@ public class ModsFullscreenActivity extends BaseActivity {
                 error = e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage();
             }
 
-            List<Uri> uris = new ArrayList<>();
-            for (File file : files) {
-                uris.add(Uri.fromFile(file));
-            }
-
             String scanError = error;
             runOnUiThread(() -> {
                 scanInProgress = false;
@@ -198,16 +196,64 @@ public class ModsFullscreenActivity extends BaseActivity {
                     Toast.makeText(this, R.string.scan_downloads_failed, Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (uris.isEmpty()) {
+                if (files.isEmpty()) {
                     Toast.makeText(this, R.string.scan_downloads_none_found, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(this, getResources().getQuantityString(
-                                R.plurals.scan_downloads_found, uris.size(), uris.size()),
-                        Toast.LENGTH_SHORT).show();
-                fileHandler.processIncomingFilesWithConfirmation(uris, createImportCallback(), true);
+                showScannedMods(files);
             });
         }).start();
+    }
+
+    private void showScannedMods(List<File> files) {
+        View content = LayoutInflater.from(this).inflate(R.layout.dialog_scanned_mods, null);
+        RecyclerView results = content.findViewById(R.id.scan_results_recycler);
+        results.setLayoutManager(new LinearLayoutManager(this));
+
+        ScannedModsAdapter[] adapterHolder = new ScannedModsAdapter[1];
+        adapterHolder[0] = new ScannedModsAdapter(files,
+                file -> addScannedMod(file, adapterHolder[0]));
+        results.setAdapter(adapterHolder[0]);
+
+        float density = getResources().getDisplayMetrics().density;
+        ViewGroup.LayoutParams params = results.getLayoutParams();
+        int desiredHeight = (int) (Math.min(files.size(), 4) * 72 * density);
+        int availableHeight = getResources().getDisplayMetrics().heightPixels - (int) (190 * density);
+        params.height = Math.min(desiredHeight, Math.max((int) (72 * density), availableHeight));
+        results.setLayoutParams(params);
+
+        new CustomAlertDialog(this)
+                .setTitleText(getString(R.string.scan_downloads_results_title))
+                .setCustomView(content)
+                .setNegativeButton(getString(R.string.close), null)
+                .setUseBorderedBackground(true)
+                .setBlurBackground(true)
+                .show();
+    }
+
+    private void addScannedMod(File file, ScannedModsAdapter adapter) {
+        adapter.setImporting(file);
+        fileHandler.processScannedFile(Uri.fromFile(file), new FileHandler.FileOperationCallback() {
+            @Override
+            public void onSuccess(int processedFiles) {
+                if (isFinishing() || isDestroyed()) return;
+                adapter.setAdded(file);
+                Toast.makeText(ModsFullscreenActivity.this,
+                        getString(R.string.scan_downloads_added_message, file.getName()),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                if (isFinishing() || isDestroyed()) return;
+                adapter.setIdle(file);
+                Toast.makeText(ModsFullscreenActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onProgressUpdate(int progress) {
+            }
+        });
     }
 
     private void collectDownloadedMods(File[] children, List<File> files) {

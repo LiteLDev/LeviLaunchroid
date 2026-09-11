@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Locale;
 
 public final class ExternalModsActivity extends BaseActivity {
+    private static final String COMMUNITY_DISCORD_URL = "https://discord.gg/rMgdpTFFVg";
     private final List<ModCatalog.CatalogMod> allMods = new ArrayList<>();
     private ExternalModsAdapter adapter;
     private RecyclerView recycler;
@@ -55,6 +56,7 @@ public final class ExternalModsActivity extends BaseActivity {
     private EditText search;
     private MaterialButton compatibleFilter;
     private Spinner sort;
+    private MaterialButton discord;
     private ImageButton refresh;
     private ModCatalogInstaller installer;
     private InstallProgressDialog installDialog;
@@ -110,6 +112,7 @@ public final class ExternalModsActivity extends BaseActivity {
         search = findViewById(R.id.external_mods_search);
         compatibleFilter = findViewById(R.id.external_mods_compatible_filter);
         sort = findViewById(R.id.external_mods_sort);
+        discord = findViewById(R.id.external_mods_discord);
         refresh = findViewById(R.id.external_mods_refresh);
     }
 
@@ -123,9 +126,19 @@ public final class ExternalModsActivity extends BaseActivity {
     }
 
     private void setupControls() {
+        discord.setOnClickListener(v -> openCommunityDiscord());
         refresh.setOnClickListener(v -> refreshCatalog(true));
+        DynamicAnim.applyPressScale(discord);
         DynamicAnim.applyPressScale(refresh);
         DynamicAnim.applyPressScale(compatibleFilter);
+    }
+
+    private void openCommunityDiscord() {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(COMMUNITY_DISCORD_URL)));
+        } catch (ActivityNotFoundException error) {
+            Toast.makeText(this, R.string.external_mods_discord_open_failed, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setupFilters() {
