@@ -236,6 +236,62 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/misans"
+                                    android:text="@string/foreground_service"
+                                    android:textColor="@color/on_surface"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:fontFamily="@font/misans"
+                                    android:text="@string/foreground_service_desc"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/misans"
+                                    android:text="@string/foreground_service_warning"
+                                    android:textColor="#FFB74D"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/switch_foreground_service"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:thumbTint="@color/primary"
+                                android:trackTint="#555555" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="14dp"
+                            android:layout_marginBottom="14dp"
+                            android:background="@color/divider"
+                            android:alpha="0.3" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"

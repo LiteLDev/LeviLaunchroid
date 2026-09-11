@@ -287,6 +287,10 @@ public class SettingsActivity extends BaseActivity {
             } catch (Throwable ignored) {}
         });
 
+        SwitchMaterial switchForegroundService = findViewById(R.id.switch_foreground_service);
+        switchForegroundService.setChecked(fs.isForegroundServiceEnabled());
+        switchForegroundService.setOnCheckedChangeListener((btn, checked) -> fs.setForegroundServiceEnabled(checked));
+
         SwitchMaterial switchCrashUpload = findViewById(R.id.switch_crash_upload);
         switchCrashUpload.setChecked(fs.isCrashUploadEnabled());
         switchCrashUpload.setOnCheckedChangeListener((btn, checked) -> {
@@ -500,6 +504,14 @@ public class SettingsActivity extends BaseActivity {
             switchLogcat.setTrackTintList(new ColorStateList(states, new int[]{trackChecked, 0xFF555555}));
         }
         
+        SwitchMaterial switchForegroundService = findViewById(R.id.switch_foreground_service);
+        if (switchForegroundService != null && accent != 0) {
+            int[][] states = {{android.R.attr.state_checked}, {}};
+            switchForegroundService.setThumbTintList(new ColorStateList(states, new int[]{accent, 0xFFAAAAAA}));
+            int trackChecked = Color.argb(100, Color.red(accent), Color.green(accent), Color.blue(accent));
+            switchForegroundService.setTrackTintList(new ColorStateList(states, new int[]{trackChecked, 0xFF555555}));
+        }
+
         SwitchMaterial switchManagedLogin = findViewById(R.id.switch_managed_login);
         if (switchManagedLogin != null && accent != 0) {
             int[][] states = {{android.R.attr.state_checked}, {}};

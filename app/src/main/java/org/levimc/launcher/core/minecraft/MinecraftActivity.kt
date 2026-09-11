@@ -24,6 +24,7 @@ import org.levimc.launcher.core.mods.ModManager
 import org.levimc.launcher.core.mods.inbuilt.nativemod.PojavControlsMod
 import org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager
 import org.levimc.launcher.preloader.PreloaderInput
+import org.levimc.launcher.settings.FeatureSettings
 import org.levimc.pojavcontrols.PojavControls
 import org.levimc.pojavcontrols.PojavControlsHost
 import java.io.File
@@ -117,6 +118,7 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
         trace.mark("Native mod enable started")
         ModManager.enableLoadedMods()
         trace.mark("Native mod enable finished")
+        setLeviKeepRunningInBackground(FeatureSettings.getInstance().isForegroundServiceEnabled())
         trace.mark("Mojang MainActivity super.onCreate starting")
         try {
             gameRuntimeStarted = true
@@ -127,6 +129,8 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
             return
         }
         trace.mark("Mojang MainActivity super.onCreate finished")
+
+        MinecraftForegroundService.startIfEnabled(this)
 
         val launchVertically = intent.getBooleanExtra("LAUNCH_VERTICALLY", false)
         if (launchVertically) {
@@ -446,6 +450,8 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
         MinecraftActivityState.onDestroyed(this)
         MinecraftLaunchSession.clear()
         stopInbuiltModServices()
+        setLeviKeepRunningInBackground(false)
+        MinecraftForegroundService.stop(this)
 
         try {
             super.onDestroy()
