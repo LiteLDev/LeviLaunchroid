@@ -1,3 +1,11 @@
+<!-- NOTE: Keep this file aligned with the English default (values/strings.xml):
+     same resource keys and order, comments, sections, XML structure, and formatting
+     (including indentation, spaces, and blank lines).
+
+     Translations must remain grammatically and linguistically correct for the target
+     language. Locale-specific plural forms may differ when required by the language.
+     Do not change placeholders or resource attributes. -->
+
 <resources>
     <!-- Common -->
     <string name="app_name">LeviLauncher</string>
@@ -68,6 +76,7 @@
     <string name="files_processed">%d mod dosyası başarıyla işlendi</string>
     <string name="user_cancelled">İçe aktarma kullanıcı tarafından iptal edildi</string>
 
+
     <string name="exit">Çıkış</string>
 
     <string name="overlay_permission_message">Lütfen katman iznini verin</string>
@@ -102,11 +111,12 @@
     <string name="settings_tab_migration">Taşıma</string>
     <string name="settings_theme_desc">Uygulama temasını seçin</string>
 
+
     <string name="unknown_sources_permission_title">Yükleme İzni</string>
     <string name="unknown_sources_permission_message">Bu uygulamayı yüklemek veya güncellemek için bilinmeyen uygulamaların yüklenmesine izin verin. "İzin Ver"e tıklayarak sistem ayarlarını açın, bu uygulama için izni etkinleştirin ve devam etmek için geri dönün.</string>
 
     <string name="check_update">Güncellemeleri Kontrol Et</string>
-    <string name="version_prefix">Sürüm: </string>
+    <string name="version_prefix">Sürüm:</string>
     <string name="unknown_error">Bilinmeyen hata</string>
     <string name="preloader_sigs_title">Çalışma zamanı verileri</string>
     <string name="preloader_sigs_last_update">Son güncelleme: %1$s</string>
@@ -130,6 +140,9 @@
     <string name="dialog_message_disable_version_isolation">Sürüm yalıtımı etkinken yüklü bir sürümü başlatmaya çalışıyorsunuz. Devam etmek için sürüm yalıtımını devre dışı bırakın.</string>
     <string name="dialog_positive_disable">Devre Dışı Bırak</string>
     <string name="dialog_positive_ok">Tamam</string>
+    <string name="delete_account_title">Hesabı Sil</string>
+    <string name="delete_account_confirm">Bu hesabı silmek istediğinizden emin misiniz?</string>
+
 
     <string name="new_version_found">Yeni sürüm bulundu: %1$s</string>
     <string name="update_question">En son sürümü indirip yüklemek istiyor musunuz?</string>
@@ -157,7 +170,7 @@
     <string name="repair_preparing">Hazırlanıyor…</string>
     <string name="repair_processing">Kütüphaneler çıkarılıyor…</string>
     <string name="repair_finalizing">Onarım tamamlanıyor…</string>
-
+    <!-- Storage Migration -->
     <string name="storage_migration_title">Depolama Taşıması Gerekli</string>
     <string name="storage_migration_message">LeviLauncher, devam etmeden önce verileri games/org.levimc konumundan %1$s konumuna taşımalıdır.
 
@@ -202,21 +215,21 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="shared_storage_layout_mode_legacy">Orijinal dahili/harici dizinler</string>
     <string name="shared_storage_layout_status">Mevcut mod: %1$s\nDahili: %2$s\nHarici: %3$s</string>
     <string name="shared_storage_layout_changed">Depolama dizini seçimi güncellendi. Değişikliğin tam olarak uygulanması için Minecraft\'ı yeniden başlatın ve içerik yönetimini yeniden açın.</string>
-
+    <!-- Theme -->
     <string name="theme_title">Tema Modu</string>
     <string name="theme_follow_system">Sistemi Takip Et</string>
     <string name="theme_light">Açık Mod</string>
     <string name="theme_dark">Koyu Mod</string>
 
     <string name="error_no_browser">Kullanılabilir tarayıcı yok</string>
-
+    <!-- License & Security -->
     <string name="eula_title">LeviLauncher Lisans Sözleşmesi</string>
     <string name="eula_message"><b>LeviLauncher\'a Hoş Geldiniz</b>\n\nBu yazılımı kullanarak aşağıdakileri kabul etmiş olursunuz:\n\n• Bu <b>resmi olmayan</b> bir Minecraft başlatıcısıdır\n• <b>Lisanslı</b> bir Minecraft kopyasına sahip olmanız gerekir\n• Her türlü korsan kullanım veya hile yasaktır\n• Modlar/kaynak paketleri kendi sorumluluğunuzda kullanılır\n• Mojang/Microsoft ile bağlantılı değildir\n\nKullanmaya devam etmek kabul anlamına gelir</string>
     <string name="eula_agree">Kabul Et</string>
     <string name="eula_exit">Reddet</string>
 
     <string name="allow_unknown_sources">Devam etmeden önce lütfen bilinmeyen kaynaklardan yüklemeye izin verin</string>
-
+    <!-- Version Management -->
     <string name="dialog_title_delete_version">Sürümü Sil</string>
     <string name="dialog_message_delete_version">Bu özel sürümü silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</string>
     <string name="dialog_positive_delete">Sil</string>
@@ -236,7 +249,7 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="version_isolation">Sürüm Yalıtımı</string>
     <string name="launch_vertically">Dikey Başlat</string>
     <string name="launch_vertically_desc">Oyunu dikey modda başlatmaya zorla</string>
-
+    <!-- Instance Management -->
     <string name="instance_settings_title">Örnek Ayarları</string>
     <string name="instance_tab_general">Genel</string>
     <string name="instance_tab_launch_options">Başlatma Seçenekleri</string>
@@ -247,6 +260,16 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="instance_clear_icon">Temizle</string>
     <string name="instance_icon_hint">Sürüm klasörü altında LargeLogo.png olarak kaydedilecek. Değiştirmek için simgeye tıklayın.</string>
     <string name="instance_isolation_desc">Bu örnek için oyun verilerini yalıt. Diğer örnekler etkilenmez.</string>
+    <string name="instance_shortcut_title">Ana Ekran Kısayolu</string>
+    <string name="instance_shortcut_desc">Ad ve simge değişiklikleri otomatik olarak kaydedilir. Ana ekran kısayolunu oluşturmak veya güncellemek için Kısayol Ekle’ye dokunun.</string>
+    <string name="instance_shortcut_name">Kısayol Adı</string>
+    <string name="instance_shortcut_icon">Kısayol Simgesi</string>
+    <string name="instance_shortcut_choose_icon">Simge Seç</string>
+    <string name="instance_shortcut_default_icon">Varsayılanı Kullan</string>
+    <string name="instance_shortcut_add_button">Kısayol Ekle</string>
+    <string name="instance_settings_auto_save_failed">Bu örnek ayarı kaydedilemedi.</string>
+    <string name="instance_shortcut_not_supported">Ana ekran başlatıcınız sabitlenmiş kısayolları desteklemiyor.</string>
+    <string name="instance_shortcut_missing">Bu Minecraft örneği artık kullanılamıyor.</string>
     <string name="instance_danger_zone">Tehlikeli Bölge</string>
     <string name="instance_danger_zone_desc">Bu işlemler örnek kaydını veya yerel dosyaları etkiler. Devam etmeden önce iki kez kontrol edin.</string>
     <string name="instance_delete_desc">Bu örneği dünyalar, yapılandırmalar ve yüklü içerikler dahil olmak üzere cihazınızdan kalıcı olarak siler.</string>
@@ -284,6 +307,8 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="instance_restore_failed_message">Yedek geri yüklenemedi:\n%1$s</string>
 
     <!-- Language Setting -->
+    <!-- Keep English at the top (default language). -->
+    <!-- Sort all other languages alphabetically by their display name. -->
     <string name="language">Dil (Language)</string>
     <string name="english">İngilizce (English)</string>
     <string name="chinese">简体中文 (Chinese)</string>
@@ -377,6 +402,7 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="edit_world">Dünyayı Düzenle</string>
     <string name="edit">Düzenle</string>
     <string name="save">Kaydet</string>
+    <string name="reset">Sıfırla</string>
     <string name="saved_to_gallery">Galeriye kaydedildi</string>
     <string name="level_dat_not_found">level.dat bulunamadı</string>
     <string name="no_editable_properties">Düzenlenebilir özellik bulunamadı</string>
@@ -401,6 +427,20 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="add_at_least_one_layer">En az bir katman ekleyin</string>
     <string name="world_created_successfully">Dünya başarıyla oluşturuldu</string>
     <string name="failed_to_create_world">Dünya oluşturulamadı</string>
+    <string name="custom_flat_world_subtitle">Kendi biyomunuz ve blok katmanlarınızla bir dünya oluşturun</string>
+    <string name="world_settings">Dünya Ayarları</string>
+    <string name="world_settings_hint">Yeni dünya için temel ayarları seçin</string>
+    <string name="layers_title">Katmanlar</string>
+    <string name="add_layer_compact">Katman Ekle</string>
+    <string name="no_layers_title">Henüz katman yok</string>
+    <string name="no_layers_hint">Dünyayı oluşturmak için en az bir blok katmanı ekleyin</string>
+    <string name="reorder_layer">Katmanı yeniden sırala</string>
+    <string name="delete_layer">Katmanı sil</string>
+    <string name="block_id_hint">minecraft:stone</string>
+    <plurals name="flat_layers_count">
+        <item quantity="one">%1$d katman • alt → üst</item>
+        <item quantity="other">%1$d katman • alt → üst</item>
+    </plurals>
 
     <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">Play Store Sürümü Gerekli</string>
@@ -412,10 +452,57 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="genuine_badge_label">Lisans doğrulanmadı</string>
     <string name="invalid_license_detected_toast">Orijinal olmayan Minecraft algılandı. Minecraft\'ın Google Play Store\'dan olduğundan emin olun</string>
 
-    <string name="full_mods_title">Modlar </string>
+    <string name="full_mods_title">Modlar</string>
     <string name="total_mods">Toplam Mod:</string>
     <string name="enabled_mods">Etkin:</string>
     <string name="add_mod">Mod Ekle</string>
+    <string name="scan_downloads">Tara</string>
+    <string name="scan_downloads_scanning">Taranıyor…</string>
+    <string name="scan_downloads_none_found">İndirilenler’de .levipack veya .so mod bulunamadı</string>
+    <string name="scan_downloads_failed">İndirilenler taranamadı</string>
+    <string name="scan_downloads_permission_denied">İndirilenler’i taramak için depolama erişimi gerekiyor</string>
+    <string name="scan_downloads_results_title">İndirilenler’deki Modlar</string>
+    <string name="scan_downloads_results_subtitle">Eklemek için bir mod seçin. Tarama yalnızca ana İndirilenler klasörünü kontrol eder.</string>
+    <string name="scan_downloads_add">Ekle</string>
+    <string name="scan_downloads_adding">Ekleniyor…</string>
+    <string name="scan_downloads_added">Eklendi</string>
+    <string name="scan_downloads_added_message">%1$s eklendi</string>
+    <string name="scan_downloads_levipack">LeviPack</string>
+    <string name="scan_downloads_native_library">Yerel kitaplık</string>
+    <string name="scan_downloads_file_details">%1$s • %2$s</string>
+    <string name="external_mods">Harici Modlar</string>
+    <string name="external_mods_subtitle">Minecraft %1$s için topluluk modları</string>
+    <string name="external_mods_no_version">Mod yüklemeden önce bir Minecraft sürümü seçin</string>
+    <string name="external_mods_search_hint">Mod, geliştirici veya sürüm ara…</string>
+    <string name="external_mods_compatible_only">Yalnızca uyumlu</string>
+    <string name="external_mods_all_versions">Tüm Minecraft sürümleri</string>
+    <string name="external_mods_sort_newest">En yeni</string>
+    <string name="external_mods_sort_name">Ad A–Z</string>
+    <string name="external_mods_empty">Bu filtrelerle eşleşen mod yok</string>
+    <string name="external_mods_load_failed">Katalog yenilenemedi. Kaydedilmiş kopya gösteriliyor.</string>
+    <string name="external_mods_refresh">Kataloğu yenile</string>
+    <string name="external_mods_refreshed">Katalog yenilendi</string>
+    <string name="external_mods_join_discord">Topluluk Discord’una Katıl</string>
+    <string name="external_mods_discord_open_failed">Discord davetini açabilecek bir uygulama yok</string>
+    <string name="external_mods_download">%1$s indiriliyor</string>
+    <string name="external_mods_importing">Mod içe aktarılıyor…</string>
+    <string name="external_mods_installed">%1$s yüklendi</string>
+    <string name="external_mods_install_failed">%1$s yüklenemedi: %2$s</string>
+    <string name="external_mods_open_failed">Bu indirmeyi açabilecek bir tarayıcı yok</string>
+    <string name="external_mods_direct_download">Doğrudan indirme</string>
+    <string name="external_mods_ad_download">Reklamlı indirme</string>
+    <string name="external_mods_external_link">Harici bağlantı</string>
+    <string name="external_mods_open_link">Bağlantıyı Aç</string>
+    <string name="external_mods_external_dialog_title">Harici İndirme</string>
+    <string name="external_mods_ad_dialog_title">Reklam Destekli İndirme</string>
+    <string name="external_mods_external_dialog_message">%1$s, LeviLauncher dışında bir indirme sayfası kullanıyor.\n\n1. Bağlantıyı Aç’a dokunun ve .levipack veya .so dosyasını indirin.\n2. LeviLauncher’a dönün ve Modlar’ı açın.\n3. Tara’ya dokunun.\n4. İçe aktarmak istediğiniz modun yanındaki Ekle’ye dokunun.\n\nTarama yalnızca ana İndirilenler klasörünü kontrol eder. Tarayıcınız dosyayı başka bir yere kaydettiyse buraya taşıyın.</string>
+    <string name="external_mods_ad_dialog_message">%1$s, geliştiricisi tarafından seçilen reklam destekli bir indirme sayfası kullanıyor. LeviLauncher bu sayfayı veya reklamlarını kontrol etmez.\n\n1. Bağlantıyı Aç’a dokunun ve .levipack veya .so dosyasını indirin.\n2. LeviLauncher’a dönün ve Modlar’ı açın.\n3. Tara’ya dokunun.\n4. İçe aktarmak istediğiniz modun yanındaki Ekle’ye dokunun.\n\nTarama yalnızca ana İndirilenler klasörünü kontrol eder. Yalnızca mod dosyasını indirin; ilgisiz uygulamalar yüklemeyin veya bildirimlere izin vermeyin.</string>
+    <string name="external_mods_by_author">%1$s tarafından</string>
+    <string name="external_mods_version">Mod %1$s</string>
+    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
+    <string name="external_mods_update">Güncelle</string>
+    <string name="external_mods_installed_button">Yüklendi</string>
+    <string name="external_mods_incompatible">Uyumsuz</string>
 
     <!-- Mod Detail -->
     <string name="mod_detail_title">Mod Ayrıntıları</string>
@@ -463,7 +550,7 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="mod_config_error_maximum">%1$s en fazla %2$s olmalıdır</string>
     <string name="mod_config_error_boolean">%1$s açık veya kapalı olmalıdır</string>
     <string name="mod_config_error_string">%1$s metin olmalıdır</string>
-
+    <!-- Mod Configuration -->
     <plurals name="mod_config_files_count">
         <item quantity="one">%d düzenlenebilir yapılandırma</item>
         <item quantity="other">%d düzenlenebilir yapılandırma</item>
@@ -506,13 +593,45 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="accounts_active_privilege">Oturum açıldı</string>
 
     <string name="ms_login_title">Microsoft Girişi</string>
+    <string name="ms_login_header_subtitle">Minecraft’ta güvenli şekilde oturum açın</string>
     <string name="ms_login_starting">Microsoft girişi başlatılıyor…</string>
     <string name="ms_login_exchanging">Jeton değiştiriliyor…</string>
     <string name="ms_login_auth_xbox_device">Xbox cihazı doğrulanıyor…</string>
     <string name="ms_login_fetch_minecraft_identity">Minecraft kimliği alınıyor…</string>
+    <string name="ms_login_retrying">Bağlantı kesildi. Güvenli şekilde yeniden deneniyor…</string>
     <string name="ms_login_success">%1$s olarak oturum açıldı</string>
     <string name="ms_login_failed">Microsoft girişi başarısız</string>
     <string name="ms_login_failed_detail">Giriş başarısız: %1$s</string>
+    <string name="ms_choose_login_method">Minecraft’ta oturum aç</string>
+    <string name="ms_choose_login_method_desc">Tarayıcı tabanlı cihaz kodu akışını seçin veya gömülü Microsoft sayfasıyla devam edin.</string>
+    <string name="ms_device_code_login">Tarayıcıyla devam et</string>
+    <string name="ms_device_code_option_title">Cihaz Kodu (Önerilen)</string>
+    <string name="ms_device_code_login_desc">Cihaz kodu önceden doldurulmuş özel bir tarayıcı oturumu açın.</string>
+    <string name="ms_webview_login">Gömülü oturum açmayı aç</string>
+    <string name="ms_webview_option_title">Gömülü WebView</string>
+    <string name="ms_webview_login_desc">LeviLauncher’dan çıkmadan oturum açın. Tarayıcı akışı kullanılamadığında bunu kullanın.</string>
+    <string name="ms_device_code_title">Cihaz Koduyla Oturum Aç</string>
+    <string name="ms_device_code_instructions">Microsoft’un cihaz oturum açma sayfasını açın, bu kodu girin ve erişimi onaylayın. LeviLauncher otomatik olarak tamamlayacaktır.</string>
+    <string name="ms_device_code_label">Microsoft cihaz kodu</string>
+    <string name="ms_device_code_requesting">Güvenli kod isteniyor…</string>
+    <string name="ms_device_code_waiting_code">--------</string>
+    <string name="ms_device_code_waiting">Tarayıcıda tamamlamanız bekleniyor…</string>
+    <string name="ms_device_code_checking">Microsoft oturum açma sonucu kontrol ediliyor…</string>
+    <string name="ms_device_code_reconnecting">Bağlantı değişti. Otomatik olarak yeniden deneniyor…</string>
+    <string name="ms_device_code_authorized">Microsoft oturum açmayı onayladı. Tamamlanıyor…</string>
+    <string name="ms_device_code_browser_opened">Tarayıcınızda yeni Microsoft oturum açmasını tamamlayın, ardından buraya dönün.</string>
+    <string name="ms_device_code_expires">Kod %1$d:%2$02d içinde sona eriyor</string>
+    <string name="ms_device_code_copy">Kodu Kopyala</string>
+    <string name="ms_device_code_copied">Kod kopyalandı</string>
+    <string name="ms_device_code_open_browser">Microsoft oturum açmayı aç</string>
+    <string name="ms_device_code_step_title">Oturum açmayı tarayıcınızda tamamlayın</string>
+    <string name="ms_device_code_browser_note">LeviLauncher varsayılan tarayıcınızı özel bir oturumda açar, kodu otomatik doldurur ve yeni bir Microsoft oturum açması ister.</string>
+    <string name="ms_choose_other_method">Diğer yöntem</string>
+    <string name="ms_no_browser">Bu cihazda kullanılabilir tarayıcı yok.</string>
+    <string name="ms_default_browser_no_private_mode">Varsayılan tarayıcınız özel oturum açmayı desteklemiyor. Güncelleyin veya WebView oturum açmayı kullanın.</string>
+    <string name="ms_login_ssl_failed">Güvenli Microsoft oturum açma sayfası doğrulanamadı.</string>
+    <string name="ms_login_state_failed">Microsoft oturum açma yanıtı doğrulanamadı. Oturum açmayı yeniden başlatın.</string>
+    <string name="ms_login_missing_code">Microsoft bir oturum açma kodu döndürmedi. Oturum açmayı yeniden başlatın veya Cihaz Kodu ile oturum açmayı kullanın.</string>
 
     <string name="ms_set_active">Etkin Olarak Ayarla</string>
     <string name="ms_delete">Sil</string>
@@ -525,10 +644,14 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="go_to_accounts">Hesaplar</string>
     <string name="disable_launcher_login_and_continue">Kapat</string>
 
+    <string name="ms_feature_disabled_title">Özellik Devre Dışı</string>
+    <string name="ms_feature_disabled_desc">Microsoft hesaplarını yönetmek için Ayarlar’da “LeviLauncher ile Minecraft’ta oturum aç” seçeneğini etkinleştirin.</string>
+    <string name="ms_activated">Etkinleştirildi</string>
+
     <!-- Popup labels -->
     <string name="label_current_account">Mevcut Hesap</string>
     <string name="label_other_accounts">Diğer Hesaplar</string>
-
+    <!-- Crash & Diagnostics -->
     <string name="crash_title">Uygulama çöktü</string>
     <string name="crash_upload">Çökme raporu yükleme</string>
     <string name="crash_details_title">Çökme ayrıntıları</string>
@@ -547,9 +670,15 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="dialog_message_exit_app">Çıkmak istediğinizden emin misiniz?</string>
     <string name="dialog_positive_exit">Çık</string>
     <string name="show_logcat_overlay">Logcat katmanı</string>
+    <string name="foreground_service">Ön plan hizmeti</string>
+    <string name="foreground_service_desc">Uygulamalar arasında geçiş yaparken Bedrock’un etkin oturumu askıya almasını önleyerek ve işlem, CPU ile Wi-Fi’yi etkin tutarak Minecraft’ın çalışmaya devam etmesini sağlar.</string>
+    <string name="foreground_service_warning">Not: Telefonunuzun daha hızlı ısınmasına ve pil kullanımının artmasına neden olabilir.</string>
+    <string name="foreground_service_channel">Minecraft arka plan koruması</string>
+    <string name="foreground_service_notification_title">Minecraft etkin tutuluyor</string>
+    <string name="foreground_service_notification_text">Minecraft arka plan modu etkin. Geçerli oturum için CPU ve ağ erişimi kullanılabilir tutuluyor.</string>
     <string name="logcat_live">Logcat: <b>canlı</b></string>
     <string name="logcat_paused">Logcat: duraklatıldı</string>
-    <!-- Logcat Overlay -->
+    <!-- Logcat Overlay i18n -->
     <string name="logcat_filter_hint">Anahtar kelime filtresi</string>
     <string name="logcat_blacklist_hint">Kara liste (virgülle ayrılmış)</string>
     <string name="logcat_filter_clear">Filtreleri temizle</string>
@@ -570,8 +699,8 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="inbuilt_mod_removed">%s modlardan kaldırıldı</string>
     <string name="add">Ekle</string>
     <string name="remove">Kaldır</string>
-
-    <!-- Inbuilt Mod Names -->
+    
+    <!-- Inbuilt Mods -->
     <string name="inbuilt_mod_quick_drop">Hızlı Bırak</string>
     <string name="inbuilt_mod_quick_drop_desc">Eşyaları hızlıca bırak</string>
     <string name="inbuilt_mod_camera">Hızlı Bakış Açısı</string>
@@ -599,12 +728,20 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="virtual_cursor_enabled">İmleç etkinleştirildi</string>
     <string name="virtual_cursor_disabled">İmleç devre dışı bırakıldı</string>
     <string name="cursor_sensitivity_label">İmleç Hassasiyeti:</string>
+    <string name="inbuilt_mod_gyro">Jiroskop</string>
+    <string name="inbuilt_mod_gyro_desc">Kamera dönüşünü kontrol etmek için cihaz jiroskobunu kullanın</string>
+    <string name="inbuilt_mod_pojav_controls">Pojav Kontrolleri</string>
+    <string name="inbuilt_mod_pojav_controls_desc">Minecraft dokunmatik kontrollerini tamamen özelleştirilebilir Pojav tarzı kontrollerle değiştirin</string>
+    <string name="inbuilt_mod_more_buttons">Daha Fazla Düğme</string>
+    <string name="inbuilt_mod_more_buttons_desc">Tek tuş eşlemeleri ve SVG simgeleriyle özel ekran düğmeleri oluşturun</string>
     <string name="inbuilt_badge">YERLEŞİK</string>
     <string name="autosprint_keybind_label">Otomatik Koş Tuşu:</string>
     <string name="autosprint_keybind_press">Herhangi bir tuşa basın…</string>
     <string name="configure">Yapılandır</string>
     <string name="overlay_button_size">Katman Düğmesi Boyutu</string>
     <string name="overlay_button_opacity">Katman Düğmesi Opaklığı</string>
+    <string name="overlay_button_size_value">Boyut: %1$ddp</string>
+    <string name="overlay_button_opacity_value">Opaklık: %1$d%%</string>
     <string name="overlay_button_lock">Konumu Kilitle</string>
     <string name="overlay_button_lock_desc">Sürüklemeyi ve yanlışlıkla etkinleştirmeyi engelle</string>
     <string name="settings">Ayarlar</string>
@@ -626,13 +763,33 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <!-- Mod Menu -->
     <string name="mod_menu">Mod Menüsü</string>
     <string name="mod_menu_modules">Modüller</string>
+    <string name="mod_menu_favorites">Favoriler</string>
+    <string name="mod_menu_favorite">Favorilere ekle</string>
+    <string name="mod_menu_unfavorite">Favorilerden kaldır</string>
+    <string name="mod_menu_hud_editor">HUD Düzenleyici</string>
+    <string name="mod_menu_filter_enabled">Etkin</string>
+    <string name="mod_menu_filter_inbuilt">Yerleşik</string>
+    <string name="mod_menu_filter_external">Harici</string>
     <string name="mod_menu_search_hint">Mod ara…</string>
     <string name="mod_menu_no_mods">Mod eklenmedi</string>
+    <string name="mod_menu_no_favorites">Henüz favori mod yok</string>
+    <string name="mod_menu_no_matches">Eşleşen mod yok</string>
+    <string name="mod_menu_group_inbuilt">Yerleşik Özellikler</string>
+    <string name="mod_menu_group_external_ungrouped">Gruplandırılmamış Harici Modlar</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">Genel Ayarlar</string>
+    <string name="mod_menu_appearance">Görünüm</string>
+    <string name="mod_menu_pause_menu_only">Yalnızca Duraklatma Menüsü</string>
+    <string name="mod_menu_pause_menu_only_desc">Mod menüsünü yalnızca duraklatma ekranında göster</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">Ayarlar yakında geliyor</string>
     <string name="mod_menu_notifications">Bildirimler</string>
     <string name="mod_menu_notifications_desc">Modlar etkinleştirildiğinde bildirim göster</string>
     <string name="mod_menu_opacity">Mod Menüsü Opaklığı</string>
     <string name="mod_menu_button_opacity">Mod Menüsü Düğmesi Opaklığı</string>
+    <string name="mod_menu_compact">Kompakt Mod Menüsü</string>
+    <string name="mod_menu_compact_desc">Yoğun modül listesi ve kompakt filtrelerle daha küçük bir menü kullanın</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">Mod Menüsü etkinleştirildi</string>
     <string name="mod_menu_disabled">Mod Menüsü devre dışı bırakıldı</string>
@@ -641,6 +798,35 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="mod_status_enabled">Etkin</string>
     <string name="mod_status_disabled">Devre Dışı</string>
     <string name="mod_notification_enabled">%s etkinleştirildi</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">Yer paylaşımı düğmesi boyutu (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">Yer paylaşımı opaklığı (%)</string>
+    <string name="mod_config_overlay_show_everywhere" formatted="false">Her Yerde Göster</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">İmleç hassasiyeti (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">Yakınlaştırma seviyesi (%)</string>
+    <string name="mod_config_auto_sprint_keybind">Otomatik koşu tuş ataması</string>
+    <string name="mod_config_zoom_keybind">Yakınlaştırma tuş ataması</string>
+    <string name="mod_config_zoom_transition">Geçiş Süresi (ms)</string>
+    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">Hassasiyet Çarpanı (100% = 1x)</string>
+    <string name="mod_config_gyro_horizontal_speed" formatted="false">Yatay Hız (%)</string>
+    <string name="mod_config_gyro_vertical_speed" formatted="false">Dikey Hız (%)</string>
+    <string name="mod_config_gyro_small_movement_filter">Küçük Hareket Filtresi (0 = Kapalı)</string>
+    <string name="mod_config_gyro_sensitivity_x" formatted="false">Yatay Hassasiyet (%)</string>
+    <string name="mod_config_gyro_sensitivity_y" formatted="false">Dikey Hassasiyet (%)</string>
+    <string name="mod_config_gyro_invert_x">Yatay Ekseni Ters Çevir</string>
+    <string name="mod_config_gyro_invert_y">Dikey Ekseni Ters Çevir</string>
+    <string name="mod_config_gyro_deadzone">Ölü Bölge</string>
+    <string name="mod_config_press_any_key">Atamak için herhangi bir tuşa basın...</string>
+    <string name="mod_config_key_unknown">BİLİNMİYOR</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="hud_editor_drag_hint">Paneli taşımak için sürükleyin</string>
+    <string name="hud_editor_drag_description">HUD Düzenleyici. Paneli taşımak için bu alanı sürükleyin.</string>
 
     <!-- Options Editor -->
     <string name="edit_options">Seçenekleri Düzenle</string>
@@ -767,7 +953,7 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
         <item>CurseForge, topluluk içeriklerine doğrudan göz atmanızı ve indirmenizi sağlar.</item>
         <item>Minecraft özelliklerini ve performansını genişletmek veya geliştirmek için mod içe aktarın.</item>
     </string-array>
-
+    <!-- Personalization -->
     <string name="theme_color_title">Tema Rengi</string>
     <string name="theme_color_desc">Uygulamanın birincil vurgu rengi</string>
     <string name="preset_colors">HAZIR RENKLER</string>
@@ -785,95 +971,8 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
 
     <string name="unsupported_version_title">Desteklenmeyen Sürüm</string>
     <string name="unsupported_version_msg">Bu başlatıcı 1.21.80\'den eski Minecraft sürümlerini desteklemiyor.</string>
-    <!-- Mod Menu synced translations -->
-    <string name="mod_menu_favorites">Favoriler</string>
-    <string name="mod_menu_favorite">Favorilere ekle</string>
-    <string name="mod_menu_unfavorite">Favorilerden kaldır</string>
-    <string name="mod_menu_hud_editor">HUD Düzenleyici</string>
-    <string name="mod_menu_filter_enabled">Etkin</string>
-    <string name="mod_menu_filter_inbuilt">Yerleşik</string>
-    <string name="mod_menu_filter_external">Harici</string>
-    <string name="mod_menu_no_favorites">Henüz favori mod yok</string>
-    <string name="mod_menu_no_matches">Eşleşen mod yok</string>
-    <string name="mod_menu_group_inbuilt">Yerleşik Özellikler</string>
-    <string name="mod_menu_group_external_ungrouped">Gruplandırılmamış Harici Modlar</string>
-    <string name="mod_menu_module_count">%1$d / %2$d</string>
-    <string name="mod_menu_general_settings">Genel Ayarlar</string>
-    <string name="mod_menu_appearance">Görünüm</string>
-    <string name="mod_menu_pause_menu_only">Yalnızca Duraklatma Menüsü</string>
-    <string name="mod_menu_pause_menu_only_desc">Mod menüsünü yalnızca duraklatma ekranında göster</string>
-    <string name="mod_menu_default_percent" formatted="false">100%</string>
-    <string name="mod_menu_percent_value">%1$d%%</string>
-    <string name="mod_overlay_fps_unknown">FPS: --</string>
-    <string name="mod_overlay_fps_value">FPS: %1$d</string>
-    <string name="mod_overlay_cps_value">CPS: %1$d</string>
-    <string name="mod_config_overlay_button_size_dp">Yer paylaşımı düğmesi boyutu (dp)</string>
-    <string name="mod_config_overlay_opacity_percent" formatted="false">Yer paylaşımı opaklığı (%)</string>
-    <string name="mod_config_cursor_sensitivity_percent" formatted="false">İmleç hassasiyeti (%)</string>
-    <string name="mod_config_zoom_level_percent" formatted="false">Yakınlaştırma seviyesi (%)</string>
-    <string name="mod_config_auto_sprint_keybind">Otomatik koşu tuş ataması</string>
-    <string name="mod_config_zoom_keybind">Yakınlaştırma tuş ataması</string>
-    <string name="mod_config_press_any_key">Atamak için herhangi bir tuşa basın...</string>
-    <string name="mod_config_key_unknown">BİLİNMİYOR</string>
-    <string name="mod_config_color_alpha_short">A</string>
-    <string name="mod_config_color_red_short">R</string>
-    <string name="mod_config_color_green_short">G</string>
-    <string name="mod_config_color_blue_short">B</string>
-    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
-    <string name="overlay_button_size_value">Boyut: %1$ddp</string>
-    <string name="overlay_button_opacity_value">Opaklık: %1$d%%</string>
-    <string name="reset">Sıfırla</string>
-    <!-- Completed localization coverage -->
-    <string name="delete_account_title">Hesabı Sil</string>
-    <string name="delete_account_confirm">Bu hesabı silmek istediğinizden emin misiniz?</string>
-    <string name="ms_login_header_subtitle">Minecraft’ta güvenli şekilde oturum açın</string>
-    <string name="ms_login_retrying">Bağlantı kesildi. Güvenli şekilde yeniden deneniyor…</string>
-    <string name="ms_choose_login_method">Minecraft’ta oturum aç</string>
-    <string name="ms_choose_login_method_desc">Tarayıcı tabanlı cihaz kodu akışını seçin veya gömülü Microsoft sayfasıyla devam edin.</string>
-    <string name="ms_device_code_login">Tarayıcıyla devam et</string>
-    <string name="ms_device_code_option_title">Cihaz Kodu (Önerilen)</string>
-    <string name="ms_device_code_login_desc">Cihaz kodu önceden doldurulmuş özel bir tarayıcı oturumu açın.</string>
-    <string name="ms_webview_login">Gömülü oturum açmayı aç</string>
-    <string name="ms_webview_option_title">Gömülü WebView</string>
-    <string name="ms_webview_login_desc">LeviLauncher’dan çıkmadan oturum açın. Tarayıcı akışı kullanılamadığında bunu kullanın.</string>
-    <string name="ms_device_code_title">Cihaz Koduyla Oturum Aç</string>
-    <string name="ms_device_code_instructions">Microsoft’un cihaz oturum açma sayfasını açın, bu kodu girin ve erişimi onaylayın. LeviLauncher otomatik olarak tamamlayacaktır.</string>
-    <string name="ms_device_code_label">Microsoft cihaz kodu</string>
-    <string name="ms_device_code_requesting">Güvenli kod isteniyor…</string>
-    <string name="ms_device_code_waiting_code">--------</string>
-    <string name="ms_device_code_waiting">Tarayıcıda tamamlamanız bekleniyor…</string>
-    <string name="ms_device_code_checking">Microsoft oturum açma sonucu kontrol ediliyor…</string>
-    <string name="ms_device_code_reconnecting">Bağlantı değişti. Otomatik olarak yeniden deneniyor…</string>
-    <string name="ms_device_code_authorized">Microsoft oturum açmayı onayladı. Tamamlanıyor…</string>
-    <string name="ms_device_code_browser_opened">Tarayıcınızda yeni Microsoft oturum açmasını tamamlayın, ardından buraya dönün.</string>
-    <string name="ms_device_code_expires">Kod %1$d:%2$02d içinde sona eriyor</string>
-    <string name="ms_device_code_copy">Kodu Kopyala</string>
-    <string name="ms_device_code_copied">Kod kopyalandı</string>
-    <string name="ms_device_code_open_browser">Microsoft oturum açmayı aç</string>
-    <string name="ms_device_code_step_title">Oturum açmayı tarayıcınızda tamamlayın</string>
-    <string name="ms_device_code_browser_note">LeviLauncher varsayılan tarayıcınızı özel bir oturumda açar, kodu otomatik doldurur ve yeni bir Microsoft oturum açması ister.</string>
-    <string name="ms_choose_other_method">Diğer yöntem</string>
-    <string name="ms_no_browser">Bu cihazda kullanılabilir tarayıcı yok.</string>
-    <string name="ms_default_browser_no_private_mode">Varsayılan tarayıcınız özel oturum açmayı desteklemiyor. Güncelleyin veya WebView oturum açmayı kullanın.</string>
-    <string name="ms_login_ssl_failed">Güvenli Microsoft oturum açma sayfası doğrulanamadı.</string>
-    <string name="ms_login_state_failed">Microsoft oturum açma yanıtı doğrulanamadı. Oturum açmayı yeniden başlatın.</string>
-    <string name="ms_login_missing_code">Microsoft bir oturum açma kodu döndürmedi. Oturum açmayı yeniden başlatın veya Cihaz Kodu ile oturum açmayı kullanın.</string>
-    <string name="ms_feature_disabled_title">Özellik Devre Dışı</string>
-    <string name="ms_feature_disabled_desc">Microsoft hesaplarını yönetmek için Ayarlar’da “LeviLauncher ile Minecraft’ta oturum aç” seçeneğini etkinleştirin.</string>
-    <string name="ms_activated">Etkinleştirildi</string>
-    <string name="inbuilt_mod_gyro">Jiroskop</string>
-    <string name="inbuilt_mod_gyro_desc">Kamera dönüşünü kontrol etmek için cihaz jiroskobunu kullanın</string>
-    <string name="inbuilt_mod_pojav_controls">Pojav Kontrolleri</string>
-    <string name="inbuilt_mod_pojav_controls_desc">Minecraft dokunmatik kontrollerini tamamen özelleştirilebilir Pojav tarzı kontrollerle değiştirin</string>
-    <string name="inbuilt_mod_more_buttons">Daha Fazla Düğme</string>
-    <string name="inbuilt_mod_more_buttons_desc">Tek tuş eşlemeleri ve SVG simgeleriyle özel ekran düğmeleri oluşturun</string>
-    <string name="mod_config_overlay_show_everywhere" formatted="false">Her Yerde Göster</string>
-    <string name="mod_config_zoom_transition">Geçiş Süresi (ms)</string>
-    <string name="mod_config_gyro_sensitivity_x" formatted="false">Yatay Hassasiyet (%)</string>
-    <string name="mod_config_gyro_sensitivity_y" formatted="false">Dikey Hassasiyet (%)</string>
-    <string name="mod_config_gyro_invert_x">Yatay Ekseni Ters Çevir</string>
-    <string name="mod_config_gyro_invert_y">Dikey Ekseni Ters Çevir</string>
-    <string name="mod_config_gyro_deadzone">Ölü Bölge</string>
+
+    <!-- Generic UI strings added during localization cleanup -->
     <string name="close">Kapat</string>
     <string name="previous">Önceki</string>
     <string name="next">İleri</string>
@@ -923,6 +1022,8 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="custom_color_hint">#RRGGBB veya R,G,B</string>
     <string name="screenshot_name_placeholder">Ekran Görüntüsü Adı</string>
     <string name="screenshot_date_placeholder">Tarih: 2024-01-01 12:00:00</string>
+
+    <!-- More Buttons editor -->
     <string name="more_buttons_intro">Her biri tam olarak bir klavye tuşuna eşlenen Minecraft tarzı ekran düğmeleri oluşturun. Düğmeler makro, tuş dizisi, otomatik tekrar veya otomatik tıklama çalıştırmaz.</string>
     <string name="more_buttons_add_button">Düğme Ekle</string>
     <string name="more_buttons_limit_reached">En fazla %1$d özel düğme sınırına ulaşıldı.</string>
@@ -980,99 +1081,17 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="more_buttons_no_svg_selected">SVG seçilmedi</string>
     <string name="more_buttons_default_name">Düğme</string>
 
+
     <!-- Hotbar Slot -->
     <string name="inbuilt_mod_hotbar_slot">Hızlı Erişim Yuvası</string>
     <string name="inbuilt_mod_hotbar_slot_desc">Hızlı erişim yuvalarını seçmek için ayrı 1–9 düğmeleri ekler</string>
     <string name="hotbar_slot_content_description">Hızlı erişim yuvası %1$d</string>
-
-
-    <!-- Added translations for strings present in the current English resources -->
-    <string name="instance_shortcut_title">Ana Ekran Kısayolu</string>
-    <string name="instance_shortcut_desc">Ad ve simge değişiklikleri otomatik olarak kaydedilir. Ana ekran kısayolunu oluşturmak veya güncellemek için Kısayol Ekle’ye dokunun.</string>
-    <string name="instance_shortcut_name">Kısayol Adı</string>
-    <string name="instance_shortcut_icon">Kısayol Simgesi</string>
-    <string name="instance_shortcut_choose_icon">Simge Seç</string>
-    <string name="instance_shortcut_default_icon">Varsayılanı Kullan</string>
-    <string name="instance_shortcut_add_button">Kısayol Ekle</string>
-    <string name="instance_settings_auto_save_failed">Bu örnek ayarı kaydedilemedi.</string>
-    <string name="instance_shortcut_not_supported">Ana ekran başlatıcınız sabitlenmiş kısayolları desteklemiyor.</string>
-    <string name="instance_shortcut_missing">Bu Minecraft örneği artık kullanılamıyor.</string>
-    <string name="custom_flat_world_subtitle">Kendi biyomunuz ve blok katmanlarınızla bir dünya oluşturun</string>
-    <string name="world_settings">Dünya Ayarları</string>
-    <string name="world_settings_hint">Yeni dünya için temel ayarları seçin</string>
-    <string name="layers_title">Katmanlar</string>
-    <string name="add_layer_compact">Katman Ekle</string>
-    <string name="no_layers_title">Henüz katman yok</string>
-    <string name="no_layers_hint">Dünyayı oluşturmak için en az bir blok katmanı ekleyin</string>
-    <string name="reorder_layer">Katmanı yeniden sırala</string>
-    <string name="delete_layer">Katmanı sil</string>
-    <string name="block_id_hint">minecraft:stone</string>
-    <string name="scan_downloads">Tara</string>
-    <string name="scan_downloads_scanning">Taranıyor…</string>
-    <string name="scan_downloads_none_found">İndirilenler’de .levipack veya .so mod bulunamadı</string>
-    <string name="scan_downloads_failed">İndirilenler taranamadı</string>
-    <string name="scan_downloads_permission_denied">İndirilenler’i taramak için depolama erişimi gerekiyor</string>
-    <string name="scan_downloads_results_title">İndirilenler’deki Modlar</string>
-    <string name="scan_downloads_results_subtitle">Eklemek için bir mod seçin. Tarama yalnızca ana İndirilenler klasörünü kontrol eder.</string>
-    <string name="scan_downloads_add">Ekle</string>
-    <string name="scan_downloads_adding">Ekleniyor…</string>
-    <string name="scan_downloads_added">Eklendi</string>
-    <string name="scan_downloads_added_message">%1$s eklendi</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">Yerel kitaplık</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
-    <string name="external_mods">Harici Modlar</string>
-    <string name="external_mods_subtitle">Minecraft %1$s için topluluk modları</string>
-    <string name="external_mods_no_version">Mod yüklemeden önce bir Minecraft sürümü seçin</string>
-    <string name="external_mods_search_hint">Mod, geliştirici veya sürüm ara…</string>
-    <string name="external_mods_compatible_only">Yalnızca uyumlu</string>
-    <string name="external_mods_all_versions">Tüm Minecraft sürümleri</string>
-    <string name="external_mods_sort_newest">En yeni</string>
-    <string name="external_mods_sort_name">Ad A–Z</string>
-    <string name="external_mods_empty">Bu filtrelerle eşleşen mod yok</string>
-    <string name="external_mods_load_failed">Katalog yenilenemedi. Kaydedilmiş kopya gösteriliyor.</string>
-    <string name="external_mods_refresh">Kataloğu yenile</string>
-    <string name="external_mods_refreshed">Katalog yenilendi</string>
-    <string name="external_mods_join_discord">Topluluk Discord’una Katıl</string>
-    <string name="external_mods_discord_open_failed">Discord davetini açabilecek bir uygulama yok</string>
-    <string name="external_mods_download">%1$s indiriliyor</string>
-    <string name="external_mods_importing">Mod içe aktarılıyor…</string>
-    <string name="external_mods_installed">%1$s yüklendi</string>
-    <string name="external_mods_install_failed">%1$s yüklenemedi: %2$s</string>
-    <string name="external_mods_open_failed">Bu indirmeyi açabilecek bir tarayıcı yok</string>
-    <string name="external_mods_direct_download">Doğrudan indirme</string>
-    <string name="external_mods_ad_download">Reklamlı indirme</string>
-    <string name="external_mods_external_link">Harici bağlantı</string>
-    <string name="external_mods_open_link">Bağlantıyı Aç</string>
-    <string name="external_mods_external_dialog_title">Harici İndirme</string>
-    <string name="external_mods_ad_dialog_title">Reklam Destekli İndirme</string>
-    <string name="external_mods_external_dialog_message">%1$s, LeviLauncher dışında bir indirme sayfası kullanıyor.\n\n1. Bağlantıyı Aç’a dokunun ve .levipack veya .so dosyasını indirin.\n2. LeviLauncher’a dönün ve Modlar’ı açın.\n3. Tara’ya dokunun.\n4. İçe aktarmak istediğiniz modun yanındaki Ekle’ye dokunun.\n\nTarama yalnızca ana İndirilenler klasörünü kontrol eder. Tarayıcınız dosyayı başka bir yere kaydettiyse buraya taşıyın.</string>
-    <string name="external_mods_ad_dialog_message">%1$s, geliştiricisi tarafından seçilen reklam destekli bir indirme sayfası kullanıyor. LeviLauncher bu sayfayı veya reklamlarını kontrol etmez.\n\n1. Bağlantıyı Aç’a dokunun ve .levipack veya .so dosyasını indirin.\n2. LeviLauncher’a dönün ve Modlar’ı açın.\n3. Tara’ya dokunun.\n4. İçe aktarmak istediğiniz modun yanındaki Ekle’ye dokunun.\n\nTarama yalnızca ana İndirilenler klasörünü kontrol eder. Yalnızca mod dosyasını indirin; ilgisiz uygulamalar yüklemeyin veya bildirimlere izin vermeyin.</string>
-    <string name="external_mods_by_author">%1$s tarafından</string>
-    <string name="external_mods_version">Mod %1$s</string>
-    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
-    <string name="external_mods_update">Güncelle</string>
-    <string name="external_mods_installed_button">Yüklendi</string>
-    <string name="external_mods_incompatible">Uyumsuz</string>
-    <string name="foreground_service">Ön plan hizmeti</string>
-    <string name="foreground_service_desc">Uygulamalar arasında geçiş yaparken Bedrock’un etkin oturumu askıya almasını önleyerek ve işlem, CPU ile Wi-Fi’yi etkin tutarak Minecraft’ın çalışmaya devam etmesini sağlar.</string>
-    <string name="foreground_service_warning">Not: Telefonunuzun daha hızlı ısınmasına ve pil kullanımının artmasına neden olabilir.</string>
-    <string name="foreground_service_channel">Minecraft arka plan koruması</string>
-    <string name="foreground_service_notification_title">Minecraft etkin tutuluyor</string>
-    <string name="foreground_service_notification_text">Minecraft arka plan modu etkin. Geçerli oturum için CPU ve ağ erişimi kullanılabilir tutuluyor.</string>
-    <string name="mod_menu_compact">Kompakt Mod Menüsü</string>
-    <string name="mod_menu_compact_desc">Yoğun modül listesi ve kompakt filtrelerle daha küçük bir menü kullanın</string>
-    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">Hassasiyet Çarpanı (100% = 1x)</string>
-    <string name="mod_config_gyro_horizontal_speed" formatted="false">Yatay Hız (%)</string>
-    <string name="mod_config_gyro_vertical_speed" formatted="false">Dikey Hız (%)</string>
-    <string name="mod_config_gyro_small_movement_filter">Küçük Hareket Filtresi (0 = Kapalı)</string>
-    <string name="hud_editor_drag_hint">Paneli taşımak için sürükleyin</string>
-    <string name="hud_editor_drag_description">HUD Düzenleyici. Paneli taşımak için bu alanı sürükleyin.</string>
     <string name="mod_config_hotbar_item_icons">Hotbar’daki eşya simgelerini kullan</string>
     <string name="mod_config_hotbar_item_counts">Eşya sayısını göster</string>
     <string name="mod_config_hotbar_slot_enabled">Hotbar yuvası %1$d’yi göster</string>
     <string name="mod_config_hotbar_slot_size">Hotbar yuvası %1$d boyutu (dp)</string>
     <string name="mod_config_hotbar_slot_opacity">Hotbar yuvası %1$d opaklığı</string>
+    <!-- Changelog & News -->
     <string name="changelog_title">Yenilikler</string>
     <string name="changelog_version">LeviLauncher %1$s</string>
     <string name="changelog_continue">Devam Et</string>
@@ -1095,6 +1114,7 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="mod_config_category_button">Düğme</string>
     <string name="mod_config_visible_slots">Görünür Yuvalar</string>
     <string name="mod_config_hotbar_slot_section">Hotbar Yuvası %1$d</string>
+    <!-- Selection & Batch Operations -->
     <string name="select">Seç</string>
     <string name="select_all">Tümünü Seç</string>
     <string name="selected">Seçildi</string>

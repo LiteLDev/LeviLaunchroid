@@ -1,4 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- NOTE: Keep this file aligned with the English default (values/strings.xml):
+     same resource keys and order, comments, sections, XML structure, and formatting
+     (including indentation, spaces, and blank lines).
+
+     Translations must remain grammatically and linguistically correct for the target
+     language. Locale-specific plural forms may differ when required by the language.
+     Do not change placeholders or resource attributes. -->
+
 <resources>
     <!-- Common -->
     <string name="app_name">LeviLauncher</string>
@@ -69,6 +76,7 @@
     <string name="files_processed">%d मॉड फ़ाइलों को सफलतापूर्वक संसाधित किया गया</string>
     <string name="user_cancelled">उपयोगकर्ता द्वारा आयात रद्द किया गया</string>
 
+
     <string name="exit">बाहर निकलें</string>
 
     <string name="overlay_permission_message">कृपया ओवरले अनुमति प्रदान करें</string>
@@ -103,11 +111,12 @@
     <string name="settings_tab_migration">माइग्रेशन</string>
     <string name="settings_theme_desc">एप्लिकेशन थीम चुनें</string>
 
+
     <string name="unknown_sources_permission_title">इंस्टॉल अनुमति</string>
     <string name="unknown_sources_permission_message">इस ऐप को इंस्टॉल या अपडेट करने के लिए, कृपया अज्ञात ऐप्स इंस्टॉल करने की अनुमति दें। सिस्टम सेटिंग्स खोलने के लिए "अनुमति दें" पर क्लिक करें, इस ऐप के लिए अनुमति सक्षम करें और जारी रखने के लिए वापस आएं।</string>
 
     <string name="check_update">अपडेट्स के लिए जांचें</string>
-    <string name="version_prefix">संस्करण: </string>
+    <string name="version_prefix">संस्करण:</string>
     <string name="unknown_error">अज्ञात त्रुटि</string>
     <string name="preloader_sigs_title">रनटाइम डेटा</string>
     <string name="preloader_sigs_last_update">अंतिम अपडेट: %1$s</string>
@@ -131,6 +140,9 @@
     <string name="dialog_message_disable_version_isolation">आप संस्करण आइसोलेशन सक्षम के साथ एक इंस्टॉल किया गया संस्करण लॉन्च करने का प्रयास कर रहे हैं। कृपया आगे बढ़ने के लिए संस्करण आइसोलेशन अक्षम करें।</string>
     <string name="dialog_positive_disable">अक्षम करें</string>
     <string name="dialog_positive_ok">ठीक है</string>
+    <string name="delete_account_title">खाता हटाएँ</string>
+    <string name="delete_account_confirm">क्या आप वाकई यह खाता हटाना चाहते हैं?</string>
+
 
     <string name="new_version_found">नया संस्करण मिला: %1$s</string>
     <string name="update_question">क्या आप नवीनतम संस्करण डाउनलोड और इंस्टॉल करना चाहते हैं?</string>
@@ -158,6 +170,7 @@
     <string name="repair_preparing">तैयारी हो रही है…</string>
     <string name="repair_processing">लाइब्रेरीज़ निकाली जा रही हैं…</string>
     <string name="repair_finalizing">मरम्मत पूरी की जा रही है…</string>
+    <!-- Storage Migration -->
     <string name="storage_migration_title">स्टोरेज माइग्रेशन आवश्यक है</string>
     <string name="storage_migration_message">LeviLauncher को जारी रखने से पहले games/org.levimc से डेटा %1$s में माइग्रेट करना होगा।
 
@@ -202,21 +215,21 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="shared_storage_layout_mode_legacy">मूल internal/external डायरेक्टरी</string>
     <string name="shared_storage_layout_status">वर्तमान मोड: %1$s\nInternal: %2$s\nExternal: %3$s</string>
     <string name="shared_storage_layout_changed">स्टोरेज डायरेक्टरी चयन अपडेट हो गया। बदलाव पूरी तरह लागू करने के लिए Minecraft को पुनः शुरू करें और content management फिर से खोलें।</string>
-
+    <!-- Theme -->
     <string name="theme_title">थीम मोड</string>
     <string name="theme_follow_system">सिस्टम का पालन करें</string>
     <string name="theme_light">लाइट मोड</string>
     <string name="theme_dark">डार्क मोड</string>
 
     <string name="error_no_browser">कोई ब्राउज़र उपलब्ध नहीं है</string>
-
+    <!-- License & Security -->
     <string name="eula_title">LeviLauncher लाइसेंस समझौता</string>
     <string name="eula_message"><b>LeviLauncher में आपका स्वागत है</b>\n\nइस सॉफ़्टवेयर का उपयोग करके आप सहमत हैं:\n\n• यह एक <b>अनौपचारिक</b> Minecraft लॉन्चर है\n• आपके पास Minecraft की एक <b>लाइसेंस प्राप्त</b> प्रति होनी चाहिए\n• किसी भी प्रकार की पायरेसी या धोखाधड़ी निषिद्ध है\n• मॉड्स/रिसोर्स पैक्स का उपयोग आपके अपने जोखिम पर है\n• Mojang/Microsoft से संबद्ध नहीं है\n\nनिरंतर उपयोग समझौते का गठन करता है</string>
     <string name="eula_agree">स्वीकार करें</string>
     <string name="eula_exit">अस्वीकार करें</string>
 
     <string name="allow_unknown_sources">कृपया आगे बढ़ने से पहले अज्ञात स्रोतों से इंस्टॉलेशन की अनुमति दें</string>
-
+    <!-- Version Management -->
     <string name="dialog_title_delete_version">संस्करण हटाएं</string>
     <string name="dialog_message_delete_version">क्या आप सुनिश्चित हैं कि आप इस कस्टम संस्करण को हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती।</string>
     <string name="dialog_positive_delete">हटाएं</string>
@@ -236,7 +249,7 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="version_isolation">संस्करण आइसोलेशन</string>
     <string name="launch_vertically">लंबवत लॉन्च करें</string>
     <string name="launch_vertically_desc">गेम को पोर्ट्रेट मोड में लॉन्च करने के लिए बाध्य करें</string>
-
+    <!-- Instance Management -->
     <string name="instance_settings_title">इंस्टेंस सेटिंग्स</string>
     <string name="instance_tab_general">सामान्य</string>
     <string name="instance_tab_launch_options">लॉन्च विकल्प</string>
@@ -247,12 +260,32 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="instance_clear_icon">साफ़ करें</string>
     <string name="instance_icon_hint">संस्करण फ़ोल्डर के अंतर्गत LargeLogo.png के रूप में सहेजा जाएगा। बदलने के लिए आइकन पर क्लिक करें।</string>
     <string name="instance_isolation_desc">इस इंस्टेंस के लिए गेम डेटा को अलग करें। अन्य इंस्टेंस प्रभावित नहीं होंगे।</string>
+    <string name="instance_shortcut_title">होम स्क्रीन शॉर्टकट</string>
+    <string name="instance_shortcut_desc">नाम और आइकन में बदलाव अपने-आप सेव हो जाते हैं। होम स्क्रीन शॉर्टकट बनाने या अपडेट करने के लिए शॉर्टकट जोड़ें पर टैप करें।</string>
+    <string name="instance_shortcut_name">शॉर्टकट का नाम</string>
+    <string name="instance_shortcut_icon">शॉर्टकट आइकन</string>
+    <string name="instance_shortcut_choose_icon">आइकन चुनें</string>
+    <string name="instance_shortcut_default_icon">डिफ़ॉल्ट इस्तेमाल करें</string>
+    <string name="instance_shortcut_add_button">शॉर्टकट जोड़ें</string>
+    <string name="instance_settings_auto_save_failed">इस इंस्टेंस की सेटिंग सेव नहीं की जा सकी।</string>
+    <string name="instance_shortcut_not_supported">आपका होम स्क्रीन लॉन्चर पिन किए गए शॉर्टकट का समर्थन नहीं करता।</string>
+    <string name="instance_shortcut_missing">यह Minecraft इंस्टेंस अब उपलब्ध नहीं है।</string>
     <string name="instance_danger_zone">खतरा क्षेत्र</string>
     <string name="instance_danger_zone_desc">ये कार्य इंस्टेंस पंजीकरण या स्थानीय फ़ाइलों को प्रभावित करते हैं। जारी रखने से पहले दोबारा जांच लें।</string>
     <string name="instance_delete_desc">वर्ल्ड्स, कॉन्फिग्स और इंस्टॉल की गई सामग्री सहित, इस इंस्टेंस को आपके डिवाइस से स्थायी रूप से हटा देता है।</string>
     <string name="instance_delete_warning">यह कार्रवाई पूर्ववत नहीं की जा सकती।</string>
     <string name="instance_delete_confirm_title">इंस्टेंस हटाएं</string>
     <string name="instance_delete_confirm_msg">क्या आप सुनिश्चित हैं कि आप इस इंस्टेंस को हटाना चाहते हैं? वर्ल्ड्स सहित सभी डेटा स्थायी रूप से हटा दिया जाएगा।</string>
+    <string name="instance_backup_title">इंस्टेंस बैकअप</string>
+    <string name="instance_backup_desc">इस इंस्टेंस का पूरा बैकअप Download/LeviLauncher/Backups में बनाएँ।</string>
+    <string name="instance_backup_button">इंस्टेंस का बैकअप लें</string>
+    <string name="instance_backup_confirm_message">क्या अभी इस इंस्टेंस का पूरा बैकअप बनाना है? यदि Minecraft चल रहा है तो पहले उसे बंद करें, ताकि बैकअप के दौरान फ़ाइलें न बदलें।</string>
+    <string name="instance_backup_in_progress">इंस्टेंस का बैकअप लिया जा रहा है…</string>
+    <string name="instance_backup_success_title">बैकअप बनाया गया</string>
+    <string name="instance_backup_success_message">बैकअप यहाँ सहेजा गया:\n%1$s</string>
+    <string name="instance_backup_failed_title">बैकअप विफल</string>
+    <string name="instance_backup_failed_message">बैकअप नहीं बनाया जा सका:\n%1$s</string>
+    <string name="instance_import_backup_button">बैकअप आयात करें</string>
     <string name="instance_batch_backup_button">बैच बैकअप</string>
     <string name="instance_batch_backup_title">इंस्टेंस का बैच बैकअप</string>
     <string name="instance_batch_backup_select_message">बैकअप करने के लिए इंस्टेंस चुनें। यदि Minecraft चल रहा है, तो बैकअप के दौरान डेटा बदलने से बचने के लिए पहले उसे बंद करें।</string>
@@ -266,8 +299,16 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="instance_batch_backup_partial_message">%1$d बैकअप बनाए गए, %2$d विफल रहे।\n\nसहेजे गए:\n%3$s\n\nविफल:\n%4$s</string>
     <string name="instance_batch_backup_failed_title">बैच बैकअप विफल</string>
     <string name="instance_batch_backup_failed_message">कोई बैकअप नहीं बनाया जा सका:\n%1$s</string>
+    <string name="instance_restore_title">बैकअप पुनर्स्थापित करें</string>
+    <string name="instance_restore_in_progress">इंस्टेंस बैकअप पुनर्स्थापित किया जा रहा है…</string>
+    <string name="instance_restore_success_title">पुनर्स्थापना पूरी हुई</string>
+    <string name="instance_restore_success_message">पुनर्स्थापित: %1$s</string>
+    <string name="instance_restore_failed_title">पुनर्स्थापना विफल</string>
+    <string name="instance_restore_failed_message">बैकअप पुनर्स्थापित नहीं किया जा सका:\n%1$s</string>
 
     <!-- Language Setting -->
+    <!-- Keep English at the top (default language). -->
+    <!-- Sort all other languages alphabetically by their display name. -->
     <string name="language">भाषा (Language)</string>
     <string name="english">अंग्रेज़ी (English)</string>
     <string name="chinese">简体中文 (Chinese)</string>
@@ -361,6 +402,7 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="edit_world">वर्ल्ड संपादित करें</string>
     <string name="edit">संपादित करें</string>
     <string name="save">सहेजें</string>
+    <string name="reset">रीसेट</string>
     <string name="saved_to_gallery">गैलरी में सहेजा गया</string>
     <string name="level_dat_not_found">level.dat नहीं मिला</string>
     <string name="no_editable_properties">कोई संपादन योग्य गुण नहीं मिला</string>
@@ -385,6 +427,20 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="add_at_least_one_layer">कम से कम एक परत जोड़ें</string>
     <string name="world_created_successfully">वर्ल्ड सफलतापूर्वक बनाया गया</string>
     <string name="failed_to_create_world">वर्ल्ड बनाने में विफल</string>
+    <string name="custom_flat_world_subtitle">अपने बायोम और ब्लॉक लेयर्स के साथ दुनिया बनाएँ</string>
+    <string name="world_settings">दुनिया की सेटिंग</string>
+    <string name="world_settings_hint">नई दुनिया के लिए मूल सेटिंग चुनें</string>
+    <string name="layers_title">लेयर्स</string>
+    <string name="add_layer_compact">लेयर जोड़ें</string>
+    <string name="no_layers_title">अभी कोई लेयर नहीं</string>
+    <string name="no_layers_hint">दुनिया बनाने के लिए कम से कम एक ब्लॉक लेयर जोड़ें</string>
+    <string name="reorder_layer">लेयर का क्रम बदलें</string>
+    <string name="delete_layer">लेयर हटाएँ</string>
+    <string name="block_id_hint">minecraft:stone</string>
+    <plurals name="flat_layers_count">
+        <item quantity="one">%1$d परत • नीचे → ऊपर</item>
+        <item quantity="other">%1$d परतें • नीचे → ऊपर</item>
+    </plurals>
 
     <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">Play Store संस्करण आवश्यक है</string>
@@ -396,10 +452,57 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="genuine_badge_label">लाइसेंस सत्यापित नहीं है</string>
     <string name="invalid_license_detected_toast">गैर-वास्तविक Minecraft का पता चला। सुनिश्चित करें कि Minecraft Google Play Store से है</string>
 
-    <string name="full_mods_title">मॉड्स </string>
+    <string name="full_mods_title">मॉड्स</string>
     <string name="total_mods">कुल मॉड्स:</string>
     <string name="enabled_mods">सक्षम:</string>
     <string name="add_mod">मॉड जोड़ें</string>
+    <string name="scan_downloads">स्कैन करें</string>
+    <string name="scan_downloads_scanning">स्कैन हो रहा है…</string>
+    <string name="scan_downloads_none_found">Downloads में कोई .levipack या .so मॉड नहीं मिला</string>
+    <string name="scan_downloads_failed">Downloads को स्कैन नहीं किया जा सका</string>
+    <string name="scan_downloads_permission_denied">Downloads को स्कैन करने के लिए स्टोरेज एक्सेस चाहिए</string>
+    <string name="scan_downloads_results_title">Downloads में मॉड</string>
+    <string name="scan_downloads_results_subtitle">जोड़ने के लिए कोई मॉड चुनें। स्कैन केवल मुख्य Downloads फ़ोल्डर की जाँच करता है।</string>
+    <string name="scan_downloads_add">जोड़ें</string>
+    <string name="scan_downloads_adding">जोड़ा जा रहा है…</string>
+    <string name="scan_downloads_added">जोड़ दिया गया</string>
+    <string name="scan_downloads_added_message">%1$s जोड़ दिया गया</string>
+    <string name="scan_downloads_levipack">LeviPack</string>
+    <string name="scan_downloads_native_library">नेटिव लाइब्रेरी</string>
+    <string name="scan_downloads_file_details">%1$s • %2$s</string>
+    <string name="external_mods">बाहरी मॉड</string>
+    <string name="external_mods_subtitle">Minecraft %1$s के लिए कम्युनिटी मॉड</string>
+    <string name="external_mods_no_version">मॉड इंस्टॉल करने से पहले Minecraft का संस्करण चुनें</string>
+    <string name="external_mods_search_hint">मॉड, लेखक या संस्करण खोजें…</string>
+    <string name="external_mods_compatible_only">केवल संगत</string>
+    <string name="external_mods_all_versions">Minecraft के सभी संस्करण</string>
+    <string name="external_mods_sort_newest">सबसे नए</string>
+    <string name="external_mods_sort_name">नाम A–Z</string>
+    <string name="external_mods_empty">इन फ़िल्टर से कोई मॉड मेल नहीं खाता</string>
+    <string name="external_mods_load_failed">कैटलॉग रीफ़्रेश नहीं हो सका। सेव की गई कॉपी दिखाई जा रही है।</string>
+    <string name="external_mods_refresh">कैटलॉग रीफ़्रेश करें</string>
+    <string name="external_mods_refreshed">कैटलॉग रीफ़्रेश हो गया</string>
+    <string name="external_mods_join_discord">कम्युनिटी Discord से जुड़ें</string>
+    <string name="external_mods_discord_open_failed">कोई ऐप Discord आमंत्रण नहीं खोल सकता</string>
+    <string name="external_mods_download">%1$s डाउनलोड हो रहा है</string>
+    <string name="external_mods_importing">मॉड इम्पोर्ट हो रहा है…</string>
+    <string name="external_mods_installed">%1$s इंस्टॉल हो गया</string>
+    <string name="external_mods_install_failed">%1$s इंस्टॉल नहीं हो सका: %2$s</string>
+    <string name="external_mods_open_failed">कोई ब्राउज़र इस डाउनलोड को नहीं खोल सकता</string>
+    <string name="external_mods_direct_download">सीधा डाउनलोड</string>
+    <string name="external_mods_ad_download">विज्ञापन वाला डाउनलोड</string>
+    <string name="external_mods_external_link">बाहरी लिंक</string>
+    <string name="external_mods_open_link">लिंक खोलें</string>
+    <string name="external_mods_external_dialog_title">बाहरी डाउनलोड</string>
+    <string name="external_mods_ad_dialog_title">विज्ञापन-समर्थित डाउनलोड</string>
+    <string name="external_mods_external_dialog_message">%1$s LeviLauncher के बाहर की डाउनलोड वेबसाइट का उपयोग करता है।\n\n1. लिंक खोलें पर टैप करें और .levipack या .so फ़ाइल डाउनलोड करें।\n2. LeviLauncher पर वापस जाएँ और Mods खोलें।\n3. स्कैन करें पर टैप करें।\n4. जिस मॉड को इम्पोर्ट करना चाहते हैं, उसके पास जोड़ें पर टैप करें।\n\nस्कैन केवल मुख्य Downloads फ़ोल्डर की जाँच करता है। अगर ब्राउज़र ने फ़ाइल कहीं और सेव की है, तो उसे इस फ़ोल्डर में ले जाएँ।</string>
+    <string name="external_mods_ad_dialog_message">%1$s अपने डेवलपर द्वारा चुनी गई विज्ञापन-समर्थित डाउनलोड वेबसाइट का उपयोग करता है। LeviLauncher उस वेबसाइट या उसके विज्ञापनों को नियंत्रित नहीं करता।\n\n1. लिंक खोलें पर टैप करें और .levipack या .so फ़ाइल डाउनलोड करें।\n2. LeviLauncher पर वापस जाएँ और Mods खोलें।\n3. स्कैन करें पर टैप करें।\n4. जिस मॉड को इम्पोर्ट करना चाहते हैं, उसके पास जोड़ें पर टैप करें।\n\nस्कैन केवल मुख्य Downloads फ़ोल्डर की जाँच करता है। केवल मॉड फ़ाइल डाउनलोड करें; असंबंधित ऐप इंस्टॉल न करें और नोटिफिकेशन की अनुमति न दें।</string>
+    <string name="external_mods_by_author">%1$s द्वारा</string>
+    <string name="external_mods_version">मॉड %1$s</string>
+    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
+    <string name="external_mods_update">अपडेट करें</string>
+    <string name="external_mods_installed_button">इंस्टॉल किया गया</string>
+    <string name="external_mods_incompatible">असंगत</string>
 
     <!-- Mod Detail -->
     <string name="mod_detail_title">मॉड विवरण</string>
@@ -409,6 +512,57 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="mod_disabled">मॉड अक्षम</string>
     <string name="mod_filename_format">फ़ाइल: %s</string>
     <string name="mod_enable_status">सक्षम स्थिति</string>
+    <string name="mod_icon_content_description">मॉड आइकन</string>
+    <string name="mod_author_byline">%s द्वारा</string>
+    <string name="mod_version_chip">संस्करण %s</string>
+    <string name="mod_metadata_title">जानकारी</string>
+    <string name="mod_actions_title">क्रियाएँ</string>
+    <string name="mod_author_label">लेखक</string>
+    <string name="mod_version_label">संस्करण</string>
+    <string name="mod_minecraft_versions_label">Minecraft संस्करण</string>
+    <string name="mod_entry_label">एंट्री फ़ाइल</string>
+    <string name="mod_id_label">मॉड ID</string>
+    <string name="mod_config_files_label">कॉन्फ़िग फ़ाइलें</string>
+    <string name="mod_unknown_author">अज्ञात लेखक</string>
+    <string name="mod_unknown_version">अज्ञात संस्करण</string>
+    <string name="mod_all_versions">सभी समर्थित संस्करण</string>
+    <string name="mod_no_config_files">कोई संपादन योग्य कॉन्फ़िग नहीं</string>
+    <string name="mod_config_badge">कॉन्फ़िग</string>
+    <string name="mod_config_badge_with_count">कॉन्फ़िग · %d</string>
+    <string name="mod_config_title_format">%s कॉन्फ़िग</string>
+    <string name="mod_config_not_found">संपादन योग्य कॉन्फ़िग नहीं मिला</string>
+    <string name="mod_config_load_failed">कॉन्फ़िग लोड करने में विफल: %s</string>
+    <string name="mod_config_save_failed">कॉन्फ़िग सहेजने में विफल</string>
+    <string name="mod_config_saved">कॉन्फ़िग सहेजा गया</string>
+    <string name="mod_config_restart_hint">कॉन्फ़िग फ़ाइल सहेजी गई और .backup फ़ाइल रखी गई।</string>
+    <string name="mod_config_validation_failed">कॉन्फ़िग सत्यापन विफल</string>
+    <string name="mod_config_invalid_json">अमान्य JSON</string>
+    <string name="mod_config_expand">फैलाएं</string>
+    <string name="mod_config_collapse">समेटें</string>
+    <string name="mod_config_raw_json">मूल JSON संपादित करें</string>
+    <string name="mod_config_raw_json_short">JSON</string>
+    <string name="mod_config_item_label">आइटम %1$s</string>
+    <string name="mod_config_object_desc">संबंधित सेटिंग्स का समूह</string>
+    <string name="mod_config_array_desc">मानों की सूची</string>
+    <string name="mod_config_range_prefix">सीमा</string>
+    <string name="mod_config_error_number">%1$s एक संख्या होनी चाहिए</string>
+    <string name="mod_config_error_minimum">%1$s कम से कम %2$s होना चाहिए</string>
+    <string name="mod_config_error_maximum">%1$s अधिकतम %2$s होना चाहिए</string>
+    <string name="mod_config_error_boolean">%1$s चालू या बंद होना चाहिए</string>
+    <string name="mod_config_error_string">%1$s टेक्स्ट होना चाहिए</string>
+    <!-- Mod Configuration -->
+    <plurals name="mod_config_files_count">
+        <item quantity="one">%d संपादन योग्य कॉन्फ़िग</item>
+        <item quantity="other">%d संपादन योग्य कॉन्फ़िग</item>
+    </plurals>
+    <plurals name="mod_config_choices_count">
+        <item quantity="one">%d विकल्प</item>
+        <item quantity="other">%d विकल्प</item>
+    </plurals>
+    <plurals name="mod_config_items_count">
+        <item quantity="one">%d आइटम</item>
+        <item quantity="other">%d आइटम</item>
+    </plurals>
 
     <!-- Game Version Select Dialog -->
     <string name="game_version_select_title">गेम संस्करण चुनें</string>
@@ -439,13 +593,45 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="accounts_active_privilege">साइन इन किया गया</string>
 
     <string name="ms_login_title">Microsoft लॉगिन</string>
+    <string name="ms_login_header_subtitle">Minecraft में सुरक्षित रूप से साइन इन करें</string>
     <string name="ms_login_starting">Microsoft लॉगिन शुरू हो रहा है…</string>
     <string name="ms_login_exchanging">टोकन एक्सचेंज हो रहा है…</string>
     <string name="ms_login_auth_xbox_device">Xbox डिवाइस को प्रमाणित किया जा रहा है…</string>
     <string name="ms_login_fetch_minecraft_identity">Minecraft पहचान प्राप्त की जा रही है…</string>
+    <string name="ms_login_retrying">कनेक्शन बाधित हुआ। सुरक्षित रूप से फिर प्रयास किया जा रहा है…</string>
     <string name="ms_login_success">%1$s के रूप में साइन इन किया गया</string>
     <string name="ms_login_failed">Microsoft लॉगिन विफल</string>
     <string name="ms_login_failed_detail">लॉगिन विफल: %1$s</string>
+    <string name="ms_choose_login_method">Minecraft में साइन इन करें</string>
+    <string name="ms_choose_login_method_desc">ब्राउज़र-आधारित डिवाइस कोड प्रक्रिया चुनें या एम्बेडेड Microsoft पेज के साथ जारी रखें।</string>
+    <string name="ms_device_code_login">ब्राउज़र के साथ जारी रखें</string>
+    <string name="ms_device_code_option_title">डिवाइस कोड (अनुशंसित)</string>
+    <string name="ms_device_code_login_desc">पहले से भरे डिवाइस कोड के साथ एक निजी ब्राउज़र सत्र खोलें।</string>
+    <string name="ms_webview_login">एम्बेडेड साइन-इन खोलें</string>
+    <string name="ms_webview_option_title">एम्बेडेड WebView</string>
+    <string name="ms_webview_login_desc">LeviLauncher छोड़े बिना साइन इन करें। जब ब्राउज़र प्रक्रिया उपलब्ध न हो तब इसका उपयोग करें।</string>
+    <string name="ms_device_code_title">डिवाइस कोड से साइन इन करें</string>
+    <string name="ms_device_code_instructions">Microsoft का डिवाइस साइन-इन पेज खोलें, यह कोड दर्ज करें और फिर एक्सेस स्वीकृत करें। LeviLauncher अपने-आप पूरा कर देगा।</string>
+    <string name="ms_device_code_label">Microsoft डिवाइस कोड</string>
+    <string name="ms_device_code_requesting">सुरक्षित कोड का अनुरोध किया जा रहा है…</string>
+    <string name="ms_device_code_waiting_code">--------</string>
+    <string name="ms_device_code_waiting">ब्राउज़र में आपके पूरा करने की प्रतीक्षा है…</string>
+    <string name="ms_device_code_checking">Microsoft साइन-इन परिणाम जाँचा जा रहा है…</string>
+    <string name="ms_device_code_reconnecting">कनेक्शन बदल गया। अपने-आप फिर प्रयास किया जा रहा है…</string>
+    <string name="ms_device_code_authorized">Microsoft ने साइन-इन स्वीकृत कर दिया। पूरा किया जा रहा है…</string>
+    <string name="ms_device_code_browser_opened">ब्राउज़र में नया Microsoft साइन-इन पूरा करें, फिर यहाँ वापस आएँ।</string>
+    <string name="ms_device_code_expires">कोड %1$d:%2$02d में समाप्त होगा</string>
+    <string name="ms_device_code_copy">कोड कॉपी करें</string>
+    <string name="ms_device_code_copied">कोड कॉपी किया गया</string>
+    <string name="ms_device_code_open_browser">Microsoft साइन-इन खोलें</string>
+    <string name="ms_device_code_step_title">अपने ब्राउज़र में साइन-इन पूरा करें</string>
+    <string name="ms_device_code_browser_note">LeviLauncher आपके डिफ़ॉल्ट ब्राउज़र को निजी सत्र में खोलता है, कोड अपने-आप भरता है और नया Microsoft साइन-इन अनुरोध करता है।</string>
+    <string name="ms_choose_other_method">अन्य तरीका</string>
+    <string name="ms_no_browser">इस डिवाइस पर कोई ब्राउज़र उपलब्ध नहीं है।</string>
+    <string name="ms_default_browser_no_private_mode">आपका डिफ़ॉल्ट ब्राउज़र निजी साइन-इन का समर्थन नहीं करता। इसे अपडेट करें या WebView लॉगिन का उपयोग करें।</string>
+    <string name="ms_login_ssl_failed">सुरक्षित Microsoft साइन-इन पेज सत्यापित नहीं किया जा सका।</string>
+    <string name="ms_login_state_failed">Microsoft साइन-इन प्रतिक्रिया सत्यापित नहीं की जा सकी। फिर से साइन-इन शुरू करें।</string>
+    <string name="ms_login_missing_code">Microsoft ने साइन-इन कोड नहीं दिया। फिर से साइन-इन शुरू करें या डिवाइस कोड लॉगिन का उपयोग करें।</string>
 
     <string name="ms_set_active">सक्रिय सेट करें</string>
     <string name="ms_delete">हटाएं</string>
@@ -458,10 +644,14 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="go_to_accounts">खाते</string>
     <string name="disable_launcher_login_and_continue">बंद करें</string>
 
+    <string name="ms_feature_disabled_title">सुविधा अक्षम है</string>
+    <string name="ms_feature_disabled_desc">Microsoft खाते प्रबंधित करने के लिए सेटिंग्स में “LeviLauncher के साथ Minecraft में साइन इन करें” सक्षम करें।</string>
+    <string name="ms_activated">सक्रिय</string>
+
     <!-- Popup labels -->
     <string name="label_current_account">वर्तमान खाता</string>
     <string name="label_other_accounts">अन्य खाते</string>
-
+    <!-- Crash & Diagnostics -->
     <string name="crash_title">एप्लिकेशन क्रैश हो गया</string>
     <string name="crash_upload">क्रैश रिपोर्ट अपलोड करें</string>
     <string name="crash_details_title">क्रैश विवरण</string>
@@ -480,6 +670,12 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="dialog_message_exit_app">क्या आप सुनिश्चित हैं कि आप बाहर निकलना चाहते हैं?</string>
     <string name="dialog_positive_exit">बाहर निकलें</string>
     <string name="show_logcat_overlay">Logcat ओवरले</string>
+    <string name="foreground_service">फ़ोरग्राउंड सेवा</string>
+    <string name="foreground_service_desc">ऐप बदलते समय Bedrock को सक्रिय सेशन सस्पेंड करने से रोककर और प्रोसेस, CPU तथा Wi-Fi को सक्रिय रखकर Minecraft को चलता रहने देता है।</string>
+    <string name="foreground_service_warning">नोट: इससे फ़ोन जल्दी गर्म हो सकता है और बैटरी की खपत बढ़ सकती है।</string>
+    <string name="foreground_service_channel">Minecraft बैकग्राउंड सुरक्षा</string>
+    <string name="foreground_service_notification_title">Minecraft को सक्रिय रखा जा रहा है</string>
+    <string name="foreground_service_notification_text">Minecraft का बैकग्राउंड मोड सक्रिय है। मौजूदा सेशन के लिए CPU और नेटवर्क एक्सेस उपलब्ध रखे जा रहे हैं।</string>
     <string name="logcat_live">Logcat: <b>लाइव</b></string>
     <string name="logcat_paused">Logcat: रुका हुआ है</string>
     <!-- Logcat Overlay i18n -->
@@ -503,7 +699,7 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="inbuilt_mod_removed">%s मॉड्स से हटाया गया</string>
     <string name="add">जोड़ें</string>
     <string name="remove">हटाएं</string>
-
+    
     <!-- Inbuilt Mods -->
     <string name="inbuilt_mod_quick_drop">क्विक ड्रॉप</string>
     <string name="inbuilt_mod_quick_drop_desc">आइटम जल्दी से छोड़ें</string>
@@ -532,12 +728,20 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="virtual_cursor_enabled">कर्सर सक्षम</string>
     <string name="virtual_cursor_disabled">कर्सर अक्षम</string>
     <string name="cursor_sensitivity_label">कर्सर संवेदनशीलता:</string>
+    <string name="inbuilt_mod_gyro">जाइरोस्कोप</string>
+    <string name="inbuilt_mod_gyro_desc">कैमरा घुमाव नियंत्रित करने के लिए डिवाइस के जाइरोस्कोप का उपयोग करें</string>
+    <string name="inbuilt_mod_pojav_controls">Pojav नियंत्रण</string>
+    <string name="inbuilt_mod_pojav_controls_desc">Minecraft टच नियंत्रणों को पूरी तरह अनुकूलन योग्य Pojav-शैली नियंत्रणों से बदलें</string>
+    <string name="inbuilt_mod_more_buttons">अधिक बटन</string>
+    <string name="inbuilt_mod_more_buttons_desc">एकल-कुंजी मैपिंग और SVG आइकन के साथ कस्टम ऑन-स्क्रीन बटन बनाएँ</string>
     <string name="inbuilt_badge">अंतर्निर्मित</string>
     <string name="autosprint_keybind_label">ऑटो स्प्रिंट कीबाइंड:</string>
     <string name="autosprint_keybind_press">कोई भी कुंजी दबाएं…</string>
     <string name="configure">कॉन्फ़िगर करें</string>
     <string name="overlay_button_size">ओवरले बटन का आकार</string>
     <string name="overlay_button_opacity">ओवरले बटन अस्पष्टता</string>
+    <string name="overlay_button_size_value">आकार: %1$ddp</string>
+    <string name="overlay_button_opacity_value">अपारदर्शिता: %1$d%%</string>
     <string name="overlay_button_lock">स्थिति लॉक करें</string>
     <string name="overlay_button_lock_desc">खींचने और आकस्मिक सक्रियण को रोकें</string>
     <string name="settings">सेटिंग्स</string>
@@ -559,13 +763,33 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <!-- Mod Menu -->
     <string name="mod_menu">मॉड मेनू</string>
     <string name="mod_menu_modules">मॉड्यूल</string>
+    <string name="mod_menu_favorites">पसंदीदा</string>
+    <string name="mod_menu_favorite">पसंदीदा में जोड़ें</string>
+    <string name="mod_menu_unfavorite">पसंदीदा से हटाएं</string>
+    <string name="mod_menu_hud_editor">HUD एडिटर</string>
+    <string name="mod_menu_filter_enabled">सक्षम</string>
+    <string name="mod_menu_filter_inbuilt">अंतर्निर्मित</string>
+    <string name="mod_menu_filter_external">बाहरी</string>
     <string name="mod_menu_search_hint">मॉड्स खोजें…</string>
     <string name="mod_menu_no_mods">कोई मॉड नहीं जोड़ा गया</string>
+    <string name="mod_menu_no_favorites">अभी कोई पसंदीदा मॉड नहीं</string>
+    <string name="mod_menu_no_matches">कोई मेल खाता मॉड नहीं</string>
+    <string name="mod_menu_group_inbuilt">अंतर्निहित सुविधाएँ</string>
+    <string name="mod_menu_group_external_ungrouped">असमूहीकृत बाहरी मॉड</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">सामान्य सेटिंग्स</string>
+    <string name="mod_menu_appearance">रूप-रंग</string>
+    <string name="mod_menu_pause_menu_only">केवल पॉज़ मेनू</string>
+    <string name="mod_menu_pause_menu_only_desc">मॉड मेनू केवल पॉज़ स्क्रीन में दिखाएं</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">सेटिंग्स जल्द ही आ रही हैं</string>
     <string name="mod_menu_notifications">सूचनाएं</string>
     <string name="mod_menu_notifications_desc">मॉड्स को सक्षम करते समय अधिसूचना दिखाएं</string>
     <string name="mod_menu_opacity">मॉड मेनू अस्पष्टता</string>
     <string name="mod_menu_button_opacity">मॉड मेनू बटन अस्पष्टता</string>
+    <string name="mod_menu_compact">कॉम्पैक्ट मॉड मेनू</string>
+    <string name="mod_menu_compact_desc">घनी मॉड्यूल सूची और कॉम्पैक्ट फ़िल्टर वाला छोटा मेनू इस्तेमाल करें</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">मॉड मेनू सक्षम</string>
     <string name="mod_menu_disabled">मॉड मेनू अक्षम</string>
@@ -574,6 +798,35 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="mod_status_enabled">सक्षम</string>
     <string name="mod_status_disabled">अक्षम</string>
     <string name="mod_notification_enabled">%s सक्षम</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">ओवरले बटन आकार (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">ओवरले अपारदर्शिता (%)</string>
+    <string name="mod_config_overlay_show_everywhere" formatted="false">हर जगह दिखाएँ</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">कर्सर संवेदनशीलता (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">ज़ूम स्तर (%)</string>
+    <string name="mod_config_auto_sprint_keybind">ऑटो स्प्रिंट कीबाइंड</string>
+    <string name="mod_config_zoom_keybind">ज़ूम कीबाइंड</string>
+    <string name="mod_config_zoom_transition">ट्रांज़िशन अवधि (ms)</string>
+    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">संवेदनशीलता गुणक (100% = 1x)</string>
+    <string name="mod_config_gyro_horizontal_speed" formatted="false">क्षैतिज गति (%)</string>
+    <string name="mod_config_gyro_vertical_speed" formatted="false">ऊर्ध्वाधर गति (%)</string>
+    <string name="mod_config_gyro_small_movement_filter">छोटी गति फ़िल्टर (0 = बंद)</string>
+    <string name="mod_config_gyro_sensitivity_x" formatted="false">क्षैतिज संवेदनशीलता (%)</string>
+    <string name="mod_config_gyro_sensitivity_y" formatted="false">ऊर्ध्वाधर संवेदनशीलता (%)</string>
+    <string name="mod_config_gyro_invert_x">क्षैतिज अक्ष उलटें</string>
+    <string name="mod_config_gyro_invert_y">ऊर्ध्वाधर अक्ष उलटें</string>
+    <string name="mod_config_gyro_deadzone">डेड ज़ोन</string>
+    <string name="mod_config_press_any_key">बाइंड करने के लिए कोई भी कुंजी दबाएं...</string>
+    <string name="mod_config_key_unknown">अज्ञात</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="hud_editor_drag_hint">पैनल को ले जाने के लिए खींचें</string>
+    <string name="hud_editor_drag_description">HUD एडिटर। पैनल को ले जाने के लिए इस क्षेत्र को खींचें।</string>
 
     <!-- Options Editor -->
     <string name="edit_options">विकल्प संपादित करें</string>
@@ -700,7 +953,7 @@ LeviLauncher जारी रखने से पहले माइग्रे
         <item>CurseForge आपको सीधे सामुदायिक सामग्री ब्राउज़ और डाउनलोड करने देता है।</item>
         <item>Minecraft सुविधाओं और प्रदर्शन का विस्तार या वृद्धि करने के लिए बाहरी देशी SO मॉड्यूल लोड करें।</item>
     </string-array>
-
+    <!-- Personalization -->
     <string name="theme_color_title">थीम रंग</string>
     <string name="theme_color_desc">एप्लिकेशन का प्राथमिक उच्चारण रंग</string>
     <string name="preset_colors">प्रीसेट रंग</string>
@@ -718,163 +971,8 @@ LeviLauncher जारी रखने से पहले माइग्रे
 
     <string name="unsupported_version_title">असमर्थित संस्करण</string>
     <string name="unsupported_version_msg">यह लॉन्चर 1.21.80 से पुराने Minecraft संस्करणों का समर्थन नहीं करता है।</string>
-    <!-- Mod Config -->
-    <string name="mod_author_byline">%s द्वारा</string>
-    <string name="mod_version_chip">संस्करण %s</string>
-    <string name="mod_config_title_format">%s कॉन्फ़िग</string>
-    <string name="mod_config_not_found">संपादन योग्य कॉन्फ़िग नहीं मिला</string>
-    <string name="mod_config_load_failed">कॉन्फ़िग लोड करने में विफल: %s</string>
-    <string name="mod_config_save_failed">कॉन्फ़िग सहेजने में विफल</string>
-    <string name="mod_config_saved">कॉन्फ़िग सहेजा गया</string>
-    <string name="mod_config_restart_hint">कॉन्फ़िग फ़ाइल सहेजी गई और .backup फ़ाइल रखी गई।</string>
-    <string name="mod_config_validation_failed">कॉन्फ़िग सत्यापन विफल</string>
-    <string name="mod_config_invalid_json">अमान्य JSON</string>
-    <string name="mod_config_expand">फैलाएं</string>
-    <string name="mod_config_collapse">समेटें</string>
-    <string name="mod_config_raw_json">मूल JSON संपादित करें</string>
-    <string name="mod_config_raw_json_short">JSON</string>
-    <string name="mod_config_item_label">आइटम %1$s</string>
-    <string name="mod_config_object_desc">संबंधित सेटिंग्स का समूह</string>
-    <string name="mod_config_array_desc">मानों की सूची</string>
-    <string name="mod_config_range_prefix">सीमा</string>
-    <string name="mod_config_error_number">%1$s एक संख्या होनी चाहिए</string>
-    <string name="mod_config_error_minimum">%1$s कम से कम %2$s होना चाहिए</string>
-    <string name="mod_config_error_maximum">%1$s अधिकतम %2$s होना चाहिए</string>
-    <string name="mod_config_error_boolean">%1$s चालू या बंद होना चाहिए</string>
-    <string name="mod_config_error_string">%1$s टेक्स्ट होना चाहिए</string>
-    <plurals name="mod_config_files_count">
-        <item quantity="one">%d संपादन योग्य कॉन्फ़िग</item>
-        <item quantity="other">%d संपादन योग्य कॉन्फ़िग</item>
-    </plurals>
-    <plurals name="mod_config_choices_count">
-        <item quantity="one">%d विकल्प</item>
-        <item quantity="other">%d विकल्प</item>
-    </plurals>
-    <plurals name="mod_config_items_count">
-        <item quantity="one">%d आइटम</item>
-        <item quantity="other">%d आइटम</item>
-    </plurals>
 
-    <!-- Mod Menu synced translations -->
-    <string name="mod_menu_favorites">पसंदीदा</string>
-    <string name="mod_menu_favorite">पसंदीदा में जोड़ें</string>
-    <string name="mod_menu_unfavorite">पसंदीदा से हटाएं</string>
-    <string name="mod_menu_hud_editor">HUD एडिटर</string>
-    <string name="mod_menu_filter_enabled">सक्षम</string>
-    <string name="mod_menu_filter_inbuilt">अंतर्निर्मित</string>
-    <string name="mod_menu_filter_external">बाहरी</string>
-    <string name="mod_menu_no_favorites">अभी कोई पसंदीदा मॉड नहीं</string>
-    <string name="mod_menu_no_matches">कोई मेल खाता मॉड नहीं</string>
-    <string name="mod_menu_group_inbuilt">अंतर्निहित सुविधाएँ</string>
-    <string name="mod_menu_group_external_ungrouped">असमूहीकृत बाहरी मॉड</string>
-    <string name="mod_menu_module_count">%1$d / %2$d</string>
-    <string name="mod_menu_general_settings">सामान्य सेटिंग्स</string>
-    <string name="mod_menu_appearance">रूप-रंग</string>
-    <string name="mod_menu_pause_menu_only">केवल पॉज़ मेनू</string>
-    <string name="mod_menu_pause_menu_only_desc">मॉड मेनू केवल पॉज़ स्क्रीन में दिखाएं</string>
-    <string name="mod_menu_default_percent" formatted="false">100%</string>
-    <string name="mod_menu_percent_value">%1$d%%</string>
-    <string name="mod_overlay_fps_unknown">FPS: --</string>
-    <string name="mod_overlay_fps_value">FPS: %1$d</string>
-    <string name="mod_overlay_cps_value">CPS: %1$d</string>
-    <string name="mod_config_overlay_button_size_dp">ओवरले बटन आकार (dp)</string>
-    <string name="mod_config_overlay_opacity_percent" formatted="false">ओवरले अपारदर्शिता (%)</string>
-    <string name="mod_config_cursor_sensitivity_percent" formatted="false">कर्सर संवेदनशीलता (%)</string>
-    <string name="mod_config_zoom_level_percent" formatted="false">ज़ूम स्तर (%)</string>
-    <string name="mod_config_auto_sprint_keybind">ऑटो स्प्रिंट कीबाइंड</string>
-    <string name="mod_config_zoom_keybind">ज़ूम कीबाइंड</string>
-    <string name="mod_config_press_any_key">बाइंड करने के लिए कोई भी कुंजी दबाएं...</string>
-    <string name="mod_config_key_unknown">अज्ञात</string>
-    <string name="mod_config_color_alpha_short">A</string>
-    <string name="mod_config_color_red_short">R</string>
-    <string name="mod_config_color_green_short">G</string>
-    <string name="mod_config_color_blue_short">B</string>
-    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
-    <string name="overlay_button_size_value">आकार: %1$ddp</string>
-    <string name="overlay_button_opacity_value">अपारदर्शिता: %1$d%%</string>
-    <string name="reset">रीसेट</string>
-    <!-- Completed localization coverage -->
-    <string name="delete_account_title">खाता हटाएँ</string>
-    <string name="delete_account_confirm">क्या आप वाकई यह खाता हटाना चाहते हैं?</string>
-    <string name="instance_backup_title">इंस्टेंस बैकअप</string>
-    <string name="instance_backup_desc">इस इंस्टेंस का पूरा बैकअप Download/LeviLauncher/Backups में बनाएँ।</string>
-    <string name="instance_backup_button">इंस्टेंस का बैकअप लें</string>
-    <string name="instance_backup_confirm_message">क्या अभी इस इंस्टेंस का पूरा बैकअप बनाना है? यदि Minecraft चल रहा है तो पहले उसे बंद करें, ताकि बैकअप के दौरान फ़ाइलें न बदलें।</string>
-    <string name="instance_backup_in_progress">इंस्टेंस का बैकअप लिया जा रहा है…</string>
-    <string name="instance_backup_success_title">बैकअप बनाया गया</string>
-    <string name="instance_backup_success_message">बैकअप यहाँ सहेजा गया:\n%1$s</string>
-    <string name="instance_backup_failed_title">बैकअप विफल</string>
-    <string name="instance_backup_failed_message">बैकअप नहीं बनाया जा सका:\n%1$s</string>
-    <string name="instance_import_backup_button">बैकअप आयात करें</string>
-    <string name="instance_restore_title">बैकअप पुनर्स्थापित करें</string>
-    <string name="instance_restore_in_progress">इंस्टेंस बैकअप पुनर्स्थापित किया जा रहा है…</string>
-    <string name="instance_restore_success_title">पुनर्स्थापना पूरी हुई</string>
-    <string name="instance_restore_success_message">पुनर्स्थापित: %1$s</string>
-    <string name="instance_restore_failed_title">पुनर्स्थापना विफल</string>
-    <string name="instance_restore_failed_message">बैकअप पुनर्स्थापित नहीं किया जा सका:\n%1$s</string>
-    <string name="mod_icon_content_description">मॉड आइकन</string>
-    <string name="mod_metadata_title">जानकारी</string>
-    <string name="mod_actions_title">क्रियाएँ</string>
-    <string name="mod_author_label">लेखक</string>
-    <string name="mod_version_label">संस्करण</string>
-    <string name="mod_minecraft_versions_label">Minecraft संस्करण</string>
-    <string name="mod_entry_label">एंट्री फ़ाइल</string>
-    <string name="mod_id_label">मॉड ID</string>
-    <string name="mod_config_files_label">कॉन्फ़िग फ़ाइलें</string>
-    <string name="mod_unknown_author">अज्ञात लेखक</string>
-    <string name="mod_unknown_version">अज्ञात संस्करण</string>
-    <string name="mod_all_versions">सभी समर्थित संस्करण</string>
-    <string name="mod_no_config_files">कोई संपादन योग्य कॉन्फ़िग नहीं</string>
-    <string name="mod_config_badge">कॉन्फ़िग</string>
-    <string name="mod_config_badge_with_count">कॉन्फ़िग · %d</string>
-    <string name="ms_login_header_subtitle">Minecraft में सुरक्षित रूप से साइन इन करें</string>
-    <string name="ms_login_retrying">कनेक्शन बाधित हुआ। सुरक्षित रूप से फिर प्रयास किया जा रहा है…</string>
-    <string name="ms_choose_login_method">Minecraft में साइन इन करें</string>
-    <string name="ms_choose_login_method_desc">ब्राउज़र-आधारित डिवाइस कोड प्रक्रिया चुनें या एम्बेडेड Microsoft पेज के साथ जारी रखें।</string>
-    <string name="ms_device_code_login">ब्राउज़र के साथ जारी रखें</string>
-    <string name="ms_device_code_option_title">डिवाइस कोड (अनुशंसित)</string>
-    <string name="ms_device_code_login_desc">पहले से भरे डिवाइस कोड के साथ एक निजी ब्राउज़र सत्र खोलें।</string>
-    <string name="ms_webview_login">एम्बेडेड साइन-इन खोलें</string>
-    <string name="ms_webview_option_title">एम्बेडेड WebView</string>
-    <string name="ms_webview_login_desc">LeviLauncher छोड़े बिना साइन इन करें। जब ब्राउज़र प्रक्रिया उपलब्ध न हो तब इसका उपयोग करें।</string>
-    <string name="ms_device_code_title">डिवाइस कोड से साइन इन करें</string>
-    <string name="ms_device_code_instructions">Microsoft का डिवाइस साइन-इन पेज खोलें, यह कोड दर्ज करें और फिर एक्सेस स्वीकृत करें। LeviLauncher अपने-आप पूरा कर देगा।</string>
-    <string name="ms_device_code_label">Microsoft डिवाइस कोड</string>
-    <string name="ms_device_code_requesting">सुरक्षित कोड का अनुरोध किया जा रहा है…</string>
-    <string name="ms_device_code_waiting_code">--------</string>
-    <string name="ms_device_code_waiting">ब्राउज़र में आपके पूरा करने की प्रतीक्षा है…</string>
-    <string name="ms_device_code_checking">Microsoft साइन-इन परिणाम जाँचा जा रहा है…</string>
-    <string name="ms_device_code_reconnecting">कनेक्शन बदल गया। अपने-आप फिर प्रयास किया जा रहा है…</string>
-    <string name="ms_device_code_authorized">Microsoft ने साइन-इन स्वीकृत कर दिया। पूरा किया जा रहा है…</string>
-    <string name="ms_device_code_browser_opened">ब्राउज़र में नया Microsoft साइन-इन पूरा करें, फिर यहाँ वापस आएँ।</string>
-    <string name="ms_device_code_expires">कोड %1$d:%2$02d में समाप्त होगा</string>
-    <string name="ms_device_code_copy">कोड कॉपी करें</string>
-    <string name="ms_device_code_copied">कोड कॉपी किया गया</string>
-    <string name="ms_device_code_open_browser">Microsoft साइन-इन खोलें</string>
-    <string name="ms_device_code_step_title">अपने ब्राउज़र में साइन-इन पूरा करें</string>
-    <string name="ms_device_code_browser_note">LeviLauncher आपके डिफ़ॉल्ट ब्राउज़र को निजी सत्र में खोलता है, कोड अपने-आप भरता है और नया Microsoft साइन-इन अनुरोध करता है।</string>
-    <string name="ms_choose_other_method">अन्य तरीका</string>
-    <string name="ms_no_browser">इस डिवाइस पर कोई ब्राउज़र उपलब्ध नहीं है।</string>
-    <string name="ms_default_browser_no_private_mode">आपका डिफ़ॉल्ट ब्राउज़र निजी साइन-इन का समर्थन नहीं करता। इसे अपडेट करें या WebView लॉगिन का उपयोग करें।</string>
-    <string name="ms_login_ssl_failed">सुरक्षित Microsoft साइन-इन पेज सत्यापित नहीं किया जा सका।</string>
-    <string name="ms_login_state_failed">Microsoft साइन-इन प्रतिक्रिया सत्यापित नहीं की जा सकी। फिर से साइन-इन शुरू करें।</string>
-    <string name="ms_login_missing_code">Microsoft ने साइन-इन कोड नहीं दिया। फिर से साइन-इन शुरू करें या डिवाइस कोड लॉगिन का उपयोग करें।</string>
-    <string name="ms_feature_disabled_title">सुविधा अक्षम है</string>
-    <string name="ms_feature_disabled_desc">Microsoft खाते प्रबंधित करने के लिए सेटिंग्स में “LeviLauncher के साथ Minecraft में साइन इन करें” सक्षम करें।</string>
-    <string name="ms_activated">सक्रिय</string>
-    <string name="inbuilt_mod_gyro">जाइरोस्कोप</string>
-    <string name="inbuilt_mod_gyro_desc">कैमरा घुमाव नियंत्रित करने के लिए डिवाइस के जाइरोस्कोप का उपयोग करें</string>
-    <string name="inbuilt_mod_pojav_controls">Pojav नियंत्रण</string>
-    <string name="inbuilt_mod_pojav_controls_desc">Minecraft टच नियंत्रणों को पूरी तरह अनुकूलन योग्य Pojav-शैली नियंत्रणों से बदलें</string>
-    <string name="inbuilt_mod_more_buttons">अधिक बटन</string>
-    <string name="inbuilt_mod_more_buttons_desc">एकल-कुंजी मैपिंग और SVG आइकन के साथ कस्टम ऑन-स्क्रीन बटन बनाएँ</string>
-    <string name="mod_config_overlay_show_everywhere" formatted="false">हर जगह दिखाएँ</string>
-    <string name="mod_config_zoom_transition">ट्रांज़िशन अवधि (ms)</string>
-    <string name="mod_config_gyro_sensitivity_x" formatted="false">क्षैतिज संवेदनशीलता (%)</string>
-    <string name="mod_config_gyro_sensitivity_y" formatted="false">ऊर्ध्वाधर संवेदनशीलता (%)</string>
-    <string name="mod_config_gyro_invert_x">क्षैतिज अक्ष उलटें</string>
-    <string name="mod_config_gyro_invert_y">ऊर्ध्वाधर अक्ष उलटें</string>
-    <string name="mod_config_gyro_deadzone">डेड ज़ोन</string>
+    <!-- Generic UI strings added during localization cleanup -->
     <string name="close">बंद करें</string>
     <string name="previous">पिछला</string>
     <string name="next">अगला</string>
@@ -924,6 +1022,8 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="custom_color_hint">#RRGGBB या R,G,B</string>
     <string name="screenshot_name_placeholder">स्क्रीनशॉट का नाम</string>
     <string name="screenshot_date_placeholder">दिनांक: 2024-01-01 12:00:00</string>
+
+    <!-- More Buttons editor -->
     <string name="more_buttons_intro">Minecraft-शैली के ऑन-स्क्रीन बटन बनाएँ, जिनमें प्रत्येक को ठीक एक कीबोर्ड कुंजी से मैप किया गया हो। बटन कभी भी मैक्रो, कुंजी अनुक्रम, स्वचालित रिपीट या ऑटोक्लिक नहीं चलाते।</string>
     <string name="more_buttons_add_button">बटन जोड़ें</string>
     <string name="more_buttons_limit_reached">अधिकतम %1$d कस्टम बटन की सीमा पूरी हो गई।</string>
@@ -981,99 +1081,17 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="more_buttons_no_svg_selected">कोई SVG चयनित नहीं</string>
     <string name="more_buttons_default_name">बटन</string>
 
+
     <!-- Hotbar Slot -->
     <string name="inbuilt_mod_hotbar_slot">हॉटबार स्लॉट</string>
     <string name="inbuilt_mod_hotbar_slot_desc">हॉटबार स्लॉट चुनने के लिए अलग-अलग 1–9 बटन जोड़ता है</string>
     <string name="hotbar_slot_content_description">हॉटबार स्लॉट %1$d</string>
-
-
-    <!-- Added translations for strings present in the current English resources -->
-    <string name="instance_shortcut_title">होम स्क्रीन शॉर्टकट</string>
-    <string name="instance_shortcut_desc">नाम और आइकन में बदलाव अपने-आप सेव हो जाते हैं। होम स्क्रीन शॉर्टकट बनाने या अपडेट करने के लिए शॉर्टकट जोड़ें पर टैप करें।</string>
-    <string name="instance_shortcut_name">शॉर्टकट का नाम</string>
-    <string name="instance_shortcut_icon">शॉर्टकट आइकन</string>
-    <string name="instance_shortcut_choose_icon">आइकन चुनें</string>
-    <string name="instance_shortcut_default_icon">डिफ़ॉल्ट इस्तेमाल करें</string>
-    <string name="instance_shortcut_add_button">शॉर्टकट जोड़ें</string>
-    <string name="instance_settings_auto_save_failed">इस इंस्टेंस की सेटिंग सेव नहीं की जा सकी।</string>
-    <string name="instance_shortcut_not_supported">आपका होम स्क्रीन लॉन्चर पिन किए गए शॉर्टकट का समर्थन नहीं करता।</string>
-    <string name="instance_shortcut_missing">यह Minecraft इंस्टेंस अब उपलब्ध नहीं है।</string>
-    <string name="custom_flat_world_subtitle">अपने बायोम और ब्लॉक लेयर्स के साथ दुनिया बनाएँ</string>
-    <string name="world_settings">दुनिया की सेटिंग</string>
-    <string name="world_settings_hint">नई दुनिया के लिए मूल सेटिंग चुनें</string>
-    <string name="layers_title">लेयर्स</string>
-    <string name="add_layer_compact">लेयर जोड़ें</string>
-    <string name="no_layers_title">अभी कोई लेयर नहीं</string>
-    <string name="no_layers_hint">दुनिया बनाने के लिए कम से कम एक ब्लॉक लेयर जोड़ें</string>
-    <string name="reorder_layer">लेयर का क्रम बदलें</string>
-    <string name="delete_layer">लेयर हटाएँ</string>
-    <string name="block_id_hint">minecraft:stone</string>
-    <string name="scan_downloads">स्कैन करें</string>
-    <string name="scan_downloads_scanning">स्कैन हो रहा है…</string>
-    <string name="scan_downloads_none_found">Downloads में कोई .levipack या .so मॉड नहीं मिला</string>
-    <string name="scan_downloads_failed">Downloads को स्कैन नहीं किया जा सका</string>
-    <string name="scan_downloads_permission_denied">Downloads को स्कैन करने के लिए स्टोरेज एक्सेस चाहिए</string>
-    <string name="scan_downloads_results_title">Downloads में मॉड</string>
-    <string name="scan_downloads_results_subtitle">जोड़ने के लिए कोई मॉड चुनें। स्कैन केवल मुख्य Downloads फ़ोल्डर की जाँच करता है।</string>
-    <string name="scan_downloads_add">जोड़ें</string>
-    <string name="scan_downloads_adding">जोड़ा जा रहा है…</string>
-    <string name="scan_downloads_added">जोड़ दिया गया</string>
-    <string name="scan_downloads_added_message">%1$s जोड़ दिया गया</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">नेटिव लाइब्रेरी</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
-    <string name="external_mods">बाहरी मॉड</string>
-    <string name="external_mods_subtitle">Minecraft %1$s के लिए कम्युनिटी मॉड</string>
-    <string name="external_mods_no_version">मॉड इंस्टॉल करने से पहले Minecraft का संस्करण चुनें</string>
-    <string name="external_mods_search_hint">मॉड, लेखक या संस्करण खोजें…</string>
-    <string name="external_mods_compatible_only">केवल संगत</string>
-    <string name="external_mods_all_versions">Minecraft के सभी संस्करण</string>
-    <string name="external_mods_sort_newest">सबसे नए</string>
-    <string name="external_mods_sort_name">नाम A–Z</string>
-    <string name="external_mods_empty">इन फ़िल्टर से कोई मॉड मेल नहीं खाता</string>
-    <string name="external_mods_load_failed">कैटलॉग रीफ़्रेश नहीं हो सका। सेव की गई कॉपी दिखाई जा रही है।</string>
-    <string name="external_mods_refresh">कैटलॉग रीफ़्रेश करें</string>
-    <string name="external_mods_refreshed">कैटलॉग रीफ़्रेश हो गया</string>
-    <string name="external_mods_join_discord">कम्युनिटी Discord से जुड़ें</string>
-    <string name="external_mods_discord_open_failed">कोई ऐप Discord आमंत्रण नहीं खोल सकता</string>
-    <string name="external_mods_download">%1$s डाउनलोड हो रहा है</string>
-    <string name="external_mods_importing">मॉड इम्पोर्ट हो रहा है…</string>
-    <string name="external_mods_installed">%1$s इंस्टॉल हो गया</string>
-    <string name="external_mods_install_failed">%1$s इंस्टॉल नहीं हो सका: %2$s</string>
-    <string name="external_mods_open_failed">कोई ब्राउज़र इस डाउनलोड को नहीं खोल सकता</string>
-    <string name="external_mods_direct_download">सीधा डाउनलोड</string>
-    <string name="external_mods_ad_download">विज्ञापन वाला डाउनलोड</string>
-    <string name="external_mods_external_link">बाहरी लिंक</string>
-    <string name="external_mods_open_link">लिंक खोलें</string>
-    <string name="external_mods_external_dialog_title">बाहरी डाउनलोड</string>
-    <string name="external_mods_ad_dialog_title">विज्ञापन-समर्थित डाउनलोड</string>
-    <string name="external_mods_external_dialog_message">%1$s LeviLauncher के बाहर की डाउनलोड वेबसाइट का उपयोग करता है।\n\n1. लिंक खोलें पर टैप करें और .levipack या .so फ़ाइल डाउनलोड करें।\n2. LeviLauncher पर वापस जाएँ और Mods खोलें।\n3. स्कैन करें पर टैप करें।\n4. जिस मॉड को इम्पोर्ट करना चाहते हैं, उसके पास जोड़ें पर टैप करें।\n\nस्कैन केवल मुख्य Downloads फ़ोल्डर की जाँच करता है। अगर ब्राउज़र ने फ़ाइल कहीं और सेव की है, तो उसे इस फ़ोल्डर में ले जाएँ।</string>
-    <string name="external_mods_ad_dialog_message">%1$s अपने डेवलपर द्वारा चुनी गई विज्ञापन-समर्थित डाउनलोड वेबसाइट का उपयोग करता है। LeviLauncher उस वेबसाइट या उसके विज्ञापनों को नियंत्रित नहीं करता।\n\n1. लिंक खोलें पर टैप करें और .levipack या .so फ़ाइल डाउनलोड करें।\n2. LeviLauncher पर वापस जाएँ और Mods खोलें।\n3. स्कैन करें पर टैप करें।\n4. जिस मॉड को इम्पोर्ट करना चाहते हैं, उसके पास जोड़ें पर टैप करें।\n\nस्कैन केवल मुख्य Downloads फ़ोल्डर की जाँच करता है। केवल मॉड फ़ाइल डाउनलोड करें; असंबंधित ऐप इंस्टॉल न करें और नोटिफिकेशन की अनुमति न दें।</string>
-    <string name="external_mods_by_author">%1$s द्वारा</string>
-    <string name="external_mods_version">मॉड %1$s</string>
-    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
-    <string name="external_mods_update">अपडेट करें</string>
-    <string name="external_mods_installed_button">इंस्टॉल किया गया</string>
-    <string name="external_mods_incompatible">असंगत</string>
-    <string name="foreground_service">फ़ोरग्राउंड सेवा</string>
-    <string name="foreground_service_desc">ऐप बदलते समय Bedrock को सक्रिय सेशन सस्पेंड करने से रोककर और प्रोसेस, CPU तथा Wi-Fi को सक्रिय रखकर Minecraft को चलता रहने देता है।</string>
-    <string name="foreground_service_warning">नोट: इससे फ़ोन जल्दी गर्म हो सकता है और बैटरी की खपत बढ़ सकती है।</string>
-    <string name="foreground_service_channel">Minecraft बैकग्राउंड सुरक्षा</string>
-    <string name="foreground_service_notification_title">Minecraft को सक्रिय रखा जा रहा है</string>
-    <string name="foreground_service_notification_text">Minecraft का बैकग्राउंड मोड सक्रिय है। मौजूदा सेशन के लिए CPU और नेटवर्क एक्सेस उपलब्ध रखे जा रहे हैं।</string>
-    <string name="mod_menu_compact">कॉम्पैक्ट मॉड मेनू</string>
-    <string name="mod_menu_compact_desc">घनी मॉड्यूल सूची और कॉम्पैक्ट फ़िल्टर वाला छोटा मेनू इस्तेमाल करें</string>
-    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">संवेदनशीलता गुणक (100% = 1x)</string>
-    <string name="mod_config_gyro_horizontal_speed" formatted="false">क्षैतिज गति (%)</string>
-    <string name="mod_config_gyro_vertical_speed" formatted="false">ऊर्ध्वाधर गति (%)</string>
-    <string name="mod_config_gyro_small_movement_filter">छोटी गति फ़िल्टर (0 = बंद)</string>
-    <string name="hud_editor_drag_hint">पैनल को ले जाने के लिए खींचें</string>
-    <string name="hud_editor_drag_description">HUD एडिटर। पैनल को ले जाने के लिए इस क्षेत्र को खींचें।</string>
     <string name="mod_config_hotbar_item_icons">हॉटबार के आइटम आइकन इस्तेमाल करें</string>
     <string name="mod_config_hotbar_item_counts">आइटम की संख्या दिखाएँ</string>
     <string name="mod_config_hotbar_slot_enabled">हॉटबार स्लॉट %1$d दिखाएँ</string>
     <string name="mod_config_hotbar_slot_size">हॉटबार स्लॉट %1$d का आकार (dp)</string>
     <string name="mod_config_hotbar_slot_opacity">हॉटबार स्लॉट %1$d की अपारदर्शिता</string>
+    <!-- Changelog & News -->
     <string name="changelog_title">नया क्या है</string>
     <string name="changelog_version">LeviLauncher %1$s</string>
     <string name="changelog_continue">जारी रखें</string>
@@ -1096,6 +1114,7 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="mod_config_category_button">बटन</string>
     <string name="mod_config_visible_slots">दिखने वाले स्लॉट</string>
     <string name="mod_config_hotbar_slot_section">हॉटबार स्लॉट %1$d</string>
+    <!-- Selection & Batch Operations -->
     <string name="select">चुनें</string>
     <string name="select_all">सभी चुनें</string>
     <string name="selected">चुना गया</string>

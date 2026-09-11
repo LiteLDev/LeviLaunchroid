@@ -1,4 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- NOTE: Keep this file aligned with the English default (values/strings.xml):
+     same resource keys and order, comments, sections, XML structure, and formatting
+     (including indentation, spaces, and blank lines).
+
+     Translations must remain grammatically and linguistically correct for the target
+     language. Locale-specific plural forms may differ when required by the language.
+     Do not change placeholders or resource attributes. -->
+
 <resources>
     <!-- Common -->
     <string name="app_name">LeviLauncher</string>
@@ -69,6 +76,7 @@
     <string name="files_processed">%d fichiers mod traités avec succès</string>
     <string name="user_cancelled">Importation annulée par l\'utilisateur</string>
 
+
     <string name="exit">Quitter</string>
 
     <string name="overlay_permission_message">Veuillez accorder l\'autorisation de superposition</string>
@@ -103,11 +111,12 @@
     <string name="settings_tab_migration">Migration</string>
     <string name="settings_theme_desc">Choisir le thème de l\'application</string>
 
+
     <string name="unknown_sources_permission_title">Autorisation d\'installation</string>
     <string name="unknown_sources_permission_message">Pour installer ou mettre à jour cette application, veuillez accorder l\'autorisation d\'installer des applications inconnues.</string>
 
     <string name="check_update">Vérifier les mises à jour</string>
-    <string name="version_prefix">Version : </string>
+    <string name="version_prefix">Version :</string>
     <string name="unknown_error">Erreur inconnue</string>
     <string name="preloader_sigs_title">Données d’exécution</string>
     <string name="preloader_sigs_last_update">Dernière mise à jour : %1$s</string>
@@ -131,6 +140,9 @@
     <string name="dialog_message_disable_version_isolation">Vous essayez de lancer une version installée avec l\'isolation de version activée. Veuillez désactiver l\'isolation de version pour continuer.</string>
     <string name="dialog_positive_disable">Désactiver</string>
     <string name="dialog_positive_ok">OK</string>
+    <string name="delete_account_title">Supprimer le compte</string>
+    <string name="delete_account_confirm">Voulez-vous vraiment supprimer ce compte ?</string>
+
 
     <string name="new_version_found">Nouvelle version trouvée : %1$s</string>
     <string name="update_question">Voulez-vous télécharger et installer la dernière version ?</string>
@@ -158,6 +170,7 @@
     <string name="repair_preparing">Préparation…</string>
     <string name="repair_processing">Extraction des bibliothèques…</string>
     <string name="repair_finalizing">Finalisation de la réparation…</string>
+    <!-- Storage Migration -->
     <string name="storage_migration_title">Migration du stockage requise</string>
     <string name="storage_migration_message">LeviLauncher doit migrer les données de games/org.levimc vers %1$s avant de continuer.
 
@@ -202,21 +215,21 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="shared_storage_layout_mode_legacy">Répertoires internes/externes d\'origine</string>
     <string name="shared_storage_layout_status">Mode actuel : %1$s\nInterne : %2$s\nExterne : %3$s</string>
     <string name="shared_storage_layout_changed">La sélection du répertoire de stockage a été mise à jour. Redémarrez Minecraft et rouvrez la gestion du contenu pour appliquer complètement le changement.</string>
-
+    <!-- Theme -->
     <string name="theme_title">Mode Thème</string>
     <string name="theme_follow_system">Suivre le système</string>
     <string name="theme_light">Mode Clair</string>
     <string name="theme_dark">Mode Sombre</string>
 
     <string name="error_no_browser">Aucun navigateur disponible</string>
-
+    <!-- License & Security -->
     <string name="eula_title">Accord de licence LeviLauncher</string>
     <string name="eula_message"><b>Bienvenue sur LeviLauncher</b>\n\nEn utilisant ce logiciel, vous acceptez :\n\n• C\'est un lanceur Minecraft <b>non officiel</b>\n• Vous devez posséder une copie <b>sous licence</b> de Minecraft\n• Toute forme de piratage ou de triche est interdite\n• Les mods/packs de ressources sont utilisés à vos risques et périls\n• Non affilié à Mojang/Microsoft\n\nL\'utilisation continue vaut acceptation</string>
     <string name="eula_agree">Accepter</string>
     <string name="eula_exit">Refuser</string>
 
     <string name="allow_unknown_sources">Veuillez autoriser l\'installation à partir de sources inconnues avant de continuer</string>
-
+    <!-- Version Management -->
     <string name="dialog_title_delete_version">Supprimer la version</string>
     <string name="dialog_message_delete_version">Êtes-vous sûr de vouloir supprimer cette version personnalisée ? Cette action ne peut pas être annulée.</string>
     <string name="dialog_positive_delete">Supprimer</string>
@@ -236,7 +249,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="version_isolation">Isolation de version</string>
     <string name="launch_vertically">Lancement vertical</string>
     <string name="launch_vertically_desc">Forcer le jeu à se lancer en mode portrait</string>
-
+    <!-- Instance Management -->
     <string name="instance_settings_title">Paramètres d\'instance</string>
     <string name="instance_tab_general">Général</string>
     <string name="instance_tab_launch_options">Options de lancement</string>
@@ -247,12 +260,32 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="instance_clear_icon">Effacer</string>
     <string name="instance_icon_hint">Sera enregistré sous LargeLogo.png dans le dossier de version. Cliquez sur l\'icône pour changer.</string>
     <string name="instance_isolation_desc">Isoler les données de jeu pour cette instance. Les autres ne seront pas affectées.</string>
+    <string name="instance_shortcut_title">Raccourci sur l’écran d’accueil</string>
+    <string name="instance_shortcut_desc">Les modifications du nom et de l’icône sont enregistrées automatiquement. Appuyez sur Ajouter un raccourci pour créer ou mettre à jour le raccourci de l’écran d’accueil.</string>
+    <string name="instance_shortcut_name">Nom du raccourci</string>
+    <string name="instance_shortcut_icon">Icône du raccourci</string>
+    <string name="instance_shortcut_choose_icon">Choisir une icône</string>
+    <string name="instance_shortcut_default_icon">Utiliser l’icône par défaut</string>
+    <string name="instance_shortcut_add_button">Ajouter un raccourci</string>
+    <string name="instance_settings_auto_save_failed">Impossible d’enregistrer ce paramètre de l’instance.</string>
+    <string name="instance_shortcut_not_supported">Votre lanceur d’écran d’accueil ne prend pas en charge les raccourcis épinglés.</string>
+    <string name="instance_shortcut_missing">Cette instance de Minecraft n’est plus disponible.</string>
     <string name="instance_danger_zone">Zone de danger</string>
     <string name="instance_danger_zone_desc">Ces actions affectent l\'enregistrement de l\'instance ou les fichiers locaux. Vérifiez bien.</string>
     <string name="instance_delete_desc">Supprime définitivement cette instance de votre appareil (mondes, configurations, etc.).</string>
     <string name="instance_delete_warning">Cette action ne peut pas être annulée.</string>
     <string name="instance_delete_confirm_title">Supprimer l\'instance</string>
     <string name="instance_delete_confirm_msg">Êtes-vous sûr ? Toutes les données, y compris les mondes, seront définitivement supprimées.</string>
+    <string name="instance_backup_title">Sauvegarder l\'instance</string>
+    <string name="instance_backup_desc">Crée une sauvegarde complète de cette instance dans Download/LeviLauncher/Backups.</string>
+    <string name="instance_backup_button">Sauvegarder l\'instance</string>
+    <string name="instance_backup_confirm_message">Créer maintenant une sauvegarde complète de cette instance ? Quittez d\'abord Minecraft s\'il est en cours d\'exécution afin d\'éviter toute modification de fichiers pendant la sauvegarde.</string>
+    <string name="instance_backup_in_progress">Sauvegarde de l\'instance…</string>
+    <string name="instance_backup_success_title">Sauvegarde créée</string>
+    <string name="instance_backup_success_message">Sauvegarde enregistrée dans :\n%1$s</string>
+    <string name="instance_backup_failed_title">Échec de la sauvegarde</string>
+    <string name="instance_backup_failed_message">Impossible de créer la sauvegarde :\n%1$s</string>
+    <string name="instance_import_backup_button">Importer une sauvegarde</string>
     <string name="instance_batch_backup_button">Sauvegarde par lot</string>
     <string name="instance_batch_backup_title">Sauvegarde par lot des instances</string>
     <string name="instance_batch_backup_select_message">Sélectionnez les instances à sauvegarder. Quittez Minecraft s\'il est en cours d\'exécution afin d\'éviter toute modification des données pendant la sauvegarde.</string>
@@ -266,7 +299,16 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="instance_batch_backup_partial_message">%1$d sauvegardes créées, %2$d échecs.\n\nEnregistrées :\n%3$s\n\nÉchecs :\n%4$s</string>
     <string name="instance_batch_backup_failed_title">Échec de la sauvegarde par lot</string>
     <string name="instance_batch_backup_failed_message">Impossible de créer une sauvegarde :\n%1$s</string>
+    <string name="instance_restore_title">Restaurer la sauvegarde</string>
+    <string name="instance_restore_in_progress">Restauration de la sauvegarde de l\'instance…</string>
+    <string name="instance_restore_success_title">Restauration terminée</string>
+    <string name="instance_restore_success_message">Restauré : %1$s</string>
+    <string name="instance_restore_failed_title">Échec de la restauration</string>
+    <string name="instance_restore_failed_message">Impossible de restaurer la sauvegarde :\n%1$s</string>
 
+    <!-- Language Setting -->
+    <!-- Keep English at the top (default language). -->
+    <!-- Sort all other languages alphabetically by their display name. -->
     <string name="language">Langue (Language)</string>
     <string name="english">Anglais (English)</string>
     <string name="chinese">简体中文 (Chinese)</string>
@@ -280,6 +322,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="turkish">Türkçe (Turkish)</string>
     <string name="vietnamese">Tiếng Việt (Vietnamese)</string>
 
+    <!-- Version Rename -->
     <string name="rename_version_title">Renommer la version</string>
     <string name="rename_version_message">Entrez un nouveau nom pour cette version :</string>
     <string name="new_version_name">Nouveau nom de version</string>
@@ -288,6 +331,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="rename_failed">Échec du renommage : %1$s</string>
     <string name="cannot_rename_installed">Impossible de renommer les versions installées</string>
 
+    <!-- Content Management -->
     <string name="content_management">Gestion de contenu</string>
     <string name="worlds_title">Mondes</string>
     <string name="resource_packs_title">Packs de ressources</string>
@@ -319,6 +363,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="import_failed">Échec de l\'importation</string>
     <string name="import_addon_success">Addon importé : %1$d packs de ressources, %2$d packs de comportements</string>
 
+    <!-- World Management -->
     <string name="world_size">Taille : %s</string>
     <string name="world_last_played">Dernière partie : %s</string>
     <string name="import_world">Importer un monde</string>
@@ -330,6 +375,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="delete">Supprimer</string>
     <string name="delete_pack">Supprimer</string>
 
+    <!-- Resource Pack Management -->
     <string name="import_resource_pack">Importer un pack de ressources</string>
     <string name="import_behavior_pack">Importer un pack de comportements</string>
     <string name="import_skin_pack">Importer un pack de skins</string>
@@ -337,6 +383,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="delete_skin_pack">Supprimer le pack de skins</string>
     <string name="delete_behavior_pack">Supprimer le pack de comportements</string>
 
+    <!-- Content Operations -->
     <string name="confirm_delete_world">Voulez-vous vraiment supprimer ce monde ? Cette action est irréversible.</string>
     <string name="confirm_delete_resource_pack">Voulez-vous vraiment supprimer ce pack ? Cette action est irréversible.</string>
     <string name="confirm_delete_behavior_pack">Voulez-vous vraiment supprimer ce pack ? Cette action est irréversible.</string>
@@ -351,9 +398,11 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="deleting_screenshot">Suppression de la capture d\'écran…</string>
     <string name="deleting_server">Suppression du serveur…</string>
 
+    <!-- World Editor -->
     <string name="edit_world">Éditer le monde</string>
     <string name="edit">Éditer</string>
     <string name="save">Enregistrer</string>
+    <string name="reset">Réinitialiser</string>
     <string name="saved_to_gallery">Enregistré dans la galerie</string>
     <string name="level_dat_not_found">level.dat introuvable</string>
     <string name="no_editable_properties">Aucune propriété modifiable trouvée</string>
@@ -365,6 +414,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="discard_changes_message">Vous avez des modifications non enregistrées. Voulez-vous les annuler ?</string>
     <string name="discard">Annuler</string>
 
+    <!-- Custom Flat World -->
     <string name="custom_flat_world">Monde plat personnalisé</string>
     <string name="world_name">Nom du monde</string>
     <string name="enter_world_name">Entrez le nom du monde</string>
@@ -377,7 +427,22 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="add_at_least_one_layer">Ajoutez au moins une couche</string>
     <string name="world_created_successfully">Monde créé avec succès</string>
     <string name="failed_to_create_world">Échec de la création du monde</string>
+    <string name="custom_flat_world_subtitle">Créez un monde avec votre propre biome et vos propres couches de blocs</string>
+    <string name="world_settings">Paramètres du monde</string>
+    <string name="world_settings_hint">Choisissez les paramètres de base du nouveau monde</string>
+    <string name="layers_title">Couches</string>
+    <string name="add_layer_compact">Ajouter une couche</string>
+    <string name="no_layers_title">Aucune couche pour l’instant</string>
+    <string name="no_layers_hint">Ajoutez au moins une couche de blocs pour créer le monde</string>
+    <string name="reorder_layer">Réorganiser la couche</string>
+    <string name="delete_layer">Supprimer la couche</string>
+    <string name="block_id_hint">minecraft:stone</string>
+    <plurals name="flat_layers_count">
+        <item quantity="one">%1$d couche • bas → haut</item>
+        <item quantity="other">%1$d couches • bas → haut</item>
+    </plurals>
 
+    <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">Version Play Store requise</string>
     <string name="minecraft_playstore_required_message">Ce lanceur fonctionne uniquement avec l\'application officielle Minecraft du Google Play Store.</string>
     <string name="buy_minecraft">Obtenir Minecraft</string>
@@ -387,11 +452,59 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="genuine_badge_label">Licence non vérifiée</string>
     <string name="invalid_license_detected_toast">Minecraft non officiel détecté. Assurez-vous d\'avoir la version du Play Store.</string>
 
-    <string name="full_mods_title">Mods </string>
+    <string name="full_mods_title">Mods</string>
     <string name="total_mods">Total des mods :</string>
     <string name="enabled_mods">Activés :</string>
     <string name="add_mod">Ajouter un Mod</string>
+    <string name="scan_downloads">Analyser</string>
+    <string name="scan_downloads_scanning">Analyse…</string>
+    <string name="scan_downloads_none_found">Aucun mod .levipack ou .so trouvé dans Téléchargements</string>
+    <string name="scan_downloads_failed">Impossible d’analyser Téléchargements</string>
+    <string name="scan_downloads_permission_denied">L’accès au stockage est nécessaire pour analyser Téléchargements</string>
+    <string name="scan_downloads_results_title">Mods dans Téléchargements</string>
+    <string name="scan_downloads_results_subtitle">Choisissez un mod à ajouter. L’analyse vérifie uniquement le dossier Téléchargements principal.</string>
+    <string name="scan_downloads_add">Ajouter</string>
+    <string name="scan_downloads_adding">Ajout…</string>
+    <string name="scan_downloads_added">Ajouté</string>
+    <string name="scan_downloads_added_message">%1$s ajouté</string>
+    <string name="scan_downloads_levipack">LeviPack</string>
+    <string name="scan_downloads_native_library">Bibliothèque native</string>
+    <string name="scan_downloads_file_details">%1$s • %2$s</string>
+    <string name="external_mods">Mods externes</string>
+    <string name="external_mods_subtitle">Mods de la communauté pour Minecraft %1$s</string>
+    <string name="external_mods_no_version">Sélectionnez une version de Minecraft avant d’installer des mods</string>
+    <string name="external_mods_search_hint">Rechercher des mods, auteurs ou versions…</string>
+    <string name="external_mods_compatible_only">Compatibles uniquement</string>
+    <string name="external_mods_all_versions">Toutes les versions de Minecraft</string>
+    <string name="external_mods_sort_newest">Plus récents</string>
+    <string name="external_mods_sort_name">Nom A–Z</string>
+    <string name="external_mods_empty">Aucun mod ne correspond à ces filtres</string>
+    <string name="external_mods_load_failed">Impossible d’actualiser le catalogue. La copie enregistrée est affichée.</string>
+    <string name="external_mods_refresh">Actualiser le catalogue</string>
+    <string name="external_mods_refreshed">Catalogue actualisé</string>
+    <string name="external_mods_join_discord">Rejoindre le Discord de la communauté</string>
+    <string name="external_mods_discord_open_failed">Aucune application ne peut ouvrir l’invitation Discord</string>
+    <string name="external_mods_download">Téléchargement de %1$s</string>
+    <string name="external_mods_importing">Importation du mod…</string>
+    <string name="external_mods_installed">%1$s installé</string>
+    <string name="external_mods_install_failed">Impossible d’installer %1$s : %2$s</string>
+    <string name="external_mods_open_failed">Aucun navigateur ne peut ouvrir ce téléchargement</string>
+    <string name="external_mods_direct_download">Téléchargement direct</string>
+    <string name="external_mods_ad_download">Téléchargement avec publicité</string>
+    <string name="external_mods_external_link">Lien externe</string>
+    <string name="external_mods_open_link">Ouvrir le lien</string>
+    <string name="external_mods_external_dialog_title">Téléchargement externe</string>
+    <string name="external_mods_ad_dialog_title">Téléchargement financé par la publicité</string>
+    <string name="external_mods_external_dialog_message">%1$s utilise une page de téléchargement en dehors de LeviLauncher.\n\n1. Appuyez sur Ouvrir le lien et téléchargez le fichier .levipack ou .so.\n2. Revenez dans LeviLauncher et ouvrez Mods.\n3. Appuyez sur Analyser.\n4. Appuyez sur Ajouter à côté du mod que vous souhaitez importer.\n\nL’analyse vérifie uniquement le dossier Téléchargements principal. Déplacez-y le fichier si votre navigateur l’a enregistré ailleurs.</string>
+    <string name="external_mods_ad_dialog_message">%1$s utilise une page de téléchargement avec publicité choisie par son développeur. LeviLauncher ne contrôle ni cette page ni ses publicités.\n\n1. Appuyez sur Ouvrir le lien et téléchargez le fichier .levipack ou .so.\n2. Revenez dans LeviLauncher et ouvrez Mods.\n3. Appuyez sur Analyser.\n4. Appuyez sur Ajouter à côté du mod que vous souhaitez importer.\n\nL’analyse vérifie uniquement le dossier Téléchargements principal. Téléchargez uniquement le fichier du mod ; n’installez aucune application sans rapport et n’autorisez pas les notifications.</string>
+    <string name="external_mods_by_author">par %1$s</string>
+    <string name="external_mods_version">Mod %1$s</string>
+    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
+    <string name="external_mods_update">Mettre à jour</string>
+    <string name="external_mods_installed_button">Installé</string>
+    <string name="external_mods_incompatible">Incompatible</string>
 
+    <!-- Mod Detail -->
     <string name="mod_detail_title">Détails du Mod</string>
     <string name="delete_mod">Supprimer le Mod</string>
     <string name="error_loading_mod">Erreur de chargement du mod</string>
@@ -399,10 +512,63 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="mod_disabled">Mod désactivé</string>
     <string name="mod_filename_format">Fichier : %s</string>
     <string name="mod_enable_status">État d\'activation</string>
+    <string name="mod_icon_content_description">Icône du mod</string>
+    <string name="mod_author_byline">par %s</string>
+    <string name="mod_version_chip">Version %s</string>
+    <string name="mod_metadata_title">Informations</string>
+    <string name="mod_actions_title">Actions</string>
+    <string name="mod_author_label">Auteur</string>
+    <string name="mod_version_label">Version</string>
+    <string name="mod_minecraft_versions_label">Versions de Minecraft</string>
+    <string name="mod_entry_label">Fichier d\'entrée</string>
+    <string name="mod_id_label">ID du mod</string>
+    <string name="mod_config_files_label">Fichiers de configuration</string>
+    <string name="mod_unknown_author">Auteur inconnu</string>
+    <string name="mod_unknown_version">Version inconnue</string>
+    <string name="mod_all_versions">Toutes les versions prises en charge</string>
+    <string name="mod_no_config_files">Aucune configuration modifiable</string>
+    <string name="mod_config_badge">CONFIG</string>
+    <string name="mod_config_badge_with_count">CONFIG · %d</string>
+    <string name="mod_config_title_format">Configuration de %s</string>
+    <string name="mod_config_not_found">Aucune configuration modifiable trouvée</string>
+    <string name="mod_config_load_failed">Échec du chargement de la configuration : %s</string>
+    <string name="mod_config_save_failed">Échec de l\'enregistrement de la configuration</string>
+    <string name="mod_config_saved">Configuration enregistrée</string>
+    <string name="mod_config_restart_hint">Le fichier de configuration a été enregistré et un fichier .backup a été conservé.</string>
+    <string name="mod_config_validation_failed">Échec de la validation de la configuration</string>
+    <string name="mod_config_invalid_json">JSON invalide</string>
+    <string name="mod_config_expand">Développer</string>
+    <string name="mod_config_collapse">Réduire</string>
+    <string name="mod_config_raw_json">Modifier le JSON brut</string>
+    <string name="mod_config_raw_json_short">JSON</string>
+    <string name="mod_config_item_label">Élément %1$s</string>
+    <string name="mod_config_object_desc">Groupe de paramètres liés</string>
+    <string name="mod_config_array_desc">Liste de valeurs</string>
+    <string name="mod_config_range_prefix">Plage</string>
+    <string name="mod_config_error_number">%1$s doit être un nombre</string>
+    <string name="mod_config_error_minimum">%1$s doit être au moins %2$s</string>
+    <string name="mod_config_error_maximum">%1$s doit être au plus %2$s</string>
+    <string name="mod_config_error_boolean">%1$s doit être activé ou désactivé</string>
+    <string name="mod_config_error_string">%1$s doit être du texte</string>
+    <!-- Mod Configuration -->
+    <plurals name="mod_config_files_count">
+        <item quantity="one">%d configuration modifiable</item>
+        <item quantity="other">%d configurations modifiables</item>
+    </plurals>
+    <plurals name="mod_config_choices_count">
+        <item quantity="one">%d choix</item>
+        <item quantity="other">%d choix</item>
+    </plurals>
+    <plurals name="mod_config_items_count">
+        <item quantity="one">%d élément</item>
+        <item quantity="other">%d éléments</item>
+    </plurals>
 
+    <!-- Game Version Select Dialog -->
     <string name="game_version_select_title">Sélectionner la version du jeu</string>
     <string name="back">Retour</string>
 
+    <!-- Splash -->
     <string name="splash_logo_desc">Logo de la feuille</string>
     <string name="minecraft_loading_title">Lancement de Minecraft</string>
     <string name="minecraft_loading_subtitle">Preparation des bibliotheques natives et des mods actives</string>
@@ -416,6 +582,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="launcher_restart_subtitle">Un instant, vous allez revenir à l\'accueil</string>
     <string name="launcher_restart_status">Presque terminé…</string>
 
+    <!-- Accounts & Microsoft Login -->
     <string name="accounts_title">Comptes</string>
     <string name="microsoft_accounts">Comptes Microsoft</string>
     <string name="manage_accounts">Gérer les comptes</string>
@@ -426,13 +593,45 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="accounts_active_privilege">Connecté</string>
 
     <string name="ms_login_title">Connexion Microsoft</string>
+    <string name="ms_login_header_subtitle">Connectez-vous à Minecraft en toute sécurité</string>
     <string name="ms_login_starting">Démarrage de la connexion Microsoft…</string>
     <string name="ms_login_exchanging">Échange de jeton…</string>
     <string name="ms_login_auth_xbox_device">Authentification de l\'appareil Xbox…</string>
     <string name="ms_login_fetch_minecraft_identity">Récupération de l\'identité Minecraft…</string>
+    <string name="ms_login_retrying">Connexion interrompue. Nouvelle tentative sécurisée…</string>
     <string name="ms_login_success">Connecté en tant que %1$s</string>
     <string name="ms_login_failed">Échec de la connexion Microsoft</string>
     <string name="ms_login_failed_detail">Échec de la connexion : %1$s</string>
+    <string name="ms_choose_login_method">Se connecter à Minecraft</string>
+    <string name="ms_choose_login_method_desc">Choisissez le flux de code d\'appareil via le navigateur ou continuez avec la page Microsoft intégrée.</string>
+    <string name="ms_device_code_login">Continuer avec le navigateur</string>
+    <string name="ms_device_code_option_title">Code d\'appareil (recommandé)</string>
+    <string name="ms_device_code_login_desc">Ouvrez une session privée du navigateur avec le code d\'appareil déjà rempli.</string>
+    <string name="ms_webview_login">Ouvrir la connexion intégrée</string>
+    <string name="ms_webview_option_title">WebView intégrée</string>
+    <string name="ms_webview_login_desc">Connectez-vous sans quitter LeviLauncher. Utilisez cette option lorsque le flux du navigateur n\'est pas disponible.</string>
+    <string name="ms_device_code_title">Se connecter avec un code d\'appareil</string>
+    <string name="ms_device_code_instructions">Ouvrez la page de connexion d\'appareil Microsoft, saisissez ce code, puis approuvez l\'accès. LeviLauncher terminera automatiquement.</string>
+    <string name="ms_device_code_label">Code d\'appareil Microsoft</string>
+    <string name="ms_device_code_requesting">Demande d\'un code sécurisé…</string>
+    <string name="ms_device_code_waiting_code">--------</string>
+    <string name="ms_device_code_waiting">En attente de la fin dans votre navigateur…</string>
+    <string name="ms_device_code_checking">Vérification du résultat de la connexion Microsoft…</string>
+    <string name="ms_device_code_reconnecting">La connexion a changé. Nouvelle tentative automatique…</string>
+    <string name="ms_device_code_authorized">Microsoft a approuvé la connexion. Finalisation…</string>
+    <string name="ms_device_code_browser_opened">Terminez la nouvelle connexion Microsoft dans votre navigateur, puis revenez ici.</string>
+    <string name="ms_device_code_expires">Le code expire dans %1$d:%2$02d</string>
+    <string name="ms_device_code_copy">Copier le code</string>
+    <string name="ms_device_code_copied">Code copié</string>
+    <string name="ms_device_code_open_browser">Ouvrir la connexion Microsoft</string>
+    <string name="ms_device_code_step_title">Terminez la connexion dans votre navigateur</string>
+    <string name="ms_device_code_browser_note">LeviLauncher ouvre votre navigateur par défaut dans une session privée, remplit automatiquement le code et demande une nouvelle connexion Microsoft.</string>
+    <string name="ms_choose_other_method">Autre méthode</string>
+    <string name="ms_no_browser">Aucun navigateur n\'est disponible sur cet appareil.</string>
+    <string name="ms_default_browser_no_private_mode">Votre navigateur par défaut ne prend pas en charge la connexion privée. Mettez-le à jour ou utilisez la connexion WebView.</string>
+    <string name="ms_login_ssl_failed">La page sécurisée de connexion Microsoft n\'a pas pu être vérifiée.</string>
+    <string name="ms_login_state_failed">La réponse de connexion Microsoft n\'a pas pu être vérifiée. Recommencez la connexion.</string>
+    <string name="ms_login_missing_code">Microsoft n\'a pas renvoyé de code de connexion. Recommencez la connexion ou utilisez le code d\'appareil.</string>
 
     <string name="ms_set_active">Définir comme actif</string>
     <string name="ms_delete">Supprimer</string>
@@ -445,9 +644,14 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="go_to_accounts">Comptes</string>
     <string name="disable_launcher_login_and_continue">Fermer</string>
 
+    <string name="ms_feature_disabled_title">Fonction désactivée</string>
+    <string name="ms_feature_disabled_desc">Activez « Se connecter à Minecraft avec LeviLauncher » dans les paramètres pour gérer les comptes Microsoft.</string>
+    <string name="ms_activated">Activé</string>
+
+    <!-- Popup labels -->
     <string name="label_current_account">Compte actuel</string>
     <string name="label_other_accounts">Autres comptes</string>
-
+    <!-- Crash & Diagnostics -->
     <string name="crash_title">L\'application s\'est arrêtée</string>
     <string name="crash_upload">Téléverser le rapport de plantage</string>
     <string name="crash_details_title">Détails du plantage</string>
@@ -466,8 +670,15 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="dialog_message_exit_app">Êtes-vous sûr de vouloir quitter ?</string>
     <string name="dialog_positive_exit">Quitter</string>
     <string name="show_logcat_overlay">Superposition Logcat</string>
+    <string name="foreground_service">Service au premier plan</string>
+    <string name="foreground_service_desc">Maintient Minecraft en fonctionnement lorsque vous changez d’application en empêchant Bedrock de suspendre la session active et en gardant le processus, le processeur et le Wi-Fi actifs.</string>
+    <string name="foreground_service_warning">Remarque : peut faire chauffer votre téléphone plus rapidement et augmenter la consommation de batterie.</string>
+    <string name="foreground_service_channel">Protection de Minecraft en arrière-plan</string>
+    <string name="foreground_service_notification_title">Minecraft est maintenu actif</string>
+    <string name="foreground_service_notification_text">Le mode arrière-plan de Minecraft est actif. Le processeur et l’accès au réseau restent disponibles pour la session en cours.</string>
     <string name="logcat_live">Logcat : <b>en direct</b></string>
     <string name="logcat_paused">Logcat : en pause</string>
+    <!-- Logcat Overlay i18n -->
     <string name="logcat_filter_hint">Filtre par mot-clé</string>
     <string name="logcat_blacklist_hint">Liste noire (séparée par virgules)</string>
     <string name="logcat_filter_clear">Effacer les filtres</string>
@@ -479,6 +690,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="logcat_corner_bottom_left">Redimensionner : bas-gauche</string>
     <string name="logcat_corner_bottom_right">Redimensionner : bas-droite</string>
 
+    <!-- Inbuilt Mods -->
     <string name="inbuilt_mods">Mods intégrés</string>
     <string name="inbuilt_mods_title">Mods intégrés</string>
     <string name="inbuilt_mods_subtitle">Mods internes sans bibliothèques natives</string>
@@ -487,7 +699,8 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="inbuilt_mod_removed">%s supprimé des mods</string>
     <string name="add">Ajouter</string>
     <string name="remove">Supprimer</string>
-
+    
+    <!-- Inbuilt Mods -->
     <string name="inbuilt_mod_quick_drop">Dépôt Rapide</string>
     <string name="inbuilt_mod_quick_drop_desc">Déposer des objets rapidement</string>
     <string name="inbuilt_mod_camera">Perspective rapide</string>
@@ -515,16 +728,25 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="virtual_cursor_enabled">Curseur activé</string>
     <string name="virtual_cursor_disabled">Curseur désactivé</string>
     <string name="cursor_sensitivity_label">Sensibilité du curseur :</string>
+    <string name="inbuilt_mod_gyro">Gyroscope</string>
+    <string name="inbuilt_mod_gyro_desc">Utilise le gyroscope de l\'appareil pour contrôler la rotation de la caméra</string>
+    <string name="inbuilt_mod_pojav_controls">Contrôles Pojav</string>
+    <string name="inbuilt_mod_pojav_controls_desc">Remplace les commandes tactiles de Minecraft par des commandes de style Pojav entièrement personnalisables</string>
+    <string name="inbuilt_mod_more_buttons">Plus de boutons</string>
+    <string name="inbuilt_mod_more_buttons_desc">Créez des boutons personnalisés à l\'écran avec une seule touche assignée et des icônes SVG</string>
     <string name="inbuilt_badge">INTÉGRÉ</string>
     <string name="autosprint_keybind_label">Touche Sprint Auto :</string>
     <string name="autosprint_keybind_press">Appuyez sur une touche…</string>
     <string name="configure">Configurer</string>
     <string name="overlay_button_size">Taille du bouton superposé</string>
     <string name="overlay_button_opacity">Opacité du bouton</string>
+    <string name="overlay_button_size_value">Taille : %1$ddp</string>
+    <string name="overlay_button_opacity_value">Opacité : %1$d%%</string>
     <string name="overlay_button_lock">Verrouiller la position</string>
     <string name="overlay_button_lock_desc">Empêcher le glissement accidentel</string>
     <string name="settings">Paramètres</string>
 
+    <!-- Extract Structures -->
     <string name="extract_structures">Extraire des structures</string>
     <string name="no_structures_found">Aucune structure trouvée dans ce monde</string>
     <string name="no_structures_found_title">Aucune structure trouvée</string>
@@ -538,15 +760,36 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="structures_found_title">Structures trouvées</string>
     <string name="structures_found_count">%d structures trouvées dans ce monde</string>
 
+    <!-- Mod Menu -->
     <string name="mod_menu">Menu Mod</string>
     <string name="mod_menu_modules">Modules</string>
+    <string name="mod_menu_favorites">Favoris</string>
+    <string name="mod_menu_favorite">Ajouter aux favoris</string>
+    <string name="mod_menu_unfavorite">Retirer des favoris</string>
+    <string name="mod_menu_hud_editor">Éditeur HUD</string>
+    <string name="mod_menu_filter_enabled">Activés</string>
+    <string name="mod_menu_filter_inbuilt">Intégrés</string>
+    <string name="mod_menu_filter_external">Externes</string>
     <string name="mod_menu_search_hint">Rechercher des mods…</string>
     <string name="mod_menu_no_mods">Aucun mod ajouté</string>
+    <string name="mod_menu_no_favorites">Aucun mod favori pour le moment</string>
+    <string name="mod_menu_no_matches">Aucun mod correspondant</string>
+    <string name="mod_menu_group_inbuilt">Fonctionnalités intégrées</string>
+    <string name="mod_menu_group_external_ungrouped">Mods externes non groupés</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">Paramètres généraux</string>
+    <string name="mod_menu_appearance">Apparence</string>
+    <string name="mod_menu_pause_menu_only">Menu pause uniquement</string>
+    <string name="mod_menu_pause_menu_only_desc">Afficher le menu des mods uniquement dans le menu de pause</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">Paramètres à venir</string>
     <string name="mod_menu_notifications">Notifications</string>
     <string name="mod_menu_notifications_desc">Afficher une notification lors de l\'activation des mods</string>
     <string name="mod_menu_opacity">Opacité du menu de mods</string>
     <string name="mod_menu_button_opacity">Opacité du bouton menu</string>
+    <string name="mod_menu_compact">Menu des mods compact</string>
+    <string name="mod_menu_compact_desc">Utilisez un menu plus petit avec une liste de modules dense et des filtres compacts</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">Menu Mod activé</string>
     <string name="mod_menu_disabled">Menu Mod désactivé</string>
@@ -555,7 +798,37 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="mod_status_enabled">Activé</string>
     <string name="mod_status_disabled">Désactivé</string>
     <string name="mod_notification_enabled">%s activé</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">Taille du bouton de superposition (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">Opacité de la superposition (%)</string>
+    <string name="mod_config_overlay_show_everywhere" formatted="false">Afficher partout</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">Sensibilité du curseur (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">Niveau de zoom (%)</string>
+    <string name="mod_config_auto_sprint_keybind">Touche de sprint automatique</string>
+    <string name="mod_config_zoom_keybind">Touche de zoom</string>
+    <string name="mod_config_zoom_transition">Durée de transition (ms)</string>
+    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">Multiplicateur de sensibilité (100% = 1x)</string>
+    <string name="mod_config_gyro_horizontal_speed" formatted="false">Vitesse horizontale (%)</string>
+    <string name="mod_config_gyro_vertical_speed" formatted="false">Vitesse verticale (%)</string>
+    <string name="mod_config_gyro_small_movement_filter">Filtre des petits mouvements (0 = Désactivé)</string>
+    <string name="mod_config_gyro_sensitivity_x" formatted="false">Sensibilité horizontale (%)</string>
+    <string name="mod_config_gyro_sensitivity_y" formatted="false">Sensibilité verticale (%)</string>
+    <string name="mod_config_gyro_invert_x">Inverser l\'axe horizontal</string>
+    <string name="mod_config_gyro_invert_y">Inverser l\'axe vertical</string>
+    <string name="mod_config_gyro_deadzone">Zone morte</string>
+    <string name="mod_config_press_any_key">Appuyez sur une touche pour associer...</string>
+    <string name="mod_config_key_unknown">INCONNU</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="hud_editor_drag_hint">Faites glisser pour déplacer le panneau</string>
+    <string name="hud_editor_drag_description">Éditeur du HUD. Faites glisser cette zone pour déplacer le panneau.</string>
 
+    <!-- Options Editor -->
     <string name="edit_options">Modifier les options</string>
     <string name="options_file_not_found">Fichier d\'options introuvable</string>
     <string name="no_options_found">Aucune option trouvée</string>
@@ -564,6 +837,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="error_loading_options">Erreur de chargement des options</string>
     <string name="options_saved">Options enregistrées avec succès</string>
 
+    <!-- Quick Launch -->
     <string name="quick_launch_title">Lancement Rapide</string>
     <string name="quick_launch_subtitle">Lancer Minecraft avec des actions spécifiques via URI</string>
     <string name="quick_launch_how_to_play">Comment jouer</string>
@@ -591,6 +865,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="quick_launch_custom_uri">URI Personnalisée</string>
     <string name="quick_launch_custom_uri_desc">Entrez une URI minecraft:// personnalisée</string>
 
+    <!-- Quick Launch Dialogs -->
     <string name="server_ip_hint">Adresse IP du serveur</string>
     <string name="server_port_hint">Port (défaut : 19132)</string>
     <string name="server_name_hint">Nom du serveur</string>
@@ -602,6 +877,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="custom_uri_hint">Entrez une URI complète. Ex : \nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
     <string name="select_tab">Sélectionner un onglet :</string>
 
+    <!-- Quick Launch Validation -->
     <string name="server_ip_required">L\'IP du serveur est requise</string>
     <string name="server_details_required">Nom et IP du serveur requis</string>
     <string name="invalid_port">Numéro de port invalide</string>
@@ -610,14 +886,17 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="command_required">Commande requise</string>
     <string name="invalid_minecraft_uri">URI minecraft:// invalide</string>
 
+    <!-- Quick Launch Actions -->
     <string name="connect">Connecter</string>
     <string name="join">Rejoindre</string>
     <string name="load">Charger</string>
     <string name="execute">Exécuter</string>
 
+    <!-- Quick Actions Menu -->
     <string name="quick_launch">Lancement Rapide</string>
     <string name="quick_launch_menu_subtitle">Lancer avec des actions URI</string>
 
+    <!-- CurseForge -->
     <string name="curseforge_title">CurseForge</string>
     <string name="curseforge_subtitle">Parcourir et télécharger des contenus</string>
     <string name="curseforge_search_hint">Rechercher des contenus…</string>
@@ -627,6 +906,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="curseforge_download_failed">Échec du téléchargement</string>
     <string name="curseforge_available_files">Fichiers disponibles</string>
 
+    <!-- Navigation Bar -->
     <string name="nav_launch">Lancer</string>
     <string name="nav_import">Importer</string>
     <string name="nav_instances">Instances</string>
@@ -673,7 +953,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
         <item>CurseForge vous permet de télécharger du contenu de la communauté directement.</item>
         <item>Chargez des modules natifs SO externes pour étendre ou améliorer les performances de Minecraft.</item>
     </string-array>
-
+    <!-- Personalization -->
     <string name="theme_color_title">Couleur du thème</string>
     <string name="theme_color_desc">La couleur d\'accentuation principale</string>
     <string name="preset_colors">COULEURS PRÉDÉFINIES</string>
@@ -691,163 +971,8 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
 
     <string name="unsupported_version_title">Version non prise en charge</string>
     <string name="unsupported_version_msg">Ce lanceur ne prend pas en charge les versions de Minecraft antérieures à 1.21.80.</string>
-    <!-- Mod Config -->
-    <string name="mod_author_byline">par %s</string>
-    <string name="mod_version_chip">Version %s</string>
-    <string name="mod_config_title_format">Configuration de %s</string>
-    <string name="mod_config_not_found">Aucune configuration modifiable trouvée</string>
-    <string name="mod_config_load_failed">Échec du chargement de la configuration : %s</string>
-    <string name="mod_config_save_failed">Échec de l\'enregistrement de la configuration</string>
-    <string name="mod_config_saved">Configuration enregistrée</string>
-    <string name="mod_config_restart_hint">Le fichier de configuration a été enregistré et un fichier .backup a été conservé.</string>
-    <string name="mod_config_validation_failed">Échec de la validation de la configuration</string>
-    <string name="mod_config_invalid_json">JSON invalide</string>
-    <string name="mod_config_expand">Développer</string>
-    <string name="mod_config_collapse">Réduire</string>
-    <string name="mod_config_raw_json">Modifier le JSON brut</string>
-    <string name="mod_config_raw_json_short">JSON</string>
-    <string name="mod_config_item_label">Élément %1$s</string>
-    <string name="mod_config_object_desc">Groupe de paramètres liés</string>
-    <string name="mod_config_array_desc">Liste de valeurs</string>
-    <string name="mod_config_range_prefix">Plage</string>
-    <string name="mod_config_error_number">%1$s doit être un nombre</string>
-    <string name="mod_config_error_minimum">%1$s doit être au moins %2$s</string>
-    <string name="mod_config_error_maximum">%1$s doit être au plus %2$s</string>
-    <string name="mod_config_error_boolean">%1$s doit être activé ou désactivé</string>
-    <string name="mod_config_error_string">%1$s doit être du texte</string>
-    <plurals name="mod_config_files_count">
-        <item quantity="one">%d configuration modifiable</item>
-        <item quantity="other">%d configurations modifiables</item>
-    </plurals>
-    <plurals name="mod_config_choices_count">
-        <item quantity="one">%d choix</item>
-        <item quantity="other">%d choix</item>
-    </plurals>
-    <plurals name="mod_config_items_count">
-        <item quantity="one">%d élément</item>
-        <item quantity="other">%d éléments</item>
-    </plurals>
 
-    <!-- Mod Menu synced translations -->
-    <string name="mod_menu_favorites">Favoris</string>
-    <string name="mod_menu_favorite">Ajouter aux favoris</string>
-    <string name="mod_menu_unfavorite">Retirer des favoris</string>
-    <string name="mod_menu_hud_editor">Éditeur HUD</string>
-    <string name="mod_menu_filter_enabled">Activés</string>
-    <string name="mod_menu_filter_inbuilt">Intégrés</string>
-    <string name="mod_menu_filter_external">Externes</string>
-    <string name="mod_menu_no_favorites">Aucun mod favori pour le moment</string>
-    <string name="mod_menu_no_matches">Aucun mod correspondant</string>
-    <string name="mod_menu_group_inbuilt">Fonctionnalités intégrées</string>
-    <string name="mod_menu_group_external_ungrouped">Mods externes non groupés</string>
-    <string name="mod_menu_module_count">%1$d / %2$d</string>
-    <string name="mod_menu_general_settings">Paramètres généraux</string>
-    <string name="mod_menu_appearance">Apparence</string>
-    <string name="mod_menu_pause_menu_only">Menu pause uniquement</string>
-    <string name="mod_menu_pause_menu_only_desc">Afficher le menu des mods uniquement dans le menu de pause</string>
-    <string name="mod_menu_default_percent" formatted="false">100%</string>
-    <string name="mod_menu_percent_value">%1$d%%</string>
-    <string name="mod_overlay_fps_unknown">FPS: --</string>
-    <string name="mod_overlay_fps_value">FPS: %1$d</string>
-    <string name="mod_overlay_cps_value">CPS: %1$d</string>
-    <string name="mod_config_overlay_button_size_dp">Taille du bouton de superposition (dp)</string>
-    <string name="mod_config_overlay_opacity_percent" formatted="false">Opacité de la superposition (%)</string>
-    <string name="mod_config_cursor_sensitivity_percent" formatted="false">Sensibilité du curseur (%)</string>
-    <string name="mod_config_zoom_level_percent" formatted="false">Niveau de zoom (%)</string>
-    <string name="mod_config_auto_sprint_keybind">Touche de sprint automatique</string>
-    <string name="mod_config_zoom_keybind">Touche de zoom</string>
-    <string name="mod_config_press_any_key">Appuyez sur une touche pour associer...</string>
-    <string name="mod_config_key_unknown">INCONNU</string>
-    <string name="mod_config_color_alpha_short">A</string>
-    <string name="mod_config_color_red_short">R</string>
-    <string name="mod_config_color_green_short">G</string>
-    <string name="mod_config_color_blue_short">B</string>
-    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
-    <string name="overlay_button_size_value">Taille : %1$ddp</string>
-    <string name="overlay_button_opacity_value">Opacité : %1$d%%</string>
-    <string name="reset">Réinitialiser</string>
-    <!-- Completed localization coverage -->
-    <string name="delete_account_title">Supprimer le compte</string>
-    <string name="delete_account_confirm">Voulez-vous vraiment supprimer ce compte ?</string>
-    <string name="instance_backup_title">Sauvegarder l\'instance</string>
-    <string name="instance_backup_desc">Crée une sauvegarde complète de cette instance dans Download/LeviLauncher/Backups.</string>
-    <string name="instance_backup_button">Sauvegarder l\'instance</string>
-    <string name="instance_backup_confirm_message">Créer maintenant une sauvegarde complète de cette instance ? Quittez d\'abord Minecraft s\'il est en cours d\'exécution afin d\'éviter toute modification de fichiers pendant la sauvegarde.</string>
-    <string name="instance_backup_in_progress">Sauvegarde de l\'instance…</string>
-    <string name="instance_backup_success_title">Sauvegarde créée</string>
-    <string name="instance_backup_success_message">Sauvegarde enregistrée dans :\n%1$s</string>
-    <string name="instance_backup_failed_title">Échec de la sauvegarde</string>
-    <string name="instance_backup_failed_message">Impossible de créer la sauvegarde :\n%1$s</string>
-    <string name="instance_import_backup_button">Importer une sauvegarde</string>
-    <string name="instance_restore_title">Restaurer la sauvegarde</string>
-    <string name="instance_restore_in_progress">Restauration de la sauvegarde de l\'instance…</string>
-    <string name="instance_restore_success_title">Restauration terminée</string>
-    <string name="instance_restore_success_message">Restauré : %1$s</string>
-    <string name="instance_restore_failed_title">Échec de la restauration</string>
-    <string name="instance_restore_failed_message">Impossible de restaurer la sauvegarde :\n%1$s</string>
-    <string name="mod_icon_content_description">Icône du mod</string>
-    <string name="mod_metadata_title">Informations</string>
-    <string name="mod_actions_title">Actions</string>
-    <string name="mod_author_label">Auteur</string>
-    <string name="mod_version_label">Version</string>
-    <string name="mod_minecraft_versions_label">Versions de Minecraft</string>
-    <string name="mod_entry_label">Fichier d\'entrée</string>
-    <string name="mod_id_label">ID du mod</string>
-    <string name="mod_config_files_label">Fichiers de configuration</string>
-    <string name="mod_unknown_author">Auteur inconnu</string>
-    <string name="mod_unknown_version">Version inconnue</string>
-    <string name="mod_all_versions">Toutes les versions prises en charge</string>
-    <string name="mod_no_config_files">Aucune configuration modifiable</string>
-    <string name="mod_config_badge">CONFIG</string>
-    <string name="mod_config_badge_with_count">CONFIG · %d</string>
-    <string name="ms_login_header_subtitle">Connectez-vous à Minecraft en toute sécurité</string>
-    <string name="ms_login_retrying">Connexion interrompue. Nouvelle tentative sécurisée…</string>
-    <string name="ms_choose_login_method">Se connecter à Minecraft</string>
-    <string name="ms_choose_login_method_desc">Choisissez le flux de code d\'appareil via le navigateur ou continuez avec la page Microsoft intégrée.</string>
-    <string name="ms_device_code_login">Continuer avec le navigateur</string>
-    <string name="ms_device_code_option_title">Code d\'appareil (recommandé)</string>
-    <string name="ms_device_code_login_desc">Ouvrez une session privée du navigateur avec le code d\'appareil déjà rempli.</string>
-    <string name="ms_webview_login">Ouvrir la connexion intégrée</string>
-    <string name="ms_webview_option_title">WebView intégrée</string>
-    <string name="ms_webview_login_desc">Connectez-vous sans quitter LeviLauncher. Utilisez cette option lorsque le flux du navigateur n\'est pas disponible.</string>
-    <string name="ms_device_code_title">Se connecter avec un code d\'appareil</string>
-    <string name="ms_device_code_instructions">Ouvrez la page de connexion d\'appareil Microsoft, saisissez ce code, puis approuvez l\'accès. LeviLauncher terminera automatiquement.</string>
-    <string name="ms_device_code_label">Code d\'appareil Microsoft</string>
-    <string name="ms_device_code_requesting">Demande d\'un code sécurisé…</string>
-    <string name="ms_device_code_waiting_code">--------</string>
-    <string name="ms_device_code_waiting">En attente de la fin dans votre navigateur…</string>
-    <string name="ms_device_code_checking">Vérification du résultat de la connexion Microsoft…</string>
-    <string name="ms_device_code_reconnecting">La connexion a changé. Nouvelle tentative automatique…</string>
-    <string name="ms_device_code_authorized">Microsoft a approuvé la connexion. Finalisation…</string>
-    <string name="ms_device_code_browser_opened">Terminez la nouvelle connexion Microsoft dans votre navigateur, puis revenez ici.</string>
-    <string name="ms_device_code_expires">Le code expire dans %1$d:%2$02d</string>
-    <string name="ms_device_code_copy">Copier le code</string>
-    <string name="ms_device_code_copied">Code copié</string>
-    <string name="ms_device_code_open_browser">Ouvrir la connexion Microsoft</string>
-    <string name="ms_device_code_step_title">Terminez la connexion dans votre navigateur</string>
-    <string name="ms_device_code_browser_note">LeviLauncher ouvre votre navigateur par défaut dans une session privée, remplit automatiquement le code et demande une nouvelle connexion Microsoft.</string>
-    <string name="ms_choose_other_method">Autre méthode</string>
-    <string name="ms_no_browser">Aucun navigateur n\'est disponible sur cet appareil.</string>
-    <string name="ms_default_browser_no_private_mode">Votre navigateur par défaut ne prend pas en charge la connexion privée. Mettez-le à jour ou utilisez la connexion WebView.</string>
-    <string name="ms_login_ssl_failed">La page sécurisée de connexion Microsoft n\'a pas pu être vérifiée.</string>
-    <string name="ms_login_state_failed">La réponse de connexion Microsoft n\'a pas pu être vérifiée. Recommencez la connexion.</string>
-    <string name="ms_login_missing_code">Microsoft n\'a pas renvoyé de code de connexion. Recommencez la connexion ou utilisez le code d\'appareil.</string>
-    <string name="ms_feature_disabled_title">Fonction désactivée</string>
-    <string name="ms_feature_disabled_desc">Activez « Se connecter à Minecraft avec LeviLauncher » dans les paramètres pour gérer les comptes Microsoft.</string>
-    <string name="ms_activated">Activé</string>
-    <string name="inbuilt_mod_gyro">Gyroscope</string>
-    <string name="inbuilt_mod_gyro_desc">Utilise le gyroscope de l\'appareil pour contrôler la rotation de la caméra</string>
-    <string name="inbuilt_mod_pojav_controls">Contrôles Pojav</string>
-    <string name="inbuilt_mod_pojav_controls_desc">Remplace les commandes tactiles de Minecraft par des commandes de style Pojav entièrement personnalisables</string>
-    <string name="inbuilt_mod_more_buttons">Plus de boutons</string>
-    <string name="inbuilt_mod_more_buttons_desc">Créez des boutons personnalisés à l\'écran avec une seule touche assignée et des icônes SVG</string>
-    <string name="mod_config_overlay_show_everywhere" formatted="false">Afficher partout</string>
-    <string name="mod_config_zoom_transition">Durée de transition (ms)</string>
-    <string name="mod_config_gyro_sensitivity_x" formatted="false">Sensibilité horizontale (%)</string>
-    <string name="mod_config_gyro_sensitivity_y" formatted="false">Sensibilité verticale (%)</string>
-    <string name="mod_config_gyro_invert_x">Inverser l\'axe horizontal</string>
-    <string name="mod_config_gyro_invert_y">Inverser l\'axe vertical</string>
-    <string name="mod_config_gyro_deadzone">Zone morte</string>
+    <!-- Generic UI strings added during localization cleanup -->
     <string name="close">Fermer</string>
     <string name="previous">Précédent</string>
     <string name="next">Suivant</string>
@@ -897,6 +1022,8 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="custom_color_hint">#RRGGBB ou R,G,B</string>
     <string name="screenshot_name_placeholder">Nom de la capture d\'écran</string>
     <string name="screenshot_date_placeholder">Date : 2024-01-01 12:00:00</string>
+
+    <!-- More Buttons editor -->
     <string name="more_buttons_intro">Créez des boutons à l\'écran de style Minecraft, chacun associé à exactement une touche du clavier. Les boutons n\'exécutent jamais de macros, de séquences de touches, de répétitions automatiques ni d\'autoclic.</string>
     <string name="more_buttons_add_button">Ajouter un bouton</string>
     <string name="more_buttons_limit_reached">La limite de %1$d boutons personnalisés est atteinte.</string>
@@ -954,99 +1081,17 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="more_buttons_no_svg_selected">Aucun SVG sélectionné</string>
     <string name="more_buttons_default_name">Bouton</string>
 
+
     <!-- Hotbar Slot -->
     <string name="inbuilt_mod_hotbar_slot">Emplacement de barre rapide</string>
     <string name="inbuilt_mod_hotbar_slot_desc">Ajoute des boutons séparés de 1 à 9 pour sélectionner les emplacements de la barre rapide</string>
     <string name="hotbar_slot_content_description">Emplacement de barre rapide %1$d</string>
-
-
-    <!-- Added translations for strings present in the current English resources -->
-    <string name="instance_shortcut_title">Raccourci sur l’écran d’accueil</string>
-    <string name="instance_shortcut_desc">Les modifications du nom et de l’icône sont enregistrées automatiquement. Appuyez sur Ajouter un raccourci pour créer ou mettre à jour le raccourci de l’écran d’accueil.</string>
-    <string name="instance_shortcut_name">Nom du raccourci</string>
-    <string name="instance_shortcut_icon">Icône du raccourci</string>
-    <string name="instance_shortcut_choose_icon">Choisir une icône</string>
-    <string name="instance_shortcut_default_icon">Utiliser l’icône par défaut</string>
-    <string name="instance_shortcut_add_button">Ajouter un raccourci</string>
-    <string name="instance_settings_auto_save_failed">Impossible d’enregistrer ce paramètre de l’instance.</string>
-    <string name="instance_shortcut_not_supported">Votre lanceur d’écran d’accueil ne prend pas en charge les raccourcis épinglés.</string>
-    <string name="instance_shortcut_missing">Cette instance de Minecraft n’est plus disponible.</string>
-    <string name="custom_flat_world_subtitle">Créez un monde avec votre propre biome et vos propres couches de blocs</string>
-    <string name="world_settings">Paramètres du monde</string>
-    <string name="world_settings_hint">Choisissez les paramètres de base du nouveau monde</string>
-    <string name="layers_title">Couches</string>
-    <string name="add_layer_compact">Ajouter une couche</string>
-    <string name="no_layers_title">Aucune couche pour l’instant</string>
-    <string name="no_layers_hint">Ajoutez au moins une couche de blocs pour créer le monde</string>
-    <string name="reorder_layer">Réorganiser la couche</string>
-    <string name="delete_layer">Supprimer la couche</string>
-    <string name="block_id_hint">minecraft:stone</string>
-    <string name="scan_downloads">Analyser</string>
-    <string name="scan_downloads_scanning">Analyse…</string>
-    <string name="scan_downloads_none_found">Aucun mod .levipack ou .so trouvé dans Téléchargements</string>
-    <string name="scan_downloads_failed">Impossible d’analyser Téléchargements</string>
-    <string name="scan_downloads_permission_denied">L’accès au stockage est nécessaire pour analyser Téléchargements</string>
-    <string name="scan_downloads_results_title">Mods dans Téléchargements</string>
-    <string name="scan_downloads_results_subtitle">Choisissez un mod à ajouter. L’analyse vérifie uniquement le dossier Téléchargements principal.</string>
-    <string name="scan_downloads_add">Ajouter</string>
-    <string name="scan_downloads_adding">Ajout…</string>
-    <string name="scan_downloads_added">Ajouté</string>
-    <string name="scan_downloads_added_message">%1$s ajouté</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">Bibliothèque native</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
-    <string name="external_mods">Mods externes</string>
-    <string name="external_mods_subtitle">Mods de la communauté pour Minecraft %1$s</string>
-    <string name="external_mods_no_version">Sélectionnez une version de Minecraft avant d’installer des mods</string>
-    <string name="external_mods_search_hint">Rechercher des mods, auteurs ou versions…</string>
-    <string name="external_mods_compatible_only">Compatibles uniquement</string>
-    <string name="external_mods_all_versions">Toutes les versions de Minecraft</string>
-    <string name="external_mods_sort_newest">Plus récents</string>
-    <string name="external_mods_sort_name">Nom A–Z</string>
-    <string name="external_mods_empty">Aucun mod ne correspond à ces filtres</string>
-    <string name="external_mods_load_failed">Impossible d’actualiser le catalogue. La copie enregistrée est affichée.</string>
-    <string name="external_mods_refresh">Actualiser le catalogue</string>
-    <string name="external_mods_refreshed">Catalogue actualisé</string>
-    <string name="external_mods_join_discord">Rejoindre le Discord de la communauté</string>
-    <string name="external_mods_discord_open_failed">Aucune application ne peut ouvrir l’invitation Discord</string>
-    <string name="external_mods_download">Téléchargement de %1$s</string>
-    <string name="external_mods_importing">Importation du mod…</string>
-    <string name="external_mods_installed">%1$s installé</string>
-    <string name="external_mods_install_failed">Impossible d’installer %1$s : %2$s</string>
-    <string name="external_mods_open_failed">Aucun navigateur ne peut ouvrir ce téléchargement</string>
-    <string name="external_mods_direct_download">Téléchargement direct</string>
-    <string name="external_mods_ad_download">Téléchargement avec publicité</string>
-    <string name="external_mods_external_link">Lien externe</string>
-    <string name="external_mods_open_link">Ouvrir le lien</string>
-    <string name="external_mods_external_dialog_title">Téléchargement externe</string>
-    <string name="external_mods_ad_dialog_title">Téléchargement financé par la publicité</string>
-    <string name="external_mods_external_dialog_message">%1$s utilise une page de téléchargement en dehors de LeviLauncher.\n\n1. Appuyez sur Ouvrir le lien et téléchargez le fichier .levipack ou .so.\n2. Revenez dans LeviLauncher et ouvrez Mods.\n3. Appuyez sur Analyser.\n4. Appuyez sur Ajouter à côté du mod que vous souhaitez importer.\n\nL’analyse vérifie uniquement le dossier Téléchargements principal. Déplacez-y le fichier si votre navigateur l’a enregistré ailleurs.</string>
-    <string name="external_mods_ad_dialog_message">%1$s utilise une page de téléchargement avec publicité choisie par son développeur. LeviLauncher ne contrôle ni cette page ni ses publicités.\n\n1. Appuyez sur Ouvrir le lien et téléchargez le fichier .levipack ou .so.\n2. Revenez dans LeviLauncher et ouvrez Mods.\n3. Appuyez sur Analyser.\n4. Appuyez sur Ajouter à côté du mod que vous souhaitez importer.\n\nL’analyse vérifie uniquement le dossier Téléchargements principal. Téléchargez uniquement le fichier du mod ; n’installez aucune application sans rapport et n’autorisez pas les notifications.</string>
-    <string name="external_mods_by_author">par %1$s</string>
-    <string name="external_mods_version">Mod %1$s</string>
-    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
-    <string name="external_mods_update">Mettre à jour</string>
-    <string name="external_mods_installed_button">Installé</string>
-    <string name="external_mods_incompatible">Incompatible</string>
-    <string name="foreground_service">Service au premier plan</string>
-    <string name="foreground_service_desc">Maintient Minecraft en fonctionnement lorsque vous changez d’application en empêchant Bedrock de suspendre la session active et en gardant le processus, le processeur et le Wi-Fi actifs.</string>
-    <string name="foreground_service_warning">Remarque : peut faire chauffer votre téléphone plus rapidement et augmenter la consommation de batterie.</string>
-    <string name="foreground_service_channel">Protection de Minecraft en arrière-plan</string>
-    <string name="foreground_service_notification_title">Minecraft est maintenu actif</string>
-    <string name="foreground_service_notification_text">Le mode arrière-plan de Minecraft est actif. Le processeur et l’accès au réseau restent disponibles pour la session en cours.</string>
-    <string name="mod_menu_compact">Menu des mods compact</string>
-    <string name="mod_menu_compact_desc">Utilisez un menu plus petit avec une liste de modules dense et des filtres compacts</string>
-    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">Multiplicateur de sensibilité (100% = 1x)</string>
-    <string name="mod_config_gyro_horizontal_speed" formatted="false">Vitesse horizontale (%)</string>
-    <string name="mod_config_gyro_vertical_speed" formatted="false">Vitesse verticale (%)</string>
-    <string name="mod_config_gyro_small_movement_filter">Filtre des petits mouvements (0 = Désactivé)</string>
-    <string name="hud_editor_drag_hint">Faites glisser pour déplacer le panneau</string>
-    <string name="hud_editor_drag_description">Éditeur du HUD. Faites glisser cette zone pour déplacer le panneau.</string>
     <string name="mod_config_hotbar_item_icons">Utiliser les icônes d’objets de la barre rapide</string>
     <string name="mod_config_hotbar_item_counts">Afficher le nombre d’objets</string>
     <string name="mod_config_hotbar_slot_enabled">Afficher l’emplacement %1$d de la barre rapide</string>
     <string name="mod_config_hotbar_slot_size">Taille de l’emplacement %1$d de la barre rapide (dp)</string>
     <string name="mod_config_hotbar_slot_opacity">Opacité de l’emplacement %1$d de la barre rapide</string>
+    <!-- Changelog & News -->
     <string name="changelog_title">Nouveautés</string>
     <string name="changelog_version">LeviLauncher %1$s</string>
     <string name="changelog_continue">Continuer</string>
@@ -1069,6 +1114,7 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="mod_config_category_button">Bouton</string>
     <string name="mod_config_visible_slots">Emplacements visibles</string>
     <string name="mod_config_hotbar_slot_section">Emplacement %1$d de la barre rapide</string>
+    <!-- Selection & Batch Operations -->
     <string name="select">Sélectionner</string>
     <string name="select_all">Tout sélectionner</string>
     <string name="selected">Sélectionné</string>

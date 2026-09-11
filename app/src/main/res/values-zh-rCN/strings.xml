@@ -1,8 +1,21 @@
+<!-- NOTE: Keep this file aligned with the English default (values/strings.xml):
+     same resource keys and order, comments, sections, XML structure, and formatting
+     (including indentation, spaces, and blank lines).
+
+     Translations must remain grammatically and linguistically correct for the target
+     language. Locale-specific plural forms may differ when required by the language.
+     Do not change placeholders or resource attributes. -->
+
 <resources>
     <!-- Common -->
     <string name="app_name">LeviLauncher</string>
     <string name="minecraft">Minecraft</string>
     <string name="launch">启动</string>
+    <string name="beta_badge">Beta</string>
+    <string name="debug_badge">Debug</string>
+    <string name="cursor">光标</string>
+    <string name="bedrock_edition">基岩版</string>
+    <string name="current_instance">当前实例</string>
 
     <!-- Mods -->
     <string name="mods_title">模组 (%d)</string>
@@ -19,13 +32,15 @@
     <string name="about_title">☕ 关于</string>
     <string name="copyright">©2024–2026 LeviMC. 保留所有权利</string>
     <string name="font_license">本软件使用 Misans 字体</string>
+    <string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
     <string name="quick_actions_title">快捷操作</string>
+    <string name="content_mgmt_section_title">内容管理</string>
+    <string name="misc_section_title">其他</string>
+    <string name="view_all">查看全部 →</string>
     <string name="content_management_subtitle">管理世界、资源包和行为包</string>
     <string name="import_apk_subtitle">从 APK 或 APKS 文件安装 Minecraft</string>
     <string name="ms_add_account">添加账号</string>
     <string name="ms_add_account_subtitle">使用 Microsoft 登录</string>
-    <string name="microsoft_accounts">Microsoft 账号</string>
-    <string name="manage_accounts">管理</string>
 
     <!-- Dialogs -->
     <string name="content_detected_title">检测到内容导入</string>
@@ -36,6 +51,11 @@
 
     <string name="import_confirmation_title">导入模组</string>
     <string name="import_confirmation_message">确定要导入所选的 %d 个模组文件吗？</string>
+    <string name="import_so_plugin_title">导入 SO 插件</string>
+    <string name="plugin_name_label">插件名称</string>
+    <string name="plugin_type_label">类型</string>
+    <string name="plugin_version_label">版本</string>
+    <string name="import_button">导入</string>
     <string name="overwrite_file_title">文件已存在</string>
     <string name="overwrite_file_message">文件 %s 已存在，是否覆盖？</string>
     <string name="overwrite">覆盖</string>
@@ -45,18 +65,6 @@
 
     <string name="installed_packages">已安装包</string>
     <string name="local_custom">本地自定义</string>
-
-    <string name="check_update">检查更新</string>
-    <string name="version_prefix">版本号：</string>
-    <string name="unknown_error">未知错误</string>
-    <string name="preloader_sigs_title">运行时数据</string>
-    <string name="preloader_sigs_last_update">上次更新：%1$s</string>
-    <string name="preloader_sigs_never_updated">从未更新</string>
-    <string name="preloader_sigs_update">更新运行时数据</string>
-    <string name="preloader_sigs_updating">正在更新…</string>
-    <string name="preloader_sigs_update_success">运行时数据已更新</string>
-    <string name="preloader_sigs_update_failed">运行时数据更新失败：%1$s</string>
-    <string name="preloader_sigs_no_remote_url">未配置运行时数据更新地址</string>
 
     <!-- Permissions -->
     <string name="storage_permission_title">存储迁移权限</string>
@@ -95,9 +103,46 @@
 
     <string name="settings_title">设置</string>
     <string name="settings_desc">您的启动器设置</string>
+    <string name="settings_subtitle">配置常用启动器选项</string>
+    <string name="settings_tab_basic">基础设置</string>
+    <string name="settings_tab_personalize">个性化</string>
+    <string name="settings_tab_updates">更新</string>
+    <string name="settings_tab_about">关于</string>
+    <string name="settings_tab_migration">迁移</string>
+    <string name="settings_theme_desc">选择应用主题</string>
+
 
     <string name="unknown_sources_permission_title">安装权限</string>
     <string name="unknown_sources_permission_message">请授予安装未知来源应用的权限，否则无法完成应用更新/安装。点击“授权”前往系统设置开启后返回本应用继续操作。</string>
+
+    <string name="check_update">检查更新</string>
+    <string name="version_prefix">版本号：</string>
+    <string name="unknown_error">未知错误</string>
+    <string name="preloader_sigs_title">运行时数据</string>
+    <string name="preloader_sigs_last_update">上次更新：%1$s</string>
+    <string name="preloader_sigs_never_updated">从未更新</string>
+    <string name="preloader_sigs_update">更新运行时数据</string>
+    <string name="preloader_sigs_updating">正在更新…</string>
+    <string name="preloader_sigs_update_success">运行时数据已更新</string>
+    <string name="preloader_sigs_update_failed">运行时数据更新失败：%1$s</string>
+    <string name="preloader_sigs_no_remote_url">未配置运行时数据更新地址</string>
+
+    <string name="dialog_title_no_version">未选择版本</string>
+    <string name="dialog_message_no_version">请在启动前选择游戏版本。</string>
+    <string name="dialog_title_version_isolation">需要版本隔离</string>
+    <string name="dialog_message_version_isolation">这是一个导入的版本。请在设置中启用版本隔离以启动此版本。</string>
+    <string name="dialog_positive_enable">启用</string>
+    <string name="dialog_title_launch_failed">启动失败</string>
+    <string name="dialog_message_launch_failed">无法启动Minecraft：%1$s</string>
+    <string name="dialog_title_incompatible_mods">已跳过不兼容模组</string>
+    <string name="dialog_message_incompatible_mods">部分已启用模组与当前 Minecraft 版本 %1$s 不兼容，已跳过加载：\n\n%2$s</string>
+    <string name="dialog_title_disable_version_isolation">禁用版本隔离</string>
+    <string name="dialog_message_disable_version_isolation">您尝试在启用版本隔离的情况下启动已安装的版本。请禁用版本隔离以继续。</string>
+    <string name="dialog_positive_disable">禁用</string>
+    <string name="dialog_positive_ok">确定</string>
+    <string name="delete_account_title">删除账户</string>
+    <string name="delete_account_confirm">确定要删除此账户吗？</string>
+
 
     <string name="new_version_found">发现新版本：%1$s</string>
     <string name="update_question">是否下载并安装最新版本？</string>
@@ -125,6 +170,7 @@
     <string name="repair_preparing">准备中…</string>
     <string name="repair_processing">正在提取库文件…</string>
     <string name="repair_finalizing">正在完成修复…</string>
+    <!-- Storage Migration -->
     <string name="storage_migration_title">需要迁移存储目录</string>
     <string name="storage_migration_message">LeviLauncher 必须先将数据从 games/org.levimc 迁移到 %1$s，才能继续使用。
 
@@ -169,36 +215,21 @@
     <string name="shared_storage_layout_mode_legacy">原始内部/外部目录</string>
     <string name="shared_storage_layout_status">当前模式：%1$s\n内部：%2$s\n外部：%3$s</string>
     <string name="shared_storage_layout_changed">存储目录选择已更新。请重启 Minecraft 并重新打开内容管理，以确保变更完全生效。</string>
-    
+    <!-- Theme -->
     <string name="theme_title">主题模式</string>
     <string name="theme_follow_system">跟随系统</string>
     <string name="theme_light">强制白天</string>
     <string name="theme_dark">强制夜间</string>
 
     <string name="error_no_browser">无法打开浏览器</string>
-
-    <string name="dialog_title_no_version">未选择版本</string>
-    <string name="dialog_message_no_version">请在启动前选择游戏版本。</string>
-    <string name="dialog_title_version_isolation">需要版本隔离</string>
-    <string name="dialog_message_version_isolation">这是一个导入的版本。请在设置中启用版本隔离以启动此版本。</string>
-    <string name="dialog_positive_enable">启用</string>
-    <string name="dialog_title_launch_failed">启动失败</string>
-    <string name="dialog_message_launch_failed">无法启动Minecraft：%1$s</string>
-    <string name="dialog_title_incompatible_mods">已跳过不兼容模组</string>
-    <string name="dialog_message_incompatible_mods">部分已启用模组与当前 Minecraft 版本 %1$s 不兼容，已跳过加载：\n\n%2$s</string>
-    <string name="dialog_title_disable_version_isolation">禁用版本隔离</string>
-    <string name="dialog_message_disable_version_isolation">您尝试在启用版本隔离的情况下启动已安装的版本。请禁用版本隔离以继续。</string>
-    <string name="dialog_positive_disable">禁用</string>
-    <string name="dialog_positive_ok">确定</string>
-
-
+    <!-- License & Security -->
     <string name="eula_title">LeviLauncher 用户协议</string>
     <string name="eula_message"><b>欢迎使用 LeviLauncher</b>\n\n使用本软件即表示您同意：\n\n• 此为<b>非官方</b> Minecraft 启动器\n• 您需拥有<b>合法授权</b>的 Minecraft 副本\n• 禁止任何形式的盗版或作弊行为\n• 模组/资源包使用风险自负\n• 与 Mojang/Microsoft 无关联\n\n继续使用视为接受条款</string>
     <string name="eula_agree">接受</string>
     <string name="eula_exit">拒绝</string>
 
     <string name="allow_unknown_sources">请允许安装未知来源应用再操作</string>
-
+    <!-- Version Management -->
     <string name="dialog_title_delete_version">删除版本</string>
     <string name="dialog_message_delete_version">确定要删除此自定义版本？删除后不可恢复。</string>
     <string name="dialog_positive_delete">删除</string>
@@ -216,7 +247,68 @@
     <string name="dialog_message_delete_mod">确定要删除该 Mod 吗？</string>
 
     <string name="version_isolation">版本隔离</string>
+    <string name="launch_vertically">竖屏启动</string>
+    <string name="launch_vertically_desc">强制游戏以竖屏模式启动</string>
+    <!-- Instance Management -->
+    <string name="instance_settings_title">实例设置</string>
+    <string name="instance_tab_general">常规</string>
+    <string name="instance_tab_launch_options">启动选项</string>
+    <string name="instance_tab_management">管理</string>
+    <string name="instance_new_name">新名称</string>
+    <string name="instance_rename_hint">仅重命名文件夹。游戏版本和类型不受影响。</string>
+    <string name="instance_custom_icon">自定义图标（需为正方形）</string>
+    <string name="instance_clear_icon">清除</string>
+    <string name="instance_icon_hint">将保存为版本文件夹下的 LargeLogo.png。点击图标进行更改。</string>
+    <string name="instance_isolation_desc">为此实例隔离游戏数据。其他实例不会受到影响。</string>
+    <string name="instance_shortcut_title">主屏幕快捷方式</string>
+    <string name="instance_shortcut_desc">名称和图标的更改会自动保存。点击“添加快捷方式”以创建或更新主屏幕快捷方式。</string>
+    <string name="instance_shortcut_name">快捷方式名称</string>
+    <string name="instance_shortcut_icon">快捷方式图标</string>
+    <string name="instance_shortcut_choose_icon">选择图标</string>
+    <string name="instance_shortcut_default_icon">使用默认图标</string>
+    <string name="instance_shortcut_add_button">添加快捷方式</string>
+    <string name="instance_settings_auto_save_failed">无法保存此实例设置。</string>
+    <string name="instance_shortcut_not_supported">您的主屏幕启动器不支持固定快捷方式。</string>
+    <string name="instance_shortcut_missing">此 Minecraft 实例已不可用。</string>
+    <string name="instance_danger_zone">危险区域</string>
+    <string name="instance_danger_zone_desc">这些操作会影响实例注册信息或本地文件。继续前请仔细确认。</string>
+    <string name="instance_delete_desc">从设备中永久删除此实例，包括世界、配置和已安装内容。</string>
+    <string name="instance_delete_warning">此操作无法撤销。</string>
+    <string name="instance_delete_confirm_title">删除实例</string>
+    <string name="instance_delete_confirm_msg">确定要删除此实例吗？包括世界在内的所有数据都将被永久移除。</string>
+    <string name="instance_backup_title">备份实例</string>
+    <string name="instance_backup_desc">将此实例完整备份到 Download/LeviLauncher/Backups。</string>
+    <string name="instance_backup_button">备份实例</string>
+    <string name="instance_backup_confirm_message">现在创建此实例的完整备份吗？如果 Minecraft 正在运行，建议先退出游戏，避免备份过程中数据变化。</string>
+    <string name="instance_backup_in_progress">正在备份实例…</string>
+    <string name="instance_backup_success_title">备份已创建</string>
+    <string name="instance_backup_success_message">备份已保存到：\n%1$s</string>
+    <string name="instance_backup_failed_title">备份失败</string>
+    <string name="instance_backup_failed_message">无法创建备份：\n%1$s</string>
+    <string name="instance_import_backup_button">导入备份</string>
+    <string name="instance_batch_backup_button">批量备份</string>
+    <string name="instance_batch_backup_title">批量备份实例</string>
+    <string name="instance_batch_backup_select_message">选择需要备份的实例。如果 Minecraft 正在运行，建议先退出游戏，避免备份过程中数据变化。</string>
+    <string name="instance_batch_backup_select_all">选择全部实例</string>
+    <string name="instance_batch_backup_no_instances">当前没有可备份的实例。</string>
+    <string name="instance_batch_backup_no_selection">请至少选择一个实例。</string>
+    <string name="instance_batch_backup_in_progress">正在备份 %1$s（%2$d/%3$d）…</string>
+    <string name="instance_batch_backup_success_title">备份已创建</string>
+    <string name="instance_batch_backup_success_message">已创建 %1$d 个备份：\n%2$s</string>
+    <string name="instance_batch_backup_partial_title">部分备份完成</string>
+    <string name="instance_batch_backup_partial_message">已创建 %1$d 个备份，%2$d 个失败。\n\n已保存：\n%3$s\n\n失败：\n%4$s</string>
+    <string name="instance_batch_backup_failed_title">批量备份失败</string>
+    <string name="instance_batch_backup_failed_message">未能创建任何备份：\n%1$s</string>
+    <string name="instance_restore_title">恢复备份</string>
+    <string name="instance_restore_in_progress">正在恢复实例备份…</string>
+    <string name="instance_restore_success_title">恢复完成</string>
+    <string name="instance_restore_success_message">已恢复：%1$s</string>
+    <string name="instance_restore_failed_title">恢复失败</string>
+    <string name="instance_restore_failed_message">无法恢复备份：\n%1$s</string>
+
     <!-- Language Setting -->
+    <!-- Keep English at the top (default language). -->
+    <!-- Sort all other languages alphabetically by their display name. -->
     <string name="language">语言 (Language)</string>
     <string name="english">英语 (English)</string>
     <string name="chinese">简体中文 (Chinese)</string>
@@ -230,7 +322,7 @@
     <string name="turkish">Türkçe (Turkish)</string>
     <string name="vietnamese">Tiếng Việt (Vietnamese)</string>
 
-    <!-- 版本重命名 -->
+    <!-- Version Rename -->
     <string name="rename_version_title">重命名版本</string>
     <string name="rename_version_message">为此版本输入一个新名称：</string>
     <string name="new_version_name">新版本名称</string>
@@ -244,6 +336,13 @@
     <string name="worlds_title">世界</string>
     <string name="resource_packs_title">资源包</string>
     <string name="behavior_packs_title">行为包</string>
+    <string name="skin_packs_title">皮肤包</string>
+    <string name="worlds_category">世界</string>
+    <string name="resource_packs_category">资源包</string>
+    <string name="behavior_packs_category">行为包</string>
+    <string name="skin_packs_category">皮肤包</string>
+    <string name="screenshots_category">截图</string>
+    <string name="servers_category">服务器</string>
     <string name="storage_internal">内部</string>
     <string name="storage_external">外部</string>
     <string name="storage_version_isolation">版本隔离</string>
@@ -279,8 +378,8 @@
     <!-- Resource Pack Management -->
     <string name="import_resource_pack">导入资源包</string>
     <string name="import_behavior_pack">导入行为包</string>
-    <string name="delete_resource_pack">删除资源包</string>
     <string name="import_skin_pack">导入皮肤包</string>
+    <string name="delete_resource_pack">删除资源包</string>
     <string name="delete_skin_pack">删除皮肤包</string>
     <string name="delete_behavior_pack">删除行为包</string>
 
@@ -304,6 +403,7 @@
     <string name="edit">编辑</string>
     <string name="save">保存</string>
     <string name="reset">重置</string>
+    <string name="saved_to_gallery">已保存到相册</string>
     <string name="level_dat_not_found">未找到 level.dat</string>
     <string name="no_editable_properties">未找到可编辑属性</string>
     <string name="no_data">无数据</string>
@@ -327,6 +427,20 @@
     <string name="add_at_least_one_layer">请至少添加一层</string>
     <string name="world_created_successfully">世界创建成功</string>
     <string name="failed_to_create_world">创建世界失败</string>
+    <string name="custom_flat_world_subtitle">使用自定义生物群系和方块层创建世界</string>
+    <string name="world_settings">世界设置</string>
+    <string name="world_settings_hint">选择新世界的基本设置</string>
+    <string name="layers_title">层</string>
+    <string name="add_layer_compact">添加层</string>
+    <string name="no_layers_title">还没有层</string>
+    <string name="no_layers_hint">至少添加一层方块才能创建世界</string>
+    <string name="reorder_layer">重新排序此层</string>
+    <string name="delete_layer">删除此层</string>
+    <string name="block_id_hint">minecraft:stone</string>
+    <plurals name="flat_layers_count">
+        <item quantity="one">%1$d 层 • 底部 → 顶部</item>
+        <item quantity="other">%1$d 层 • 底部 → 顶部</item>
+    </plurals>
 
     <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">需要 Play 商店版本</string>
@@ -338,11 +452,57 @@
     <string name="genuine_badge_label">未通过正版验证</string>
     <string name="invalid_license_detected_toast">非正版MC，请确保设备上MC来自于谷歌商店</string>
 
-
-    <string name="full_mods_title">模组 </string>
+    <string name="full_mods_title">模组</string>
     <string name="total_mods">模组总数：</string>
     <string name="enabled_mods">已启用：</string>
     <string name="add_mod">添加模组</string>
+    <string name="scan_downloads">扫描</string>
+    <string name="scan_downloads_scanning">正在扫描…</string>
+    <string name="scan_downloads_none_found">下载文件夹中未找到 .levipack 或 .so 模组</string>
+    <string name="scan_downloads_failed">无法扫描下载文件夹</string>
+    <string name="scan_downloads_permission_denied">扫描下载文件夹需要存储访问权限</string>
+    <string name="scan_downloads_results_title">下载文件夹中的模组</string>
+    <string name="scan_downloads_results_subtitle">选择要添加的模组。扫描仅检查主下载文件夹。</string>
+    <string name="scan_downloads_add">添加</string>
+    <string name="scan_downloads_adding">正在添加…</string>
+    <string name="scan_downloads_added">已添加</string>
+    <string name="scan_downloads_added_message">已添加 %1$s</string>
+    <string name="scan_downloads_levipack">LeviPack</string>
+    <string name="scan_downloads_native_library">原生库</string>
+    <string name="scan_downloads_file_details">%1$s • %2$s</string>
+    <string name="external_mods">外部模组</string>
+    <string name="external_mods_subtitle">适用于 Minecraft %1$s 的社区模组</string>
+    <string name="external_mods_no_version">安装模组前请选择 Minecraft 版本</string>
+    <string name="external_mods_search_hint">搜索模组、作者或版本…</string>
+    <string name="external_mods_compatible_only">仅显示兼容项</string>
+    <string name="external_mods_all_versions">所有 Minecraft 版本</string>
+    <string name="external_mods_sort_newest">最新</string>
+    <string name="external_mods_sort_name">名称 A–Z</string>
+    <string name="external_mods_empty">没有符合这些筛选条件的模组</string>
+    <string name="external_mods_load_failed">无法刷新目录。正在显示已保存的副本。</string>
+    <string name="external_mods_refresh">刷新目录</string>
+    <string name="external_mods_refreshed">目录已刷新</string>
+    <string name="external_mods_join_discord">加入社区 Discord</string>
+    <string name="external_mods_discord_open_failed">没有应用可以打开 Discord 邀请</string>
+    <string name="external_mods_download">正在下载 %1$s</string>
+    <string name="external_mods_importing">正在导入模组…</string>
+    <string name="external_mods_installed">已安装 %1$s</string>
+    <string name="external_mods_install_failed">无法安装 %1$s：%2$s</string>
+    <string name="external_mods_open_failed">没有浏览器可以打开此下载</string>
+    <string name="external_mods_direct_download">直接下载</string>
+    <string name="external_mods_ad_download">广告下载</string>
+    <string name="external_mods_external_link">外部链接</string>
+    <string name="external_mods_open_link">打开链接</string>
+    <string name="external_mods_external_dialog_title">外部下载</string>
+    <string name="external_mods_ad_dialog_title">广告支持的下载</string>
+    <string name="external_mods_external_dialog_message">%1$s 使用 LeviLauncher 之外的下载页面。\n\n1. 点击“打开链接”并下载 .levipack 或 .so 文件。\n2. 返回 LeviLauncher 并打开“模组”。\n3. 点击“扫描”。\n4. 点击要导入的模组旁边的“添加”。\n\n扫描仅检查主下载文件夹。如果浏览器将文件保存到了其他位置，请将文件移动到该文件夹。</string>
+    <string name="external_mods_ad_dialog_message">%1$s 使用由其开发者选择的广告支持下载页面。LeviLauncher 不控制该页面或其中的广告。\n\n1. 点击“打开链接”并下载 .levipack 或 .so 文件。\n2. 返回 LeviLauncher 并打开“模组”。\n3. 点击“扫描”。\n4. 点击要导入的模组旁边的“添加”。\n\n扫描仅检查主下载文件夹。只下载模组文件；不要安装无关应用，也不要允许通知。</string>
+    <string name="external_mods_by_author">作者：%1$s</string>
+    <string name="external_mods_version">模组 %1$s</string>
+    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
+    <string name="external_mods_update">更新</string>
+    <string name="external_mods_installed_button">已安装</string>
+    <string name="external_mods_incompatible">不兼容</string>
 
     <!-- Mod Detail -->
     <string name="mod_detail_title">模组详情</string>
@@ -390,22 +550,25 @@
     <string name="mod_config_error_maximum">%1$s 不能大于 %2$s</string>
     <string name="mod_config_error_boolean">%1$s 必须是开关值</string>
     <string name="mod_config_error_string">%1$s 必须是文本</string>
-
+    <!-- Mod Configuration -->
     <plurals name="mod_config_files_count">
+        <item quantity="one">%d 个可编辑配置</item>
         <item quantity="other">%d 个可编辑配置</item>
     </plurals>
     <plurals name="mod_config_choices_count">
+        <item quantity="one">%d 个选项</item>
         <item quantity="other">%d 个选项</item>
     </plurals>
     <plurals name="mod_config_items_count">
+        <item quantity="one">%d 项</item>
         <item quantity="other">%d 项</item>
     </plurals>
 
-    <!-- 版本选择对话框 -->
+    <!-- Game Version Select Dialog -->
     <string name="game_version_select_title">选择游戏版本</string>
     <string name="back">返回</string>
-    
-    <!-- 启动页 -->
+
+    <!-- Splash -->
     <string name="splash_logo_desc">叶子标志</string>
     <string name="minecraft_loading_title">正在启动 Minecraft</string>
     <string name="minecraft_loading_subtitle">准备游戏文件与已启用模组</string>
@@ -419,42 +582,82 @@
     <string name="launcher_restart_subtitle">请稍等，马上回到主页面</string>
     <string name="launcher_restart_status">马上就好…</string>
 
-    <!-- 账户管理 -->
+    <!-- Accounts & Microsoft Login -->
     <string name="accounts_title">账号</string>
+    <string name="microsoft_accounts">Microsoft 账号</string>
+    <string name="manage_accounts">管理</string>
     <string name="not_signed_in">未登录</string>
     <string name="xuid">XUID</string>
+    <string name="sign_in">登录</string>
     <string name="sign_out">退出登录</string>
     <string name="accounts_active_privilege">已登录</string>
+
     <string name="ms_login_title">Microsoft 登录</string>
-    <string name="ms_login_success">已登录为 %1$s</string>
-    <string name="ms_set_active">设为当前</string>
-    <string name="ms_delete">删除</string>
-    <string name="ms_active_badge">当前</string>
+    <string name="ms_login_header_subtitle">安全登录 Minecraft</string>
     <string name="ms_login_starting">开始 Microsoft 登录…</string>
     <string name="ms_login_exchanging">正在交换令牌…</string>
     <string name="ms_login_auth_xbox_device">正在认证 Xbox 设备…</string>
     <string name="ms_login_fetch_minecraft_identity">正在获取 Minecraft 身份…</string>
+    <string name="ms_login_retrying">连接中断。正在安全重试…</string>
+    <string name="ms_login_success">已登录为 %1$s</string>
     <string name="ms_login_failed">Microsoft 登录失败</string>
     <string name="ms_login_failed_detail">登录失败：%1$s</string>
+    <string name="ms_choose_login_method">登录 Minecraft</string>
+    <string name="ms_choose_login_method_desc">选择基于浏览器的设备代码流程，或继续使用内嵌 Microsoft 页面。</string>
+    <string name="ms_device_code_login">使用浏览器继续</string>
+    <string name="ms_device_code_option_title">设备代码（推荐）</string>
+    <string name="ms_device_code_login_desc">打开一个已自动填入设备代码的私密浏览器会话。</string>
+    <string name="ms_webview_login">打开内嵌登录</string>
+    <string name="ms_webview_option_title">内嵌 WebView</string>
+    <string name="ms_webview_login_desc">无需离开 LeviLauncher 即可登录。当浏览器流程不可用时使用此方式。</string>
+    <string name="ms_device_code_title">使用设备代码登录</string>
+    <string name="ms_device_code_instructions">打开 Microsoft 设备登录页面，输入此代码，然后批准访问。LeviLauncher 会自动完成后续操作。</string>
+    <string name="ms_device_code_label">Microsoft 设备代码</string>
+    <string name="ms_device_code_requesting">正在请求安全代码…</string>
+    <string name="ms_device_code_waiting_code">--------</string>
+    <string name="ms_device_code_waiting">正在等待你在浏览器中完成操作…</string>
+    <string name="ms_device_code_checking">正在检查 Microsoft 登录结果…</string>
+    <string name="ms_device_code_reconnecting">连接已变化。正在自动重试…</string>
+    <string name="ms_device_code_authorized">Microsoft 已批准登录。正在完成…</string>
+    <string name="ms_device_code_browser_opened">请在浏览器中完成新的 Microsoft 登录，然后返回此处。</string>
+    <string name="ms_device_code_expires">代码将在 %1$d:%2$02d 后过期</string>
+    <string name="ms_device_code_copy">复制代码</string>
+    <string name="ms_device_code_copied">代码已复制</string>
+    <string name="ms_device_code_open_browser">打开 Microsoft 登录</string>
+    <string name="ms_device_code_step_title">在浏览器中完成登录</string>
+    <string name="ms_device_code_browser_note">LeviLauncher 会在私密会话中打开默认浏览器，自动填写代码，并请求一次新的 Microsoft 登录。</string>
+    <string name="ms_choose_other_method">其他方式</string>
+    <string name="ms_no_browser">此设备上没有可用的浏览器。</string>
+    <string name="ms_default_browser_no_private_mode">默认浏览器不支持私密登录。请更新浏览器或使用 WebView 登录。</string>
+    <string name="ms_login_ssl_failed">无法验证安全的 Microsoft 登录页面。</string>
+    <string name="ms_login_state_failed">无法验证 Microsoft 登录响应。请重新开始登录。</string>
+    <string name="ms_login_missing_code">Microsoft 未返回登录代码。请重新开始登录或使用设备代码登录。</string>
+
+    <string name="ms_set_active">设为当前</string>
+    <string name="ms_delete">删除</string>
+    <string name="ms_active_badge">当前</string>
+    <string name="ms_account_subtitle_format">用户ID：%1$s • 更新：%2$s</string>
     <string name="xbox_avatar">Xbox头像</string>
     <string name="launcher_managed_mc_login">使用 LeviLauncher 登录 Minecraft</string>
     <string name="dialog_title_login_required">需要登录</string>
     <string name="dialog_message_login_required">已开启使用启动器登录，但当前未登录。请前往账号管理登录后再启动。</string>
     <string name="go_to_accounts">账号管理</string>
     <string name="disable_launcher_login_and_continue">关闭</string>
-    <string name="sign_in">登录</string>
-    <string name="ms_account_subtitle_format">用户ID：%1$s • 更新：%2$s</string>
-    <string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
 
+    <string name="ms_feature_disabled_title">功能已禁用</string>
+    <string name="ms_feature_disabled_desc">请在设置中启用“使用 LeviLauncher 登录 Minecraft”，以管理 Microsoft 账户。</string>
+    <string name="ms_activated">已激活</string>
+
+    <!-- Popup labels -->
     <string name="label_current_account">当前账号</string>
     <string name="label_other_accounts">其他账号</string>
-
+    <!-- Crash & Diagnostics -->
     <string name="crash_title">应用发生崩溃</string>
     <string name="crash_upload">上传崩溃报告</string>
     <string name="crash_details_title">崩溃详情</string>
     <string name="crash_back_to_main">返回主页面</string>
-    <string name="crash_log_file_label">日志文件：</string>
     <string name="crash_share_log">分享日志</string>
+    <string name="crash_log_file_label">日志文件：</string>
     <string name="crash_log_file_missing">日志文件不存在或不可读。</string>
     <string name="crash_read_failed">读取日志失败：%1$s</string>
     <string name="crash_loading_details">正在加载崩溃详情...</string>
@@ -463,25 +666,29 @@
     <string name="crash_stack_label">崩溃详情和堆栈：</string>
     <string name="crash_emergency_label">紧急信息：</string>
     <string name="crash_no_details">未获取到崩溃详情。</string>
-     <string name="dialog_title_exit_app">退出应用</string>
-     <string name="dialog_message_exit_app">确定要退出应用吗？</string>
-     <string name="dialog_positive_exit">退出</string>
-
-     <!-- Logcat Overlay i18n additions -->
-     <string name="show_logcat_overlay">显示日志悬浮窗</string>
+    <string name="dialog_title_exit_app">退出应用</string>
+    <string name="dialog_message_exit_app">确定要退出应用吗？</string>
+    <string name="dialog_positive_exit">退出</string>
+    <string name="show_logcat_overlay">显示日志悬浮窗</string>
+    <string name="foreground_service">前台服务</string>
+    <string name="foreground_service_desc">切换应用时阻止 Bedrock 暂停当前会话，并保持进程、CPU 和 Wi-Fi 活跃，从而让 Minecraft 继续运行。</string>
+    <string name="foreground_service_warning">注意：可能会让手机更快发热并增加电池消耗。</string>
+    <string name="foreground_service_channel">Minecraft 后台保护</string>
+    <string name="foreground_service_notification_title">正在保持 Minecraft 活跃</string>
+    <string name="foreground_service_notification_text">Minecraft 后台模式已启用。当前会话会持续保持 CPU 和网络访问可用。</string>
     <string name="logcat_live">Logcat：<b>实时</b></string>
-     <string name="logcat_paused">Logcat：已暂停</string>
-
-     <string name="logcat_filter_hint">关键字筛选</string>
-     <string name="logcat_blacklist_hint">黑名单（逗号分隔）</string>
-     <string name="logcat_filter_clear">清除筛选</string>
-     <string name="logcat_filter">筛选</string>
-     <string name="logcat_autoscroll">自动滚动</string>
-     <string name="logcat_pause">暂停</string>
-     <string name="logcat_clear">清空</string>
-     <string name="logcat_close">关闭</string>
-     <string name="logcat_corner_bottom_left">调整大小：左下角</string>
-     <string name="logcat_corner_bottom_right">调整大小：右下角</string>
+    <string name="logcat_paused">Logcat：已暂停</string>
+    <!-- Logcat Overlay i18n -->
+    <string name="logcat_filter_hint">关键字筛选</string>
+    <string name="logcat_blacklist_hint">黑名单（逗号分隔）</string>
+    <string name="logcat_filter_clear">清除筛选</string>
+    <string name="logcat_filter">筛选</string>
+    <string name="logcat_autoscroll">自动滚动</string>
+    <string name="logcat_pause">暂停</string>
+    <string name="logcat_clear">清空</string>
+    <string name="logcat_close">关闭</string>
+    <string name="logcat_corner_bottom_left">调整大小：左下角</string>
+    <string name="logcat_corner_bottom_right">调整大小：右下角</string>
 
     <!-- Inbuilt Mods -->
     <string name="inbuilt_mods">内置模组</string>
@@ -492,7 +699,7 @@
     <string name="inbuilt_mod_removed">%s 已从模组移除</string>
     <string name="add">添加</string>
     <string name="remove">移除</string>
-
+    
     <!-- Inbuilt Mods -->
     <string name="inbuilt_mod_quick_drop">快速丢弃</string>
     <string name="inbuilt_mod_quick_drop_desc">快速丢弃物品</string>
@@ -516,6 +723,17 @@
     <string name="inbuilt_mod_cps_display_desc">显示每秒点击次数</string>
     <string name="inbuilt_mod_snaplook">快速回头</string>
     <string name="inbuilt_mod_snaplook_desc">按住快速查看身后（第三人称正面视角）</string>
+    <string name="inbuilt_mod_virtual_cursor">虚拟光标</string>
+    <string name="inbuilt_mod_virtual_cursor_desc">使用虚拟触控板控制鼠标</string>
+    <string name="virtual_cursor_enabled">光标已启用</string>
+    <string name="virtual_cursor_disabled">光标已禁用</string>
+    <string name="cursor_sensitivity_label">光标灵敏度：</string>
+    <string name="inbuilt_mod_gyro">陀螺仪</string>
+    <string name="inbuilt_mod_gyro_desc">使用设备陀螺仪控制摄像机旋转</string>
+    <string name="inbuilt_mod_pojav_controls">Pojav 控制</string>
+    <string name="inbuilt_mod_pojav_controls_desc">用完全可自定义的 Pojav 风格控制替换 Minecraft 触摸控制</string>
+    <string name="inbuilt_mod_more_buttons">更多按钮</string>
+    <string name="inbuilt_mod_more_buttons_desc">使用单键映射和 SVG 图标创建自定义屏幕按钮</string>
     <string name="inbuilt_badge">内置</string>
     <string name="autosprint_keybind_label">自动疾跑按键绑定：</string>
     <string name="autosprint_keybind_press">请按任意键…</string>
@@ -570,6 +788,8 @@
     <string name="mod_menu_notifications_desc">启用模组时显示通知</string>
     <string name="mod_menu_opacity">模组菜单不透明度</string>
     <string name="mod_menu_button_opacity">模组菜单按钮不透明度</string>
+    <string name="mod_menu_compact">紧凑模组菜单</string>
+    <string name="mod_menu_compact_desc">使用更小的菜单、密集的模块列表和紧凑的筛选器</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">模组菜单已启用</string>
     <string name="mod_menu_disabled">模组菜单已禁用</string>
@@ -583,10 +803,21 @@
     <string name="mod_overlay_cps_value">CPS：%1$d</string>
     <string name="mod_config_overlay_button_size_dp">悬浮按钮大小（dp）</string>
     <string name="mod_config_overlay_opacity_percent" formatted="false">悬浮窗透明度（%）</string>
+    <string name="mod_config_overlay_show_everywhere" formatted="false">始终显示</string>
     <string name="mod_config_cursor_sensitivity_percent" formatted="false">光标灵敏度（%）</string>
     <string name="mod_config_zoom_level_percent" formatted="false">缩放级别（%）</string>
     <string name="mod_config_auto_sprint_keybind">自动疾跑按键绑定</string>
     <string name="mod_config_zoom_keybind">缩放按键绑定</string>
+    <string name="mod_config_zoom_transition">过渡时长 (ms)</string>
+    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">灵敏度倍数（100% = 1x）</string>
+    <string name="mod_config_gyro_horizontal_speed" formatted="false">水平速度 (%)</string>
+    <string name="mod_config_gyro_vertical_speed" formatted="false">垂直速度 (%)</string>
+    <string name="mod_config_gyro_small_movement_filter">微小移动过滤（0 = 关闭）</string>
+    <string name="mod_config_gyro_sensitivity_x" formatted="false">水平灵敏度 (%)</string>
+    <string name="mod_config_gyro_sensitivity_y" formatted="false">垂直灵敏度 (%)</string>
+    <string name="mod_config_gyro_invert_x">反转水平轴</string>
+    <string name="mod_config_gyro_invert_y">反转垂直轴</string>
+    <string name="mod_config_gyro_deadzone">死区</string>
     <string name="mod_config_press_any_key">按任意键完成绑定...</string>
     <string name="mod_config_key_unknown">未知</string>
     <string name="mod_config_color_alpha_short">A</string>
@@ -594,6 +825,8 @@
     <string name="mod_config_color_green_short">G</string>
     <string name="mod_config_color_blue_short">B</string>
     <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="hud_editor_drag_hint">拖动以移动面板</string>
+    <string name="hud_editor_drag_description">HUD 编辑器。拖动此区域可移动面板。</string>
 
     <!-- Options Editor -->
     <string name="edit_options">编辑选项</string>
@@ -673,92 +906,13 @@
     <string name="curseforge_download_failed">下载失败</string>
     <string name="curseforge_available_files">可用文件</string>
 
-    <!-- Missing translations -->
-    <string name="beta_badge">Beta</string>
-    <string name="debug_badge">Debug</string>
-    <string name="cursor">光标</string>
-    <string name="bedrock_edition">基岩版</string>
-    <string name="current_instance">当前实例</string>
-    <string name="content_mgmt_section_title">内容管理</string>
-    <string name="misc_section_title">其他</string>
-    <string name="view_all">查看全部 →</string>
-    <string name="import_so_plugin_title">导入 SO 插件</string>
-    <string name="plugin_name_label">插件名称</string>
-    <string name="plugin_type_label">类型</string>
-    <string name="plugin_version_label">版本</string>
-    <string name="import_button">导入</string>
-    <string name="settings_subtitle">配置常用启动器选项</string>
-    <string name="settings_tab_basic">基础设置</string>
-    <string name="settings_tab_personalize">个性化</string>
-    <string name="settings_tab_updates">更新</string>
-    <string name="settings_tab_about">关于</string>
-    <string name="settings_tab_migration">迁移</string>
-    <string name="settings_theme_desc">选择应用主题</string>
-    <string name="launch_vertically">竖屏启动</string>
-    <string name="launch_vertically_desc">强制游戏以竖屏模式启动</string>
-    <string name="instance_settings_title">实例设置</string>
-    <string name="instance_tab_general">常规</string>
-    <string name="instance_tab_launch_options">启动选项</string>
-    <string name="instance_tab_management">管理</string>
-    <string name="instance_new_name">新名称</string>
-    <string name="instance_rename_hint">仅重命名文件夹。游戏版本和类型不受影响。</string>
-    <string name="instance_custom_icon">自定义图标（需为正方形）</string>
-    <string name="instance_clear_icon">清除</string>
-    <string name="instance_icon_hint">将保存为版本文件夹下的 LargeLogo.png。点击图标进行更改。</string>
-    <string name="instance_isolation_desc">为此实例隔离游戏数据。其他实例不会受到影响。</string>
-    <string name="instance_danger_zone">危险区域</string>
-    <string name="instance_danger_zone_desc">这些操作会影响实例注册信息或本地文件。继续前请仔细确认。</string>
-    <string name="instance_delete_desc">从设备中永久删除此实例，包括世界、配置和已安装内容。</string>
-    <string name="instance_delete_warning">此操作无法撤销。</string>
-    <string name="instance_delete_confirm_title">删除实例</string>
-    <string name="instance_delete_confirm_msg">确定要删除此实例吗？包括世界在内的所有数据都将被永久移除。</string>
-    <string name="instance_backup_title">备份实例</string>
-    <string name="instance_backup_desc">将此实例完整备份到 Download/LeviLauncher/Backups。</string>
-    <string name="instance_backup_button">备份实例</string>
-    <string name="instance_backup_confirm_message">现在创建此实例的完整备份吗？如果 Minecraft 正在运行，建议先退出游戏，避免备份过程中数据变化。</string>
-    <string name="instance_backup_in_progress">正在备份实例…</string>
-    <string name="instance_backup_success_title">备份已创建</string>
-    <string name="instance_backup_success_message">备份已保存到：\n%1$s</string>
-    <string name="instance_backup_failed_title">备份失败</string>
-    <string name="instance_backup_failed_message">无法创建备份：\n%1$s</string>
-    <string name="instance_import_backup_button">导入备份</string>
-    <string name="instance_batch_backup_button">批量备份</string>
-    <string name="instance_batch_backup_title">批量备份实例</string>
-    <string name="instance_batch_backup_select_message">选择需要备份的实例。如果 Minecraft 正在运行，建议先退出游戏，避免备份过程中数据变化。</string>
-    <string name="instance_batch_backup_select_all">选择全部实例</string>
-    <string name="instance_batch_backup_no_instances">当前没有可备份的实例。</string>
-    <string name="instance_batch_backup_no_selection">请至少选择一个实例。</string>
-    <string name="instance_batch_backup_in_progress">正在备份 %1$s（%2$d/%3$d）…</string>
-    <string name="instance_batch_backup_success_title">备份已创建</string>
-    <string name="instance_batch_backup_success_message">已创建 %1$d 个备份：\n%2$s</string>
-    <string name="instance_batch_backup_partial_title">部分备份完成</string>
-    <string name="instance_batch_backup_partial_message">已创建 %1$d 个备份，%2$d 个失败。\n\n已保存：\n%3$s\n\n失败：\n%4$s</string>
-    <string name="instance_batch_backup_failed_title">批量备份失败</string>
-    <string name="instance_batch_backup_failed_message">未能创建任何备份：\n%1$s</string>
-    <string name="instance_restore_title">恢复备份</string>
-    <string name="instance_restore_in_progress">正在恢复实例备份…</string>
-    <string name="instance_restore_success_title">恢复完成</string>
-    <string name="instance_restore_success_message">已恢复：%1$s</string>
-    <string name="instance_restore_failed_title">恢复失败</string>
-    <string name="instance_restore_failed_message">无法恢复备份：\n%1$s</string>
-    <string name="skin_packs_title">皮肤包</string>
-    <string name="worlds_category">世界</string>
-    <string name="resource_packs_category">资源包</string>
-    <string name="behavior_packs_category">行为包</string>
-    <string name="skin_packs_category">皮肤包</string>
-    <string name="screenshots_category">截图</string>
-    <string name="servers_category">服务器</string>
-    <string name="saved_to_gallery">已保存到相册</string>
-    <string name="inbuilt_mod_virtual_cursor">虚拟光标</string>
-    <string name="inbuilt_mod_virtual_cursor_desc">使用虚拟触控板控制鼠标</string>
-    <string name="virtual_cursor_enabled">光标已启用</string>
-    <string name="virtual_cursor_disabled">光标已禁用</string>
-    <string name="cursor_sensitivity_label">光标灵敏度：</string>
+    <!-- Navigation Bar -->
     <string name="nav_launch">启动</string>
     <string name="nav_import">导入</string>
     <string name="nav_instances">实例</string>
     <string name="nav_about">关于</string>
     <string name="nav_settings">设置</string>
+
     <string name="search_instances_hint">搜索…</string>
     <string name="instances_label">实例</string>
     <string name="select_instance_title">选择实例</string>
@@ -768,6 +922,7 @@
     <string name="tag_installed">已安装</string>
     <string name="tag_custom">自定义</string>
     <string name="vanilla_prefix">原版 %s</string>
+
     <string name="about_page_title">关于</string>
     <string name="about_subtitle">LeviLauncher — 现代 Minecraft 基岩版启动器</string>
     <string name="about_authors_title">👥 作者与维护者</string>
@@ -784,6 +939,7 @@
     <string name="about_contribute_desc">欢迎通过 Issues 或 Pull Requests 改进 LeviLauncher。</string>
     <string name="about_issues">Issue</string>
     <string name="about_star_fork">Star / Fork</string>
+
     <string-array name="launcher_tips">
         <item>在设置中可以调整主题、颜色、背景和其他外观选项，让启动器更符合你的使用习惯。</item>
         <item>LeviLauncher 是开源项目。你可以通过 GitHub Issues 反馈启动器问题或提出改进建议。</item>
@@ -797,6 +953,7 @@
         <item>CurseForge 可以让你直接浏览并下载社区内容。</item>
         <item>导入模组以扩展或增强 Minecraft 功能和性能。</item>
     </string-array>
+    <!-- Personalization -->
     <string name="theme_color_title">主题颜色</string>
     <string name="theme_color_desc">应用的主强调色</string>
     <string name="preset_colors">预设颜色</string>
@@ -814,57 +971,8 @@
 
     <string name="unsupported_version_title">不支持的版本</string>
     <string name="unsupported_version_msg">此启动器不支持早于 1.21.80 的 Minecraft 版本。</string>
-    <!-- Completed localization coverage -->
-    <string name="delete_account_title">删除账户</string>
-    <string name="delete_account_confirm">确定要删除此账户吗？</string>
-    <string name="ms_login_header_subtitle">安全登录 Minecraft</string>
-    <string name="ms_login_retrying">连接中断。正在安全重试…</string>
-    <string name="ms_choose_login_method">登录 Minecraft</string>
-    <string name="ms_choose_login_method_desc">选择基于浏览器的设备代码流程，或继续使用内嵌 Microsoft 页面。</string>
-    <string name="ms_device_code_login">使用浏览器继续</string>
-    <string name="ms_device_code_option_title">设备代码（推荐）</string>
-    <string name="ms_device_code_login_desc">打开一个已自动填入设备代码的私密浏览器会话。</string>
-    <string name="ms_webview_login">打开内嵌登录</string>
-    <string name="ms_webview_option_title">内嵌 WebView</string>
-    <string name="ms_webview_login_desc">无需离开 LeviLauncher 即可登录。当浏览器流程不可用时使用此方式。</string>
-    <string name="ms_device_code_title">使用设备代码登录</string>
-    <string name="ms_device_code_instructions">打开 Microsoft 设备登录页面，输入此代码，然后批准访问。LeviLauncher 会自动完成后续操作。</string>
-    <string name="ms_device_code_label">Microsoft 设备代码</string>
-    <string name="ms_device_code_requesting">正在请求安全代码…</string>
-    <string name="ms_device_code_waiting_code">--------</string>
-    <string name="ms_device_code_waiting">正在等待你在浏览器中完成操作…</string>
-    <string name="ms_device_code_checking">正在检查 Microsoft 登录结果…</string>
-    <string name="ms_device_code_reconnecting">连接已变化。正在自动重试…</string>
-    <string name="ms_device_code_authorized">Microsoft 已批准登录。正在完成…</string>
-    <string name="ms_device_code_browser_opened">请在浏览器中完成新的 Microsoft 登录，然后返回此处。</string>
-    <string name="ms_device_code_expires">代码将在 %1$d:%2$02d 后过期</string>
-    <string name="ms_device_code_copy">复制代码</string>
-    <string name="ms_device_code_copied">代码已复制</string>
-    <string name="ms_device_code_open_browser">打开 Microsoft 登录</string>
-    <string name="ms_device_code_step_title">在浏览器中完成登录</string>
-    <string name="ms_device_code_browser_note">LeviLauncher 会在私密会话中打开默认浏览器，自动填写代码，并请求一次新的 Microsoft 登录。</string>
-    <string name="ms_choose_other_method">其他方式</string>
-    <string name="ms_no_browser">此设备上没有可用的浏览器。</string>
-    <string name="ms_default_browser_no_private_mode">默认浏览器不支持私密登录。请更新浏览器或使用 WebView 登录。</string>
-    <string name="ms_login_ssl_failed">无法验证安全的 Microsoft 登录页面。</string>
-    <string name="ms_login_state_failed">无法验证 Microsoft 登录响应。请重新开始登录。</string>
-    <string name="ms_login_missing_code">Microsoft 未返回登录代码。请重新开始登录或使用设备代码登录。</string>
-    <string name="ms_feature_disabled_title">功能已禁用</string>
-    <string name="ms_feature_disabled_desc">请在设置中启用“使用 LeviLauncher 登录 Minecraft”，以管理 Microsoft 账户。</string>
-    <string name="ms_activated">已激活</string>
-    <string name="inbuilt_mod_gyro">陀螺仪</string>
-    <string name="inbuilt_mod_gyro_desc">使用设备陀螺仪控制摄像机旋转</string>
-    <string name="inbuilt_mod_pojav_controls">Pojav 控制</string>
-    <string name="inbuilt_mod_pojav_controls_desc">用完全可自定义的 Pojav 风格控制替换 Minecraft 触摸控制</string>
-    <string name="inbuilt_mod_more_buttons">更多按钮</string>
-    <string name="inbuilt_mod_more_buttons_desc">使用单键映射和 SVG 图标创建自定义屏幕按钮</string>
-    <string name="mod_config_overlay_show_everywhere" formatted="false">始终显示</string>
-    <string name="mod_config_zoom_transition">过渡时长 (ms)</string>
-    <string name="mod_config_gyro_sensitivity_x" formatted="false">水平灵敏度 (%)</string>
-    <string name="mod_config_gyro_sensitivity_y" formatted="false">垂直灵敏度 (%)</string>
-    <string name="mod_config_gyro_invert_x">反转水平轴</string>
-    <string name="mod_config_gyro_invert_y">反转垂直轴</string>
-    <string name="mod_config_gyro_deadzone">死区</string>
+
+    <!-- Generic UI strings added during localization cleanup -->
     <string name="close">关闭</string>
     <string name="previous">上一步</string>
     <string name="next">下一步</string>
@@ -914,6 +1022,8 @@
     <string name="custom_color_hint">#RRGGBB 或 R,G,B</string>
     <string name="screenshot_name_placeholder">截图名称</string>
     <string name="screenshot_date_placeholder">日期：2024-01-01 12:00:00</string>
+
+    <!-- More Buttons editor -->
     <string name="more_buttons_intro">创建 Minecraft 风格的屏幕按钮，每个按钮仅映射到一个键盘按键。按钮不会执行宏、按键序列、自动重复或自动点击。</string>
     <string name="more_buttons_add_button">添加按钮</string>
     <string name="more_buttons_limit_reached">已达到最多 %1$d 个自定义按钮的限制。</string>
@@ -971,99 +1081,17 @@
     <string name="more_buttons_no_svg_selected">未选择 SVG</string>
     <string name="more_buttons_default_name">按钮</string>
 
+
     <!-- Hotbar Slot -->
     <string name="inbuilt_mod_hotbar_slot">快捷栏槽位</string>
     <string name="inbuilt_mod_hotbar_slot_desc">添加独立的 1–9 按钮，用于选择快捷栏槽位</string>
     <string name="hotbar_slot_content_description">快捷栏槽位 %1$d</string>
-
-
-    <!-- Added translations for strings present in the current English resources -->
-    <string name="instance_shortcut_title">主屏幕快捷方式</string>
-    <string name="instance_shortcut_desc">名称和图标的更改会自动保存。点击“添加快捷方式”以创建或更新主屏幕快捷方式。</string>
-    <string name="instance_shortcut_name">快捷方式名称</string>
-    <string name="instance_shortcut_icon">快捷方式图标</string>
-    <string name="instance_shortcut_choose_icon">选择图标</string>
-    <string name="instance_shortcut_default_icon">使用默认图标</string>
-    <string name="instance_shortcut_add_button">添加快捷方式</string>
-    <string name="instance_settings_auto_save_failed">无法保存此实例设置。</string>
-    <string name="instance_shortcut_not_supported">您的主屏幕启动器不支持固定快捷方式。</string>
-    <string name="instance_shortcut_missing">此 Minecraft 实例已不可用。</string>
-    <string name="custom_flat_world_subtitle">使用自定义生物群系和方块层创建世界</string>
-    <string name="world_settings">世界设置</string>
-    <string name="world_settings_hint">选择新世界的基本设置</string>
-    <string name="layers_title">层</string>
-    <string name="add_layer_compact">添加层</string>
-    <string name="no_layers_title">还没有层</string>
-    <string name="no_layers_hint">至少添加一层方块才能创建世界</string>
-    <string name="reorder_layer">重新排序此层</string>
-    <string name="delete_layer">删除此层</string>
-    <string name="block_id_hint">minecraft:stone</string>
-    <string name="scan_downloads">扫描</string>
-    <string name="scan_downloads_scanning">正在扫描…</string>
-    <string name="scan_downloads_none_found">下载文件夹中未找到 .levipack 或 .so 模组</string>
-    <string name="scan_downloads_failed">无法扫描下载文件夹</string>
-    <string name="scan_downloads_permission_denied">扫描下载文件夹需要存储访问权限</string>
-    <string name="scan_downloads_results_title">下载文件夹中的模组</string>
-    <string name="scan_downloads_results_subtitle">选择要添加的模组。扫描仅检查主下载文件夹。</string>
-    <string name="scan_downloads_add">添加</string>
-    <string name="scan_downloads_adding">正在添加…</string>
-    <string name="scan_downloads_added">已添加</string>
-    <string name="scan_downloads_added_message">已添加 %1$s</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">原生库</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
-    <string name="external_mods">外部模组</string>
-    <string name="external_mods_subtitle">适用于 Minecraft %1$s 的社区模组</string>
-    <string name="external_mods_no_version">安装模组前请选择 Minecraft 版本</string>
-    <string name="external_mods_search_hint">搜索模组、作者或版本…</string>
-    <string name="external_mods_compatible_only">仅显示兼容项</string>
-    <string name="external_mods_all_versions">所有 Minecraft 版本</string>
-    <string name="external_mods_sort_newest">最新</string>
-    <string name="external_mods_sort_name">名称 A–Z</string>
-    <string name="external_mods_empty">没有符合这些筛选条件的模组</string>
-    <string name="external_mods_load_failed">无法刷新目录。正在显示已保存的副本。</string>
-    <string name="external_mods_refresh">刷新目录</string>
-    <string name="external_mods_refreshed">目录已刷新</string>
-    <string name="external_mods_join_discord">加入社区 Discord</string>
-    <string name="external_mods_discord_open_failed">没有应用可以打开 Discord 邀请</string>
-    <string name="external_mods_download">正在下载 %1$s</string>
-    <string name="external_mods_importing">正在导入模组…</string>
-    <string name="external_mods_installed">已安装 %1$s</string>
-    <string name="external_mods_install_failed">无法安装 %1$s：%2$s</string>
-    <string name="external_mods_open_failed">没有浏览器可以打开此下载</string>
-    <string name="external_mods_direct_download">直接下载</string>
-    <string name="external_mods_ad_download">广告下载</string>
-    <string name="external_mods_external_link">外部链接</string>
-    <string name="external_mods_open_link">打开链接</string>
-    <string name="external_mods_external_dialog_title">外部下载</string>
-    <string name="external_mods_ad_dialog_title">广告支持的下载</string>
-    <string name="external_mods_external_dialog_message">%1$s 使用 LeviLauncher 之外的下载页面。\n\n1. 点击“打开链接”并下载 .levipack 或 .so 文件。\n2. 返回 LeviLauncher 并打开“模组”。\n3. 点击“扫描”。\n4. 点击要导入的模组旁边的“添加”。\n\n扫描仅检查主下载文件夹。如果浏览器将文件保存到了其他位置，请将文件移动到该文件夹。</string>
-    <string name="external_mods_ad_dialog_message">%1$s 使用由其开发者选择的广告支持下载页面。LeviLauncher 不控制该页面或其中的广告。\n\n1. 点击“打开链接”并下载 .levipack 或 .so 文件。\n2. 返回 LeviLauncher 并打开“模组”。\n3. 点击“扫描”。\n4. 点击要导入的模组旁边的“添加”。\n\n扫描仅检查主下载文件夹。只下载模组文件；不要安装无关应用，也不要允许通知。</string>
-    <string name="external_mods_by_author">作者：%1$s</string>
-    <string name="external_mods_version">模组 %1$s</string>
-    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
-    <string name="external_mods_update">更新</string>
-    <string name="external_mods_installed_button">已安装</string>
-    <string name="external_mods_incompatible">不兼容</string>
-    <string name="foreground_service">前台服务</string>
-    <string name="foreground_service_desc">切换应用时阻止 Bedrock 暂停当前会话，并保持进程、CPU 和 Wi-Fi 活跃，从而让 Minecraft 继续运行。</string>
-    <string name="foreground_service_warning">注意：可能会让手机更快发热并增加电池消耗。</string>
-    <string name="foreground_service_channel">Minecraft 后台保护</string>
-    <string name="foreground_service_notification_title">正在保持 Minecraft 活跃</string>
-    <string name="foreground_service_notification_text">Minecraft 后台模式已启用。当前会话会持续保持 CPU 和网络访问可用。</string>
-    <string name="mod_menu_compact">紧凑模组菜单</string>
-    <string name="mod_menu_compact_desc">使用更小的菜单、密集的模块列表和紧凑的筛选器</string>
-    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">灵敏度倍数（100% = 1x）</string>
-    <string name="mod_config_gyro_horizontal_speed" formatted="false">水平速度 (%)</string>
-    <string name="mod_config_gyro_vertical_speed" formatted="false">垂直速度 (%)</string>
-    <string name="mod_config_gyro_small_movement_filter">微小移动过滤（0 = 关闭）</string>
-    <string name="hud_editor_drag_hint">拖动以移动面板</string>
-    <string name="hud_editor_drag_description">HUD 编辑器。拖动此区域可移动面板。</string>
     <string name="mod_config_hotbar_item_icons">使用快捷栏中的物品图标</string>
     <string name="mod_config_hotbar_item_counts">显示物品数量</string>
     <string name="mod_config_hotbar_slot_enabled">显示快捷栏槽位 %1$d</string>
     <string name="mod_config_hotbar_slot_size">快捷栏槽位 %1$d 大小 (dp)</string>
     <string name="mod_config_hotbar_slot_opacity">快捷栏槽位 %1$d 不透明度</string>
+    <!-- Changelog & News -->
     <string name="changelog_title">新增内容</string>
     <string name="changelog_version">LeviLauncher %1$s</string>
     <string name="changelog_continue">继续</string>
@@ -1086,6 +1114,7 @@
     <string name="mod_config_category_button">按钮</string>
     <string name="mod_config_visible_slots">可见槽位</string>
     <string name="mod_config_hotbar_slot_section">快捷栏槽位 %1$d</string>
+    <!-- Selection & Batch Operations -->
     <string name="select">选择</string>
     <string name="select_all">全选</string>
     <string name="selected">已选择</string>
