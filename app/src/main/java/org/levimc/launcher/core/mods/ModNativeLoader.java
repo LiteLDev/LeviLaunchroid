@@ -170,13 +170,27 @@ public class ModNativeLoader {
             return false;
         }
 
-        int wildcardIndex = normalizedPattern.indexOf('*');
-        if (wildcardIndex < 0) {
+        if (normalizedPattern.indexOf('*') < 0
+                && normalizedPattern.indexOf('X') < 0
+                && normalizedPattern.indexOf('x') < 0) {
             return normalizedVersion.equals(normalizedPattern);
         }
 
-        String prefix = normalizedPattern.substring(0, wildcardIndex);
-        return normalizedVersion.startsWith(prefix);
+        StringBuilder expression = new StringBuilder("^");
+        for (int i = 0; i < normalizedPattern.length(); i++) {
+            char current = normalizedPattern.charAt(i);
+            if (current == '*') {
+                expression.append(".*");
+            } else if (current == 'X' || current == 'x') {
+                boolean wholeComponent = (i == 0 || normalizedPattern.charAt(i - 1) == '.')
+                        && (i == normalizedPattern.length() - 1 || normalizedPattern.charAt(i + 1) == '.');
+                expression.append(wholeComponent ? "\\d+" : "\\d");
+            } else {
+                expression.append(java.util.regex.Pattern.quote(String.valueOf(current)));
+            }
+        }
+        expression.append('$');
+        return normalizedVersion.matches(expression.toString());
     }
 
     private static void notifySkipped(LoadListener listener, Mod mod, String minecraftVersion) {

@@ -100,7 +100,10 @@ public class FileHandler {
     }
 
     public void processIncomingFilesWithConfirmation(Intent intent, FileOperationCallback callback, boolean isButtonClick) {
-        List<Uri> fileUris = extractFileUris(intent);
+        processIncomingFilesWithConfirmation(extractFileUris(intent), callback, isButtonClick);
+    }
+
+    public void processIncomingFilesWithConfirmation(List<Uri> fileUris, FileOperationCallback callback, boolean isButtonClick) {
         List<Uri> supportedUris = new ArrayList<>();
         for (Uri uri : fileUris) {
             String fileName = resolveImportFileName(uri);
@@ -166,6 +169,35 @@ public class FileHandler {
                     showImportDialogs.run();
                 }
             });
+        }).start();
+    }
+
+    public void processCatalogModDirectly(Intent intent, String name, String author, String version,
+                                          List<String> minecraftVersions, FileOperationCallback callback) {
+        List<Uri> fileUris = extractFileUris(intent);
+        List<Uri> supportedUris = new ArrayList<>();
+        for (Uri uri : fileUris) {
+            String fileName = resolveImportFileName(uri);
+            if (isSupportedImportFile(uri, fileName)) {
+                supportedUris.add(uri);
+            }
+        }
+
+        if (supportedUris.isEmpty()) {
+            postError(callback, context.getString(R.string.invalid_mod_file_reason));
+            return;
+        }
+
+        new Thread(() -> {
+            for (Uri uri : supportedUris) {
+                String fileName = resolveImportFileName(uri);
+                if (isZipModPackageFile(uri, fileName) && !isValidZipModPackage(uri)) {
+                    postError(callback, context.getString(R.string.invalid_zip_mod_package_message));
+                    return;
+                }
+            }
+            handleFilesWithOverwriteCheck(supportedUris, name, PRELOAD_NATIVE_TYPE, version, author,
+                    minecraftVersions, callback);
         }).start();
     }
 
@@ -401,6 +433,16 @@ public class FileHandler {
             List<Uri> fileUris,
             String overrideName, String overrideType, String overrideVersion,
             FileOperationCallback callback) {
+        handleFilesWithOverwriteCheck(
+                fileUris, overrideName, overrideType, overrideVersion, null, null, callback);
+    }
+
+    private void handleFilesWithOverwriteCheck(
+            List<Uri> fileUris,
+            String overrideName, String overrideType, String overrideVersion,
+            String overrideAuthor,
+            List<String> overrideMinecraftVersions,
+            FileOperationCallback callback) {
         new Thread(() -> {
             if (targetPath == null) {
                 postError(callback, "No selected version mods directory");
@@ -425,9 +467,12 @@ public class FileHandler {
                         throw new IOException("Unsupported mod import file: " + fileName);
                     }
 
-                    preparedImport = prepareImport(uri, fileName, overrideName, overrideType, overrideVersion);
+                    preparedImport = prepareImport(
+                            uri, fileName, overrideName, overrideType, overrideVersion,
+                            overrideAuthor, overrideMinecraftVersions);
                     File destinationDir = new File(targetDir, preparedImport.targetId);
                     if (destinationDir.exists() && !confirmOverwrite(preparedImport.targetId)) {
+                        lastError = context.getString(R.string.user_cancelled);
                         continue;
                     }
 
@@ -471,20 +516,25 @@ public class FileHandler {
 
     private PreparedImport prepareImport(
             Uri uri, String fileName,
-            String overrideName, String overrideType, String overrideVersion) throws IOException {
+            String overrideName, String overrideType, String overrideVersion,
+            String overrideAuthor, List<String> overrideMinecraftVersions) throws IOException {
         String lowerName = fileName.toLowerCase(Locale.ROOT);
         if (lowerName.endsWith(".so")) {
-            return prepareSoImport(uri, fileName, overrideName, overrideType, overrideVersion);
+            return prepareSoImport(uri, fileName, overrideName, overrideType, overrideVersion,
+                    overrideAuthor, overrideMinecraftVersions);
         }
         if (isZipModPackageFile(uri, fileName)) {
-            return prepareZipImport(uri, fileName, overrideName, overrideType, overrideVersion);
+            return prepareZipImport(
+                    uri, fileName, overrideName, overrideType, overrideVersion,
+                    overrideAuthor, overrideMinecraftVersions);
         }
         throw new IOException("Unsupported mod import file: " + fileName);
     }
 
     private PreparedImport prepareSoImport(
             Uri uri, String fileName,
-            String overrideName, String overrideType, String overrideVersion) throws IOException {
+            String overrideName, String overrideType, String overrideVersion,
+            String overrideAuthor, List<String> overrideMinecraftVersions) throws IOException {
         File stagingRoot = createTempDirectory("mod_import_so");
         String displayName = (overrideName != null && !overrideName.isEmpty())
                 ? overrideName
@@ -498,13 +548,15 @@ public class FileHandler {
         File libraryFile = new File(packageDir, fileName);
         copyUriToFile(uri, libraryFile);
         writeManifest(packageDir, createNormalizedManifest(
-                new JsonObject(), displayName, fileName, packageDir, overrideType, overrideVersion));
+                new JsonObject(), displayName, fileName, packageDir, overrideType, overrideVersion,
+                overrideAuthor, overrideMinecraftVersions));
         return new PreparedImport(targetId, fileName, new HashSet<>(), new HashSet<>(), packageDir, stagingRoot);
     }
 
     private PreparedImport prepareZipImport(
             Uri uri, String fileName,
-            String overrideName, String overrideType, String overrideVersion) throws IOException {
+            String overrideName, String overrideType, String overrideVersion,
+            String overrideAuthor, List<String> overrideMinecraftVersions) throws IOException {
         File tempZip = new File(context.getCacheDir(), "mod_zip_" + System.currentTimeMillis() + ".zip");
         File stagingRoot = createTempDirectory("mod_import_zip");
         try {
@@ -544,7 +596,8 @@ public class FileHandler {
                 ? overrideName
                 : resolveDisplayName(manifest, entryPath);
         writeManifest(modRoot, createNormalizedManifest(
-                manifest, displayName, entryPath, modRoot, overrideType, overrideVersion));
+                manifest, displayName, entryPath, modRoot, overrideType, overrideVersion,
+                overrideAuthor, overrideMinecraftVersions));
 
         String rootName = modRoot.equals(stagingRoot) ? stripExtension(fileName) : modRoot.getName();
         String targetId = buildTargetId(displayName, rootName);
@@ -569,15 +622,33 @@ public class FileHandler {
     private JsonObject createNormalizedManifest(
             JsonObject manifest, String displayName, String entryPath, File modRoot,
             String overrideType, String overrideVersion) {
+        return createNormalizedManifest(
+                manifest, displayName, entryPath, modRoot, overrideType, overrideVersion, null, null);
+    }
+
+    private JsonObject createNormalizedManifest(
+            JsonObject manifest, String displayName, String entryPath, File modRoot,
+            String overrideType, String overrideVersion, String overrideAuthor,
+            List<String> overrideMinecraftVersions) {
         JsonObject normalized = manifest == null ? new JsonObject() : manifest.deepCopy();
         String type = (overrideType != null && !overrideType.isEmpty()) ? overrideType : PRELOAD_NATIVE_TYPE;
         String version = (overrideVersion != null && !overrideVersion.isEmpty()) ? overrideVersion : resolveVersion(manifest);
         normalized.addProperty("type", type);
         normalized.addProperty("name", displayName);
         normalized.addProperty("entry", entryPath.replace('\\', '/'));
-        normalized.addProperty("author", resolveAuthor(manifest));
+        normalized.addProperty("author", overrideAuthor != null && !overrideAuthor.trim().isEmpty()
+                ? overrideAuthor.trim() : resolveAuthor(manifest));
         normalized.addProperty("icon", resolveIconPath(manifest, modRoot));
         normalized.addProperty("version", version);
+        if (overrideMinecraftVersions != null && !overrideMinecraftVersions.isEmpty()) {
+            JsonArray versions = new JsonArray();
+            for (String minecraftVersion : overrideMinecraftVersions) {
+                if (minecraftVersion != null && !minecraftVersion.trim().isEmpty()) {
+                    versions.add(minecraftVersion.trim());
+                }
+            }
+            if (versions.size() > 0) normalized.add("minecraft_versions", versions);
+        }
         return normalized;
     }
 
@@ -1341,7 +1412,23 @@ public class FileHandler {
 
     private String resolveFileName(Uri uri) {
         String defaultName = "unknown_" + System.currentTimeMillis();
-        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        if (uri == null) {
+            return defaultName;
+        }
+
+        if ("file".equalsIgnoreCase(uri.getScheme())) {
+            String path = uri.getPath();
+            if (path != null && !path.isEmpty()) {
+                return new File(path).getName();
+            }
+        }
+
+        Cursor cursor = null;
+        try {
+            cursor = context.getContentResolver().query(uri, null, null, null, null);
+        } catch (Exception e) {
+            Log.w(TAG, "Failed to resolve display name", e);
+        }
         if (cursor != null) {
             try {
                 if (cursor.moveToFirst()) {

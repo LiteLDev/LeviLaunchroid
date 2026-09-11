@@ -11,6 +11,7 @@
 
     <color name="tertiary">#81D4FA</color>
     <color name="on_tertiary">#000000</color>
+    <color name="external_mod_ad">#FFB74D</color>
 
     <color name="error">#FF6B6B</color>
     <color name="on_error">#000000</color>

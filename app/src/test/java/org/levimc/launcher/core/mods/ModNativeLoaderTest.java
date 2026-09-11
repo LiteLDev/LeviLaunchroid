@@ -24,6 +24,15 @@ public class ModNativeLoaderTest {
     }
 
     @Test
+    public void numericWildcardMatchesHotfixFamily() {
+        assertTrue(ModNativeLoader.matchesMinecraftVersionPattern("1.26.5X.X", "1.26.50.1"));
+        assertTrue(ModNativeLoader.matchesMinecraftVersionPattern("1.26.5X.X", "1.26.59.12"));
+        assertTrue(ModNativeLoader.matchesMinecraftVersionPattern("1.26.5x.x", "1.26.54.2"));
+        assertFalse(ModNativeLoader.matchesMinecraftVersionPattern("1.26.5X.X", "1.26.60.1"));
+        assertFalse(ModNativeLoader.matchesMinecraftVersionPattern("1.26.5X.X", "1.26.500.1"));
+    }
+
+    @Test
     public void anyPatternCanMatch() {
         assertTrue(ModNativeLoader.isCompatibleWithMinecraftVersion(
                 Arrays.asList("1.25.*", "1.26.2*", "1.27.0"),

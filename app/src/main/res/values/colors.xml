@@ -10,6 +10,7 @@
 
     <color name="tertiary">#01579B</color>
     <color name="on_tertiary">#FFFFFF</color>
+    <color name="external_mod_ad">#E65100</color>
 
     <color name="error">#F44336</color>
     <color name="on_error">#FFFFFF</color>

@@ -448,6 +448,46 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="total_mods">Total Mods:</string>
     <string name="enabled_mods">Enabled:</string>
     <string name="add_mod">Add Mod</string>
+    <string name="scan_downloads">Scan</string>
+    <string name="scan_downloads_scanning">Scanning…</string>
+    <plurals name="scan_downloads_found">
+        <item quantity="one">Found %1$d mod file in Downloads</item>
+        <item quantity="other">Found %1$d mod files in Downloads</item>
+    </plurals>
+    <string name="scan_downloads_none_found">No .levipack or .so mods found in Downloads</string>
+    <string name="scan_downloads_failed">Could not scan Downloads</string>
+    <string name="scan_downloads_permission_denied">Storage access is needed to scan Downloads</string>
+    <string name="external_mods">External Mods</string>
+    <string name="external_mods_subtitle">Community mods for Minecraft %1$s</string>
+    <string name="external_mods_no_version">Select a Minecraft version before installing mods</string>
+    <string name="external_mods_search_hint">Search mods, authors, or versions…</string>
+    <string name="external_mods_compatible_only">Compatible only</string>
+    <string name="external_mods_all_versions">All Minecraft versions</string>
+    <string name="external_mods_sort_newest">Newest</string>
+    <string name="external_mods_sort_name">Name A–Z</string>
+    <string name="external_mods_empty">No mods match these filters</string>
+    <string name="external_mods_load_failed">Could not refresh the catalog. Showing the saved copy.</string>
+    <string name="external_mods_refresh">Refresh catalog</string>
+    <string name="external_mods_refreshed">Catalog refreshed</string>
+    <string name="external_mods_download">Downloading %1$s</string>
+    <string name="external_mods_importing">Importing mod…</string>
+    <string name="external_mods_installed">%1$s installed</string>
+    <string name="external_mods_install_failed">Could not install %1$s: %2$s</string>
+    <string name="external_mods_open_failed">No browser can open this download</string>
+    <string name="external_mods_direct_download">Direct download</string>
+    <string name="external_mods_ad_download">Ad download</string>
+    <string name="external_mods_external_link">External link</string>
+    <string name="external_mods_open_link">Open Link</string>
+    <string name="external_mods_external_dialog_title">External Download</string>
+    <string name="external_mods_ad_dialog_title">Ad-Supported Download</string>
+    <string name="external_mods_external_dialog_message">%1$s uses a download page outside LeviLauncher.\n\n1. Tap Open Link and download the .levipack or .so file.\n2. Return to LeviLauncher and open Mods.\n3. Tap Scan.\n4. Confirm the import when prompted.\n\nScan checks only the main Downloads folder. Move the file there if your browser saved it somewhere else.</string>
+    <string name="external_mods_ad_dialog_message">%1$s uses an ad-supported download page chosen by its developer. LeviLauncher does not control that page or its ads.\n\n1. Tap Open Link and download the .levipack or .so file.\n2. Return to LeviLauncher and open Mods.\n3. Tap Scan.\n4. Confirm the import when prompted.\n\nScan checks only the main Downloads folder. Only download the mod file; do not install unrelated apps or allow notifications.</string>
+    <string name="external_mods_by_author">by %1$s</string>
+    <string name="external_mods_version">Mod %1$s</string>
+    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
+    <string name="external_mods_update">Update</string>
+    <string name="external_mods_installed_button">Installed</string>
+    <string name="external_mods_incompatible">Incompatible</string>
 
     <!-- Mod Detail -->
     <string name="mod_detail_title">Mod Details</string>
