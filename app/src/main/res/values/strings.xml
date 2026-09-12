@@ -116,7 +116,7 @@
     <string name="unknown_sources_permission_message">To install or update this app, please grant permission to install unknown apps. Click "Grant" to open system settings, enable the permission for this app, and return to continue.</string>
 
     <string name="check_update">Check for updates</string>
-    <string name="version_prefix">Version:</string>
+    <string name="version_prefix">Version: </string>
     <string name="unknown_error">Unknown error</string>
     <string name="preloader_sigs_title">Runtime Data</string>
     <string name="preloader_sigs_last_update">Last update: %1$s</string>
@@ -452,7 +452,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="genuine_badge_label">License not verified</string>
     <string name="invalid_license_detected_toast">Non-genuine Minecraft detected. Ensure Minecraft is from Google Play Store</string>
 
-    <string name="full_mods_title">Mods</string>
+    <string name="full_mods_title">Mods </string>
     <string name="total_mods">Total Mods:</string>
     <string name="enabled_mods">Enabled:</string>
     <string name="add_mod">Add Mod</string>

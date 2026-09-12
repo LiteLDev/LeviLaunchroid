@@ -452,7 +452,7 @@
     <string name="genuine_badge_label">未通过正版验证</string>
     <string name="invalid_license_detected_toast">非正版MC，请确保设备上MC来自于谷歌商店</string>
 
-    <string name="full_mods_title">模组</string>
+    <string name="full_mods_title">模组 </string>
     <string name="total_mods">模组总数：</string>
     <string name="enabled_mods">已启用：</string>
     <string name="add_mod">添加模组</string>

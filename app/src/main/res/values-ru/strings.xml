@@ -116,7 +116,7 @@
     <string name="unknown_sources_permission_message">Чтобы установить или обновить это приложение, пожалуйста выдайте разрешение на установку неизвестных приложений. Нажмите "Выдать" чтобы открыть настройки системы, выдайте разрешение для этого приложения, и вернитесь чтобы продолжить.</string>
 
     <string name="check_update">Проверить обновления</string>
-    <string name="version_prefix">Версия:</string>
+    <string name="version_prefix">Версия :</string>
     <string name="unknown_error">Неизвестная ошибка</string>
     <string name="preloader_sigs_title">Данные среды выполнения</string>
     <string name="preloader_sigs_last_update">Последнее обновление: %1$s</string>
@@ -455,7 +455,7 @@
     <string name="invalid_license_detected_toast">Обнаружена нелицензионная версия Minecraft. Убедитесь, что Minecraft установлен из Google Play Маркета</string>
 
     <string name="full_mods_title">Моды</string>
-    <string name="total_mods">Всего модов:</string>
+    <string name="total_mods">Всего модов: </string>
     <string name="enabled_mods">Включено:</string>
     <string name="add_mod">Добавить мод</string>
     <string name="scan_downloads">Сканировать</string>

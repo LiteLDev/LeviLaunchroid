@@ -116,7 +116,7 @@
     <string name="unknown_sources_permission_message">Untuk menginstal atau memperbarui aplikasi ini, mohon berikan izin untuk menginstal aplikasi yang tidak dikenal. Klik "Izinkan" untuk membuka pengaturan sistem, aktifkan izin untuk aplikasi ini, dan kembali untuk melanjutkan.</string>
 
     <string name="check_update">Periksa pembaruan</string>
-    <string name="version_prefix">Versi:</string>
+    <string name="version_prefix">Versi: </string>
     <string name="unknown_error">Kesalahan tidak diketahui</string>
     <string name="preloader_sigs_title">Data runtime</string>
     <string name="preloader_sigs_last_update">Pembaruan terakhir: %1$s</string>
@@ -452,7 +452,7 @@ Migrasi harus selesai sebelum LeviLauncher dapat melanjutkan.</string>
     <string name="genuine_badge_label">Lisensi tidak ter-verifikasi</string>
     <string name="invalid_license_detected_toast">Minecraft palsu terdeteksi. Pastikan Minecraft Anda berasal dari Google Play Store.</string>
 
-    <string name="full_mods_title">Mods</string>
+    <string name="full_mods_title">Mods </string>
     <string name="total_mods">Total Mods:</string>
     <string name="enabled_mods">Aktif:</string>
     <string name="add_mod">Tambahkan Mod</string>

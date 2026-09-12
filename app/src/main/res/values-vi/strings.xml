@@ -116,7 +116,7 @@
     <string name="unknown_sources_permission_message">Để cài đặt hoặc cập nhật ứng dụng này, vui lòng cấp quyền cài đặt ứng dụng không rõ nguồn gốc. Nhấp vào "Cấp quyền" để mở cài đặt hệ thống, bật quyền cho ứng dụng này và quay lại để tiếp tục.</string>
 
     <string name="check_update">Kiểm tra cập nhật</string>
-    <string name="version_prefix">Phiên bản:</string>
+    <string name="version_prefix">Phiên bản: </string>
     <string name="unknown_error">Lỗi không xác định</string>
     <string name="preloader_sigs_title">Dữ liệu thời gian chạy</string>
     <string name="preloader_sigs_last_update">Cập nhật lần cuối: %1$s</string>
@@ -452,7 +452,7 @@ Quá trình chuyển đổi phải hoàn tất trước khi LeviLauncher có th�
     <string name="genuine_badge_label">Giấy phép chưa được xác minh</string>
     <string name="invalid_license_detected_toast">Đã phát hiện Minecraft không phải bản chính hãng. Hãy đảm bảo Minecraft của bạn được tải từ Google Play Store.</string>
 
-    <string name="full_mods_title">Mods</string>
+    <string name="full_mods_title">Mods </string>
     <string name="total_mods">Tổng các Mods:</string>
     <string name="enabled_mods">Đã bật:</string>
     <string name="add_mod">Thêm Mod</string>

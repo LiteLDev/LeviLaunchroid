@@ -116,7 +116,7 @@
     <string name="unknown_sources_permission_message">इस ऐप को इंस्टॉल या अपडेट करने के लिए, कृपया अज्ञात ऐप्स इंस्टॉल करने की अनुमति दें। सिस्टम सेटिंग्स खोलने के लिए "अनुमति दें" पर क्लिक करें, इस ऐप के लिए अनुमति सक्षम करें और जारी रखने के लिए वापस आएं।</string>
 
     <string name="check_update">अपडेट्स के लिए जांचें</string>
-    <string name="version_prefix">संस्करण:</string>
+    <string name="version_prefix">संस्करण: </string>
     <string name="unknown_error">अज्ञात त्रुटि</string>
     <string name="preloader_sigs_title">रनटाइम डेटा</string>
     <string name="preloader_sigs_last_update">अंतिम अपडेट: %1$s</string>
@@ -452,7 +452,7 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="genuine_badge_label">लाइसेंस सत्यापित नहीं है</string>
     <string name="invalid_license_detected_toast">गैर-वास्तविक Minecraft का पता चला। सुनिश्चित करें कि Minecraft Google Play Store से है</string>
 
-    <string name="full_mods_title">मॉड्स</string>
+    <string name="full_mods_title">मॉड्स </string>
     <string name="total_mods">कुल मॉड्स:</string>
     <string name="enabled_mods">सक्षम:</string>
     <string name="add_mod">मॉड जोड़ें</string>

@@ -116,7 +116,7 @@
     <string name="unknown_sources_permission_message">Para instalar o actualizar esta app, concede permiso para instalar apps desconocidas. Toca \"Conceder\" para abrir los ajustes del sistema, habilitar el permiso para esta app y volver para continuar.</string>
 
     <string name="check_update">Buscar actualizaciones</string>
-    <string name="version_prefix">Versión:</string>
+    <string name="version_prefix">Versión: </string>
     <string name="unknown_error">Error desconocido</string>
     <string name="preloader_sigs_title">Datos de tiempo de ejecución</string>
     <string name="preloader_sigs_last_update">Última actualización: %1$s</string>
@@ -452,7 +452,7 @@ La migración debe completarse antes de continuar con LeviLauncher.</string>
     <string name="genuine_badge_label">Licencia no verificada</string>
     <string name="invalid_license_detected_toast">Minecraft no original detectado. Asegúrate de tener Minecraft de Google Play Store</string>
 
-    <string name="full_mods_title">Mods</string>
+    <string name="full_mods_title">Mods </string>
     <string name="total_mods">Total de Mods:</string>
     <string name="enabled_mods">Habilitados:</string>
     <string name="add_mod">Añadir Mod</string>

@@ -116,7 +116,7 @@
     <string name="unknown_sources_permission_message">このアプリをインストールまたは更新するには、提供元不明のアプリのインストールを許可してください。</string>
 
     <string name="check_update">アップデートを確認</string>
-    <string name="version_prefix">バージョン:</string>
+    <string name="version_prefix">バージョン: </string>
     <string name="unknown_error">不明なエラー</string>
     <string name="preloader_sigs_title">ランタイムデータ</string>
     <string name="preloader_sigs_last_update">最終更新: %1$s</string>
@@ -452,7 +452,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="genuine_badge_label">ライセンス未確認</string>
     <string name="invalid_license_detected_toast">非正規品が検出されました。Play ストアからの Minecraft であることを確認してください。</string>
 
-    <string name="full_mods_title">モッド</string>
+    <string name="full_mods_title">モッド </string>
     <string name="total_mods">合計モッド数:</string>
     <string name="enabled_mods">有効化:</string>
     <string name="add_mod">モッドを追加</string>
