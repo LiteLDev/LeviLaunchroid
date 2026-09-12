@@ -16,7 +16,7 @@ body:
     attributes:
       label: App Version
       description: What version of LeviLaunchroid are you running?
-      placeholder: e.g., v5.0.8
+      placeholder: e.g., v1.5.22
     validations:
       required: true
   - type: input
@@ -68,6 +68,15 @@ body:
       label: Expected Behavior
       description: What did you expect to happen instead?
       placeholder: I expected the app to launch the game successfully without graphical glitches.
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs (logcat)
+      description: Paste the logcat output or crash log if available. Remove any personal or private information first.
+      placeholder: Paste logs here.
+      render: shell
     validations:
       required: false
   - type: textarea
