@@ -1,4 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- NOTE: Keep this file aligned with the English default (values/strings.xml):
+     same resource keys and order, comments, sections, XML structure, and formatting
+     (including indentation, spaces, and blank lines).
+
+     Translations must remain grammatically and linguistically correct for the target
+     language. Locale-specific plural forms may differ when required by the language.
+     Do not change placeholders or resource attributes. -->
+
 <resources>
     <!-- Common -->
     <string name="app_name">LeviLauncher</string>
@@ -69,6 +76,7 @@
     <string name="files_processed">%d 個のモッドファイルの処理に成功しました</string>
     <string name="user_cancelled">ユーザーによりインポートがキャンセルされました</string>
 
+
     <string name="exit">終了</string>
 
     <string name="overlay_permission_message">オーバーレイ権限を付与してください</string>
@@ -103,6 +111,7 @@
     <string name="settings_tab_migration">移行</string>
     <string name="settings_theme_desc">アプリのテーマを選択</string>
 
+
     <string name="unknown_sources_permission_title">インストールの許可</string>
     <string name="unknown_sources_permission_message">このアプリをインストールまたは更新するには、提供元不明のアプリのインストールを許可してください。</string>
 
@@ -131,6 +140,9 @@
     <string name="dialog_message_disable_version_isolation">バージョン分離が有効な状態でインストール済みバージョンを起動しようとしています。続行するには無効にしてください。</string>
     <string name="dialog_positive_disable">無効にする</string>
     <string name="dialog_positive_ok">OK</string>
+    <string name="delete_account_title">アカウントを削除</string>
+    <string name="delete_account_confirm">このアカウントを削除してもよろしいですか？</string>
+
 
     <string name="new_version_found">新しいバージョンが見つかりました: %1$s</string>
     <string name="update_question">最新バージョンをダウンロードしてインストールしますか？</string>
@@ -158,6 +170,7 @@
     <string name="repair_preparing">準備中…</string>
     <string name="repair_processing">ライブラリを展開中…</string>
     <string name="repair_finalizing">修復を完了しています…</string>
+    <!-- Storage Migration -->
     <string name="storage_migration_title">ストレージ移行が必要です</string>
     <string name="storage_migration_message">LeviLauncher を続行する前に、games/org.levimc のデータを %1$s に移行する必要があります。
 
@@ -202,21 +215,21 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="shared_storage_layout_mode_legacy">元の internal/external ディレクトリ</string>
     <string name="shared_storage_layout_status">現在のモード: %1$s\nInternal: %2$s\nExternal: %3$s</string>
     <string name="shared_storage_layout_changed">ストレージディレクトリの選択を更新しました。変更を完全に反映するには Minecraft を再起動し、コンテンツ管理を開き直してください。</string>
-
+    <!-- Theme -->
     <string name="theme_title">テーマモード</string>
     <string name="theme_follow_system">システムに従う</string>
     <string name="theme_light">ライトモード</string>
     <string name="theme_dark">ダークモード</string>
 
     <string name="error_no_browser">利用可能なブラウザがありません</string>
-
+    <!-- License & Security -->
     <string name="eula_title">LeviLauncher 使用許諾契約</string>
     <string name="eula_message"><b>LeviLauncher へようこそ</b>\n\nこのソフトウェアを使用することにより、以下に同意したとみなされます：\n\n• これは<b>非公式</b>の Minecraft ランチャーです\n• <b>ライセンスされた</b> Minecraft のコピーを所有している必要があります\n• いかなる形式の海賊版やチートも禁止されています\n• モッドやリソースパックの使用は自己責任です\n• Mojang / Microsoft とは提携していません\n\n継続使用は同意を構成します</string>
     <string name="eula_agree">同意する</string>
     <string name="eula_exit">拒否する</string>
 
     <string name="allow_unknown_sources">続行する前に、提供元不明のアプリのインストールを許可してください</string>
-
+    <!-- Version Management -->
     <string name="dialog_title_delete_version">バージョンの削除</string>
     <string name="dialog_message_delete_version">このカスタムバージョンを削除してもよろしいですか？この操作は元に戻せません。</string>
     <string name="dialog_positive_delete">削除</string>
@@ -236,7 +249,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="version_isolation">バージョン分離</string>
     <string name="launch_vertically">縦画面で起動</string>
     <string name="launch_vertically_desc">強制的に縦画面モードでゲームを起動する</string>
-
+    <!-- Instance Management -->
     <string name="instance_settings_title">インスタンスの設定</string>
     <string name="instance_tab_general">一般</string>
     <string name="instance_tab_launch_options">起動オプション</string>
@@ -247,12 +260,32 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="instance_clear_icon">クリア</string>
     <string name="instance_icon_hint">バージョンフォルダ下に LargeLogo.png として保存されます。アイコンをタップして変更します。</string>
     <string name="instance_isolation_desc">このインスタンスのゲームデータを分離します。他のインスタンスには影響しません。</string>
+    <string name="instance_shortcut_title">ホーム画面のショートカット</string>
+    <string name="instance_shortcut_desc">名前とアイコンの変更は自動的に保存されます。［ショートカットを追加］をタップすると、ホーム画面のショートカットを作成または更新できます。</string>
+    <string name="instance_shortcut_name">ショートカット名</string>
+    <string name="instance_shortcut_icon">ショートカットアイコン</string>
+    <string name="instance_shortcut_choose_icon">アイコンを選択</string>
+    <string name="instance_shortcut_default_icon">デフォルトを使用</string>
+    <string name="instance_shortcut_add_button">ショートカットを追加</string>
+    <string name="instance_settings_auto_save_failed">このインスタンス設定を保存できませんでした。</string>
+    <string name="instance_shortcut_not_supported">お使いのホームランチャーは固定ショートカットに対応していません。</string>
+    <string name="instance_shortcut_missing">この Minecraft インスタンスは利用できなくなりました。</string>
     <string name="instance_danger_zone">危険ゾーン</string>
     <string name="instance_danger_zone_desc">これらの操作は、インスタンスの登録またはローカルファイルに影響します。</string>
     <string name="instance_delete_desc">このインスタンスをデバイスから完全に削除します（ワールド、設定を含む）。</string>
     <string name="instance_delete_warning">この操作は元に戻せません。</string>
     <string name="instance_delete_confirm_title">インスタンスの削除</string>
     <string name="instance_delete_confirm_msg">本当に削除しますか？ワールドを含むすべてのデータが完全に失われます。</string>
+    <string name="instance_backup_title">インスタンスのバックアップ</string>
+    <string name="instance_backup_desc">このインスタンスの完全バックアップを Download/LeviLauncher/Backups に作成します。</string>
+    <string name="instance_backup_button">インスタンスをバックアップ</string>
+    <string name="instance_backup_confirm_message">このインスタンスの完全バックアップを今すぐ作成しますか？ 実行中の場合は、バックアップ中のファイル変更を防ぐため先に Minecraft を終了してください。</string>
+    <string name="instance_backup_in_progress">インスタンスをバックアップしています…</string>
+    <string name="instance_backup_success_title">バックアップを作成しました</string>
+    <string name="instance_backup_success_message">バックアップの保存先:\n%1$s</string>
+    <string name="instance_backup_failed_title">バックアップ失敗</string>
+    <string name="instance_backup_failed_message">バックアップを作成できませんでした:\n%1$s</string>
+    <string name="instance_import_backup_button">バックアップをインポート</string>
     <string name="instance_batch_backup_button">一括バックアップ</string>
     <string name="instance_batch_backup_title">インスタンスを一括バックアップ</string>
     <string name="instance_batch_backup_select_message">バックアップするインスタンスを選択してください。Minecraft が実行中の場合は、バックアップ中のデータ変更を避けるため先に終了してください。</string>
@@ -266,7 +299,16 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="instance_batch_backup_partial_message">%1$d 件のバックアップを作成し、%2$d 件が失敗しました。\n\n保存済み:\n%3$s\n\n失敗:\n%4$s</string>
     <string name="instance_batch_backup_failed_title">一括バックアップに失敗しました</string>
     <string name="instance_batch_backup_failed_message">バックアップを作成できませんでした:\n%1$s</string>
+    <string name="instance_restore_title">バックアップを復元</string>
+    <string name="instance_restore_in_progress">インスタンスのバックアップを復元しています…</string>
+    <string name="instance_restore_success_title">復元完了</string>
+    <string name="instance_restore_success_message">復元しました: %1$s</string>
+    <string name="instance_restore_failed_title">復元失敗</string>
+    <string name="instance_restore_failed_message">バックアップを復元できませんでした:\n%1$s</string>
 
+    <!-- Language Setting -->
+    <!-- Keep English at the top (default language). -->
+    <!-- Sort all other languages alphabetically by their display name. -->
     <string name="language">言語 (Language)</string>
     <string name="english">英語 (English)</string>
     <string name="chinese">简体中文 (Chinese)</string>
@@ -280,6 +322,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="turkish">Türkçe (Turkish)</string>
     <string name="vietnamese">Tiếng Việt (Vietnamese)</string>
 
+    <!-- Version Rename -->
     <string name="rename_version_title">バージョンの名前変更</string>
     <string name="rename_version_message">このバージョンの新しい名前を入力してください:</string>
     <string name="new_version_name">新しいバージョン名</string>
@@ -288,6 +331,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="rename_failed">名前の変更に失敗しました: %1$s</string>
     <string name="cannot_rename_installed">インストール済みのバージョンは名前変更できません</string>
 
+    <!-- Content Management -->
     <string name="content_management">コンテンツ管理</string>
     <string name="worlds_title">ワールド</string>
     <string name="resource_packs_title">リソースパック</string>
@@ -319,6 +363,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="import_failed">インポートに失敗しました</string>
     <string name="import_addon_success">アドオンをインポートしました: %1$d 個のリソースパック、%2$d 個のビヘイビアパック</string>
 
+    <!-- World Management -->
     <string name="world_size">サイズ: %s</string>
     <string name="world_last_played">最終プレイ: %s</string>
     <string name="import_world">ワールドをインポート</string>
@@ -330,6 +375,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="delete">削除</string>
     <string name="delete_pack">削除</string>
 
+    <!-- Resource Pack Management -->
     <string name="import_resource_pack">リソースパックをインポート</string>
     <string name="import_behavior_pack">ビヘイビアパックをインポート</string>
     <string name="import_skin_pack">スキンパックをインポート</string>
@@ -337,6 +383,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="delete_skin_pack">スキンパックを削除</string>
     <string name="delete_behavior_pack">ビヘイビアパックを削除</string>
 
+    <!-- Content Operations -->
     <string name="confirm_delete_world">このワールドを削除してもよろしいですか？この操作は元に戻せません。</string>
     <string name="confirm_delete_resource_pack">このパックを削除してもよろしいですか？この操作は元に戻せません。</string>
     <string name="confirm_delete_behavior_pack">このパックを削除してもよろしいですか？この操作は元に戻せません。</string>
@@ -351,9 +398,11 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="deleting_screenshot">スクリーンショットを削除中…</string>
     <string name="deleting_server">サーバーを削除中…</string>
 
+    <!-- World Editor -->
     <string name="edit_world">ワールドの編集</string>
     <string name="edit">編集</string>
     <string name="save">保存</string>
+    <string name="reset">リセット</string>
     <string name="saved_to_gallery">ギャラリーに保存しました</string>
     <string name="level_dat_not_found">level.dat が見つかりません</string>
     <string name="no_editable_properties">編集可能なプロパティがありません</string>
@@ -365,6 +414,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="discard_changes_message">未保存の変更があります。破棄しますか？</string>
     <string name="discard">破棄</string>
 
+    <!-- Custom Flat World -->
     <string name="custom_flat_world">カスタムフラットワールド</string>
     <string name="world_name">ワールド名</string>
     <string name="enter_world_name">ワールド名を入力</string>
@@ -377,7 +427,22 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="add_at_least_one_layer">少なくとも1つのレイヤーを追加してください</string>
     <string name="world_created_successfully">ワールドが作成されました</string>
     <string name="failed_to_create_world">ワールドの作成に失敗しました</string>
+    <string name="custom_flat_world_subtitle">独自のバイオームとブロック層でワールドを作成します</string>
+    <string name="world_settings">ワールド設定</string>
+    <string name="world_settings_hint">新しいワールドの基本設定を選択してください</string>
+    <string name="layers_title">レイヤー</string>
+    <string name="add_layer_compact">レイヤーを追加</string>
+    <string name="no_layers_title">レイヤーはまだありません</string>
+    <string name="no_layers_hint">ワールドを作成するには、少なくとも1つのブロックレイヤーを追加してください</string>
+    <string name="reorder_layer">レイヤーを並べ替え</string>
+    <string name="delete_layer">レイヤーを削除</string>
+    <string name="block_id_hint">minecraft:stone</string>
+    <plurals name="flat_layers_count">
+        <item quantity="one">%1$dレイヤー • 下 → 上</item>
+        <item quantity="other">%1$dレイヤー • 下 → 上</item>
+    </plurals>
 
+    <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">Play ストア版が必要です</string>
     <string name="minecraft_playstore_required_message">このランチャーは Google Play ストアの公式アプリでのみ動作します。</string>
     <string name="buy_minecraft">Minecraft を入手</string>
@@ -391,7 +456,55 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="total_mods">合計モッド数:</string>
     <string name="enabled_mods">有効化:</string>
     <string name="add_mod">モッドを追加</string>
+    <string name="scan_downloads">スキャン</string>
+    <string name="scan_downloads_scanning">スキャン中…</string>
+    <string name="scan_downloads_none_found">ダウンロードに .levipack または .so の Mod が見つかりませんでした</string>
+    <string name="scan_downloads_failed">ダウンロードをスキャンできませんでした</string>
+    <string name="scan_downloads_permission_denied">ダウンロードをスキャンするにはストレージへのアクセスが必要です</string>
+    <string name="scan_downloads_results_title">ダウンロード内の Mod</string>
+    <string name="scan_downloads_results_subtitle">追加する Mod を選択してください。スキャン対象はメインのダウンロードフォルダーのみです。</string>
+    <string name="scan_downloads_add">追加</string>
+    <string name="scan_downloads_adding">追加中…</string>
+    <string name="scan_downloads_added">追加済み</string>
+    <string name="scan_downloads_added_message">%1$s を追加しました</string>
+    <string name="scan_downloads_levipack">LeviPack</string>
+    <string name="scan_downloads_native_library">ネイティブライブラリ</string>
+    <string name="scan_downloads_file_details">%1$s • %2$s</string>
+    <string name="external_mods">外部 Mod</string>
+    <string name="external_mods_subtitle">Minecraft %1$s 向けコミュニティ Mod</string>
+    <string name="external_mods_no_version">Mod をインストールする前に Minecraft のバージョンを選択してください</string>
+    <string name="external_mods_search_hint">Mod、作者、バージョンを検索…</string>
+    <string name="external_mods_compatible_only">互換性ありのみ</string>
+    <string name="external_mods_all_versions">すべての Minecraft バージョン</string>
+    <string name="external_mods_sort_newest">新しい順</string>
+    <string name="external_mods_sort_name">名前 A–Z</string>
+    <string name="external_mods_empty">このフィルターに一致する Mod はありません</string>
+    <string name="external_mods_load_failed">カタログを更新できませんでした。保存済みのコピーを表示します。</string>
+    <string name="external_mods_refresh">カタログを更新</string>
+    <string name="external_mods_refreshed">カタログを更新しました</string>
+    <string name="external_mods_join_discord">コミュニティ Discord に参加</string>
+    <string name="external_mods_discord_open_failed">Discord の招待を開けるアプリがありません</string>
+    <string name="external_mods_download">%1$s をダウンロード中</string>
+    <string name="external_mods_importing">Mod をインポート中…</string>
+    <string name="external_mods_installed">%1$s をインストールしました</string>
+    <string name="external_mods_install_failed">%1$s をインストールできませんでした: %2$s</string>
+    <string name="external_mods_open_failed">このダウンロードを開けるブラウザーがありません</string>
+    <string name="external_mods_direct_download">直接ダウンロード</string>
+    <string name="external_mods_ad_download">広告付きダウンロード</string>
+    <string name="external_mods_external_link">外部リンク</string>
+    <string name="external_mods_open_link">リンクを開く</string>
+    <string name="external_mods_external_dialog_title">外部ダウンロード</string>
+    <string name="external_mods_ad_dialog_title">広告付きダウンロード</string>
+    <string name="external_mods_external_dialog_message">%1$s は LeviLauncher 外部のダウンロードページを使用します。\n\n1. ［リンクを開く］をタップし、.levipack または .so ファイルをダウンロードします。\n2. LeviLauncher に戻り、［Mod］を開きます。\n3. ［スキャン］をタップします。\n4. インポートしたい Mod の横にある［追加］をタップします。\n\nスキャン対象はメインのダウンロードフォルダーのみです。ブラウザーが別の場所に保存した場合は、ファイルをそこへ移動してください。</string>
+    <string name="external_mods_ad_dialog_message">%1$s は開発者が選んだ広告付きダウンロードページを使用します。LeviLauncher はそのページや広告を管理していません。\n\n1. ［リンクを開く］をタップし、.levipack または .so ファイルをダウンロードします。\n2. LeviLauncher に戻り、［Mod］を開きます。\n3. ［スキャン］をタップします。\n4. インポートしたい Mod の横にある［追加］をタップします。\n\nスキャン対象はメインのダウンロードフォルダーのみです。Mod ファイルだけをダウンロードし、無関係なアプリをインストールしたり通知を許可したりしないでください。</string>
+    <string name="external_mods_by_author">作者: %1$s</string>
+    <string name="external_mods_version">Mod %1$s</string>
+    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
+    <string name="external_mods_update">更新</string>
+    <string name="external_mods_installed_button">インストール済み</string>
+    <string name="external_mods_incompatible">非対応</string>
 
+    <!-- Mod Detail -->
     <string name="mod_detail_title">モッドの詳細</string>
     <string name="delete_mod">モッドを削除</string>
     <string name="error_loading_mod">モッドの詳細の読み込みエラー</string>
@@ -399,10 +512,63 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="mod_disabled">モッドが無効です</string>
     <string name="mod_filename_format">ファイル: %s</string>
     <string name="mod_enable_status">有効状態</string>
+    <string name="mod_icon_content_description">Mod アイコン</string>
+    <string name="mod_author_byline">by %s</string>
+    <string name="mod_version_chip">バージョン %s</string>
+    <string name="mod_metadata_title">情報</string>
+    <string name="mod_actions_title">操作</string>
+    <string name="mod_author_label">作者</string>
+    <string name="mod_version_label">バージョン</string>
+    <string name="mod_minecraft_versions_label">Minecraft バージョン</string>
+    <string name="mod_entry_label">エントリーファイル</string>
+    <string name="mod_id_label">Mod ID</string>
+    <string name="mod_config_files_label">設定ファイル</string>
+    <string name="mod_unknown_author">不明な作者</string>
+    <string name="mod_unknown_version">不明なバージョン</string>
+    <string name="mod_all_versions">対応しているすべてのバージョン</string>
+    <string name="mod_no_config_files">編集可能な設定はありません</string>
+    <string name="mod_config_badge">設定</string>
+    <string name="mod_config_badge_with_count">設定 · %d</string>
+    <string name="mod_config_title_format">%s の設定</string>
+    <string name="mod_config_not_found">編集可能な設定が見つかりません</string>
+    <string name="mod_config_load_failed">設定の読み込みに失敗しました: %s</string>
+    <string name="mod_config_save_failed">設定の保存に失敗しました</string>
+    <string name="mod_config_saved">設定を保存しました</string>
+    <string name="mod_config_restart_hint">設定ファイルを保存し、.backup ファイルを保持しました。</string>
+    <string name="mod_config_validation_failed">設定の検証に失敗しました</string>
+    <string name="mod_config_invalid_json">無効な JSON</string>
+    <string name="mod_config_expand">展開</string>
+    <string name="mod_config_collapse">折りたたむ</string>
+    <string name="mod_config_raw_json">元の JSON を編集</string>
+    <string name="mod_config_raw_json_short">JSON</string>
+    <string name="mod_config_item_label">項目 %1$s</string>
+    <string name="mod_config_object_desc">関連設定のグループ</string>
+    <string name="mod_config_array_desc">値のリスト</string>
+    <string name="mod_config_range_prefix">範囲</string>
+    <string name="mod_config_error_number">%1$s は数値である必要があります</string>
+    <string name="mod_config_error_minimum">%1$s は %2$s 以上である必要があります</string>
+    <string name="mod_config_error_maximum">%1$s は %2$s 以下である必要があります</string>
+    <string name="mod_config_error_boolean">%1$s はオンまたはオフである必要があります</string>
+    <string name="mod_config_error_string">%1$s はテキストである必要があります</string>
+    <!-- Mod Configuration -->
+    <plurals name="mod_config_files_count">
+        <item quantity="one">%d 個の編集可能な設定</item>
+        <item quantity="other">%d 個の編集可能な設定</item>
+    </plurals>
+    <plurals name="mod_config_choices_count">
+        <item quantity="one">%d 個の選択肢</item>
+        <item quantity="other">%d 個の選択肢</item>
+    </plurals>
+    <plurals name="mod_config_items_count">
+        <item quantity="one">%d 個の項目</item>
+        <item quantity="other">%d 個の項目</item>
+    </plurals>
 
+    <!-- Game Version Select Dialog -->
     <string name="game_version_select_title">ゲームのバージョンを選択</string>
     <string name="back">戻る</string>
 
+    <!-- Splash -->
     <string name="splash_logo_desc">葉のロゴ</string>
     <string name="minecraft_loading_title">Minecraft を起動中</string>
     <string name="minecraft_loading_subtitle">ネイティブライブラリと有効な Mod を準備しています</string>
@@ -416,6 +582,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="launcher_restart_subtitle">少しお待ちください。まもなくメイン画面に戻ります</string>
     <string name="launcher_restart_status">もう少しです…</string>
 
+    <!-- Accounts & Microsoft Login -->
     <string name="accounts_title">アカウント</string>
     <string name="microsoft_accounts">Microsoft アカウント</string>
     <string name="manage_accounts">アカウントを管理</string>
@@ -426,13 +593,45 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="accounts_active_privilege">サインイン済み</string>
 
     <string name="ms_login_title">Microsoft ログイン</string>
+    <string name="ms_login_header_subtitle">Minecraft に安全にサインイン</string>
     <string name="ms_login_starting">Microsoft ログインを開始しています…</string>
     <string name="ms_login_exchanging">トークンを交換しています…</string>
     <string name="ms_login_auth_xbox_device">Xbox デバイスを認証しています…</string>
     <string name="ms_login_fetch_minecraft_identity">Minecraft ID を取得しています…</string>
+    <string name="ms_login_retrying">接続が中断されました。安全に再試行しています…</string>
     <string name="ms_login_success">%1$s としてサインインしました</string>
     <string name="ms_login_failed">Microsoft ログインに失敗しました</string>
     <string name="ms_login_failed_detail">ログイン失敗: %1$s</string>
+    <string name="ms_choose_login_method">Minecraft にサインイン</string>
+    <string name="ms_choose_login_method_desc">ブラウザーを使うデバイスコード方式を選ぶか、埋め込み Microsoft ページで続行します。</string>
+    <string name="ms_device_code_login">ブラウザーで続行</string>
+    <string name="ms_device_code_option_title">デバイスコード（推奨）</string>
+    <string name="ms_device_code_login_desc">デバイスコードが入力済みのプライベートブラウザーセッションを開きます。</string>
+    <string name="ms_webview_login">埋め込みサインインを開く</string>
+    <string name="ms_webview_option_title">埋め込み WebView</string>
+    <string name="ms_webview_login_desc">LeviLauncher を離れずにサインインします。ブラウザー方式を利用できない場合に使用してください。</string>
+    <string name="ms_device_code_title">デバイスコードでサインイン</string>
+    <string name="ms_device_code_instructions">Microsoft のデバイスサインインページを開き、このコードを入力してアクセスを承認してください。LeviLauncher が自動的に完了します。</string>
+    <string name="ms_device_code_label">Microsoft デバイスコード</string>
+    <string name="ms_device_code_requesting">安全なコードを要求しています…</string>
+    <string name="ms_device_code_waiting_code">--------</string>
+    <string name="ms_device_code_waiting">ブラウザーでの操作完了を待っています…</string>
+    <string name="ms_device_code_checking">Microsoft サインイン結果を確認しています…</string>
+    <string name="ms_device_code_reconnecting">接続が変わりました。自動で再試行しています…</string>
+    <string name="ms_device_code_authorized">Microsoft がサインインを承認しました。完了処理中…</string>
+    <string name="ms_device_code_browser_opened">ブラウザーで新しい Microsoft サインインを完了してから、ここに戻ってください。</string>
+    <string name="ms_device_code_expires">コードの有効期限: %1$d:%2$02d</string>
+    <string name="ms_device_code_copy">コードをコピー</string>
+    <string name="ms_device_code_copied">コードをコピーしました</string>
+    <string name="ms_device_code_open_browser">Microsoft サインインを開く</string>
+    <string name="ms_device_code_step_title">ブラウザーでサインインを完了</string>
+    <string name="ms_device_code_browser_note">LeviLauncher は既定のブラウザーをプライベートセッションで開き、コードを自動入力して、新しい Microsoft サインインを要求します。</string>
+    <string name="ms_choose_other_method">別の方法</string>
+    <string name="ms_no_browser">この端末で利用できるブラウザーがありません。</string>
+    <string name="ms_default_browser_no_private_mode">既定のブラウザーはプライベートサインインに対応していません。更新するか WebView ログインを使用してください。</string>
+    <string name="ms_login_ssl_failed">安全な Microsoft サインインページを確認できませんでした。</string>
+    <string name="ms_login_state_failed">Microsoft のサインイン応答を確認できませんでした。サインインをやり直してください。</string>
+    <string name="ms_login_missing_code">Microsoft からサインインコードが返されませんでした。サインインをやり直すか、デバイスコードログインを使用してください。</string>
 
     <string name="ms_set_active">アクティブに設定</string>
     <string name="ms_delete">削除</string>
@@ -445,9 +644,14 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="go_to_accounts">アカウント</string>
     <string name="disable_launcher_login_and_continue">閉じる</string>
 
+    <string name="ms_feature_disabled_title">機能が無効です</string>
+    <string name="ms_feature_disabled_desc">Microsoft アカウントを管理するには、設定で「LeviLauncher で Minecraft にサインイン」を有効にしてください。</string>
+    <string name="ms_activated">有効化済み</string>
+
+    <!-- Popup labels -->
     <string name="label_current_account">現在のアカウント</string>
     <string name="label_other_accounts">その他のアカウント</string>
-
+    <!-- Crash & Diagnostics -->
     <string name="crash_title">アプリがクラッシュしました</string>
     <string name="crash_upload">クラッシュレポートをアップロード</string>
     <string name="crash_details_title">クラッシュの詳細</string>
@@ -466,8 +670,15 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="dialog_message_exit_app">本当に終了してもよろしいですか？</string>
     <string name="dialog_positive_exit">終了</string>
     <string name="show_logcat_overlay">Logcat オーバーレイ</string>
+    <string name="foreground_service">フォアグラウンドサービス</string>
+    <string name="foreground_service_desc">アプリを切り替えても、Bedrock が実行中のセッションを一時停止しないようにし、プロセス、CPU、Wi-Fi を動作状態に保つことで Minecraft を実行し続けます。</string>
+    <string name="foreground_service_warning">注意: 端末が通常より早く熱くなり、バッテリー消費が増える場合があります。</string>
+    <string name="foreground_service_channel">Minecraft バックグラウンド保護</string>
+    <string name="foreground_service_notification_title">Minecraft を動作状態に保っています</string>
+    <string name="foreground_service_notification_text">Minecraft のバックグラウンドモードが有効です。現在のセッションで CPU とネットワークアクセスを利用できる状態に保っています。</string>
     <string name="logcat_live">Logcat: <b>ライブ</b></string>
     <string name="logcat_paused">Logcat: 一時停止中</string>
+    <!-- Logcat Overlay i18n -->
     <string name="logcat_filter_hint">キーワードフィルター</string>
     <string name="logcat_blacklist_hint">ブラックリスト (カンマ区切り)</string>
     <string name="logcat_filter_clear">フィルターをクリア</string>
@@ -479,6 +690,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="logcat_corner_bottom_left">サイズ変更: 左下</string>
     <string name="logcat_corner_bottom_right">サイズ変更: 右下</string>
 
+    <!-- Inbuilt Mods -->
     <string name="inbuilt_mods">内蔵モッド</string>
     <string name="inbuilt_mods_title">内蔵モッド</string>
     <string name="inbuilt_mods_subtitle">ネイティブライブラリなしで動作する内部モッド</string>
@@ -487,7 +699,8 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="inbuilt_mod_removed">%s がモッドから削除されました</string>
     <string name="add">追加</string>
     <string name="remove">削除</string>
-
+    
+    <!-- Inbuilt Mods -->
     <string name="inbuilt_mod_quick_drop">クイックドロップ</string>
     <string name="inbuilt_mod_quick_drop_desc">アイテムをすばやく落とす</string>
     <string name="inbuilt_mod_camera">クイック視点</string>
@@ -515,16 +728,25 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="virtual_cursor_enabled">カーソルが有効になりました</string>
     <string name="virtual_cursor_disabled">カーソルが無効になりました</string>
     <string name="cursor_sensitivity_label">カーソルの感度:</string>
+    <string name="inbuilt_mod_gyro">ジャイロ</string>
+    <string name="inbuilt_mod_gyro_desc">端末のジャイロスコープでカメラの回転を操作します</string>
+    <string name="inbuilt_mod_pojav_controls">Pojav コントロール</string>
+    <string name="inbuilt_mod_pojav_controls_desc">Minecraft のタッチ操作を完全にカスタマイズ可能な Pojav 形式の操作に置き換えます</string>
+    <string name="inbuilt_mod_more_buttons">追加ボタン</string>
+    <string name="inbuilt_mod_more_buttons_desc">1キー割り当てと SVG アイコンを使ってカスタム画面ボタンを作成します</string>
     <string name="inbuilt_badge">内蔵</string>
     <string name="autosprint_keybind_label">オートスプリントのキーバインド:</string>
     <string name="autosprint_keybind_press">任意のキーを押してください…</string>
     <string name="configure">構成</string>
     <string name="overlay_button_size">オーバーレイボタンのサイズ</string>
     <string name="overlay_button_opacity">オーバーレイボタンの不透明度</string>
+    <string name="overlay_button_size_value">サイズ: %1$ddp</string>
+    <string name="overlay_button_opacity_value">透明度: %1$d%%</string>
     <string name="overlay_button_lock">位置をロック</string>
     <string name="overlay_button_lock_desc">ドラッグや誤作動を防ぐ</string>
     <string name="settings">設定</string>
 
+    <!-- Extract Structures -->
     <string name="extract_structures">構造物を抽出</string>
     <string name="no_structures_found">このワールドに構造物が見つかりません</string>
     <string name="no_structures_found_title">構造物が見つかりません</string>
@@ -538,15 +760,36 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="structures_found_title">構造物を発見</string>
     <string name="structures_found_count">このワールドで %d 個の構造物が見つかりました</string>
 
+    <!-- Mod Menu -->
     <string name="mod_menu">モッドメニュー</string>
     <string name="mod_menu_modules">モジュール</string>
+    <string name="mod_menu_favorites">お気に入り</string>
+    <string name="mod_menu_favorite">お気に入りに追加</string>
+    <string name="mod_menu_unfavorite">お気に入りから削除</string>
+    <string name="mod_menu_hud_editor">HUD エディター</string>
+    <string name="mod_menu_filter_enabled">有効</string>
+    <string name="mod_menu_filter_inbuilt">内蔵</string>
+    <string name="mod_menu_filter_external">外部</string>
     <string name="mod_menu_search_hint">モッドを検索…</string>
     <string name="mod_menu_no_mods">モッドが追加されていません</string>
+    <string name="mod_menu_no_favorites">お気に入りのModはまだありません</string>
+    <string name="mod_menu_no_matches">一致するModがありません</string>
+    <string name="mod_menu_group_inbuilt">内蔵機能</string>
+    <string name="mod_menu_group_external_ungrouped">未グループの外部Mod</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">一般設定</string>
+    <string name="mod_menu_appearance">外観</string>
+    <string name="mod_menu_pause_menu_only">ポーズメニューのみ</string>
+    <string name="mod_menu_pause_menu_only_desc">ポーズ画面でのみModメニューを表示</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">設定は近日追加予定</string>
     <string name="mod_menu_notifications">通知</string>
     <string name="mod_menu_notifications_desc">モッドを有効にしたときに通知を表示</string>
     <string name="mod_menu_opacity">モッドメニューの不透明度</string>
     <string name="mod_menu_button_opacity">モッドメニューボタンの不透明度</string>
+    <string name="mod_menu_compact">コンパクト Mod メニュー</string>
+    <string name="mod_menu_compact_desc">密度の高いモジュール一覧とコンパクトなフィルターを備えた小さいメニューを使用します</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">モッドメニュー有効</string>
     <string name="mod_menu_disabled">モッドメニュー無効</string>
@@ -555,7 +798,37 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="mod_status_enabled">有効</string>
     <string name="mod_status_disabled">無効</string>
     <string name="mod_notification_enabled">%s が有効になりました</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">オーバーレイボタンサイズ (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">オーバーレイ透明度 (%)</string>
+    <string name="mod_config_overlay_show_everywhere" formatted="false">常に表示</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">カーソル感度 (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">ズームレベル (%)</string>
+    <string name="mod_config_auto_sprint_keybind">オートスプリントのキー割り当て</string>
+    <string name="mod_config_zoom_keybind">ズームのキー割り当て</string>
+    <string name="mod_config_zoom_transition">切り替え時間 (ms)</string>
+    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">感度倍率 (100% = 1x)</string>
+    <string name="mod_config_gyro_horizontal_speed" formatted="false">水平速度 (%)</string>
+    <string name="mod_config_gyro_vertical_speed" formatted="false">垂直速度 (%)</string>
+    <string name="mod_config_gyro_small_movement_filter">小さい動きのフィルター (0 = オフ)</string>
+    <string name="mod_config_gyro_sensitivity_x" formatted="false">水平感度 (%)</string>
+    <string name="mod_config_gyro_sensitivity_y" formatted="false">垂直感度 (%)</string>
+    <string name="mod_config_gyro_invert_x">水平軸を反転</string>
+    <string name="mod_config_gyro_invert_y">垂直軸を反転</string>
+    <string name="mod_config_gyro_deadzone">デッドゾーン</string>
+    <string name="mod_config_press_any_key">割り当てるキーを押してください...</string>
+    <string name="mod_config_key_unknown">不明</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="hud_editor_drag_hint">ドラッグしてパネルを移動</string>
+    <string name="hud_editor_drag_description">HUD エディター。この領域をドラッグしてパネルを移動します。</string>
 
+    <!-- Options Editor -->
     <string name="edit_options">オプションの編集</string>
     <string name="options_file_not_found">オプションファイルが見つかりません</string>
     <string name="no_options_found">オプションが見つかりません</string>
@@ -564,6 +837,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="error_loading_options">オプションの読み込みエラー</string>
     <string name="options_saved">オプションが正常に保存されました</string>
 
+    <!-- Quick Launch -->
     <string name="quick_launch_title">クイック起動</string>
     <string name="quick_launch_subtitle">URI を使用して特定のアクションで Minecraft を起動</string>
     <string name="quick_launch_how_to_play">遊び方</string>
@@ -591,6 +865,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="quick_launch_custom_uri">カスタム URI</string>
     <string name="quick_launch_custom_uri_desc">カスタム minecraft:// URI を入力</string>
 
+    <!-- Quick Launch Dialogs -->
     <string name="server_ip_hint">サーバー IP アドレス</string>
     <string name="server_port_hint">ポート (デフォルト: 19132)</string>
     <string name="server_name_hint">サーバー名</string>
@@ -602,6 +877,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="custom_uri_hint">完全な minecraft:// URI を入力。例:\nminecraft://openStore\nminecraft://?showStoreOffer=UUID</string>
     <string name="select_tab">タブを選択:</string>
 
+    <!-- Quick Launch Validation -->
     <string name="server_ip_required">サーバー IP は必須です</string>
     <string name="server_details_required">サーバー名と IP は必須です</string>
     <string name="invalid_port">無効なポート番号</string>
@@ -610,14 +886,17 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="command_required">コマンドは必須です</string>
     <string name="invalid_minecraft_uri">無効な minecraft:// URI</string>
 
+    <!-- Quick Launch Actions -->
     <string name="connect">接続</string>
     <string name="join">参加</string>
     <string name="load">ロード</string>
     <string name="execute">実行</string>
 
+    <!-- Quick Actions Menu -->
     <string name="quick_launch">クイック起動</string>
     <string name="quick_launch_menu_subtitle">URI アクションで起動</string>
 
+    <!-- CurseForge -->
     <string name="curseforge_title">CurseForge</string>
     <string name="curseforge_subtitle">コンテンツを閲覧してダウンロード</string>
     <string name="curseforge_search_hint">コンテンツを検索…</string>
@@ -627,6 +906,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="curseforge_download_failed">ダウンロード失敗</string>
     <string name="curseforge_available_files">利用可能なファイル</string>
 
+    <!-- Navigation Bar -->
     <string name="nav_launch">起動</string>
     <string name="nav_import">インポート</string>
     <string name="nav_instances">インスタンス</string>
@@ -673,7 +953,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
         <item>CurseForge からコミュニティコンテンツを直接ダウンロードできます。</item>
         <item>外部の SO モジュールをロードして、Minecraft の機能とパフォーマンスを向上させます。</item>
     </string-array>
-
+    <!-- Personalization -->
     <string name="theme_color_title">テーマの色</string>
     <string name="theme_color_desc">アプリのプライマリアクセントカラー</string>
     <string name="preset_colors">プリセットカラー</string>
@@ -691,160 +971,8 @@ LeviLauncher を続行するには移行を完了する必要があります。<
 
     <string name="unsupported_version_title">サポートされていないバージョン</string>
     <string name="unsupported_version_msg">このランチャーは1.21.80より前のMinecraftバージョンをサポートしていません。</string>
-    <!-- Mod Config -->
-    <string name="mod_author_byline">by %s</string>
-    <string name="mod_version_chip">バージョン %s</string>
-    <string name="mod_config_title_format">%s の設定</string>
-    <string name="mod_config_not_found">編集可能な設定が見つかりません</string>
-    <string name="mod_config_load_failed">設定の読み込みに失敗しました: %s</string>
-    <string name="mod_config_save_failed">設定の保存に失敗しました</string>
-    <string name="mod_config_saved">設定を保存しました</string>
-    <string name="mod_config_restart_hint">設定ファイルを保存し、.backup ファイルを保持しました。</string>
-    <string name="mod_config_validation_failed">設定の検証に失敗しました</string>
-    <string name="mod_config_invalid_json">無効な JSON</string>
-    <string name="mod_config_expand">展開</string>
-    <string name="mod_config_collapse">折りたたむ</string>
-    <string name="mod_config_raw_json">元の JSON を編集</string>
-    <string name="mod_config_raw_json_short">JSON</string>
-    <string name="mod_config_item_label">項目 %1$s</string>
-    <string name="mod_config_object_desc">関連設定のグループ</string>
-    <string name="mod_config_array_desc">値のリスト</string>
-    <string name="mod_config_range_prefix">範囲</string>
-    <string name="mod_config_error_number">%1$s は数値である必要があります</string>
-    <string name="mod_config_error_minimum">%1$s は %2$s 以上である必要があります</string>
-    <string name="mod_config_error_maximum">%1$s は %2$s 以下である必要があります</string>
-    <string name="mod_config_error_boolean">%1$s はオンまたはオフである必要があります</string>
-    <string name="mod_config_error_string">%1$s はテキストである必要があります</string>
-    <plurals name="mod_config_files_count">
-        <item quantity="other">%d 個の編集可能な設定</item>
-    </plurals>
-    <plurals name="mod_config_choices_count">
-        <item quantity="other">%d 個の選択肢</item>
-    </plurals>
-    <plurals name="mod_config_items_count">
-        <item quantity="other">%d 個の項目</item>
-    </plurals>
 
-    <!-- Mod Menu synced translations -->
-    <string name="mod_menu_favorites">お気に入り</string>
-    <string name="mod_menu_favorite">お気に入りに追加</string>
-    <string name="mod_menu_unfavorite">お気に入りから削除</string>
-    <string name="mod_menu_hud_editor">HUD エディター</string>
-    <string name="mod_menu_filter_enabled">有効</string>
-    <string name="mod_menu_filter_inbuilt">内蔵</string>
-    <string name="mod_menu_filter_external">外部</string>
-    <string name="mod_menu_no_favorites">お気に入りのModはまだありません</string>
-    <string name="mod_menu_no_matches">一致するModがありません</string>
-    <string name="mod_menu_group_inbuilt">内蔵機能</string>
-    <string name="mod_menu_group_external_ungrouped">未グループの外部Mod</string>
-    <string name="mod_menu_module_count">%1$d / %2$d</string>
-    <string name="mod_menu_general_settings">一般設定</string>
-    <string name="mod_menu_appearance">外観</string>
-    <string name="mod_menu_pause_menu_only">ポーズメニューのみ</string>
-    <string name="mod_menu_pause_menu_only_desc">ポーズ画面でのみModメニューを表示</string>
-    <string name="mod_menu_default_percent" formatted="false">100%</string>
-    <string name="mod_menu_percent_value">%1$d%%</string>
-    <string name="mod_overlay_fps_unknown">FPS: --</string>
-    <string name="mod_overlay_fps_value">FPS: %1$d</string>
-    <string name="mod_overlay_cps_value">CPS: %1$d</string>
-    <string name="mod_config_overlay_button_size_dp">オーバーレイボタンサイズ (dp)</string>
-    <string name="mod_config_overlay_opacity_percent" formatted="false">オーバーレイ透明度 (%)</string>
-    <string name="mod_config_cursor_sensitivity_percent" formatted="false">カーソル感度 (%)</string>
-    <string name="mod_config_zoom_level_percent" formatted="false">ズームレベル (%)</string>
-    <string name="mod_config_auto_sprint_keybind">オートスプリントのキー割り当て</string>
-    <string name="mod_config_zoom_keybind">ズームのキー割り当て</string>
-    <string name="mod_config_press_any_key">割り当てるキーを押してください...</string>
-    <string name="mod_config_key_unknown">不明</string>
-    <string name="mod_config_color_alpha_short">A</string>
-    <string name="mod_config_color_red_short">R</string>
-    <string name="mod_config_color_green_short">G</string>
-    <string name="mod_config_color_blue_short">B</string>
-    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
-    <string name="overlay_button_size_value">サイズ: %1$ddp</string>
-    <string name="overlay_button_opacity_value">透明度: %1$d%%</string>
-    <string name="reset">リセット</string>
-    <!-- Completed localization coverage -->
-    <string name="delete_account_title">アカウントを削除</string>
-    <string name="delete_account_confirm">このアカウントを削除してもよろしいですか？</string>
-    <string name="instance_backup_title">インスタンスのバックアップ</string>
-    <string name="instance_backup_desc">このインスタンスの完全バックアップを Download/LeviLauncher/Backups に作成します。</string>
-    <string name="instance_backup_button">インスタンスをバックアップ</string>
-    <string name="instance_backup_confirm_message">このインスタンスの完全バックアップを今すぐ作成しますか？ 実行中の場合は、バックアップ中のファイル変更を防ぐため先に Minecraft を終了してください。</string>
-    <string name="instance_backup_in_progress">インスタンスをバックアップしています…</string>
-    <string name="instance_backup_success_title">バックアップを作成しました</string>
-    <string name="instance_backup_success_message">バックアップの保存先:\n%1$s</string>
-    <string name="instance_backup_failed_title">バックアップ失敗</string>
-    <string name="instance_backup_failed_message">バックアップを作成できませんでした:\n%1$s</string>
-    <string name="instance_import_backup_button">バックアップをインポート</string>
-    <string name="instance_restore_title">バックアップを復元</string>
-    <string name="instance_restore_in_progress">インスタンスのバックアップを復元しています…</string>
-    <string name="instance_restore_success_title">復元完了</string>
-    <string name="instance_restore_success_message">復元しました: %1$s</string>
-    <string name="instance_restore_failed_title">復元失敗</string>
-    <string name="instance_restore_failed_message">バックアップを復元できませんでした:\n%1$s</string>
-    <string name="mod_icon_content_description">Mod アイコン</string>
-    <string name="mod_metadata_title">情報</string>
-    <string name="mod_actions_title">操作</string>
-    <string name="mod_author_label">作者</string>
-    <string name="mod_version_label">バージョン</string>
-    <string name="mod_minecraft_versions_label">Minecraft バージョン</string>
-    <string name="mod_entry_label">エントリーファイル</string>
-    <string name="mod_id_label">Mod ID</string>
-    <string name="mod_config_files_label">設定ファイル</string>
-    <string name="mod_unknown_author">不明な作者</string>
-    <string name="mod_unknown_version">不明なバージョン</string>
-    <string name="mod_all_versions">対応しているすべてのバージョン</string>
-    <string name="mod_no_config_files">編集可能な設定はありません</string>
-    <string name="mod_config_badge">設定</string>
-    <string name="mod_config_badge_with_count">設定 · %d</string>
-    <string name="ms_login_header_subtitle">Minecraft に安全にサインイン</string>
-    <string name="ms_login_retrying">接続が中断されました。安全に再試行しています…</string>
-    <string name="ms_choose_login_method">Minecraft にサインイン</string>
-    <string name="ms_choose_login_method_desc">ブラウザーを使うデバイスコード方式を選ぶか、埋め込み Microsoft ページで続行します。</string>
-    <string name="ms_device_code_login">ブラウザーで続行</string>
-    <string name="ms_device_code_option_title">デバイスコード（推奨）</string>
-    <string name="ms_device_code_login_desc">デバイスコードが入力済みのプライベートブラウザーセッションを開きます。</string>
-    <string name="ms_webview_login">埋め込みサインインを開く</string>
-    <string name="ms_webview_option_title">埋め込み WebView</string>
-    <string name="ms_webview_login_desc">LeviLauncher を離れずにサインインします。ブラウザー方式を利用できない場合に使用してください。</string>
-    <string name="ms_device_code_title">デバイスコードでサインイン</string>
-    <string name="ms_device_code_instructions">Microsoft のデバイスサインインページを開き、このコードを入力してアクセスを承認してください。LeviLauncher が自動的に完了します。</string>
-    <string name="ms_device_code_label">Microsoft デバイスコード</string>
-    <string name="ms_device_code_requesting">安全なコードを要求しています…</string>
-    <string name="ms_device_code_waiting_code">--------</string>
-    <string name="ms_device_code_waiting">ブラウザーでの操作完了を待っています…</string>
-    <string name="ms_device_code_checking">Microsoft サインイン結果を確認しています…</string>
-    <string name="ms_device_code_reconnecting">接続が変わりました。自動で再試行しています…</string>
-    <string name="ms_device_code_authorized">Microsoft がサインインを承認しました。完了処理中…</string>
-    <string name="ms_device_code_browser_opened">ブラウザーで新しい Microsoft サインインを完了してから、ここに戻ってください。</string>
-    <string name="ms_device_code_expires">コードの有効期限: %1$d:%2$02d</string>
-    <string name="ms_device_code_copy">コードをコピー</string>
-    <string name="ms_device_code_copied">コードをコピーしました</string>
-    <string name="ms_device_code_open_browser">Microsoft サインインを開く</string>
-    <string name="ms_device_code_step_title">ブラウザーでサインインを完了</string>
-    <string name="ms_device_code_browser_note">LeviLauncher は既定のブラウザーをプライベートセッションで開き、コードを自動入力して、新しい Microsoft サインインを要求します。</string>
-    <string name="ms_choose_other_method">別の方法</string>
-    <string name="ms_no_browser">この端末で利用できるブラウザーがありません。</string>
-    <string name="ms_default_browser_no_private_mode">既定のブラウザーはプライベートサインインに対応していません。更新するか WebView ログインを使用してください。</string>
-    <string name="ms_login_ssl_failed">安全な Microsoft サインインページを確認できませんでした。</string>
-    <string name="ms_login_state_failed">Microsoft のサインイン応答を確認できませんでした。サインインをやり直してください。</string>
-    <string name="ms_login_missing_code">Microsoft からサインインコードが返されませんでした。サインインをやり直すか、デバイスコードログインを使用してください。</string>
-    <string name="ms_feature_disabled_title">機能が無効です</string>
-    <string name="ms_feature_disabled_desc">Microsoft アカウントを管理するには、設定で「LeviLauncher で Minecraft にサインイン」を有効にしてください。</string>
-    <string name="ms_activated">有効化済み</string>
-    <string name="inbuilt_mod_gyro">ジャイロ</string>
-    <string name="inbuilt_mod_gyro_desc">端末のジャイロスコープでカメラの回転を操作します</string>
-    <string name="inbuilt_mod_pojav_controls">Pojav コントロール</string>
-    <string name="inbuilt_mod_pojav_controls_desc">Minecraft のタッチ操作を完全にカスタマイズ可能な Pojav 形式の操作に置き換えます</string>
-    <string name="inbuilt_mod_more_buttons">追加ボタン</string>
-    <string name="inbuilt_mod_more_buttons_desc">1キー割り当てと SVG アイコンを使ってカスタム画面ボタンを作成します</string>
-    <string name="mod_config_overlay_show_everywhere" formatted="false">常に表示</string>
-    <string name="mod_config_zoom_transition">切り替え時間 (ms)</string>
-    <string name="mod_config_gyro_sensitivity_x" formatted="false">水平感度 (%)</string>
-    <string name="mod_config_gyro_sensitivity_y" formatted="false">垂直感度 (%)</string>
-    <string name="mod_config_gyro_invert_x">水平軸を反転</string>
-    <string name="mod_config_gyro_invert_y">垂直軸を反転</string>
-    <string name="mod_config_gyro_deadzone">デッドゾーン</string>
+    <!-- Generic UI strings added during localization cleanup -->
     <string name="close">閉じる</string>
     <string name="previous">前へ</string>
     <string name="next">次へ</string>
@@ -894,6 +1022,8 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="custom_color_hint">#RRGGBB または R,G,B</string>
     <string name="screenshot_name_placeholder">スクリーンショット名</string>
     <string name="screenshot_date_placeholder">日時: 2024-01-01 12:00:00</string>
+
+    <!-- More Buttons editor -->
     <string name="more_buttons_intro">Minecraft 風の画面ボタンを作成し、それぞれにキーボードの1キーだけを割り当てます。マクロ、キーシーケンス、自動リピート、オートクリックは実行されません。</string>
     <string name="more_buttons_add_button">ボタンを追加</string>
     <string name="more_buttons_limit_reached">カスタムボタンの上限 %1$d 個に達しました。</string>
@@ -951,99 +1081,17 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="more_buttons_no_svg_selected">SVG が選択されていません</string>
     <string name="more_buttons_default_name">ボタン</string>
 
+
     <!-- Hotbar Slot -->
     <string name="inbuilt_mod_hotbar_slot">ホットバースロット</string>
     <string name="inbuilt_mod_hotbar_slot_desc">ホットバースロットを選択するための1～9の個別ボタンを追加します</string>
     <string name="hotbar_slot_content_description">ホットバースロット %1$d</string>
-
-
-    <!-- Added translations for strings present in the current English resources -->
-    <string name="instance_shortcut_title">ホーム画面のショートカット</string>
-    <string name="instance_shortcut_desc">名前とアイコンの変更は自動的に保存されます。［ショートカットを追加］をタップすると、ホーム画面のショートカットを作成または更新できます。</string>
-    <string name="instance_shortcut_name">ショートカット名</string>
-    <string name="instance_shortcut_icon">ショートカットアイコン</string>
-    <string name="instance_shortcut_choose_icon">アイコンを選択</string>
-    <string name="instance_shortcut_default_icon">デフォルトを使用</string>
-    <string name="instance_shortcut_add_button">ショートカットを追加</string>
-    <string name="instance_settings_auto_save_failed">このインスタンス設定を保存できませんでした。</string>
-    <string name="instance_shortcut_not_supported">お使いのホームランチャーは固定ショートカットに対応していません。</string>
-    <string name="instance_shortcut_missing">この Minecraft インスタンスは利用できなくなりました。</string>
-    <string name="custom_flat_world_subtitle">独自のバイオームとブロック層でワールドを作成します</string>
-    <string name="world_settings">ワールド設定</string>
-    <string name="world_settings_hint">新しいワールドの基本設定を選択してください</string>
-    <string name="layers_title">レイヤー</string>
-    <string name="add_layer_compact">レイヤーを追加</string>
-    <string name="no_layers_title">レイヤーはまだありません</string>
-    <string name="no_layers_hint">ワールドを作成するには、少なくとも1つのブロックレイヤーを追加してください</string>
-    <string name="reorder_layer">レイヤーを並べ替え</string>
-    <string name="delete_layer">レイヤーを削除</string>
-    <string name="block_id_hint">minecraft:stone</string>
-    <string name="scan_downloads">スキャン</string>
-    <string name="scan_downloads_scanning">スキャン中…</string>
-    <string name="scan_downloads_none_found">ダウンロードに .levipack または .so の Mod が見つかりませんでした</string>
-    <string name="scan_downloads_failed">ダウンロードをスキャンできませんでした</string>
-    <string name="scan_downloads_permission_denied">ダウンロードをスキャンするにはストレージへのアクセスが必要です</string>
-    <string name="scan_downloads_results_title">ダウンロード内の Mod</string>
-    <string name="scan_downloads_results_subtitle">追加する Mod を選択してください。スキャン対象はメインのダウンロードフォルダーのみです。</string>
-    <string name="scan_downloads_add">追加</string>
-    <string name="scan_downloads_adding">追加中…</string>
-    <string name="scan_downloads_added">追加済み</string>
-    <string name="scan_downloads_added_message">%1$s を追加しました</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">ネイティブライブラリ</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
-    <string name="external_mods">外部 Mod</string>
-    <string name="external_mods_subtitle">Minecraft %1$s 向けコミュニティ Mod</string>
-    <string name="external_mods_no_version">Mod をインストールする前に Minecraft のバージョンを選択してください</string>
-    <string name="external_mods_search_hint">Mod、作者、バージョンを検索…</string>
-    <string name="external_mods_compatible_only">互換性ありのみ</string>
-    <string name="external_mods_all_versions">すべての Minecraft バージョン</string>
-    <string name="external_mods_sort_newest">新しい順</string>
-    <string name="external_mods_sort_name">名前 A–Z</string>
-    <string name="external_mods_empty">このフィルターに一致する Mod はありません</string>
-    <string name="external_mods_load_failed">カタログを更新できませんでした。保存済みのコピーを表示します。</string>
-    <string name="external_mods_refresh">カタログを更新</string>
-    <string name="external_mods_refreshed">カタログを更新しました</string>
-    <string name="external_mods_join_discord">コミュニティ Discord に参加</string>
-    <string name="external_mods_discord_open_failed">Discord の招待を開けるアプリがありません</string>
-    <string name="external_mods_download">%1$s をダウンロード中</string>
-    <string name="external_mods_importing">Mod をインポート中…</string>
-    <string name="external_mods_installed">%1$s をインストールしました</string>
-    <string name="external_mods_install_failed">%1$s をインストールできませんでした: %2$s</string>
-    <string name="external_mods_open_failed">このダウンロードを開けるブラウザーがありません</string>
-    <string name="external_mods_direct_download">直接ダウンロード</string>
-    <string name="external_mods_ad_download">広告付きダウンロード</string>
-    <string name="external_mods_external_link">外部リンク</string>
-    <string name="external_mods_open_link">リンクを開く</string>
-    <string name="external_mods_external_dialog_title">外部ダウンロード</string>
-    <string name="external_mods_ad_dialog_title">広告付きダウンロード</string>
-    <string name="external_mods_external_dialog_message">%1$s は LeviLauncher 外部のダウンロードページを使用します。\n\n1. ［リンクを開く］をタップし、.levipack または .so ファイルをダウンロードします。\n2. LeviLauncher に戻り、［Mod］を開きます。\n3. ［スキャン］をタップします。\n4. インポートしたい Mod の横にある［追加］をタップします。\n\nスキャン対象はメインのダウンロードフォルダーのみです。ブラウザーが別の場所に保存した場合は、ファイルをそこへ移動してください。</string>
-    <string name="external_mods_ad_dialog_message">%1$s は開発者が選んだ広告付きダウンロードページを使用します。LeviLauncher はそのページや広告を管理していません。\n\n1. ［リンクを開く］をタップし、.levipack または .so ファイルをダウンロードします。\n2. LeviLauncher に戻り、［Mod］を開きます。\n3. ［スキャン］をタップします。\n4. インポートしたい Mod の横にある［追加］をタップします。\n\nスキャン対象はメインのダウンロードフォルダーのみです。Mod ファイルだけをダウンロードし、無関係なアプリをインストールしたり通知を許可したりしないでください。</string>
-    <string name="external_mods_by_author">作者: %1$s</string>
-    <string name="external_mods_version">Mod %1$s</string>
-    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
-    <string name="external_mods_update">更新</string>
-    <string name="external_mods_installed_button">インストール済み</string>
-    <string name="external_mods_incompatible">非対応</string>
-    <string name="foreground_service">フォアグラウンドサービス</string>
-    <string name="foreground_service_desc">アプリを切り替えても、Bedrock が実行中のセッションを一時停止しないようにし、プロセス、CPU、Wi-Fi を動作状態に保つことで Minecraft を実行し続けます。</string>
-    <string name="foreground_service_warning">注意: 端末が通常より早く熱くなり、バッテリー消費が増える場合があります。</string>
-    <string name="foreground_service_channel">Minecraft バックグラウンド保護</string>
-    <string name="foreground_service_notification_title">Minecraft を動作状態に保っています</string>
-    <string name="foreground_service_notification_text">Minecraft のバックグラウンドモードが有効です。現在のセッションで CPU とネットワークアクセスを利用できる状態に保っています。</string>
-    <string name="mod_menu_compact">コンパクト Mod メニュー</string>
-    <string name="mod_menu_compact_desc">密度の高いモジュール一覧とコンパクトなフィルターを備えた小さいメニューを使用します</string>
-    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">感度倍率 (100% = 1x)</string>
-    <string name="mod_config_gyro_horizontal_speed" formatted="false">水平速度 (%)</string>
-    <string name="mod_config_gyro_vertical_speed" formatted="false">垂直速度 (%)</string>
-    <string name="mod_config_gyro_small_movement_filter">小さい動きのフィルター (0 = オフ)</string>
-    <string name="hud_editor_drag_hint">ドラッグしてパネルを移動</string>
-    <string name="hud_editor_drag_description">HUD エディター。この領域をドラッグしてパネルを移動します。</string>
     <string name="mod_config_hotbar_item_icons">ホットバーのアイテムアイコンを使用</string>
     <string name="mod_config_hotbar_item_counts">アイテム数を表示</string>
     <string name="mod_config_hotbar_slot_enabled">ホットバースロット %1$d を表示</string>
     <string name="mod_config_hotbar_slot_size">ホットバースロット %1$d のサイズ (dp)</string>
     <string name="mod_config_hotbar_slot_opacity">ホットバースロット %1$d の不透明度</string>
+    <!-- Changelog & News -->
     <string name="changelog_title">新機能</string>
     <string name="changelog_version">LeviLauncher %1$s</string>
     <string name="changelog_continue">続行</string>
@@ -1066,6 +1114,7 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="mod_config_category_button">ボタン</string>
     <string name="mod_config_visible_slots">表示するスロット</string>
     <string name="mod_config_hotbar_slot_section">ホットバースロット %1$d</string>
+    <!-- Selection & Batch Operations -->
     <string name="select">選択</string>
     <string name="select_all">すべて選択</string>
     <string name="selected">選択済み</string>

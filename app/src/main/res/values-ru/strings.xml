@@ -1,12 +1,23 @@
+<!-- NOTE: Keep this file aligned with the English default (values/strings.xml):
+     same resource keys and order, comments, sections, XML structure, and formatting
+     (including indentation, spaces, and blank lines).
+
+     Translations must remain grammatically and linguistically correct for the target
+     language. Locale-specific plural forms may differ when required by the language.
+     Do not change placeholders or resource attributes. -->
+
 <resources>
-    <!-- Общее -->
+    <!-- Common -->
     <string name="app_name">LeviLauncher</string>
     <string name="minecraft">Minecraft</string>
     <string name="launch">Запустить</string>
     <string name="beta_badge">Бета</string>
     <string name="debug_badge">Отладочная сборка</string>
+    <string name="cursor">Курсор</string>
+    <string name="bedrock_edition">Bedrock Edition</string>
+    <string name="current_instance">Текущий экземпляр</string>
 
-    <!-- Моды -->
+    <!-- Mods -->
     <string name="mods_title">Моды (%d)</string>
     <string name="mods_section_title">Моды</string>
     <string name="external_mods_label">Внешние моды</string>
@@ -17,18 +28,21 @@
     <string name="drag_to_reorder">Перетащите для изменения порядка</string>
     <string name="mod_reordered">Порядок модов обновлен</string>
 
-    <!-- О приложении -->
+    <!-- About -->
     <string name="about_title">☕ О приложении</string>
     <string name="copyright">©2024–2026 LeviMC. Все права защищены.</string>
     <string name="font_license">Это приложение использует шрифт Misans.</string>
     <string name="about_footer_github">GitHub: https://github.com/LiteLDev/LeviLaunchroid</string>
     <string name="quick_actions_title">Быстрые действия</string>
+    <string name="content_mgmt_section_title">Управление контентом</string>
+    <string name="misc_section_title">Разное</string>
+    <string name="view_all">Показать все →</string>
     <string name="content_management_subtitle">Управление мирами, ресурсами и аддонами</string>
     <string name="import_apk_subtitle">Установка Minecraft из файла APK или APKS</string>
     <string name="ms_add_account">Добавить аккаунт</string>
     <string name="ms_add_account_subtitle">Войти через Microsoft</string>
 
-    <!-- Диалоги -->
+    <!-- Dialogs -->
     <string name="content_detected_title">Обнаружен контент</string>
     <string name="content_detected_message">Хотите запустить игру сейчас?\n\nФайл: %s</string>
     <string name="launch_now">Запустить сейчас</string>
@@ -37,6 +51,11 @@
 
     <string name="import_confirmation_title">Импортировать моды</string>
     <string name="import_confirmation_message">Вы уверены в том что хотите импортировать выбранные %d файлы модов?</string>
+    <string name="import_so_plugin_title">Импорт SO-плагина</string>
+    <string name="plugin_name_label">Название плагина</string>
+    <string name="plugin_type_label">Тип</string>
+    <string name="plugin_version_label">Версия</string>
+    <string name="import_button">Импорт</string>
     <string name="overwrite_file_title">Файл Уже Существует</string>
     <string name="overwrite_file_message">Файл %s уже существует. Вы хотите перезаписать его?</string>
     <string name="overwrite">Перезаписать</string>
@@ -47,14 +66,14 @@
     <string name="installed_packages">Установленные пакеты</string>
     <string name="local_custom">Доступные версии</string>
 
-    <!-- Разрешения -->
+    <!-- Permissions -->
     <string name="storage_permission_title">Разрешение для миграции хранилища</string>
     <string name="storage_permission_message">Предоставьте доступ к хранилищу, чтобы LeviLauncher мог скопировать данные из старой папки games/org.levimc. Это разрешение нужно только для миграции.</string>
     <string name="grant_permission">Выдать</string>
     <string name="cancel">Отмена</string>
 
-    <!-- Обратная связь -->
-    <string name="files_processed">Успешно добавлены файлы мода %d </string>
+    <!-- Feedback -->
+    <string name="files_processed">Успешно добавлены файлы мода %d</string>
     <string name="user_cancelled">Импорт отменен пользователем</string>
 
 
@@ -84,12 +103,20 @@
 
     <string name="settings_title">Настройки</string>
     <string name="settings_desc">Настройки вашего лаунчера</string>
+    <string name="settings_subtitle">Настройка основных параметров лаунчера</string>
+    <string name="settings_tab_basic">Основные настройки</string>
+    <string name="settings_tab_personalize">Персонализация</string>
+    <string name="settings_tab_updates">Обновления</string>
+    <string name="settings_tab_about">О приложении</string>
+    <string name="settings_tab_migration">Миграция</string>
+    <string name="settings_theme_desc">Выберите тему приложения</string>
+
 
     <string name="unknown_sources_permission_title">Разрешение на установку</string>
     <string name="unknown_sources_permission_message">Чтобы установить или обновить это приложение, пожалуйста выдайте разрешение на установку неизвестных приложений. Нажмите "Выдать" чтобы открыть настройки системы, выдайте разрешение для этого приложения, и вернитесь чтобы продолжить.</string>
 
     <string name="check_update">Проверить обновления</string>
-    <string name="version_prefix">Версия: </string>
+    <string name="version_prefix">Версия :</string>
     <string name="unknown_error">Неизвестная ошибка</string>
     <string name="preloader_sigs_title">Данные среды выполнения</string>
     <string name="preloader_sigs_last_update">Последнее обновление: %1$s</string>
@@ -113,6 +140,8 @@
     <string name="dialog_message_disable_version_isolation">Вы пытаетесь запустить установленную версию с включенной изоляцией версии. Пожалуйста, отключите изоляцию версии, чтобы продолжить.</string>
     <string name="dialog_positive_disable">Отключить</string>
     <string name="dialog_positive_ok">ОК</string>
+    <string name="delete_account_title">Удалить учётную запись</string>
+    <string name="delete_account_confirm">Вы уверены, что хотите удалить эту учётную запись?</string>
 
 
     <string name="new_version_found">Найдена новая версия: %1$s</string>
@@ -141,6 +170,7 @@
     <string name="repair_preparing">Подготовка…</string>
     <string name="repair_processing">Извлечение библиотек…</string>
     <string name="repair_finalizing">Завершение восстановления…</string>
+    <!-- Storage Migration -->
     <string name="storage_migration_title">Требуется миграция хранилища</string>
     <string name="storage_migration_message">LeviLauncher должен перенести данные из games/org.levimc в %1$s перед продолжением.
 
@@ -185,21 +215,21 @@
     <string name="shared_storage_layout_mode_legacy">Исходные внутренний/внешний каталоги</string>
     <string name="shared_storage_layout_status">Текущий режим: %1$s\nВнутренний: %2$s\nВнешний: %3$s</string>
     <string name="shared_storage_layout_changed">Выбор каталога хранилища обновлён. Перезапустите Minecraft и снова откройте управление контентом, чтобы изменение полностью применилось.</string>
-
+    <!-- Theme -->
     <string name="theme_title">Тема</string>
     <string name="theme_follow_system">Как в системе</string>
     <string name="theme_light">Светлая тема</string>
     <string name="theme_dark">Тёмная тема</string>
 
     <string name="error_no_browser">Браузер не доступен</string>
-
+    <!-- License & Security -->
     <string name="eula_title">Лицензионное соглашение LeviLauncher</string>
     <string name="eula_message"><b>Добро пожаловать в LeviLauncher</b>\n\nПри использовании данной программы вы соглашаетесь с тем что:\n\n• Это <b>неофициальный</b> лаунчер Minecraft\n• Вам необходимо владеть <b>лицензионной</b> копией Minecraft\n• Любая форма пиратства и читов запрещена\n• Моды/наборы ресурсов используются на ваш риск\n• Не связано с Mojang/Microsoft\n\nДальнейшее использование означает согласие с лицензионным соглашением</string>
     <string name="eula_agree">Принять</string>
     <string name="eula_exit">Отклонить</string>
 
     <string name="allow_unknown_sources">Пожалуйста, разрешите установку из неизвестных источников и повторите попытку</string>
-
+    <!-- Version Management -->
     <string name="dialog_title_delete_version">Удалить версию</string>
     <string name="dialog_message_delete_version">Вы уверены, что хотите удалить эту пользовательскую версию? Это действие не может быть отменено.</string>
     <string name="dialog_positive_delete">Удалить</string>
@@ -217,8 +247,68 @@
     <string name="dialog_message_delete_mod">Вы уверены, что хотите удалить этот мод?</string>
 
     <string name="version_isolation">Изоляция версий</string>
+    <string name="launch_vertically">Запуск вертикально</string>
+    <string name="launch_vertically_desc">Принудительно запускать игру в портретном режиме</string>
+    <!-- Instance Management -->
+    <string name="instance_settings_title">Настройки экземпляра</string>
+    <string name="instance_tab_general">Общие</string>
+    <string name="instance_tab_launch_options">Параметры запуска</string>
+    <string name="instance_tab_management">Управление</string>
+    <string name="instance_new_name">Новое имя</string>
+    <string name="instance_rename_hint">Переименовывается только папка. Версия и тип игры не изменяются.</string>
+    <string name="instance_custom_icon">Пользовательский значок (требуется квадрат)</string>
+    <string name="instance_clear_icon">Очистить</string>
+    <string name="instance_icon_hint">Будет сохранён как LargeLogo.png в папке версии. Нажмите на значок, чтобы изменить.</string>
+    <string name="instance_isolation_desc">Изолировать игровые данные для этого экземпляра. Другие экземпляры не будут затронуты.</string>
+    <string name="instance_shortcut_title">Ярлык на главном экране</string>
+    <string name="instance_shortcut_desc">Изменения имени и значка сохраняются автоматически. Нажмите «Добавить ярлык», чтобы создать или обновить ярлык на главном экране.</string>
+    <string name="instance_shortcut_name">Название ярлыка</string>
+    <string name="instance_shortcut_icon">Значок ярлыка</string>
+    <string name="instance_shortcut_choose_icon">Выбрать значок</string>
+    <string name="instance_shortcut_default_icon">Использовать стандартный</string>
+    <string name="instance_shortcut_add_button">Добавить ярлык</string>
+    <string name="instance_settings_auto_save_failed">Не удалось сохранить эту настройку экземпляра.</string>
+    <string name="instance_shortcut_not_supported">Ваш лаунчер главного экрана не поддерживает закреплённые ярлыки.</string>
+    <string name="instance_shortcut_missing">Этот экземпляр Minecraft больше недоступен.</string>
+    <string name="instance_danger_zone">Опасная зона</string>
+    <string name="instance_danger_zone_desc">Эти действия влияют на регистрацию экземпляра или локальные файлы. Проверьте всё перед продолжением.</string>
+    <string name="instance_delete_desc">Навсегда удаляет этот экземпляр с устройства, включая миры, настройки и установленный контент.</string>
+    <string name="instance_delete_warning">Это действие нельзя отменить.</string>
+    <string name="instance_delete_confirm_title">Удалить экземпляр</string>
+    <string name="instance_delete_confirm_msg">Вы уверены, что хотите удалить этот экземпляр? Все данные, включая миры, будут удалены навсегда.</string>
+    <string name="instance_backup_title">Резервная копия экземпляра</string>
+    <string name="instance_backup_desc">Создать полную резервную копию этого экземпляра в Download/LeviLauncher/Backups.</string>
+    <string name="instance_backup_button">Создать резервную копию экземпляра</string>
+    <string name="instance_backup_confirm_message">Создать полную резервную копию этого экземпляра сейчас? Если Minecraft запущен, сначала закройте его, чтобы файлы не менялись во время резервного копирования.</string>
+    <string name="instance_backup_in_progress">Создание резервной копии экземпляра…</string>
+    <string name="instance_backup_success_title">Резервная копия создана</string>
+    <string name="instance_backup_success_message">Резервная копия сохранена в:\n%1$s</string>
+    <string name="instance_backup_failed_title">Ошибка резервного копирования</string>
+    <string name="instance_backup_failed_message">Не удалось создать резервную копию:\n%1$s</string>
+    <string name="instance_import_backup_button">Импортировать резервную копию</string>
+    <string name="instance_batch_backup_button">Пакетная копия</string>
+    <string name="instance_batch_backup_title">Пакетное резервное копирование экземпляров</string>
+    <string name="instance_batch_backup_select_message">Выберите экземпляры для резервного копирования. Если Minecraft запущен, сначала выйдите из игры, чтобы избежать изменения данных во время копирования.</string>
+    <string name="instance_batch_backup_select_all">Выбрать все экземпляры</string>
+    <string name="instance_batch_backup_no_instances">Нет экземпляров, доступных для резервного копирования.</string>
+    <string name="instance_batch_backup_no_selection">Выберите хотя бы один экземпляр.</string>
+    <string name="instance_batch_backup_in_progress">Резервное копирование %1$s (%2$d/%3$d)…</string>
+    <string name="instance_batch_backup_success_title">Резервные копии созданы</string>
+    <string name="instance_batch_backup_success_message">Создано резервных копий: %1$d\n%2$s</string>
+    <string name="instance_batch_backup_partial_title">Резервное копирование частично завершено</string>
+    <string name="instance_batch_backup_partial_message">Создано резервных копий: %1$d, ошибок: %2$d.\n\nСохранено:\n%3$s\n\nОшибки:\n%4$s</string>
+    <string name="instance_batch_backup_failed_title">Ошибка пакетного копирования</string>
+    <string name="instance_batch_backup_failed_message">Не удалось создать резервные копии:\n%1$s</string>
+    <string name="instance_restore_title">Восстановить резервную копию</string>
+    <string name="instance_restore_in_progress">Восстановление резервной копии экземпляра…</string>
+    <string name="instance_restore_success_title">Восстановление завершено</string>
+    <string name="instance_restore_success_message">Восстановлено: %1$s</string>
+    <string name="instance_restore_failed_title">Ошибка восстановления</string>
+    <string name="instance_restore_failed_message">Не удалось восстановить резервную копию:\n%1$s</string>
 
-    <!-- Настройки языка -->
+    <!-- Language Setting -->
+    <!-- Keep English at the top (default language). -->
+    <!-- Sort all other languages alphabetically by their display name. -->
     <string name="language">Язык (Language)</string>
     <string name="english">Английский (English)</string>
     <string name="chinese">简体中文 (Chinese)</string>
@@ -232,7 +322,7 @@
     <string name="turkish">Türkçe (Turkish)</string>
     <string name="vietnamese">Tiếng Việt (Vietnamese)</string>
 
-    <!-- Переименовать версию -->
+    <!-- Version Rename -->
     <string name="rename_version_title">Переименовать версию</string>
     <string name="rename_version_message">Введите новое имя для этой версии:</string>
     <string name="new_version_name">Новое имя версии</string>
@@ -246,6 +336,13 @@
     <string name="worlds_title">Миры</string>
     <string name="resource_packs_title">Наборы ресурсов</string>
     <string name="behavior_packs_title">Наборы поведения</string>
+    <string name="skin_packs_title">Скин-паки</string>
+    <string name="worlds_category">Миры</string>
+    <string name="resource_packs_category">Наборы ресурсов</string>
+    <string name="behavior_packs_category">Наборы поведения</string>
+    <string name="skin_packs_category">Скин-паки</string>
+    <string name="screenshots_category">Скриншоты</string>
+    <string name="servers_category">Серверы</string>
     <string name="storage_internal">Внутренняя</string>
     <string name="storage_external">Внешняя</string>
     <string name="storage_version_isolation">Изоляция версии</string>
@@ -281,8 +378,8 @@
     <!-- Resource Pack Management -->
     <string name="import_resource_pack">Импортировать набор ресурсов</string>
     <string name="import_behavior_pack">Импортировать набор поведений</string>
-    <string name="delete_resource_pack">Удалить набор ресурсов</string>
     <string name="import_skin_pack">Импортировать скин-пак</string>
+    <string name="delete_resource_pack">Удалить набор ресурсов</string>
     <string name="delete_skin_pack">Удалить скин-пак</string>
     <string name="delete_behavior_pack">Удалить набор поведений</string>
 
@@ -305,6 +402,8 @@
     <string name="edit_world">Редактировать мир</string>
     <string name="edit">Редактировать</string>
     <string name="save">Сохранить</string>
+    <string name="reset">Сбросить</string>
+    <string name="saved_to_gallery">Сохранено в галерею</string>
     <string name="level_dat_not_found">Файл level.dat не найден</string>
     <string name="no_editable_properties">Редактируемые свойства не найдены</string>
     <string name="no_data">Нет данных</string>
@@ -328,6 +427,22 @@
     <string name="add_at_least_one_layer">Добавьте хотя бы один слой</string>
     <string name="world_created_successfully">Мир успешно создан</string>
     <string name="failed_to_create_world">Не удалось создать мир</string>
+    <string name="custom_flat_world_subtitle">Создайте мир со своим биомом и слоями блоков</string>
+    <string name="world_settings">Настройки мира</string>
+    <string name="world_settings_hint">Выберите основные настройки нового мира</string>
+    <string name="layers_title">Слои</string>
+    <string name="add_layer_compact">Добавить слой</string>
+    <string name="no_layers_title">Слоёв пока нет</string>
+    <string name="no_layers_hint">Добавьте хотя бы один слой блоков, чтобы создать мир</string>
+    <string name="reorder_layer">Изменить порядок слоя</string>
+    <string name="delete_layer">Удалить слой</string>
+    <string name="block_id_hint">minecraft:stone</string>
+    <plurals name="flat_layers_count">
+        <item quantity="one">%1$d слой • снизу → вверх</item>
+        <item quantity="few">%1$d слоя • снизу → вверх</item>
+        <item quantity="many">%1$d слоёв • снизу → вверх</item>
+        <item quantity="other">%1$d слоя • снизу → вверх</item>
+    </plurals>
 
     <!-- Play Store Validation -->
     <string name="minecraft_playstore_required_title">Требуется версия из Play Маркета</string>
@@ -339,10 +454,57 @@
     <string name="genuine_badge_label">Лицензия не подтверждена</string>
     <string name="invalid_license_detected_toast">Обнаружена нелицензионная версия Minecraft. Убедитесь, что Minecraft установлен из Google Play Маркета</string>
 
-    <string name="full_mods_title">Моды </string>
-    <string name="total_mods">Всего модов:</string>
+    <string name="full_mods_title">Моды</string>
+    <string name="total_mods">Всего модов: </string>
     <string name="enabled_mods">Включено:</string>
     <string name="add_mod">Добавить мод</string>
+    <string name="scan_downloads">Сканировать</string>
+    <string name="scan_downloads_scanning">Сканирование…</string>
+    <string name="scan_downloads_none_found">В папке «Загрузки» не найдено модов .levipack или .so</string>
+    <string name="scan_downloads_failed">Не удалось просканировать папку «Загрузки»</string>
+    <string name="scan_downloads_permission_denied">Для сканирования папки «Загрузки» нужен доступ к хранилищу</string>
+    <string name="scan_downloads_results_title">Моды в папке «Загрузки»</string>
+    <string name="scan_downloads_results_subtitle">Выберите мод для добавления. Сканирование проверяет только основную папку «Загрузки».</string>
+    <string name="scan_downloads_add">Добавить</string>
+    <string name="scan_downloads_adding">Добавление…</string>
+    <string name="scan_downloads_added">Добавлено</string>
+    <string name="scan_downloads_added_message">%1$s добавлен</string>
+    <string name="scan_downloads_levipack">LeviPack</string>
+    <string name="scan_downloads_native_library">Нативная библиотека</string>
+    <string name="scan_downloads_file_details">%1$s • %2$s</string>
+    <string name="external_mods">Внешние моды</string>
+    <string name="external_mods_subtitle">Моды сообщества для Minecraft %1$s</string>
+    <string name="external_mods_no_version">Выберите версию Minecraft перед установкой модов</string>
+    <string name="external_mods_search_hint">Поиск модов, авторов или версий…</string>
+    <string name="external_mods_compatible_only">Только совместимые</string>
+    <string name="external_mods_all_versions">Все версии Minecraft</string>
+    <string name="external_mods_sort_newest">Сначала новые</string>
+    <string name="external_mods_sort_name">Название А–Я</string>
+    <string name="external_mods_empty">Нет модов, соответствующих этим фильтрам</string>
+    <string name="external_mods_load_failed">Не удалось обновить каталог. Показана сохранённая копия.</string>
+    <string name="external_mods_refresh">Обновить каталог</string>
+    <string name="external_mods_refreshed">Каталог обновлён</string>
+    <string name="external_mods_join_discord">Присоединиться к Discord сообщества</string>
+    <string name="external_mods_discord_open_failed">Нет приложения, которое может открыть приглашение Discord</string>
+    <string name="external_mods_download">Загрузка %1$s</string>
+    <string name="external_mods_importing">Импорт мода…</string>
+    <string name="external_mods_installed">%1$s установлен</string>
+    <string name="external_mods_install_failed">Не удалось установить %1$s: %2$s</string>
+    <string name="external_mods_open_failed">Нет браузера, который может открыть эту загрузку</string>
+    <string name="external_mods_direct_download">Прямая загрузка</string>
+    <string name="external_mods_ad_download">Загрузка с рекламой</string>
+    <string name="external_mods_external_link">Внешняя ссылка</string>
+    <string name="external_mods_open_link">Открыть ссылку</string>
+    <string name="external_mods_external_dialog_title">Внешняя загрузка</string>
+    <string name="external_mods_ad_dialog_title">Загрузка с рекламой</string>
+    <string name="external_mods_external_dialog_message">%1$s использует страницу загрузки вне LeviLauncher.\n\n1. Нажмите «Открыть ссылку» и скачайте файл .levipack или .so.\n2. Вернитесь в LeviLauncher и откройте «Моды».\n3. Нажмите «Сканировать».\n4. Нажмите «Добавить» рядом с модом, который хотите импортировать.\n\nСканирование проверяет только основную папку «Загрузки». Переместите файл туда, если браузер сохранил его в другом месте.</string>
+    <string name="external_mods_ad_dialog_message">%1$s использует страницу загрузки с рекламой, выбранную разработчиком. LeviLauncher не контролирует эту страницу или размещённую на ней рекламу.\n\n1. Нажмите «Открыть ссылку» и скачайте файл .levipack или .so.\n2. Вернитесь в LeviLauncher и откройте «Моды».\n3. Нажмите «Сканировать».\n4. Нажмите «Добавить» рядом с модом, который хотите импортировать.\n\nСканирование проверяет только основную папку «Загрузки». Скачивайте только файл мода; не устанавливайте посторонние приложения и не разрешайте уведомления.</string>
+    <string name="external_mods_by_author">от %1$s</string>
+    <string name="external_mods_version">Мод %1$s</string>
+    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
+    <string name="external_mods_update">Обновить</string>
+    <string name="external_mods_installed_button">Установлено</string>
+    <string name="external_mods_incompatible">Несовместимо</string>
 
     <!-- Mod Detail -->
     <string name="mod_detail_title">Детали мода</string>
@@ -352,12 +514,63 @@
     <string name="mod_disabled">Мод отключен</string>
     <string name="mod_filename_format">Файл: %s</string>
     <string name="mod_enable_status">Состояние включения</string>
+    <string name="mod_icon_content_description">Значок мода</string>
+    <string name="mod_author_byline">от %s</string>
+    <string name="mod_version_chip">Версия %s</string>
+    <string name="mod_metadata_title">Информация</string>
+    <string name="mod_actions_title">Действия</string>
+    <string name="mod_author_label">Автор</string>
+    <string name="mod_version_label">Версия</string>
+    <string name="mod_minecraft_versions_label">Версии Minecraft</string>
+    <string name="mod_entry_label">Файл входа</string>
+    <string name="mod_id_label">ID мода</string>
+    <string name="mod_config_files_label">Файлы конфигурации</string>
+    <string name="mod_unknown_author">Неизвестный автор</string>
+    <string name="mod_unknown_version">Неизвестная версия</string>
+    <string name="mod_all_versions">Все поддерживаемые версии</string>
+    <string name="mod_no_config_files">Нет редактируемой конфигурации</string>
+    <string name="mod_config_badge">КОНФИГ</string>
+    <string name="mod_config_badge_with_count">КОНФИГ · %d</string>
+    <string name="mod_config_title_format">Конфигурация %s</string>
+    <string name="mod_config_not_found">Редактируемая конфигурация не найдена</string>
+    <string name="mod_config_load_failed">Не удалось загрузить конфигурацию: %s</string>
+    <string name="mod_config_save_failed">Не удалось сохранить конфигурацию</string>
+    <string name="mod_config_saved">Конфигурация сохранена</string>
+    <string name="mod_config_restart_hint">Файл конфигурации сохранен, файл .backup оставлен.</string>
+    <string name="mod_config_validation_failed">Проверка конфигурации не пройдена</string>
+    <string name="mod_config_invalid_json">Недопустимый JSON</string>
+    <string name="mod_config_expand">Развернуть</string>
+    <string name="mod_config_collapse">Свернуть</string>
+    <string name="mod_config_raw_json">Редактировать исходный JSON</string>
+    <string name="mod_config_raw_json_short">JSON</string>
+    <string name="mod_config_item_label">Элемент %1$s</string>
+    <string name="mod_config_object_desc">Группа связанных настроек</string>
+    <string name="mod_config_array_desc">Список значений</string>
+    <string name="mod_config_range_prefix">Диапазон</string>
+    <string name="mod_config_error_number">%1$s должно быть числом</string>
+    <string name="mod_config_error_minimum">%1$s должно быть не меньше %2$s</string>
+    <string name="mod_config_error_maximum">%1$s должно быть не больше %2$s</string>
+    <string name="mod_config_error_boolean">%1$s должно быть включено или выключено</string>
+    <string name="mod_config_error_string">%1$s должно быть текстом</string>
+    <!-- Mod Configuration -->
+    <plurals name="mod_config_files_count">
+        <item quantity="one">%d редактируемая конфигурация</item>
+        <item quantity="other">%d редактируемой конфигурации</item>
+    </plurals>
+    <plurals name="mod_config_choices_count">
+        <item quantity="one">%d вариант</item>
+        <item quantity="other">%d варианта</item>
+    </plurals>
+    <plurals name="mod_config_items_count">
+        <item quantity="one">%d элемент</item>
+        <item quantity="other">%d элемента</item>
+    </plurals>
 
-    <!-- Диалог выбора версии игры -->
+    <!-- Game Version Select Dialog -->
     <string name="game_version_select_title">Выбор версии игры</string>
     <string name="back">Назад</string>
 
-    <!-- Заставка -->
+    <!-- Splash -->
     <string name="splash_logo_desc">Логотип листа</string>
     <string name="minecraft_loading_title">Запуск Minecraft</string>
     <string name="minecraft_loading_subtitle">Подготовка native-библиотек и включенных модов</string>
@@ -382,13 +595,45 @@
     <string name="accounts_active_privilege">Выполнен вход</string>
 
     <string name="ms_login_title">Вход Microsoft</string>
+    <string name="ms_login_header_subtitle">Безопасный вход в Minecraft</string>
     <string name="ms_login_starting">Начинается вход в Microsoft…</string>
     <string name="ms_login_exchanging">Обмен токеном…</string>
     <string name="ms_login_auth_xbox_device">Аутентификация устройства Xbox…</string>
     <string name="ms_login_fetch_minecraft_identity">Получение идентификатора Minecraft…</string>
+    <string name="ms_login_retrying">Соединение прервано. Безопасная повторная попытка…</string>
     <string name="ms_login_success">Выполнен вход как %1$s</string>
     <string name="ms_login_failed">Сбой входа в Microsoft</string>
     <string name="ms_login_failed_detail">Сбой входа: %1$s</string>
+    <string name="ms_choose_login_method">Войти в Minecraft</string>
+    <string name="ms_choose_login_method_desc">Выберите вход по коду устройства через браузер или продолжите на встроенной странице Microsoft.</string>
+    <string name="ms_device_code_login">Продолжить в браузере</string>
+    <string name="ms_device_code_option_title">Код устройства (рекомендуется)</string>
+    <string name="ms_device_code_login_desc">Открыть приватный сеанс браузера с уже введённым кодом устройства.</string>
+    <string name="ms_webview_login">Открыть встроенный вход</string>
+    <string name="ms_webview_option_title">Встроенный WebView</string>
+    <string name="ms_webview_login_desc">Войдите, не покидая LeviLauncher. Используйте этот вариант, если вход через браузер недоступен.</string>
+    <string name="ms_device_code_title">Вход по коду устройства</string>
+    <string name="ms_device_code_instructions">Откройте страницу входа Microsoft по коду устройства, введите этот код и разрешите доступ. LeviLauncher завершит вход автоматически.</string>
+    <string name="ms_device_code_label">Код устройства Microsoft</string>
+    <string name="ms_device_code_requesting">Запрос защищённого кода…</string>
+    <string name="ms_device_code_waiting_code">--------</string>
+    <string name="ms_device_code_waiting">Ожидание завершения в браузере…</string>
+    <string name="ms_device_code_checking">Проверка результата входа Microsoft…</string>
+    <string name="ms_device_code_reconnecting">Соединение изменилось. Автоматическая повторная попытка…</string>
+    <string name="ms_device_code_authorized">Microsoft подтвердил вход. Завершение…</string>
+    <string name="ms_device_code_browser_opened">Завершите новый вход в Microsoft в браузере, затем вернитесь сюда.</string>
+    <string name="ms_device_code_expires">Код истекает через %1$d:%2$02d</string>
+    <string name="ms_device_code_copy">Скопировать код</string>
+    <string name="ms_device_code_copied">Код скопирован</string>
+    <string name="ms_device_code_open_browser">Открыть вход Microsoft</string>
+    <string name="ms_device_code_step_title">Завершите вход в браузере</string>
+    <string name="ms_device_code_browser_note">LeviLauncher открывает браузер по умолчанию в приватном сеансе, автоматически вводит код и запрашивает новый вход в Microsoft.</string>
+    <string name="ms_choose_other_method">Другой способ</string>
+    <string name="ms_no_browser">На этом устройстве нет доступного браузера.</string>
+    <string name="ms_default_browser_no_private_mode">Ваш браузер по умолчанию не поддерживает приватный вход. Обновите его или используйте вход через WebView.</string>
+    <string name="ms_login_ssl_failed">Не удалось проверить защищённую страницу входа Microsoft.</string>
+    <string name="ms_login_state_failed">Не удалось проверить ответ Microsoft при входе. Начните вход заново.</string>
+    <string name="ms_login_missing_code">Microsoft не вернул код входа. Начните вход заново или используйте код устройства.</string>
 
     <string name="ms_set_active">Сделать активным</string>
     <string name="ms_delete">Удалить</string>
@@ -401,10 +646,14 @@
     <string name="go_to_accounts">Аккаунты</string>
     <string name="disable_launcher_login_and_continue">Закрыть</string>
 
+    <string name="ms_feature_disabled_title">Функция отключена</string>
+    <string name="ms_feature_disabled_desc">Включите «Вход в Minecraft через LeviLauncher» в настройках, чтобы управлять учётными записями Microsoft.</string>
+    <string name="ms_activated">Активировано</string>
+
     <!-- Popup labels -->
     <string name="label_current_account">Текущий аккаунт</string>
     <string name="label_other_accounts">Другие аккаунты</string>
-
+    <!-- Crash & Diagnostics -->
     <string name="crash_title">Приложение аварийно завершило работу</string>
     <string name="crash_upload">Загрузить отчет о сбое</string>
     <string name="crash_details_title">Сведения о сбое</string>
@@ -422,11 +671,16 @@
     <string name="dialog_title_exit_app">Выйти из приложения</string>
     <string name="dialog_message_exit_app">Вы уверены, что хотите выйти?</string>
     <string name="dialog_positive_exit">Выйти</string>
-
-    <!-- Logcat Overlay i18n -->
     <string name="show_logcat_overlay">Оверлей Logcat</string>
+    <string name="foreground_service">Служба переднего плана</string>
+    <string name="foreground_service_desc">Оставляет Minecraft запущенным при переключении между приложениями: не даёт Bedrock приостановить активный сеанс и поддерживает активность процесса, процессора и Wi-Fi.</string>
+    <string name="foreground_service_warning">Примечание: телефон может нагреваться быстрее, а расход батареи может увеличиться.</string>
+    <string name="foreground_service_channel">Защита Minecraft в фоновом режиме</string>
+    <string name="foreground_service_notification_title">Minecraft поддерживается активным</string>
+    <string name="foreground_service_notification_text">Фоновый режим Minecraft активен. Процессор и доступ к сети остаются доступными для текущего сеанса.</string>
     <string name="logcat_live">Logcat: <b>в реальном времени</b></string>
     <string name="logcat_paused">Logcat: приостановлен</string>
+    <!-- Logcat Overlay i18n -->
     <string name="logcat_filter_hint">Фильтр по ключевым словам</string>
     <string name="logcat_blacklist_hint">Чёрный список (через запятую)</string>
     <string name="logcat_filter_clear">Сбросить фильтры</string>
@@ -447,7 +701,7 @@
     <string name="inbuilt_mod_removed">%s удален из модов</string>
     <string name="add">Добавить</string>
     <string name="remove">Удалить</string>
-
+    
     <!-- Inbuilt Mods -->
     <string name="inbuilt_mod_quick_drop">Быстрый сброс</string>
     <string name="inbuilt_mod_quick_drop_desc">Быстрое выбрасывание предметов</string>
@@ -471,12 +725,25 @@
     <string name="inbuilt_mod_cps_display_desc">Показывает количество кликов в секунду</string>
     <string name="inbuilt_mod_snaplook">Быстрый взгляд назад</string>
     <string name="inbuilt_mod_snaplook_desc">Удерживайте для быстрого взгляда назад (вид спереди от третьего лица)</string>
+    <string name="inbuilt_mod_virtual_cursor">Виртуальный курсор</string>
+    <string name="inbuilt_mod_virtual_cursor_desc">Используйте виртуальный трекпад для управления мышью</string>
+    <string name="virtual_cursor_enabled">Курсор включён</string>
+    <string name="virtual_cursor_disabled">Курсор отключён</string>
+    <string name="cursor_sensitivity_label">Чувствительность курсора:</string>
+    <string name="inbuilt_mod_gyro">Гироскоп</string>
+    <string name="inbuilt_mod_gyro_desc">Использовать гироскоп устройства для управления вращением камеры</string>
+    <string name="inbuilt_mod_pojav_controls">Управление Pojav</string>
+    <string name="inbuilt_mod_pojav_controls_desc">Заменить сенсорное управление Minecraft полностью настраиваемым управлением в стиле Pojav</string>
+    <string name="inbuilt_mod_more_buttons">Дополнительные кнопки</string>
+    <string name="inbuilt_mod_more_buttons_desc">Создавайте пользовательские экранные кнопки с назначением одной клавиши и SVG-значками</string>
     <string name="inbuilt_badge">ВСТРОЕН</string>
     <string name="autosprint_keybind_label">Клавиша авто-спринта:</string>
     <string name="autosprint_keybind_press">Нажмите любую клавишу…</string>
     <string name="configure">Настроить</string>
     <string name="overlay_button_size">Размер кнопки наложения</string>
     <string name="overlay_button_opacity">Прозрачность кнопки</string>
+    <string name="overlay_button_size_value">Размер: %1$ddp</string>
+    <string name="overlay_button_opacity_value">Непрозрачность: %1$d%%</string>
     <string name="overlay_button_lock">Заблокировать положение</string>
     <string name="overlay_button_lock_desc">Запретить перетаскивание и случайные нажатия</string>
     <string name="settings">Настройки</string>
@@ -498,13 +765,33 @@
     <!-- Mod Menu -->
     <string name="mod_menu">Мод-меню</string>
     <string name="mod_menu_modules">Модули</string>
+    <string name="mod_menu_favorites">Избранное</string>
+    <string name="mod_menu_favorite">Добавить в избранное</string>
+    <string name="mod_menu_unfavorite">Удалить из избранного</string>
+    <string name="mod_menu_hud_editor">Редактор HUD</string>
+    <string name="mod_menu_filter_enabled">Включённые</string>
+    <string name="mod_menu_filter_inbuilt">Встроенные</string>
+    <string name="mod_menu_filter_external">Внешние</string>
     <string name="mod_menu_search_hint">Поиск модов…</string>
     <string name="mod_menu_no_mods">Моды не добавлены</string>
+    <string name="mod_menu_no_favorites">Избранных модов пока нет</string>
+    <string name="mod_menu_no_matches">Подходящих модов нет</string>
+    <string name="mod_menu_group_inbuilt">Встроенные функции</string>
+    <string name="mod_menu_group_external_ungrouped">Несгруппированные внешние моды</string>
+    <string name="mod_menu_module_count">%1$d / %2$d</string>
+    <string name="mod_menu_general_settings">Общие настройки</string>
+    <string name="mod_menu_appearance">Внешний вид</string>
+    <string name="mod_menu_pause_menu_only">Только меню паузы</string>
+    <string name="mod_menu_pause_menu_only_desc">Показывать меню модов только на экране паузы</string>
+    <string name="mod_menu_default_percent" formatted="false">100%</string>
+    <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">Настройки скоро появятся</string>
     <string name="mod_menu_notifications">Уведомления</string>
     <string name="mod_menu_notifications_desc">Показывать уведомление при включении модов</string>
     <string name="mod_menu_opacity">Прозрачность мод-меню</string>
     <string name="mod_menu_button_opacity">Прозрачность кнопки мод-меню</string>
+    <string name="mod_menu_compact">Компактное меню модов</string>
+    <string name="mod_menu_compact_desc">Использовать уменьшенное меню с плотным списком модулей и компактными фильтрами</string>
     <string name="mod_menu_version">v1.0</string>
     <string name="mod_menu_enabled">Мод-меню включено</string>
     <string name="mod_menu_disabled">Мод-меню выключено</string>
@@ -513,6 +800,35 @@
     <string name="mod_status_enabled">Включено</string>
     <string name="mod_status_disabled">Выключено</string>
     <string name="mod_notification_enabled">%s включено</string>
+    <string name="mod_overlay_fps_unknown">FPS: --</string>
+    <string name="mod_overlay_fps_value">FPS: %1$d</string>
+    <string name="mod_overlay_cps_value">CPS: %1$d</string>
+    <string name="mod_config_overlay_button_size_dp">Размер кнопки оверлея (dp)</string>
+    <string name="mod_config_overlay_opacity_percent" formatted="false">Непрозрачность оверлея (%)</string>
+    <string name="mod_config_overlay_show_everywhere" formatted="false">Показывать везде</string>
+    <string name="mod_config_cursor_sensitivity_percent" formatted="false">Чувствительность курсора (%)</string>
+    <string name="mod_config_zoom_level_percent" formatted="false">Уровень зума (%)</string>
+    <string name="mod_config_auto_sprint_keybind">Клавиша автоспринта</string>
+    <string name="mod_config_zoom_keybind">Клавиша зума</string>
+    <string name="mod_config_zoom_transition">Длительность перехода (мс)</string>
+    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">Множитель чувствительности (100% = 1x)</string>
+    <string name="mod_config_gyro_horizontal_speed" formatted="false">Горизонтальная скорость (%)</string>
+    <string name="mod_config_gyro_vertical_speed" formatted="false">Вертикальная скорость (%)</string>
+    <string name="mod_config_gyro_small_movement_filter">Фильтр малых движений (0 = выкл.)</string>
+    <string name="mod_config_gyro_sensitivity_x" formatted="false">Горизонтальная чувствительность (%)</string>
+    <string name="mod_config_gyro_sensitivity_y" formatted="false">Вертикальная чувствительность (%)</string>
+    <string name="mod_config_gyro_invert_x">Инвертировать горизонтальную ось</string>
+    <string name="mod_config_gyro_invert_y">Инвертировать вертикальную ось</string>
+    <string name="mod_config_gyro_deadzone">Мёртвая зона</string>
+    <string name="mod_config_press_any_key">Нажмите любую клавишу для привязки...</string>
+    <string name="mod_config_key_unknown">НЕИЗВЕСТНО</string>
+    <string name="mod_config_color_alpha_short">A</string>
+    <string name="mod_config_color_red_short">R</string>
+    <string name="mod_config_color_green_short">G</string>
+    <string name="mod_config_color_blue_short">B</string>
+    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
+    <string name="hud_editor_drag_hint">Перетащите, чтобы переместить панель</string>
+    <string name="hud_editor_drag_description">Редактор HUD. Перетащите эту область, чтобы переместить панель.</string>
 
     <!-- Options Editor -->
     <string name="edit_options">Редактировать настройки</string>
@@ -592,74 +908,13 @@
     <string name="curseforge_download_failed">Ошибка скачивания</string>
     <string name="curseforge_available_files">Доступные файлы</string>
 
-    <!-- Missing translations -->
-    <string name="cursor">Курсор</string>
-    <string name="bedrock_edition">Bedrock Edition</string>
-    <string name="current_instance">Текущий экземпляр</string>
-    <string name="content_mgmt_section_title">Управление контентом</string>
-    <string name="misc_section_title">Разное</string>
-    <string name="view_all">Показать все →</string>
-    <string name="import_so_plugin_title">Импорт SO-плагина</string>
-    <string name="plugin_name_label">Название плагина</string>
-    <string name="plugin_type_label">Тип</string>
-    <string name="plugin_version_label">Версия</string>
-    <string name="import_button">Импорт</string>
-    <string name="settings_subtitle">Настройка основных параметров лаунчера</string>
-    <string name="settings_tab_basic">Основные настройки</string>
-    <string name="settings_tab_personalize">Персонализация</string>
-    <string name="settings_tab_updates">Обновления</string>
-    <string name="settings_tab_about">О приложении</string>
-    <string name="settings_tab_migration">Миграция</string>
-    <string name="settings_theme_desc">Выберите тему приложения</string>
-    <string name="launch_vertically">Запуск вертикально</string>
-    <string name="launch_vertically_desc">Принудительно запускать игру в портретном режиме</string>
-    <string name="instance_settings_title">Настройки экземпляра</string>
-    <string name="instance_tab_general">Общие</string>
-    <string name="instance_tab_launch_options">Параметры запуска</string>
-    <string name="instance_tab_management">Управление</string>
-    <string name="instance_new_name">Новое имя</string>
-    <string name="instance_rename_hint">Переименовывается только папка. Версия и тип игры не изменяются.</string>
-    <string name="instance_custom_icon">Пользовательский значок (требуется квадрат)</string>
-    <string name="instance_clear_icon">Очистить</string>
-    <string name="instance_icon_hint">Будет сохранён как LargeLogo.png в папке версии. Нажмите на значок, чтобы изменить.</string>
-    <string name="instance_isolation_desc">Изолировать игровые данные для этого экземпляра. Другие экземпляры не будут затронуты.</string>
-    <string name="instance_danger_zone">Опасная зона</string>
-    <string name="instance_danger_zone_desc">Эти действия влияют на регистрацию экземпляра или локальные файлы. Проверьте всё перед продолжением.</string>
-    <string name="instance_delete_desc">Навсегда удаляет этот экземпляр с устройства, включая миры, настройки и установленный контент.</string>
-    <string name="instance_delete_warning">Это действие нельзя отменить.</string>
-    <string name="instance_delete_confirm_title">Удалить экземпляр</string>
-    <string name="instance_delete_confirm_msg">Вы уверены, что хотите удалить этот экземпляр? Все данные, включая миры, будут удалены навсегда.</string>
-    <string name="instance_batch_backup_button">Пакетная копия</string>
-    <string name="instance_batch_backup_title">Пакетное резервное копирование экземпляров</string>
-    <string name="instance_batch_backup_select_message">Выберите экземпляры для резервного копирования. Если Minecraft запущен, сначала выйдите из игры, чтобы избежать изменения данных во время копирования.</string>
-    <string name="instance_batch_backup_select_all">Выбрать все экземпляры</string>
-    <string name="instance_batch_backup_no_instances">Нет экземпляров, доступных для резервного копирования.</string>
-    <string name="instance_batch_backup_no_selection">Выберите хотя бы один экземпляр.</string>
-    <string name="instance_batch_backup_in_progress">Резервное копирование %1$s (%2$d/%3$d)…</string>
-    <string name="instance_batch_backup_success_title">Резервные копии созданы</string>
-    <string name="instance_batch_backup_success_message">Создано резервных копий: %1$d\n%2$s</string>
-    <string name="instance_batch_backup_partial_title">Резервное копирование частично завершено</string>
-    <string name="instance_batch_backup_partial_message">Создано резервных копий: %1$d, ошибок: %2$d.\n\nСохранено:\n%3$s\n\nОшибки:\n%4$s</string>
-    <string name="instance_batch_backup_failed_title">Ошибка пакетного копирования</string>
-    <string name="instance_batch_backup_failed_message">Не удалось создать резервные копии:\n%1$s</string>
-    <string name="skin_packs_title">Скин-паки</string>
-    <string name="worlds_category">Миры</string>
-    <string name="resource_packs_category">Наборы ресурсов</string>
-    <string name="behavior_packs_category">Наборы поведения</string>
-    <string name="skin_packs_category">Скин-паки</string>
-    <string name="screenshots_category">Скриншоты</string>
-    <string name="servers_category">Серверы</string>
-    <string name="saved_to_gallery">Сохранено в галерею</string>
-    <string name="inbuilt_mod_virtual_cursor">Виртуальный курсор</string>
-    <string name="inbuilt_mod_virtual_cursor_desc">Используйте виртуальный трекпад для управления мышью</string>
-    <string name="virtual_cursor_enabled">Курсор включён</string>
-    <string name="virtual_cursor_disabled">Курсор отключён</string>
-    <string name="cursor_sensitivity_label">Чувствительность курсора:</string>
+    <!-- Navigation Bar -->
     <string name="nav_launch">Запуск</string>
     <string name="nav_import">Импорт</string>
     <string name="nav_instances">Экземпляры</string>
     <string name="nav_about">О приложении</string>
     <string name="nav_settings">Настройки</string>
+
     <string name="search_instances_hint">Поиск…</string>
     <string name="instances_label">Экземпляры</string>
     <string name="select_instance_title">Выбрать экземпляр</string>
@@ -669,6 +924,7 @@
     <string name="tag_installed">Установлено</string>
     <string name="tag_custom">Пользовательская</string>
     <string name="vanilla_prefix">Vanilla %s</string>
+
     <string name="about_page_title">О приложении</string>
     <string name="about_subtitle">LeviLauncher — современный лаунчер Minecraft Bedrock</string>
     <string name="about_authors_title">👥 Авторы и сопровождающие</string>
@@ -685,6 +941,7 @@
     <string name="about_contribute_desc">Вклад через Issues или Pull Requests приветствуется и помогает улучшать LeviLauncher.</string>
     <string name="about_issues">Issue</string>
     <string name="about_star_fork">Star / Fork</string>
+
     <string-array name="launcher_tips">
         <item>В настройках можно изменить тему, цвет, фон и другие параметры внешнего вида под ваш стиль.</item>
         <item>LeviLauncher имеет открытый исходный код. Используйте GitHub issues, чтобы сообщить о проблемах лаунчера или предложить улучшения.</item>
@@ -698,6 +955,7 @@
         <item>CurseForge позволяет просматривать и загружать контент сообщества напрямую.</item>
         <item>Загружайте внешние нативные SO-модули, чтобы расширять или улучшать возможности и производительность Minecraft.</item>
     </string-array>
+    <!-- Personalization -->
     <string name="theme_color_title">Цвет темы</string>
     <string name="theme_color_desc">Основной акцентный цвет приложения</string>
     <string name="preset_colors">ГОТОВЫЕ ЦВЕТА</string>
@@ -715,169 +973,8 @@
 
     <string name="unsupported_version_title">Неподдерживаемая версия</string>
     <string name="unsupported_version_msg">Этот лаунчер не поддерживает версии Minecraft старше 1.21.80.</string>
-    <!-- Mod Config -->
-    <string name="mod_author_byline">от %s</string>
-    <string name="mod_version_chip">Версия %s</string>
-    <string name="mod_config_title_format">Конфигурация %s</string>
-    <string name="mod_config_not_found">Редактируемая конфигурация не найдена</string>
-    <string name="mod_config_load_failed">Не удалось загрузить конфигурацию: %s</string>
-    <string name="mod_config_save_failed">Не удалось сохранить конфигурацию</string>
-    <string name="mod_config_saved">Конфигурация сохранена</string>
-    <string name="mod_config_restart_hint">Файл конфигурации сохранен, файл .backup оставлен.</string>
-    <string name="mod_config_validation_failed">Проверка конфигурации не пройдена</string>
-    <string name="mod_config_invalid_json">Недопустимый JSON</string>
-    <string name="mod_config_expand">Развернуть</string>
-    <string name="mod_config_collapse">Свернуть</string>
-    <string name="mod_config_raw_json">Редактировать исходный JSON</string>
-    <string name="mod_config_raw_json_short">JSON</string>
-    <string name="mod_config_item_label">Элемент %1$s</string>
-    <string name="mod_config_object_desc">Группа связанных настроек</string>
-    <string name="mod_config_array_desc">Список значений</string>
-    <string name="mod_config_range_prefix">Диапазон</string>
-    <string name="mod_config_error_number">%1$s должно быть числом</string>
-    <string name="mod_config_error_minimum">%1$s должно быть не меньше %2$s</string>
-    <string name="mod_config_error_maximum">%1$s должно быть не больше %2$s</string>
-    <string name="mod_config_error_boolean">%1$s должно быть включено или выключено</string>
-    <string name="mod_config_error_string">%1$s должно быть текстом</string>
-    <plurals name="mod_config_files_count">
-        <item quantity="one">%d редактируемая конфигурация</item>
-        <item quantity="few">%d редактируемые конфигурации</item>
-        <item quantity="many">%d редактируемых конфигураций</item>
-        <item quantity="other">%d редактируемой конфигурации</item>
-    </plurals>
-    <plurals name="mod_config_choices_count">
-        <item quantity="one">%d вариант</item>
-        <item quantity="few">%d варианта</item>
-        <item quantity="many">%d вариантов</item>
-        <item quantity="other">%d варианта</item>
-    </plurals>
-    <plurals name="mod_config_items_count">
-        <item quantity="one">%d элемент</item>
-        <item quantity="few">%d элемента</item>
-        <item quantity="many">%d элементов</item>
-        <item quantity="other">%d элемента</item>
-    </plurals>
 
-    <!-- Mod Menu synced translations -->
-    <string name="mod_menu_favorites">Избранное</string>
-    <string name="mod_menu_favorite">Добавить в избранное</string>
-    <string name="mod_menu_unfavorite">Удалить из избранного</string>
-    <string name="mod_menu_hud_editor">Редактор HUD</string>
-    <string name="mod_menu_filter_enabled">Включённые</string>
-    <string name="mod_menu_filter_inbuilt">Встроенные</string>
-    <string name="mod_menu_filter_external">Внешние</string>
-    <string name="mod_menu_no_favorites">Избранных модов пока нет</string>
-    <string name="mod_menu_no_matches">Подходящих модов нет</string>
-    <string name="mod_menu_group_inbuilt">Встроенные функции</string>
-    <string name="mod_menu_group_external_ungrouped">Несгруппированные внешние моды</string>
-    <string name="mod_menu_module_count">%1$d / %2$d</string>
-    <string name="mod_menu_general_settings">Общие настройки</string>
-    <string name="mod_menu_appearance">Внешний вид</string>
-    <string name="mod_menu_pause_menu_only">Только меню паузы</string>
-    <string name="mod_menu_pause_menu_only_desc">Показывать меню модов только на экране паузы</string>
-    <string name="mod_menu_default_percent" formatted="false">100%</string>
-    <string name="mod_menu_percent_value">%1$d%%</string>
-    <string name="mod_overlay_fps_unknown">FPS: --</string>
-    <string name="mod_overlay_fps_value">FPS: %1$d</string>
-    <string name="mod_overlay_cps_value">CPS: %1$d</string>
-    <string name="mod_config_overlay_button_size_dp">Размер кнопки оверлея (dp)</string>
-    <string name="mod_config_overlay_opacity_percent" formatted="false">Непрозрачность оверлея (%)</string>
-    <string name="mod_config_cursor_sensitivity_percent" formatted="false">Чувствительность курсора (%)</string>
-    <string name="mod_config_zoom_level_percent" formatted="false">Уровень зума (%)</string>
-    <string name="mod_config_auto_sprint_keybind">Клавиша автоспринта</string>
-    <string name="mod_config_zoom_keybind">Клавиша зума</string>
-    <string name="mod_config_press_any_key">Нажмите любую клавишу для привязки...</string>
-    <string name="mod_config_key_unknown">НЕИЗВЕСТНО</string>
-    <string name="mod_config_color_alpha_short">A</string>
-    <string name="mod_config_color_red_short">R</string>
-    <string name="mod_config_color_green_short">G</string>
-    <string name="mod_config_color_blue_short">B</string>
-    <string name="mod_config_color_hex_hint" formatted="false">#AARRGGBB</string>
-    <string name="overlay_button_size_value">Размер: %1$ddp</string>
-    <string name="overlay_button_opacity_value">Непрозрачность: %1$d%%</string>
-    <string name="reset">Сбросить</string>
-    <!-- Completed localization coverage -->
-    <string name="delete_account_title">Удалить учётную запись</string>
-    <string name="delete_account_confirm">Вы уверены, что хотите удалить эту учётную запись?</string>
-    <string name="instance_backup_title">Резервная копия экземпляра</string>
-    <string name="instance_backup_desc">Создать полную резервную копию этого экземпляра в Download/LeviLauncher/Backups.</string>
-    <string name="instance_backup_button">Создать резервную копию экземпляра</string>
-    <string name="instance_backup_confirm_message">Создать полную резервную копию этого экземпляра сейчас? Если Minecraft запущен, сначала закройте его, чтобы файлы не менялись во время резервного копирования.</string>
-    <string name="instance_backup_in_progress">Создание резервной копии экземпляра…</string>
-    <string name="instance_backup_success_title">Резервная копия создана</string>
-    <string name="instance_backup_success_message">Резервная копия сохранена в:\n%1$s</string>
-    <string name="instance_backup_failed_title">Ошибка резервного копирования</string>
-    <string name="instance_backup_failed_message">Не удалось создать резервную копию:\n%1$s</string>
-    <string name="instance_import_backup_button">Импортировать резервную копию</string>
-    <string name="instance_restore_title">Восстановить резервную копию</string>
-    <string name="instance_restore_in_progress">Восстановление резервной копии экземпляра…</string>
-    <string name="instance_restore_success_title">Восстановление завершено</string>
-    <string name="instance_restore_success_message">Восстановлено: %1$s</string>
-    <string name="instance_restore_failed_title">Ошибка восстановления</string>
-    <string name="instance_restore_failed_message">Не удалось восстановить резервную копию:\n%1$s</string>
-    <string name="mod_icon_content_description">Значок мода</string>
-    <string name="mod_metadata_title">Информация</string>
-    <string name="mod_actions_title">Действия</string>
-    <string name="mod_author_label">Автор</string>
-    <string name="mod_version_label">Версия</string>
-    <string name="mod_minecraft_versions_label">Версии Minecraft</string>
-    <string name="mod_entry_label">Файл входа</string>
-    <string name="mod_id_label">ID мода</string>
-    <string name="mod_config_files_label">Файлы конфигурации</string>
-    <string name="mod_unknown_author">Неизвестный автор</string>
-    <string name="mod_unknown_version">Неизвестная версия</string>
-    <string name="mod_all_versions">Все поддерживаемые версии</string>
-    <string name="mod_no_config_files">Нет редактируемой конфигурации</string>
-    <string name="mod_config_badge">КОНФИГ</string>
-    <string name="mod_config_badge_with_count">КОНФИГ · %d</string>
-    <string name="ms_login_header_subtitle">Безопасный вход в Minecraft</string>
-    <string name="ms_login_retrying">Соединение прервано. Безопасная повторная попытка…</string>
-    <string name="ms_choose_login_method">Войти в Minecraft</string>
-    <string name="ms_choose_login_method_desc">Выберите вход по коду устройства через браузер или продолжите на встроенной странице Microsoft.</string>
-    <string name="ms_device_code_login">Продолжить в браузере</string>
-    <string name="ms_device_code_option_title">Код устройства (рекомендуется)</string>
-    <string name="ms_device_code_login_desc">Открыть приватный сеанс браузера с уже введённым кодом устройства.</string>
-    <string name="ms_webview_login">Открыть встроенный вход</string>
-    <string name="ms_webview_option_title">Встроенный WebView</string>
-    <string name="ms_webview_login_desc">Войдите, не покидая LeviLauncher. Используйте этот вариант, если вход через браузер недоступен.</string>
-    <string name="ms_device_code_title">Вход по коду устройства</string>
-    <string name="ms_device_code_instructions">Откройте страницу входа Microsoft по коду устройства, введите этот код и разрешите доступ. LeviLauncher завершит вход автоматически.</string>
-    <string name="ms_device_code_label">Код устройства Microsoft</string>
-    <string name="ms_device_code_requesting">Запрос защищённого кода…</string>
-    <string name="ms_device_code_waiting_code">--------</string>
-    <string name="ms_device_code_waiting">Ожидание завершения в браузере…</string>
-    <string name="ms_device_code_checking">Проверка результата входа Microsoft…</string>
-    <string name="ms_device_code_reconnecting">Соединение изменилось. Автоматическая повторная попытка…</string>
-    <string name="ms_device_code_authorized">Microsoft подтвердил вход. Завершение…</string>
-    <string name="ms_device_code_browser_opened">Завершите новый вход в Microsoft в браузере, затем вернитесь сюда.</string>
-    <string name="ms_device_code_expires">Код истекает через %1$d:%2$02d</string>
-    <string name="ms_device_code_copy">Скопировать код</string>
-    <string name="ms_device_code_copied">Код скопирован</string>
-    <string name="ms_device_code_open_browser">Открыть вход Microsoft</string>
-    <string name="ms_device_code_step_title">Завершите вход в браузере</string>
-    <string name="ms_device_code_browser_note">LeviLauncher открывает браузер по умолчанию в приватном сеансе, автоматически вводит код и запрашивает новый вход в Microsoft.</string>
-    <string name="ms_choose_other_method">Другой способ</string>
-    <string name="ms_no_browser">На этом устройстве нет доступного браузера.</string>
-    <string name="ms_default_browser_no_private_mode">Ваш браузер по умолчанию не поддерживает приватный вход. Обновите его или используйте вход через WebView.</string>
-    <string name="ms_login_ssl_failed">Не удалось проверить защищённую страницу входа Microsoft.</string>
-    <string name="ms_login_state_failed">Не удалось проверить ответ Microsoft при входе. Начните вход заново.</string>
-    <string name="ms_login_missing_code">Microsoft не вернул код входа. Начните вход заново или используйте код устройства.</string>
-    <string name="ms_feature_disabled_title">Функция отключена</string>
-    <string name="ms_feature_disabled_desc">Включите «Вход в Minecraft через LeviLauncher» в настройках, чтобы управлять учётными записями Microsoft.</string>
-    <string name="ms_activated">Активировано</string>
-    <string name="inbuilt_mod_gyro">Гироскоп</string>
-    <string name="inbuilt_mod_gyro_desc">Использовать гироскоп устройства для управления вращением камеры</string>
-    <string name="inbuilt_mod_pojav_controls">Управление Pojav</string>
-    <string name="inbuilt_mod_pojav_controls_desc">Заменить сенсорное управление Minecraft полностью настраиваемым управлением в стиле Pojav</string>
-    <string name="inbuilt_mod_more_buttons">Дополнительные кнопки</string>
-    <string name="inbuilt_mod_more_buttons_desc">Создавайте пользовательские экранные кнопки с назначением одной клавиши и SVG-значками</string>
-    <string name="mod_config_overlay_show_everywhere" formatted="false">Показывать везде</string>
-    <string name="mod_config_zoom_transition">Длительность перехода (мс)</string>
-    <string name="mod_config_gyro_sensitivity_x" formatted="false">Горизонтальная чувствительность (%)</string>
-    <string name="mod_config_gyro_sensitivity_y" formatted="false">Вертикальная чувствительность (%)</string>
-    <string name="mod_config_gyro_invert_x">Инвертировать горизонтальную ось</string>
-    <string name="mod_config_gyro_invert_y">Инвертировать вертикальную ось</string>
-    <string name="mod_config_gyro_deadzone">Мёртвая зона</string>
+    <!-- Generic UI strings added during localization cleanup -->
     <string name="close">Закрыть</string>
     <string name="previous">Назад</string>
     <string name="next">Далее</string>
@@ -927,6 +1024,8 @@
     <string name="custom_color_hint">#RRGGBB или R,G,B</string>
     <string name="screenshot_name_placeholder">Название снимка экрана</string>
     <string name="screenshot_date_placeholder">Дата: 2024-01-01 12:00:00</string>
+
+    <!-- More Buttons editor -->
     <string name="more_buttons_intro">Создавайте экранные кнопки в стиле Minecraft, каждая из которых назначена ровно на одну клавишу клавиатуры. Кнопки никогда не выполняют макросы, последовательности клавиш, автоматические повторы или автоклик.</string>
     <string name="more_buttons_add_button">Добавить кнопку</string>
     <string name="more_buttons_limit_reached">Достигнут максимум пользовательских кнопок: %1$d.</string>
@@ -984,99 +1083,17 @@
     <string name="more_buttons_no_svg_selected">SVG не выбран</string>
     <string name="more_buttons_default_name">Кнопка</string>
 
+
     <!-- Hotbar Slot -->
     <string name="inbuilt_mod_hotbar_slot">Слот панели быстрого доступа</string>
     <string name="inbuilt_mod_hotbar_slot_desc">Добавляет отдельные кнопки 1–9 для выбора слотов панели быстрого доступа</string>
     <string name="hotbar_slot_content_description">Слот панели быстрого доступа %1$d</string>
-
-
-    <!-- Added translations for strings present in the current English resources -->
-    <string name="instance_shortcut_title">Ярлык на главном экране</string>
-    <string name="instance_shortcut_desc">Изменения имени и значка сохраняются автоматически. Нажмите «Добавить ярлык», чтобы создать или обновить ярлык на главном экране.</string>
-    <string name="instance_shortcut_name">Название ярлыка</string>
-    <string name="instance_shortcut_icon">Значок ярлыка</string>
-    <string name="instance_shortcut_choose_icon">Выбрать значок</string>
-    <string name="instance_shortcut_default_icon">Использовать стандартный</string>
-    <string name="instance_shortcut_add_button">Добавить ярлык</string>
-    <string name="instance_settings_auto_save_failed">Не удалось сохранить эту настройку экземпляра.</string>
-    <string name="instance_shortcut_not_supported">Ваш лаунчер главного экрана не поддерживает закреплённые ярлыки.</string>
-    <string name="instance_shortcut_missing">Этот экземпляр Minecraft больше недоступен.</string>
-    <string name="custom_flat_world_subtitle">Создайте мир со своим биомом и слоями блоков</string>
-    <string name="world_settings">Настройки мира</string>
-    <string name="world_settings_hint">Выберите основные настройки нового мира</string>
-    <string name="layers_title">Слои</string>
-    <string name="add_layer_compact">Добавить слой</string>
-    <string name="no_layers_title">Слоёв пока нет</string>
-    <string name="no_layers_hint">Добавьте хотя бы один слой блоков, чтобы создать мир</string>
-    <string name="reorder_layer">Изменить порядок слоя</string>
-    <string name="delete_layer">Удалить слой</string>
-    <string name="block_id_hint">minecraft:stone</string>
-    <string name="scan_downloads">Сканировать</string>
-    <string name="scan_downloads_scanning">Сканирование…</string>
-    <string name="scan_downloads_none_found">В папке «Загрузки» не найдено модов .levipack или .so</string>
-    <string name="scan_downloads_failed">Не удалось просканировать папку «Загрузки»</string>
-    <string name="scan_downloads_permission_denied">Для сканирования папки «Загрузки» нужен доступ к хранилищу</string>
-    <string name="scan_downloads_results_title">Моды в папке «Загрузки»</string>
-    <string name="scan_downloads_results_subtitle">Выберите мод для добавления. Сканирование проверяет только основную папку «Загрузки».</string>
-    <string name="scan_downloads_add">Добавить</string>
-    <string name="scan_downloads_adding">Добавление…</string>
-    <string name="scan_downloads_added">Добавлено</string>
-    <string name="scan_downloads_added_message">%1$s добавлен</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">Нативная библиотека</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
-    <string name="external_mods">Внешние моды</string>
-    <string name="external_mods_subtitle">Моды сообщества для Minecraft %1$s</string>
-    <string name="external_mods_no_version">Выберите версию Minecraft перед установкой модов</string>
-    <string name="external_mods_search_hint">Поиск модов, авторов или версий…</string>
-    <string name="external_mods_compatible_only">Только совместимые</string>
-    <string name="external_mods_all_versions">Все версии Minecraft</string>
-    <string name="external_mods_sort_newest">Сначала новые</string>
-    <string name="external_mods_sort_name">Название А–Я</string>
-    <string name="external_mods_empty">Нет модов, соответствующих этим фильтрам</string>
-    <string name="external_mods_load_failed">Не удалось обновить каталог. Показана сохранённая копия.</string>
-    <string name="external_mods_refresh">Обновить каталог</string>
-    <string name="external_mods_refreshed">Каталог обновлён</string>
-    <string name="external_mods_join_discord">Присоединиться к Discord сообщества</string>
-    <string name="external_mods_discord_open_failed">Нет приложения, которое может открыть приглашение Discord</string>
-    <string name="external_mods_download">Загрузка %1$s</string>
-    <string name="external_mods_importing">Импорт мода…</string>
-    <string name="external_mods_installed">%1$s установлен</string>
-    <string name="external_mods_install_failed">Не удалось установить %1$s: %2$s</string>
-    <string name="external_mods_open_failed">Нет браузера, который может открыть эту загрузку</string>
-    <string name="external_mods_direct_download">Прямая загрузка</string>
-    <string name="external_mods_ad_download">Загрузка с рекламой</string>
-    <string name="external_mods_external_link">Внешняя ссылка</string>
-    <string name="external_mods_open_link">Открыть ссылку</string>
-    <string name="external_mods_external_dialog_title">Внешняя загрузка</string>
-    <string name="external_mods_ad_dialog_title">Загрузка с рекламой</string>
-    <string name="external_mods_external_dialog_message">%1$s использует страницу загрузки вне LeviLauncher.\n\n1. Нажмите «Открыть ссылку» и скачайте файл .levipack или .so.\n2. Вернитесь в LeviLauncher и откройте «Моды».\n3. Нажмите «Сканировать».\n4. Нажмите «Добавить» рядом с модом, который хотите импортировать.\n\nСканирование проверяет только основную папку «Загрузки». Переместите файл туда, если браузер сохранил его в другом месте.</string>
-    <string name="external_mods_ad_dialog_message">%1$s использует страницу загрузки с рекламой, выбранную разработчиком. LeviLauncher не контролирует эту страницу или размещённую на ней рекламу.\n\n1. Нажмите «Открыть ссылку» и скачайте файл .levipack или .so.\n2. Вернитесь в LeviLauncher и откройте «Моды».\n3. Нажмите «Сканировать».\n4. Нажмите «Добавить» рядом с модом, который хотите импортировать.\n\nСканирование проверяет только основную папку «Загрузки». Скачивайте только файл мода; не устанавливайте посторонние приложения и не разрешайте уведомления.</string>
-    <string name="external_mods_by_author">от %1$s</string>
-    <string name="external_mods_version">Мод %1$s</string>
-    <string name="external_mods_minecraft_versions">Minecraft %1$s</string>
-    <string name="external_mods_update">Обновить</string>
-    <string name="external_mods_installed_button">Установлено</string>
-    <string name="external_mods_incompatible">Несовместимо</string>
-    <string name="foreground_service">Служба переднего плана</string>
-    <string name="foreground_service_desc">Оставляет Minecraft запущенным при переключении между приложениями: не даёт Bedrock приостановить активный сеанс и поддерживает активность процесса, процессора и Wi-Fi.</string>
-    <string name="foreground_service_warning">Примечание: телефон может нагреваться быстрее, а расход батареи может увеличиться.</string>
-    <string name="foreground_service_channel">Защита Minecraft в фоновом режиме</string>
-    <string name="foreground_service_notification_title">Minecraft поддерживается активным</string>
-    <string name="foreground_service_notification_text">Фоновый режим Minecraft активен. Процессор и доступ к сети остаются доступными для текущего сеанса.</string>
-    <string name="mod_menu_compact">Компактное меню модов</string>
-    <string name="mod_menu_compact_desc">Использовать уменьшенное меню с плотным списком модулей и компактными фильтрами</string>
-    <string name="mod_config_gyro_sensitivity_multiplier" formatted="false">Множитель чувствительности (100% = 1x)</string>
-    <string name="mod_config_gyro_horizontal_speed" formatted="false">Горизонтальная скорость (%)</string>
-    <string name="mod_config_gyro_vertical_speed" formatted="false">Вертикальная скорость (%)</string>
-    <string name="mod_config_gyro_small_movement_filter">Фильтр малых движений (0 = выкл.)</string>
-    <string name="hud_editor_drag_hint">Перетащите, чтобы переместить панель</string>
-    <string name="hud_editor_drag_description">Редактор HUD. Перетащите эту область, чтобы переместить панель.</string>
     <string name="mod_config_hotbar_item_icons">Использовать значки предметов с панели быстрого доступа</string>
     <string name="mod_config_hotbar_item_counts">Показывать количество предметов</string>
     <string name="mod_config_hotbar_slot_enabled">Показывать слот %1$d панели быстрого доступа</string>
     <string name="mod_config_hotbar_slot_size">Размер слота %1$d панели быстрого доступа (dp)</string>
     <string name="mod_config_hotbar_slot_opacity">Непрозрачность слота %1$d панели быстрого доступа</string>
+    <!-- Changelog & News -->
     <string name="changelog_title">Что нового</string>
     <string name="changelog_version">LeviLauncher %1$s</string>
     <string name="changelog_continue">Продолжить</string>
@@ -1099,6 +1116,7 @@
     <string name="mod_config_category_button">Кнопка</string>
     <string name="mod_config_visible_slots">Видимые слоты</string>
     <string name="mod_config_hotbar_slot_section">Слот панели быстрого доступа %1$d</string>
+    <!-- Selection & Batch Operations -->
     <string name="select">Выбрать</string>
     <string name="select_all">Выбрать все</string>
     <string name="selected">Выбрано</string>

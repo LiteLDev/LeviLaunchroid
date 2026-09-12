@@ -1,3 +1,11 @@
+<!-- NOTE: Keep this file aligned with the English default (values/strings.xml):
+     same resource keys and order, comments, sections, XML structure, and formatting
+     (including indentation, spaces, and blank lines).
+
+     Translations must remain grammatically and linguistically correct for the target
+     language. Locale-specific plural forms may differ when required by the language.
+     Do not change placeholders or resource attributes. -->
+
 <resources>
     <!-- Common -->
     <string name="app_name">LeviLauncher</string>
@@ -162,7 +170,7 @@
     <string name="repair_preparing">Preparing…</string>
     <string name="repair_processing">Extracting libraries…</string>
     <string name="repair_finalizing">Finalizing repair…</string>
-
+    <!-- Storage Migration -->
     <string name="storage_migration_title">Storage Migration Required</string>
     <string name="storage_migration_message">LeviLauncher must migrate data from games/org.levimc to %1$s before continuing.
 
@@ -207,21 +215,21 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="shared_storage_layout_mode_legacy">Original internal/external directories</string>
     <string name="shared_storage_layout_status">Current mode: %1$s\nInternal: %2$s\nExternal: %3$s</string>
     <string name="shared_storage_layout_changed">Storage directory selection updated. Restart Minecraft and reopen content management for the change to fully apply.</string>
-
+    <!-- Theme -->
     <string name="theme_title">Theme Mode</string>
     <string name="theme_follow_system">Follow System</string>
     <string name="theme_light">Light Mode</string>
     <string name="theme_dark">Dark Mode</string>
 
     <string name="error_no_browser">No browser available</string>
-
+    <!-- License & Security -->
     <string name="eula_title">LeviLauncher License Agreement</string>
     <string name="eula_message"><b>Welcome to LeviLauncher</b>\n\nBy using this software you agree to:\n\n• This is an <b>unofficial</b> Minecraft launcher\n• You must own a <b>licensed</b> copy of Minecraft\n• Any form of piracy or cheating is prohibited\n• Mods/resource packs are used at your own risk\n• Not affiliated with Mojang/Microsoft\n\nContinued use constitutes agreement</string>
     <string name="eula_agree">Accept</string>
     <string name="eula_exit">Decline</string>
 
     <string name="allow_unknown_sources">Please allow installation from unknown sources before proceeding</string>
-
+    <!-- Version Management -->
     <string name="dialog_title_delete_version">Delete Version</string>
     <string name="dialog_message_delete_version">Are you sure to delete this custom version? This action cannot be undone.</string>
     <string name="dialog_positive_delete">Delete</string>
@@ -241,7 +249,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="version_isolation">Version Isolation</string>
     <string name="launch_vertically">Launch Vertically</string>
     <string name="launch_vertically_desc">Force the game to launch in portrait mode</string>
-
+    <!-- Instance Management -->
     <string name="instance_settings_title">Instance Settings</string>
     <string name="instance_tab_general">General</string>
     <string name="instance_tab_launch_options">Launch Options</string>
@@ -542,7 +550,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_config_error_maximum">%1$s must be at most %2$s</string>
     <string name="mod_config_error_boolean">%1$s must be on or off</string>
     <string name="mod_config_error_string">%1$s must be text</string>
-
+    <!-- Mod Configuration -->
     <plurals name="mod_config_files_count">
         <item quantity="one">%d editable config</item>
         <item quantity="other">%d editable configs</item>
@@ -643,7 +651,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <!-- Popup labels -->
     <string name="label_current_account">Current Account</string>
     <string name="label_other_accounts">Other Accounts</string>
-
+    <!-- Crash & Diagnostics -->
     <string name="crash_title">Application crashed</string>
     <string name="crash_upload">Crash report upload</string>
     <string name="crash_details_title">Crash details</string>
@@ -933,7 +941,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="about_star_fork">Star / Fork</string>
 
     <string-array name="launcher_tips">
-       <item>Settings lets you adjust theme, color, background, and other appearance options to match your setup.</item>
+        <item>Settings lets you adjust theme, color, background, and other appearance options to match your setup.</item>
         <item>LeviLauncher is open source. Use GitHub issues to report launcher problems or suggest improvements.</item>
         <item>Use the version dropdown to switch the current instance quickly.</item>
         <item>Do people actually read these?</item>
@@ -945,7 +953,7 @@ Migration must complete before LeviLauncher can continue.</string>
         <item>CurseForge lets you browse and download community content directly.</item>
         <item>Import mods to extend or enhance Minecraft features and performance.</item>
     </string-array>
-
+    <!-- Personalization -->
     <string name="theme_color_title">Theme Color</string>
     <string name="theme_color_desc">The primary accent color of the application</string>
     <string name="preset_colors">PRESET COLORS</string>
@@ -1083,6 +1091,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_config_hotbar_slot_enabled">Show hotbar slot %1$d</string>
     <string name="mod_config_hotbar_slot_size">Hotbar slot %1$d size (dp)</string>
     <string name="mod_config_hotbar_slot_opacity">Hotbar slot %1$d opacity</string>
+    <!-- Changelog & News -->
     <string name="changelog_title">What’s new</string>
     <string name="changelog_version">LeviLauncher %1$s</string>
     <string name="changelog_continue">Continue</string>
@@ -1105,7 +1114,7 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_config_category_button">Button</string>
     <string name="mod_config_visible_slots">Visible Slots</string>
     <string name="mod_config_hotbar_slot_section">Hotbar Slot %1$d</string>
-
+    <!-- Selection & Batch Operations -->
     <string name="select">Select</string>
     <string name="select_all">Select All</string>
     <string name="selected">Selected</string>
