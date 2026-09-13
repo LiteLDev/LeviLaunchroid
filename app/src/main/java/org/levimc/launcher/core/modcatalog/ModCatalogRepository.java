@@ -34,6 +34,7 @@ public final class ModCatalogRepository {
     private static final String ASSET_PATH = "launcher/mod_catalog.json";
     private static final String CACHE_FILE = "launcher_mod_catalog.json";
     private static final Pattern ID_PATTERN = Pattern.compile("[a-z0-9][a-z0-9._-]{0,63}");
+    private static final Pattern SHA256_PATTERN = Pattern.compile("[0-9a-fA-F]{64}");
     private static final Gson GSON = new Gson();
     private static final OkHttpClient HTTP = new OkHttpClient();
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
@@ -81,27 +82,33 @@ public final class ModCatalogRepository {
             return parse(readUtf8(input));
         } catch (Exception ignored) {
             ModCatalog catalog = new ModCatalog();
-            catalog.schemaVersion = 1;
+            catalog.schemaVersion = 2;
             return catalog;
         }
     }
 
     private static ModCatalog parse(String json) {
         ModCatalog catalog = GSON.fromJson(json, ModCatalog.class);
-        if (catalog == null || catalog.schemaVersion != 1) {
+        if (catalog == null || (catalog.schemaVersion != 1 && catalog.schemaVersion != 2)) {
             throw new IllegalArgumentException("Unsupported mod catalog schema");
         }
+        int schemaVersion = catalog.schemaVersion;
         if (catalog.mods == null) catalog.mods = new ArrayList<>();
         catalog.mods.removeIf(mod -> !isValidMod(mod));
         for (ModCatalog.CatalogMod mod : catalog.mods) {
-            mod.releases.removeIf(release -> !isValidRelease(release));
-            mod.releases.sort(Comparator.comparing(
+            List<ModCatalog.CatalogRelease> releases = new ArrayList<>();
+            for (ModCatalog.CatalogRelease release : mod.releases) {
+                if (normalizeRelease(release, schemaVersion)) releases.add(release);
+            }
+            releases.sort(Comparator.comparing(
                     (ModCatalog.CatalogRelease release) -> value(release.publishedAt)).reversed());
+            mod.releases = releases;
             if (!isHttps(mod.iconUrl)) mod.iconUrl = "";
             if (!isHttps(mod.homepageUrl)) mod.homepageUrl = "";
             if (mod.tags == null) mod.tags = new ArrayList<>();
         }
         catalog.mods.removeIf(mod -> mod.releases.isEmpty());
+        catalog.schemaVersion = 2;
         return catalog;
     }
 
@@ -115,19 +122,58 @@ public final class ModCatalogRepository {
                 && mod.releases != null;
     }
 
-    private static boolean isValidRelease(ModCatalog.CatalogRelease release) {
+    private static boolean normalizeRelease(ModCatalog.CatalogRelease release, int schemaVersion) {
         if (release == null
                 || TextUtils.isEmpty(release.version)
-                || TextUtils.isEmpty(release.downloadUrl)
                 || release.minecraftVersions == null
-                || release.minecraftVersions.isEmpty()
-                || !isHttps(release.downloadUrl)) {
+                || release.minecraftVersions.isEmpty()) {
             return false;
         }
         String type = value(release.downloadType).toLowerCase(Locale.ROOT);
-        return "direct".equals(type)
-                || "browser".equals(type)
-                || "ad".equals(type);
+        if (!"direct".equals(type) && !"browser".equals(type) && !"ad".equals(type)) {
+            return false;
+        }
+        release.downloadType = type;
+        if (release.assets == null) release.assets = new ArrayList<>();
+        if ("direct".equals(type)) {
+            if (release.assets.isEmpty() && isHttps(release.downloadUrl)) {
+                ModCatalog.CatalogAsset legacyAsset = new ModCatalog.CatalogAsset();
+                legacyAsset.name = fileNameFromUrl(release.downloadUrl);
+                legacyAsset.downloadUrl = release.downloadUrl;
+                release.assets.add(legacyAsset);
+            }
+            release.assets.removeIf(asset -> !isValidAsset(asset));
+            release.downloadUrl = "";
+            return !release.assets.isEmpty();
+        }
+        release.assets.clear();
+        return isHttps(release.downloadUrl);
+    }
+
+    private static boolean isValidAsset(ModCatalog.CatalogAsset asset) {
+        if (asset == null || TextUtils.isEmpty(asset.downloadUrl) || !isHttps(asset.downloadUrl)) {
+            return false;
+        }
+        if (TextUtils.isEmpty(asset.name)) asset.name = fileNameFromUrl(asset.downloadUrl);
+        String lowerName = value(asset.name).toLowerCase(Locale.ROOT);
+        if (!lowerName.endsWith(".levipack") && !lowerName.endsWith(".zip") && !lowerName.endsWith(".so")) {
+            return false;
+        }
+        if (asset.size < 0) return false;
+        if (!TextUtils.isEmpty(asset.sha256)) {
+            asset.sha256 = asset.sha256.trim().toLowerCase(Locale.ROOT);
+            if (!SHA256_PATTERN.matcher(asset.sha256).matches()) return false;
+        }
+        return true;
+    }
+
+    private static String fileNameFromUrl(String url) {
+        try {
+            String segment = Uri.parse(url).getLastPathSegment();
+            return TextUtils.isEmpty(segment) ? "download" : segment;
+        } catch (Exception ignored) {
+            return "download";
+        }
     }
 
     private static boolean isHttps(String value) {

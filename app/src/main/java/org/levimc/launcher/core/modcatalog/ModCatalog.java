@@ -45,6 +45,7 @@ public final class ModCatalog {
         public String downloadType;
         @SerializedName("download_url")
         public String downloadUrl;
+        public List<CatalogAsset> assets = new ArrayList<>();
         @SerializedName("published_at")
         public String publishedAt;
 
@@ -60,5 +61,18 @@ public final class ModCatalog {
         public boolean isAdDownload() {
             return "ad".equalsIgnoreCase(downloadType);
         }
+
+        public List<CatalogAsset> directAssets() {
+            return assets == null ? new ArrayList<>() : assets;
+        }
+    }
+
+    public static final class CatalogAsset {
+        public String name;
+        public String label;
+        @SerializedName("download_url")
+        public String downloadUrl;
+        public long size;
+        public String sha256;
     }
 }

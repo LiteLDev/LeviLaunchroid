@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
@@ -239,22 +240,54 @@ public final class ExternalModsActivity extends BaseActivity {
     private void handleModAction(ModCatalog.CatalogMod mod, ModCatalog.CatalogRelease release) {
         if (release.opensInBrowser()) {
             showExternalDownloadDialog(mod, release);
-        } else {
-            installDirect(mod, release);
+            return;
+        }
+        List<ModCatalog.CatalogAsset> assets = release.directAssets();
+        if (assets.size() == 1) {
+            installDirect(mod, release, assets.get(0));
+        } else if (assets.size() > 1) {
+            showAssetChooser(mod, release, assets);
         }
     }
 
-    private void installDirect(ModCatalog.CatalogMod mod, ModCatalog.CatalogRelease release) {
+    private void showAssetChooser(ModCatalog.CatalogMod mod, ModCatalog.CatalogRelease release,
+                                  List<ModCatalog.CatalogAsset> assets) {
+        String[] items = new String[assets.size()];
+        for (int index = 0; index < assets.size(); index++) {
+            items[index] = assetDisplayText(assets.get(index));
+        }
+        new CustomAlertDialog(this)
+                .setTitleText(getString(R.string.external_mods_choose_download))
+                .setItems(items, (dialog, which) -> installDirect(mod, release, assets.get(which)))
+                .setNegativeButton(getString(R.string.cancel), null)
+                .setUseBorderedBackground(true)
+                .setBlurBackground(true)
+                .show();
+    }
+
+    private String assetDisplayText(ModCatalog.CatalogAsset asset) {
+        String name = value(asset.name);
+        String label = value(asset.label);
+        String text = label.isEmpty() || label.equals(name) ? name : label + " — " + name;
+        if (asset.size > 0) {
+            text += " • " + Formatter.formatShortFileSize(this, asset.size);
+        }
+        return text;
+    }
+
+    private void installDirect(ModCatalog.CatalogMod mod, ModCatalog.CatalogRelease release,
+                               ModCatalog.CatalogAsset asset) {
         if (installing) return;
         installing = true;
         adapter.setBusyModId(mod.id);
         installDialog = new InstallProgressDialog(this);
         installDialog.setTitleText(getString(R.string.external_mods_download, mod.name));
-        installDialog.setStatusText(release.version);
+        installDialog.setStatusText(getString(R.string.external_mods_download_file,
+                release.version, value(asset.name)));
         installDialog.show();
         installDialog.setProgress(0);
 
-        installer.install(mod, release, new ModCatalogInstaller.Callback() {
+        installer.install(mod, release, asset, new ModCatalogInstaller.Callback() {
             @Override
             public void onProgress(int value, boolean importing) {
                 if (installDialog == null) return;

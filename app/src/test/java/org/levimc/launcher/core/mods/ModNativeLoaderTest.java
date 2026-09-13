@@ -52,4 +52,15 @@ public class ModNativeLoaderTest {
                 Arrays.asList("1.25.*", "1.26.20"),
                 "1.26.21"));
     }
+    @Test
+    public void minimumVersionPatternMatchesSameOrNewerVersion() {
+        assertTrue(ModNativeLoader.matchesMinecraftVersionPattern(">=1.26.45.1", "1.26.45.1"));
+        assertTrue(ModNativeLoader.matchesMinecraftVersionPattern(">=1.26.45.1", "1.26.45.2"));
+        assertTrue(ModNativeLoader.matchesMinecraftVersionPattern(">=1.26.45.1", "1.26.50.1"));
+        assertTrue(ModNativeLoader.matchesMinecraftVersionPattern(">= 1.26.45.1", "1.27.0"));
+        assertFalse(ModNativeLoader.matchesMinecraftVersionPattern(">=1.26.45.1", "1.26.45"));
+        assertFalse(ModNativeLoader.matchesMinecraftVersionPattern(">=1.26.45.1", "1.26.44.9"));
+        assertFalse(ModNativeLoader.matchesMinecraftVersionPattern(">=invalid", "1.26.50.1"));
+    }
+
 }

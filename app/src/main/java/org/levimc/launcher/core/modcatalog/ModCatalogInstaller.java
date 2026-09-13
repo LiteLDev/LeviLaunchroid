@@ -6,11 +6,14 @@ import android.net.Uri;
 
 import androidx.core.content.FileProvider;
 
+import org.levimc.launcher.R;
 import org.levimc.launcher.core.mods.FileHandler;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.security.MessageDigest;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,18 +39,22 @@ public final class ModCatalogInstaller {
         this.fileHandler = fileHandler;
     }
 
-    public void install(ModCatalog.CatalogMod mod, ModCatalog.CatalogRelease release, Callback callback) {
+    public void install(ModCatalog.CatalogMod mod, ModCatalog.CatalogRelease release,
+                        ModCatalog.CatalogAsset asset, Callback callback) {
         EXECUTOR.execute(() -> {
             File downloadedFile = null;
             try {
-                String extension = extensionFor(release.downloadUrl);
+                String extension = extensionFor(asset);
                 if (extension == null) throw new IllegalArgumentException("Unsupported download file type");
                 File downloadDir = new File(context.getCacheDir(), "external_mod_downloads");
                 if (!downloadDir.exists() && !downloadDir.mkdirs()) {
                     throw new IllegalStateException("Could not prepare download folder");
                 }
-                downloadedFile = new File(downloadDir, safeName(mod.id) + "-" + safeName(release.version) + extension);
-                Request request = new Request.Builder().url(release.downloadUrl).build();
+                String assetName = safeName(asset.name);
+                if (!assetName.toLowerCase(Locale.ROOT).endsWith(extension)) assetName += extension;
+                downloadedFile = new File(downloadDir,
+                        safeName(mod.id) + "-" + safeName(release.version) + "-" + assetName);
+                Request request = new Request.Builder().url(asset.downloadUrl).build();
                 try (Response response = HTTP.newCall(request).execute()) {
                     if (!response.isSuccessful() || response.body() == null) {
                         throw new IllegalStateException("Download failed with HTTP " + response.code());
@@ -68,6 +75,9 @@ public final class ModCatalogInstaller {
                         }
                         output.getFD().sync();
                     }
+                }
+                if (!verifySha256(downloadedFile, asset.sha256)) {
+                    throw new IllegalStateException(context.getString(R.string.external_mods_verification_failed));
                 }
 
                 File resultFile = downloadedFile;
@@ -112,6 +122,19 @@ public final class ModCatalogInstaller {
         }
     }
 
+    private boolean verifySha256(File file, String expected) throws Exception {
+        if (expected == null || expected.isEmpty()) return true;
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        try (InputStream input = new FileInputStream(file)) {
+            byte[] buffer = new byte[16384];
+            int read;
+            while ((read = input.read(buffer)) != -1) digest.update(buffer, 0, read);
+        }
+        StringBuilder actual = new StringBuilder(64);
+        for (byte value : digest.digest()) actual.append(String.format(Locale.ROOT, "%02x", value & 0xff));
+        return expected.equalsIgnoreCase(actual.toString());
+    }
+
     private void deliverProgress(Callback callback, int progress, boolean importing) {
         if (callback == null) return;
         context.getMainExecutor().execute(() -> callback.onProgress(progress, importing));
@@ -122,10 +145,17 @@ public final class ModCatalogInstaller {
         context.getMainExecutor().execute(() -> callback.onError(message));
     }
 
-    private String extensionFor(String url) {
-        String path = Uri.parse(url).getPath();
-        if (path == null) return null;
-        String lower = path.toLowerCase(Locale.ROOT);
+    private String extensionFor(ModCatalog.CatalogAsset asset) {
+        String name = asset == null ? null : asset.name;
+        String extension = extensionForName(name);
+        if (extension != null) return extension;
+        String path = asset == null || asset.downloadUrl == null ? null : Uri.parse(asset.downloadUrl).getPath();
+        return extensionForName(path);
+    }
+
+    private String extensionForName(String value) {
+        if (value == null) return null;
+        String lower = value.toLowerCase(Locale.ROOT);
         if (lower.endsWith(".levipack")) return ".levipack";
         if (lower.endsWith(".zip")) return ".zip";
         if (lower.endsWith(".so")) return ".so";
