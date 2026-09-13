@@ -25,15 +25,35 @@ public final class ModCatalog {
         public List<CatalogRelease> releases = new ArrayList<>();
 
         public CatalogRelease compatibleRelease(String minecraftVersion) {
-            if (releases == null) return null;
+            if (releases == null || releases.isEmpty()) return null;
+            CatalogRelease newest = null;
             for (CatalogRelease release : releases) {
-                if (release != null && release.supports(minecraftVersion)) return release;
+                if (release == null || !release.supports(minecraftVersion)) continue;
+                if (newest == null || comparePublishedAt(release, newest) > 0) {
+                    newest = release;
+                }
             }
-            return null;
+            return newest;
         }
 
         public CatalogRelease latestRelease() {
-            return releases == null || releases.isEmpty() ? null : releases.get(0);
+            if (releases == null || releases.isEmpty()) return null;
+            CatalogRelease newest = null;
+            for (CatalogRelease release : releases) {
+                if (release == null) continue;
+                if (newest == null || comparePublishedAt(release, newest) > 0) {
+                    newest = release;
+                }
+            }
+            return newest;
+        }
+
+        private static int comparePublishedAt(CatalogRelease first, CatalogRelease second) {
+            String firstPublishedAt = first == null || first.publishedAt == null
+                    ? "" : first.publishedAt;
+            String secondPublishedAt = second == null || second.publishedAt == null
+                    ? "" : second.publishedAt;
+            return firstPublishedAt.compareTo(secondPublishedAt);
         }
     }
 
