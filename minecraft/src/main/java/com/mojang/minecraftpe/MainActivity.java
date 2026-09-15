@@ -1528,6 +1528,24 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         return mCachedUsedMemory;
     }
 
+    public String getClipboardText() {
+        if (clipboardManager.hasPrimaryClip()) {
+            ClipData clipData = clipboardManager.getPrimaryClip();
+    
+            if (clipData != null) {
+                ClipData.Item item = clipData.getItemAt(0);
+    
+                if (item != null) {
+                    CharSequence text = item.coerceToText(this);
+                    return text.toString();
+                }
+            }
+        }
+    
+        return "";
+    }
+
+    
     public long getDebugMemoryInfo(String statName) {
         if (statName == null) {
             return 0L;
