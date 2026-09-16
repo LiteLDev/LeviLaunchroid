@@ -1,0 +1,41 @@
+version: 2
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "00:00"
+      timezone: "Etc/GMT"
+
+    open-pull-requests-limit: 10
+
+    labels:
+      - "github_actions"
+      - "dependencies"
+
+    pull-request-branch-name:
+      separator: "/"
+
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+
+    groups:
+      github-official:
+        patterns:
+          - "actions/*"
+        update-types:
+          - "minor"
+          - "patch"
+
+      third-party-actions:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "actions/*"
+        update-types:
+          - "minor"
+          - "patch"
