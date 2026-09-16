@@ -1,14 +1,13 @@
 {
   "schemaVersion": 1,
-  "headline": "LeviLauncher Hotfix",
-  "summary": "This update improves the External Mods catalog with V2 support and better newest-release sorting.",
+  "headline": "LeviLauncher 1.26.50 Support",
+  "summary": "This update adds Minecraft 1.26.50 support for inbuilt mods and fixes chat keyboard input.",
   "sections": [
     {
       "title": "Features",
       "items": [
         {
-          "text": "Added V2 external mod catalog support with automatic release metadata and multiple download assets.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/95e535b6f0f99488c02d75a21ff0657f9f4a6b4f"
+          "text": "Added inbuilt mod support for Minecraft 1.26.50."
         }
       ]
     },
@@ -16,8 +15,7 @@
       "title": "Fixes",
       "items": [
         {
-          "text": "Fixed external mods sorting so newly updated mods appear first when sorting by newest.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/e9c9cc6d5c23911559cb83b8064c415242ea3f4f"
+          "text": "Fixed the chat keyboard closing immediately after opening in Minecraft 1.26.50."
         }
       ]
     }
