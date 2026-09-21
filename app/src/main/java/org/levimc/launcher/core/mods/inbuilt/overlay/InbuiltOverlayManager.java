@@ -39,6 +39,8 @@ public class InbuiltOverlayManager {
     private FpsDisplayOverlay fpsDisplayOverlay;
     private CpsDisplayOverlay cpsDisplayOverlay;
     private ModMenuButton modMenuButton;
+    private ModMenuOverlay modMenuOverlay;
+    private boolean modMenuOpenedFromButton;
     private HudOverlay hudOverlay;
     private BaseOverlayButton selectedHudEditorOverlay;
     private String selectedDisplayModId;
@@ -56,6 +58,70 @@ public class InbuiltOverlayManager {
 
     public static InbuiltOverlayManager getInstance() {
         return instance;
+    }
+
+    private ModMenuOverlay getOrCreateModMenuOverlay() {
+        if (modMenuOverlay == null) {
+            modMenuOverlay = new ModMenuOverlay(activity);
+            modMenuOverlay.setCallback(new ModMenuOverlay.ModMenuCallback() {
+                @Override
+                public void onModToggled(String modId, boolean enabled) {
+                }
+
+                @Override
+                public void onButtonOpacityChanged(int opacity) {
+                    if (modMenuButton != null) {
+                        modMenuButton.refreshOpacity();
+                    }
+                }
+            });
+        }
+        return modMenuOverlay;
+    }
+
+    public void showModMenu() {
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        if (!manager.isModMenuEnabled()) return;
+        activity.runOnUiThread(() -> {
+            if (activity.isFinishing() || activity.isDestroyed()) return;
+            modMenuOpenedFromButton = false;
+            getOrCreateModMenuOverlay().show();
+        });
+    }
+
+    public void hideModMenu() {
+        activity.runOnUiThread(() -> {
+            modMenuOpenedFromButton = false;
+            if (modMenuOverlay != null && modMenuOverlay.isShowing()) {
+                modMenuOverlay.hide();
+            }
+        });
+    }
+
+    public void toggleModMenuFromButton() {
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        if (!manager.isModMenuEnabled()) return;
+        if (manager.isPauseMenuOnly() &&
+                (!org.levimc.launcher.preloader.PreloaderInput.isPauseMenuOpen() ||
+                        !org.levimc.launcher.preloader.PreloaderInput.isShowingMenu())) {
+            hideModMenu();
+            return;
+        }
+        activity.runOnUiThread(() -> {
+            if (activity.isFinishing() || activity.isDestroyed()) return;
+            ModMenuOverlay overlay = getOrCreateModMenuOverlay();
+            if (overlay.isShowing()) {
+                modMenuOpenedFromButton = false;
+                overlay.hide();
+            } else {
+                modMenuOpenedFromButton = true;
+                overlay.show();
+            }
+        });
+    }
+
+    public boolean isModMenuShowing() {
+        return modMenuOverlay != null && modMenuOverlay.isShowing();
     }
 
     public void showEnabledOverlays() {
@@ -593,6 +659,11 @@ public class InbuiltOverlayManager {
             gyroOverlay.hide();
             gyroOverlay = null;
         }
+        if (modMenuOverlay != null) {
+            modMenuOverlay.hide();
+            modMenuOverlay = null;
+            modMenuOpenedFromButton = false;
+        }
         if (modMenuButton != null) {
             modMenuButton.hide();
             modMenuButton = null;
@@ -931,8 +1002,9 @@ public class InbuiltOverlayManager {
                         ? android.view.View.VISIBLE
                         : android.view.View.GONE;
                 modMenuButton.setVisibility(visibility);
-                if (!hudEditorMode && visibility == android.view.View.GONE && modMenuButton.isMenuShowing()) {
-                    modMenuButton.hideMenu();
+                if (!hudEditorMode && visibility == android.view.View.GONE &&
+                        modMenuOpenedFromButton && isModMenuShowing()) {
+                    hideModMenu();
                 }
             }
 

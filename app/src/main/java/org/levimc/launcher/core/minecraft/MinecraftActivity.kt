@@ -205,6 +205,23 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    fun requestOpenModMenu() {
+        runOnUiThread {
+            if (isFinishing || isDestroyed) return@runOnUiThread
+            window.decorView.post {
+                if (!isFinishing && !isDestroyed) {
+                    overlayManager?.showModMenu()
+                }
+            }
+        }
+    }
+
+    fun requestCloseModMenu() {
+        runOnUiThread {
+            overlayManager?.hideModMenu()
+        }
+    }
+
     fun openPreloaderDocumentPicker(mimeType: String) {
         runOnUiThread {
             try {
