@@ -485,6 +485,9 @@ La migración debe completarse antes de continuar con LeviLauncher.</string>
     <string name="external_mods_join_discord">Unirse al Discord de la comunidad</string>
     <string name="external_mods_discord_open_failed">Ninguna aplicación puede abrir la invitación de Discord</string>
     <string name="external_mods_download">Descargando %1$s</string>
+    <string name="external_mods_choose_download">Elegir descarga</string>
+    <string name="external_mods_download_file">Mod %1$s • %2$s</string>
+    <string name="external_mods_verification_failed">No se pudo verificar la descarga</string>
     <string name="external_mods_importing">Importando mod…</string>
     <string name="external_mods_installed">%1$s instalado</string>
     <string name="external_mods_install_failed">No se pudo instalar %1$s: %2$s</string>

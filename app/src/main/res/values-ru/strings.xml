@@ -487,6 +487,9 @@
     <string name="external_mods_join_discord">Присоединиться к Discord сообщества</string>
     <string name="external_mods_discord_open_failed">Нет приложения, которое может открыть приглашение Discord</string>
     <string name="external_mods_download">Загрузка %1$s</string>
+    <string name="external_mods_choose_download">Выбор загрузки</string>
+    <string name="external_mods_download_file">Мод %1$s • %2$s</string>
+    <string name="external_mods_verification_failed">Не удалось проверить загрузку</string>
     <string name="external_mods_importing">Импорт мода…</string>
     <string name="external_mods_installed">%1$s установлен</string>
     <string name="external_mods_install_failed">Не удалось установить %1$s: %2$s</string>

@@ -485,6 +485,9 @@ Quá trình chuyển đổi phải hoàn tất trước khi LeviLauncher có th�
     <string name="external_mods_join_discord">Tham gia Discord cộng đồng</string>
     <string name="external_mods_discord_open_failed">Không có ứng dụng nào có thể mở lời mời Discord</string>
     <string name="external_mods_download">Đang tải %1$s</string>
+    <string name="external_mods_choose_download">Chọn bản tải xuống</string>
+    <string name="external_mods_download_file">Mod %1$s • %2$s</string>
+    <string name="external_mods_verification_failed">Xác minh bản tải xuống thất bại</string>
     <string name="external_mods_importing">Đang nhập mod…</string>
     <string name="external_mods_installed">Đã cài %1$s</string>
     <string name="external_mods_install_failed">Không thể cài %1$s: %2$s</string>

@@ -93,5 +93,6 @@ BedrockTools-main
 tntimer-main
 MinecraftAuth
 
-# Others
+# git
 commit_msg.txt
+.patch

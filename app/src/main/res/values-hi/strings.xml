@@ -485,6 +485,9 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="external_mods_join_discord">कम्युनिटी Discord से जुड़ें</string>
     <string name="external_mods_discord_open_failed">कोई ऐप Discord आमंत्रण नहीं खोल सकता</string>
     <string name="external_mods_download">%1$s डाउनलोड हो रहा है</string>
+    <string name="external_mods_choose_download">डाउनलोड चुनें</string>
+    <string name="external_mods_download_file">मॉड %1$s • %2$s</string>
+    <string name="external_mods_verification_failed">डाउनलोड सत्यापन विफल</string>
     <string name="external_mods_importing">मॉड इम्पोर्ट हो रहा है…</string>
     <string name="external_mods_installed">%1$s इंस्टॉल हो गया</string>
     <string name="external_mods_install_failed">%1$s इंस्टॉल नहीं हो सका: %2$s</string>

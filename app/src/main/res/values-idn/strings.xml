@@ -485,6 +485,9 @@ Migrasi harus selesai sebelum LeviLauncher dapat melanjutkan.</string>
     <string name="external_mods_join_discord">Gabung Discord Komunitas</string>
     <string name="external_mods_discord_open_failed">Tidak ada aplikasi yang dapat membuka undangan Discord</string>
     <string name="external_mods_download">Mengunduh %1$s</string>
+    <string name="external_mods_choose_download">Pilih unduhan</string>
+    <string name="external_mods_download_file">Mod %1$s • %2$s</string>
+    <string name="external_mods_verification_failed">Verifikasi unduhan gagal</string>
     <string name="external_mods_importing">Mengimpor mod…</string>
     <string name="external_mods_installed">%1$s terpasang</string>
     <string name="external_mods_install_failed">Tidak dapat memasang %1$s: %2$s</string>

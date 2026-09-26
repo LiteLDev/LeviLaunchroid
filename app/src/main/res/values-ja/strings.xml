@@ -485,6 +485,9 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="external_mods_join_discord">コミュニティ Discord に参加</string>
     <string name="external_mods_discord_open_failed">Discord の招待を開けるアプリがありません</string>
     <string name="external_mods_download">%1$s をダウンロード中</string>
+    <string name="external_mods_choose_download">ダウンロードを選択</string>
+    <string name="external_mods_download_file">Mod %1$s • %2$s</string>
+    <string name="external_mods_verification_failed">ダウンロードの検証に失敗しました</string>
     <string name="external_mods_importing">Mod をインポート中…</string>
     <string name="external_mods_installed">%1$s をインストールしました</string>
     <string name="external_mods_install_failed">%1$s をインストールできませんでした: %2$s</string>

@@ -485,6 +485,9 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="external_mods_join_discord">Topluluk Discord’una Katıl</string>
     <string name="external_mods_discord_open_failed">Discord davetini açabilecek bir uygulama yok</string>
     <string name="external_mods_download">%1$s indiriliyor</string>
+    <string name="external_mods_choose_download">İndirme seç</string>
+    <string name="external_mods_download_file">Mod %1$s • %2$s</string>
+    <string name="external_mods_verification_failed">İndirme doğrulaması başarısız</string>
     <string name="external_mods_importing">Mod içe aktarılıyor…</string>
     <string name="external_mods_installed">%1$s yüklendi</string>
     <string name="external_mods_install_failed">%1$s yüklenemedi: %2$s</string>

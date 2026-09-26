@@ -485,6 +485,9 @@
     <string name="external_mods_join_discord">加入社区 Discord</string>
     <string name="external_mods_discord_open_failed">没有应用可以打开 Discord 邀请</string>
     <string name="external_mods_download">正在下载 %1$s</string>
+    <string name="external_mods_choose_download">选择下载</string>
+    <string name="external_mods_download_file">模组 %1$s • %2$s</string>
+    <string name="external_mods_verification_failed">下载校验失败</string>
     <string name="external_mods_importing">正在导入模组…</string>
     <string name="external_mods_installed">已安装 %1$s</string>
     <string name="external_mods_install_failed">无法安装 %1$s：%2$s</string>
