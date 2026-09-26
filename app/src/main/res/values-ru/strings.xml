@@ -555,14 +555,20 @@
     <!-- Mod Configuration -->
     <plurals name="mod_config_files_count">
         <item quantity="one">%d редактируемая конфигурация</item>
+        <item quantity="few">%d редактируемые конфигурации</item>
+        <item quantity="many">%d редактируемых конфигураций</item>
         <item quantity="other">%d редактируемой конфигурации</item>
     </plurals>
     <plurals name="mod_config_choices_count">
         <item quantity="one">%d вариант</item>
+        <item quantity="few">%d варианта</item>
+        <item quantity="many">%d вариантов</item>
         <item quantity="other">%d варианта</item>
     </plurals>
     <plurals name="mod_config_items_count">
         <item quantity="one">%d элемент</item>
+        <item quantity="few">%d элемента</item>
+        <item quantity="many">%d элементов</item>
         <item quantity="other">%d элемента</item>
     </plurals>
 
