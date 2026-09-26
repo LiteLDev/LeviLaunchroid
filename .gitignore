@@ -92,3 +92,7 @@ Thumbs.db
 BedrockTools-main
 tntimer-main
 MinecraftAuth
+
+# git
+commit_msg.txt
+.patch
