@@ -2,6 +2,7 @@ name: ✨ Feature Request
 description: Suggest a new feature or improvement for LeviLaunchroid.
 title: "[Feature]: "
 labels: ["type: enhancement", "status: proposal"]
+type: feature
 body:
   - type: checkboxes
     attributes:

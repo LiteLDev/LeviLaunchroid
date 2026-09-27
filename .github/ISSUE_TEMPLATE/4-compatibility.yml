@@ -2,6 +2,7 @@ name: 🧩 Compatibility / Crash
 description: Report an app crash triggered by device settings, OS versions, or Minecraft updates.
 title: "[Crash]: "
 labels: ["type: bug"]
+type: bug
 body:
   - type: checkboxes
     attributes:
