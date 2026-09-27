@@ -5,10 +5,13 @@ you may use the corresponding specialized template in .github/PULL_REQUEST_TEMPL
 
 ## Summary
 
-<!-- Few-line description of what this PR changes.
-Link the relevant issue when applicable, for example: `Resolves #123`. -->
+<!-- Few-line description of what this PR changes. -->
 
-## What changed
+## Related Issue
+
+<!-- Use `Fixes #123`, `Closes #123`, or `Resolves #123` when applicable. -->
+
+## Changes
 
 <!-- List the main files or changes in simple bullets. -->
 

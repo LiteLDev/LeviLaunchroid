@@ -5,11 +5,9 @@ Replace [ ] with [x] only for checks you actually completed. Do not claim valida
 
 <!-- Briefly describe the translation update. -->
 
-## Related issue
+## Related Issue
 
-<!-- Example: Resolves #123 -->
-
-Resolves #
+<!-- Use `Fixes #123`, `Closes #123`, or `Resolves #123` when applicable. -->
 
 ## Language(s)
 
@@ -17,7 +15,7 @@ Resolves #
 
 *
 
-## What changed
+## Changes
 
 <!-- Examples:
 - Added new strings

@@ -5,13 +5,11 @@ Replace [ ] with [x] only for checks you actually completed. Do not claim valida
 
 <!-- What feature does this PR add? -->
 
-## Related issue
+## Related Issue
 
-<!-- Example: Resolves #123 -->
+<!-- Use `Fixes #123`, `Closes #123`, or `Resolves #123` when applicable. -->
 
-Resolves #
-
-## What changed
+## Changes
 
 *
 

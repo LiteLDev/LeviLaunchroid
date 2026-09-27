@@ -5,17 +5,15 @@ Replace [ ] with [x] only for checks you actually completed. Do not claim valida
 
 <!-- Briefly describe what was optimized and where it affects the launcher (startup, downloads, memory, UI smoothness). -->
 
-## Related issue
+## Related Issue
 
-<!-- Example: Resolves #123 -->
+<!-- Use `Fixes #123`, `Closes #123`, or `Resolves #123` when applicable. -->
 
-Resolves #
-
-## What changed
+## Changes
 
 *
 
-## Why it improves performance
+## Why It Improves Performance
 
 <!--
 Explain what unnecessary work, overhead, contention, allocation, I/O,
