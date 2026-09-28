@@ -2,6 +2,16 @@
   "schemaVersion": 1,
   "items": [
     {
+      "id": "2026-09-28-levilauncher-mods-curseforge",
+      "title": "Help bring LeviLauncher mods to CurseForge",
+      "summary": "CurseForge is considering support for LeviLauncher Mods. Vote for the proposal and help bring LeviLauncher mods to CurseForge.",
+      "publishedAt": "2026-09-28T11:32:00Z",
+      "category": "Important",
+      "url": "https://curseforge-ideas.overwolf.com/ideas/CF-I-8666",
+      "important": true,
+      "notify": true
+    },
+    {
       "id": "2026-09-09-android-17-supported",
       "title": "Android 17 is now supported",
       "summary": "LeviLauncher now supports Android 17. You can now use the launcher on devices running Android 17.",
