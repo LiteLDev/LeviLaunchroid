@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import org.levimc.launcher.R;
+import org.levimc.launcher.core.mods.inbuilt.ExternalModBridge;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.preloader.PreloaderInput;
 
@@ -118,8 +119,9 @@ public class ModMenuButton {
     private void applyRuntimeVisibility() {
         if (buttonView == null) return;
         InbuiltModManager manager = InbuiltModManager.getInstance(activity);
-        boolean visible = !manager.isPauseMenuOnly() ||
-                (PreloaderInput.isPauseMenuOpen() && PreloaderInput.isShowingMenu());
+        boolean visible = !ExternalModBridge.isFloatingModMenuButtonHidden() &&
+                (!manager.isPauseMenuOnly() ||
+                        (PreloaderInput.isPauseMenuOpen() && PreloaderInput.isShowingMenu()));
         buttonView.setVisibility(visible ? View.VISIBLE : View.GONE);
         InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
         if (overlayManager != null) {

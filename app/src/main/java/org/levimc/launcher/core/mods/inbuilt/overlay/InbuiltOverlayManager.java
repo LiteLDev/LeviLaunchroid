@@ -965,6 +965,7 @@ public class InbuiltOverlayManager {
         boolean isPauseOpen = org.levimc.launcher.preloader.PreloaderInput.isPauseMenuOpen();
         boolean isHudScreenOpen = org.levimc.launcher.preloader.PreloaderInput.isHudScreenOpen();
         boolean isShowingMenu = org.levimc.launcher.preloader.PreloaderInput.isShowingMenu();
+        boolean isFloatingModMenuButtonHidden = ExternalModBridge.isFloatingModMenuButtonHidden();
         boolean showGameOverlays = isHudScreenOpen && !isShowingMenu && !isPauseOpen;
         boolean inbuiltVisible = hudEditorMode || showGameOverlays;
         boolean hotbarVisible = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.HOTBAR_SLOT);
@@ -983,6 +984,7 @@ public class InbuiltOverlayManager {
         stateHash = 31L * stateHash + (isPauseOpen ? 1L : 0L);
         stateHash = 31L * stateHash + (isHudScreenOpen ? 1L : 0L);
         stateHash = 31L * stateHash + (isShowingMenu ? 1L : 0L);
+        stateHash = 31L * stateHash + (isFloatingModMenuButtonHidden ? 1L : 0L);
         stateHash = 31L * stateHash + (hudEditorMode ? 1L : 0L);
         stateHash = 31L * stateHash + overlays.size();
         for (BaseOverlayButton overlay : overlays) {
@@ -998,7 +1000,8 @@ public class InbuiltOverlayManager {
 
         activity.runOnUiThread(() -> {
             if (modMenuButton != null) {
-                int visibility = !hudEditorMode && (!isPauseOnly || (isPauseOpen && isShowingMenu))
+                int visibility = !isFloatingModMenuButtonHidden && !hudEditorMode &&
+                        (!isPauseOnly || (isPauseOpen && isShowingMenu))
                         ? android.view.View.VISIBLE
                         : android.view.View.GONE;
                 modMenuButton.setVisibility(visibility);
