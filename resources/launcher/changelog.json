@@ -1,21 +1,23 @@
 {
   "schemaVersion": 1,
-  "headline": "LeviLauncher 1.26.50 Support",
-  "summary": "This update adds Minecraft 1.26.50 support for inbuilt mods and fixes chat keyboard input.",
+  "headline": "LeviLauncher Improvements",
+  "summary": "This update improves touch handling and native mod menu integration.",
   "sections": [
     {
       "title": "Features",
       "items": [
         {
-          "text": "Added inbuilt mod support for Minecraft 1.26.50."
+          "text": "Added functions for native mods to open and close the launcher mod menu.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/2df2f1fb6f341fa6f0d11485d3c5f234f52c98b2"
         }
       ]
     },
     {
-      "title": "Fixes",
+      "title": "Improvements",
       "items": [
         {
-          "text": "Fixed the chat keyboard closing immediately after opening in Minecraft 1.26.50."
+          "text": "Improved touch event handling",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/1372b49fdb3ff3ef4742565051a4fd724da6e60b"
         }
       ]
     }
