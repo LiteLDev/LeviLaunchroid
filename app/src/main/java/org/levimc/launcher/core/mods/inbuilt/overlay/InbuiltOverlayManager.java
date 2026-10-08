@@ -37,6 +37,7 @@ public class InbuiltOverlayManager {
     private final Map<String, BaseOverlayButton> keybindControllers = new HashMap<>();
     private final Map<Integer, List<String>> pressedKeybinds = new HashMap<>();
     private volatile boolean hasPressedKeybinds;
+    private int modMenuShortcutHeld = KeyEvent.KEYCODE_UNKNOWN;
     private final Map<String, BaseOverlayButton> modOverlayMap = new HashMap<>();
     private final Map<String, ExternalButtonOverlay> externalButtonOverlayMap = new HashMap<>();
     private final Map<String, MoreButtonOverlay> moreButtonOverlayMap = new HashMap<>();
@@ -683,6 +684,7 @@ public class InbuiltOverlayManager {
 
 
     public void hideAllOverlays() {
+        releaseModMenuShortcut();
         releaseKeybinds();
         for (BaseOverlayButton controller : keybindControllers.values()) controller.hide();
         keybindControllers.clear();
@@ -743,6 +745,32 @@ public class InbuiltOverlayManager {
             hudOverlay = null;
         }
         instance = null;
+    }
+
+    public boolean handleModMenuShortcut(KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        int action = event.getAction();
+        if (keyCode == modMenuShortcutHeld) {
+            if (action == KeyEvent.ACTION_UP) {
+                modMenuShortcutHeld = KeyEvent.KEYCODE_UNKNOWN;
+            }
+            return action == KeyEvent.ACTION_DOWN || action == KeyEvent.ACTION_UP;
+        }
+        if (action != KeyEvent.ACTION_DOWN || event.getRepeatCount() != 0
+                || (!event.hasNoModifiers() && !KeyEvent.isModifierKey(keyCode))) return false;
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        if (!manager.isModMenuEnabled() || keyCode == KeyEvent.KEYCODE_UNKNOWN
+                || keyCode != manager.getModMenuKeybind() || moreButtonsEditorOpen
+                || PojavControls.isEditorOpen()) return false;
+        if (manager.isPauseMenuOnly() && !isModMenuShowing()
+                && !org.levimc.launcher.preloader.PreloaderInput.isPauseMenuOpen()) return false;
+        modMenuShortcutHeld = keyCode;
+        toggleModMenuFromButton();
+        return true;
+    }
+
+    public void releaseModMenuShortcut() {
+        modMenuShortcutHeld = KeyEvent.KEYCODE_UNKNOWN;
     }
 
     public boolean handleKeyEvent(KeyEvent event) {

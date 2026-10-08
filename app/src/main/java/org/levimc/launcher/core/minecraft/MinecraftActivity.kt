@@ -323,6 +323,10 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
         if (textInputActive) {
             overlayManager?.releaseKeybinds()
         }
+        if (inbuiltKeyDispatchDepth == 0 && !textInputActive &&
+            overlayManager?.handleModMenuShortcut(event) == true) {
+            return true
+        }
         val inbuiltKeyReleased = inbuiltKeyDispatchDepth == 0 &&
             event.action == KeyEvent.ACTION_UP && overlayManager?.handleKeyEvent(event) == true
         if (isTextWidgetActive() &&
@@ -472,6 +476,7 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
     }
 
     override fun onPause() {
+        overlayManager?.releaseModMenuShortcut()
         overlayManager?.releaseKeybinds()
         val shouldRestartAfterNormalExit = shouldRestartAfterNormalExit()
         if (shouldRestartAfterNormalExit) {
@@ -485,7 +490,10 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
-        if (!hasFocus) overlayManager?.releaseKeybinds()
+        if (!hasFocus) {
+            overlayManager?.releaseModMenuShortcut()
+            overlayManager?.releaseKeybinds()
+        }
         super.onWindowFocusChanged(hasFocus)
     }
 

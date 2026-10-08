@@ -1,6 +1,7 @@
 package org.levimc.launcher.core.mods.inbuilt.overlay;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.res.ColorStateList;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.view.View;
@@ -88,6 +90,7 @@ public class ModMenuOverlay {
     private Switch notificationsSwitch;
     private Switch pauseMenuOnlySwitch;
     private Switch compactModeSwitch;
+    private TextView modMenuKeybindValue;
     private SeekBar modMenuOpacitySeekBar;
     private TextView modMenuOpacityText;
     private SeekBar modMenuButtonOpacitySeekBar;
@@ -196,11 +199,22 @@ public class ModMenuOverlay {
         showInternal();
     }
     
+    private void prepareMenuKeyboard() {
+        ModMenuKeyRoot root = (ModMenuKeyRoot) overlayView;
+        root.setShortcutHandler(event -> {
+            InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
+            return overlayManager != null && overlayManager.handleModMenuShortcut(event);
+        });
+        root.setFocusableInTouchMode(true);
+        root.requestFocus();
+    }
+
     private void showInternal() {
         if (isShowing || activity.isFinishing() || activity.isDestroyed()) return;
         
         try {
             overlayView = LayoutInflater.from(activity).inflate(R.layout.overlay_mod_menu, null);
+            prepareMenuKeyboard();
             
             int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -240,6 +254,7 @@ public class ModMenuOverlay {
             windowManager.addView(overlayView, wmParams);
             isShowing = true;
             restoreLastSection();
+            overlayView.requestFocus();
             
             overlayView.setAlpha(0f);
             overlayView.animate().alpha(1f).setDuration(220).start();
@@ -259,6 +274,7 @@ public class ModMenuOverlay {
         if (rootView == null) return;
         
         overlayView = LayoutInflater.from(activity).inflate(R.layout.overlay_mod_menu, null);
+        prepareMenuKeyboard();
         setupViews();
         loadMods();
         restoreModsScrollPosition();
@@ -269,6 +285,7 @@ public class ModMenuOverlay {
         );
         rootView.addView(overlayView, params);
         isShowing = true;
+        overlayView.requestFocus();
         wmParams = null;
         restoreLastSection();
         
@@ -432,6 +449,13 @@ public class ModMenuOverlay {
             });
         }
 
+        modMenuKeybindValue = overlayView.findViewById(R.id.mod_menu_keybind_value);
+        View modMenuKeybindSetting = overlayView.findViewById(R.id.setting_mod_menu_keybind);
+        updateModMenuKeybindValue();
+        if (modMenuKeybindSetting != null) {
+            modMenuKeybindSetting.setOnClickListener(v -> showModMenuKeybindDialog());
+        }
+
         if (compactModeSwitch != null) {
             compactModeSwitch.setChecked(compactMode);
             compactModeSwitch.setOnCheckedChangeListener((btn, checked) -> {
@@ -532,6 +556,49 @@ public class ModMenuOverlay {
         });
         modsRecycler.setAdapter(adapter);
         applyCompactModeLayout(compactMode);
+    }
+
+    private void updateModMenuKeybindValue() {
+        if (modMenuKeybindValue == null) return;
+        int keyCode = InbuiltModManager.getInstance(activity).getModMenuKeybind();
+        if (keyCode == KeyEvent.KEYCODE_UNKNOWN) {
+            modMenuKeybindValue.setText(R.string.mod_menu_keybind_unbound);
+            return;
+        }
+        String keyLabel = KeyEvent.keyCodeToString(keyCode);
+        if (keyLabel != null && keyLabel.startsWith("KEYCODE_")) {
+            keyLabel = keyLabel.substring(8);
+        }
+        modMenuKeybindValue.setText(keyLabel == null ? "" : keyLabel.replace('_', ' '));
+    }
+
+    private void showModMenuKeybindDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setTitle(R.string.mod_menu_keybind)
+                .setMessage(R.string.mod_config_press_any_key)
+                .setNegativeButton(R.string.cancel, null)
+                .setNeutralButton(R.string.mod_menu_keybind_reset, (d, which) -> {
+                    InbuiltModManager.getInstance(activity).setModMenuKeybind(KeyEvent.KEYCODE_M);
+                    updateModMenuKeybindValue();
+                })
+                .create();
+        dialog.setOnKeyListener((d, keyCode, event) -> {
+            if (event.getAction() != KeyEvent.ACTION_DOWN) return false;
+            if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_BACK) {
+                dialog.dismiss();
+                return true;
+            }
+            if (event.getRepeatCount() != 0 || keyCode == KeyEvent.KEYCODE_UNKNOWN
+                    || keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN
+                    || keyCode == KeyEvent.KEYCODE_POWER || keyCode == KeyEvent.KEYCODE_HOME) {
+                return true;
+            }
+            InbuiltModManager.getInstance(activity).setModMenuKeybind(keyCode);
+            updateModMenuKeybindValue();
+            dialog.dismiss();
+            return true;
+        });
+        dialog.show();
     }
 
     private void restoreLastSection() {

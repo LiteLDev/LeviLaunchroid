@@ -784,6 +784,10 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_menu_appearance">Appearance</string>
     <string name="mod_menu_pause_menu_only">Pause Menu Only</string>
     <string name="mod_menu_pause_menu_only_desc">Only show mod menu in pause screen</string>
+    <string name="mod_menu_keybind">Mod Menu Keybind</string>
+    <string name="mod_menu_keybind_desc">Press to change the keyboard shortcut</string>
+    <string name="mod_menu_keybind_reset">Reset to M</string>
+    <string name="mod_menu_keybind_unbound">Unbound</string>
     <string name="mod_menu_default_percent" formatted="false">100%</string>
     <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">Settings coming soon</string>
