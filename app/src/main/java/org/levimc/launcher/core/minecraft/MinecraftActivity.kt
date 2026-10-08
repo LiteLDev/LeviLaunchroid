@@ -44,6 +44,8 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
     private var gameRuntimeStarted = false
     private var preloaderTextInput: PreloaderTextInput? = null
     private var previousInputFocus: View? = null
+    private val pojavContentLocation = IntArray(2)
+    private val pojavSurfaceLocation = IntArray(2)
 
     private class PreloaderTextInput(context: Context) : AppCompatEditText(context) {
         override fun onCreateInputConnection(outAttrs: EditorInfo): InputConnection? {
@@ -362,8 +364,18 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
             return super.dispatchTouchEvent(event)
         }
 
+        if (dispatchTouchToPreloader(event)) {
+            return true
+        }
+
+        overlayManager?.handleTouchEvent(event)
+
+        return super.dispatchTouchEvent(event)
+    }
+
+    private fun dispatchTouchToPreloader(event: MotionEvent): Boolean {
         val action = event.actionMasked
-        val consumed = if (action == MotionEvent.ACTION_MOVE ||
+        return if (action == MotionEvent.ACTION_MOVE ||
             action == MotionEvent.ACTION_CANCEL) {
             var anyConsumed = false
             for (index in 0 until event.pointerCount) {
@@ -378,13 +390,6 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
             PreloaderInput.onTouch(action, event.getPointerId(index),
                 event.getX(index), event.getY(index))
         }
-        if (consumed) {
-            return true
-        }
-
-        overlayManager?.handleTouchEvent(event)
-
-        return super.dispatchTouchEvent(event)
     }
 
     fun dispatchGenericMotionEventToGame(event: MotionEvent): Boolean {
@@ -439,7 +444,22 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
     }
 
     override fun pojavSendTouch(event: MotionEvent): Boolean {
-        return super.onTouchEvent(event)
+        if (!gameRuntimeStarted || isFinishing || isDestroyed) return false
+        val surface = mSurfaceView ?: return false
+        val content = findViewById<View>(android.R.id.content) ?: return false
+        content.getLocationInWindow(pojavContentLocation)
+        surface.getLocationInWindow(pojavSurfaceLocation)
+        val copy = MotionEvent.obtain(event)
+        try {
+            copy.offsetLocation(
+                (pojavContentLocation[0] - pojavSurfaceLocation[0]).toFloat(),
+                (pojavContentLocation[1] - pojavSurfaceLocation[1]).toFloat()
+            )
+            if (dispatchTouchToPreloader(copy)) return true
+            return processMotionEvent(copy)
+        } finally {
+            copy.recycle()
+        }
     }
 
     override fun pojavShowKeyboard() {
