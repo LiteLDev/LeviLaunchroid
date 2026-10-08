@@ -87,12 +87,15 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
     }
 
     private void initializeNative() {
-        handler.postDelayed(() -> {
-            if (GyroMod.init()) {
-                initialized = true;
-                applyGyroSettings();
-            }
-        }, 1000);
+        handler.postDelayed(this::ensureInitialized, 1000);
+    }
+
+    private boolean ensureInitialized() {
+        if (!initialized && GyroMod.init()) {
+            initialized = true;
+            applyGyroSettings();
+        }
+        return initialized;
     }
 
     private void applyGyroSettings() {
@@ -305,7 +308,7 @@ public class GyroOverlay extends BaseOverlayButton implements SensorEventListene
     }
 
     public void toggleGyro() {
-        if (!initialized || rotationSensor == null) return;
+        if (rotationSensor == null || !ensureInitialized()) return;
         if (isActive) {
             disableGyro();
         } else {

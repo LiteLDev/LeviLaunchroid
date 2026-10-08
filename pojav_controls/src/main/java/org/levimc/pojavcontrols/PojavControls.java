@@ -36,6 +36,10 @@ public final class PojavControls {
         return true;
     }
 
+    public static synchronized boolean isEditorOpen() {
+        return editor != null && editor.isAttachedToWindow();
+    }
+
     public static synchronized boolean onActivityResult(int requestCode, int resultCode, Intent data) {
         return editor != null && editor.handleActivityResult(requestCode, resultCode, data);
     }

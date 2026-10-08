@@ -1144,4 +1144,8 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="batch_transferring">Transferring %1$d of %2$d…</string>
     <string name="batch_result">%1$d completed, %2$d failed</string>
     <string name="choose_export_folder">Choose export folder</string>
+    <string name="mod_config_activation_keybind">Activation keybind</string>
+    <string name="mod_config_edit_controls">Edit controls</string>
+    <string name="mod_config_display_size_dp">Display size (dp)</string>
+    <string name="mod_config_clear_keybind">Clear keybind</string>
 </resources>

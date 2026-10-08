@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class InbuiltModManager {
     private static final String PREFS_NAME = "inbuilt_mods_prefs";
     private static final String KEY_AUTOSPRINT_KEY = "autosprint_key";
+    private static final String KEY_INBUILT_KEYBIND_PREFIX = "inbuilt_keybind_";
     private static final String KEY_OVERLAY_BUTTON_SIZE_PREFIX = "overlay_button_size_";
     private static final String KEY_OVERLAY_OPACITY_PREFIX = "overlay_opacity_";
     private static final String KEY_MOD_MENU_ENABLED = "mod_menu_enabled";
@@ -84,6 +85,27 @@ public class InbuiltModManager {
 
     public void setAutoSprintKeybind(int keyCode) {
         prefs.edit().putInt(KEY_AUTOSPRINT_KEY, keyCode).apply();
+    }
+
+    public int getDefaultInbuiltModKeybind(String modId) {
+        if (ModIds.ZOOM.equals(modId)) return KeyEvent.KEYCODE_C;
+        if (ModIds.AUTO_SPRINT.equals(modId)) return KeyEvent.KEYCODE_CTRL_LEFT;
+        if (ModIds.SNAPLOOK.equals(modId)) return KeyEvent.KEYCODE_X;
+        return KeyEvent.KEYCODE_UNKNOWN;
+    }
+
+    public int getInbuiltModKeybind(String modId) {
+        if (ModIds.ZOOM.equals(modId)) return getZoomKeybind();
+        if (ModIds.AUTO_SPRINT.equals(modId)) return getAutoSprintKeybind();
+        return prefs.getInt(KEY_INBUILT_KEYBIND_PREFIX + modId, getDefaultInbuiltModKeybind(modId));
+    }
+
+    public void setInbuiltModKeybind(String modId, int keyCode) {
+        if (modId == null || modId.isEmpty()) return;
+        int value = Math.max(KeyEvent.KEYCODE_UNKNOWN, keyCode);
+        if (ModIds.ZOOM.equals(modId)) setZoomKeybind(value);
+        else if (ModIds.AUTO_SPRINT.equals(modId)) setAutoSprintKeybind(value);
+        else prefs.edit().putInt(KEY_INBUILT_KEYBIND_PREFIX + modId, value).apply();
     }
 
     private String sharedOverlaySettingsId(String modId) {

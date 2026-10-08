@@ -44,8 +44,7 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
     private var gameRuntimeStarted = false
     private var preloaderTextInput: PreloaderTextInput? = null
     private var previousInputFocus: View? = null
-    private val pojavContentLocation = IntArray(2)
-    private val pojavSurfaceLocation = IntArray(2)
+    private var inbuiltKeyDispatchDepth = 0
 
     private class PreloaderTextInput(context: Context) : AppCompatEditText(context) {
         override fun onCreateInputConnection(outAttrs: EditorInfo): InputConnection? {
@@ -317,6 +316,12 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        val textInputActive = isTextWidgetActive() || preloaderTextInput?.hasFocus() == true
+        if (textInputActive) {
+            overlayManager?.releaseKeybinds()
+        }
+        val inbuiltKeyReleased = inbuiltKeyDispatchDepth == 0 &&
+            event.action == KeyEvent.ACTION_UP && overlayManager?.handleKeyEvent(event) == true
         if (isTextWidgetActive() &&
             (event.keyCode == KeyEvent.KEYCODE_ESCAPE || event.keyCode == KeyEvent.KEYCODE_BACK)) {
             return super.dispatchKeyEvent(event)
@@ -342,12 +347,22 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
             }
         }
 
-        overlayManager?.let { manager ->
-            if (manager.handleKeyEvent(event.keyCode, event.action)) {
+        if (inbuiltKeyReleased) return true
+        if (inbuiltKeyDispatchDepth == 0 && !textInputActive) {
+            if (overlayManager?.handleKeyEvent(event) == true) {
                 return true
             }
         }
         return super.dispatchKeyEvent(event)
+    }
+
+    fun dispatchInbuiltKeyEvent(event: KeyEvent): Boolean {
+        inbuiltKeyDispatchDepth++
+        return try {
+            dispatchKeyEvent(event)
+        } finally {
+            inbuiltKeyDispatchDepth--
+        }
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
@@ -364,18 +379,8 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
             return super.dispatchTouchEvent(event)
         }
 
-        if (dispatchTouchToPreloader(event)) {
-            return true
-        }
-
-        overlayManager?.handleTouchEvent(event)
-
-        return super.dispatchTouchEvent(event)
-    }
-
-    private fun dispatchTouchToPreloader(event: MotionEvent): Boolean {
         val action = event.actionMasked
-        return if (action == MotionEvent.ACTION_MOVE ||
+        val consumed = if (action == MotionEvent.ACTION_MOVE ||
             action == MotionEvent.ACTION_CANCEL) {
             var anyConsumed = false
             for (index in 0 until event.pointerCount) {
@@ -390,6 +395,13 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
             PreloaderInput.onTouch(action, event.getPointerId(index),
                 event.getX(index), event.getY(index))
         }
+        if (consumed) {
+            return true
+        }
+
+        overlayManager?.handleTouchEvent(event)
+
+        return super.dispatchTouchEvent(event)
     }
 
     fun dispatchGenericMotionEventToGame(event: MotionEvent): Boolean {
@@ -444,22 +456,7 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
     }
 
     override fun pojavSendTouch(event: MotionEvent): Boolean {
-        if (!gameRuntimeStarted || isFinishing || isDestroyed) return false
-        val surface = mSurfaceView ?: return false
-        val content = findViewById<View>(android.R.id.content) ?: return false
-        content.getLocationInWindow(pojavContentLocation)
-        surface.getLocationInWindow(pojavSurfaceLocation)
-        val copy = MotionEvent.obtain(event)
-        try {
-            copy.offsetLocation(
-                (pojavContentLocation[0] - pojavSurfaceLocation[0]).toFloat(),
-                (pojavContentLocation[1] - pojavSurfaceLocation[1]).toFloat()
-            )
-            if (dispatchTouchToPreloader(copy)) return true
-            return processMotionEvent(copy)
-        } finally {
-            copy.recycle()
-        }
+        return super.onTouchEvent(event)
     }
 
     override fun pojavShowKeyboard() {
@@ -472,6 +469,7 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
     }
 
     override fun onPause() {
+        overlayManager?.releaseKeybinds()
         val shouldRestartAfterNormalExit = shouldRestartAfterNormalExit()
         if (shouldRestartAfterNormalExit) {
             PreloaderInput.cancelDocumentRequest("Minecraft closed")
@@ -481,6 +479,11 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
         }
         MinecraftActivityState.onPaused(this)
         super.onPause()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        if (!hasFocus) overlayManager?.releaseKeybinds()
+        super.onWindowFocusChanged(hasFocus)
     }
 
     override fun onDestroy() {

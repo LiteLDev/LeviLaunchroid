@@ -44,12 +44,15 @@ public class ZoomOverlay extends BaseOverlayButton {
     }
 
     private void initializeNative() {
-        handler.postDelayed(() -> {
-            if (ZoomMod.init()) {
-                initialized = true;
-                applyZoomLevel();
-            }
-        }, 1000);
+        handler.postDelayed(this::ensureInitialized, 1000);
+    }
+
+    private boolean ensureInitialized() {
+        if (!initialized && ZoomMod.init()) {
+            initialized = true;
+            applyZoomLevel();
+        }
+        return initialized;
     }
 
     private void applyZoomLevel() {
@@ -69,9 +72,7 @@ public class ZoomOverlay extends BaseOverlayButton {
     }
 
     public void onKeyDown() {
-        if (!initialized) {
-            return;
-        }
+        if (!ensureInitialized()) return;
         if (isZooming) return;
         
         isZooming = true;

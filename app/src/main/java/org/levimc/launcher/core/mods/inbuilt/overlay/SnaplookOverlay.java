@@ -43,11 +43,12 @@ public class SnaplookOverlay extends BaseOverlayButton {
     }
 
     private void initializeNative() {
-        handler.postDelayed(() -> {
-            if (SnaplookMod.init()) {
-                initialized = true;
-            }
-        }, 1000);
+        handler.postDelayed(this::ensureInitialized, 1000);
+    }
+
+    private boolean ensureInitialized() {
+        if (!initialized) initialized = SnaplookMod.init();
+        return initialized;
     }
 
     @Override
@@ -68,9 +69,7 @@ public class SnaplookOverlay extends BaseOverlayButton {
     }
 
     public void onKeyDown() {
-        if (!initialized) {
-            return;
-        }
+        if (!ensureInitialized()) return;
         if (isActive) return;
 
         isActive = true;

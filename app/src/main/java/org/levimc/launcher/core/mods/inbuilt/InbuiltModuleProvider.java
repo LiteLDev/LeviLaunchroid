@@ -12,7 +12,6 @@ import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
 import org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager;
 import org.levimc.launcher.core.mods.inbuilt.overlay.MoreButtonsEditor;
-import org.levimc.pojavcontrols.PojavControls;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,8 @@ public final class InbuiltModuleProvider {
     private static final String CFG_OVERLAY_OPACITY = "overlay_opacity";
     private static final String CFG_OVERLAY_LOCK = "overlay_lock";
     private static final String CFG_OVERLAY_SHOW_EVERYWHERE = "overlay_show_everywhere";
+    private static final String CFG_ACTIVATION_KEYBIND = "activation_keybind";
+    private static final String CFG_EDIT_CONTROLS = "edit_controls";
     private static final String CFG_AUTO_SPRINT_KEYBIND = "auto_sprint_keybind";
     private static final String CFG_CURSOR_SENSITIVITY = "cursor_sensitivity";
     private static final String CFG_ZOOM_LEVEL = "zoom_level";
@@ -104,7 +105,7 @@ public final class InbuiltModuleProvider {
         boolean active = overlayManager != null
                 ? overlayManager.isModActive(id)
                 : manager.resolveInbuiltModEnabled(id, false);
-        boolean customConfig = ModIds.POJAV_CONTROLS.equals(id) || ModIds.MORE_BUTTONS.equals(id);
+        boolean customConfig = ModIds.MORE_BUTTONS.equals(id);
         UnifiedMod result = new UnifiedMod(
                 id,
                 activity.getString(nameRes),
@@ -118,24 +119,28 @@ public final class InbuiltModuleProvider {
                 groupName,
                 (mod, enabled) -> setEnabled(manager, mod, enabled),
                 (mod, config, value) -> setConfig(manager, mod, config, value),
-                ModIds.POJAV_CONTROLS.equals(id)
-                        ? mod -> PojavControls.launchEditor(activity)
-                        : (ModIds.MORE_BUTTONS.equals(id) ? mod -> MoreButtonsEditor.show(activity) : null)
+                ModIds.MORE_BUTTONS.equals(id) ? mod -> MoreButtonsEditor.show(activity) : null
         );
         result.setLocalConfigSchema(createLocalConfigSchema(activity, result));
         return result;
     }
 
     private static RuntimeConfigSchema createLocalConfigSchema(Context context, UnifiedMod mod) {
-        boolean hotbar = ModIds.HOTBAR_SLOT.equals(mod.getId());
-        if (!hotbar && !ModIds.GYRO.equals(mod.getId())) return null;
+        String modId = mod.getId();
+        if (ModIds.CHICK_PET.equals(modId) || ModIds.MORE_BUTTONS.equals(modId)) return null;
+        boolean hotbar = ModIds.HOTBAR_SLOT.equals(modId);
+        boolean gyro = ModIds.GYRO.equals(modId);
+        boolean zoom = ModIds.ZOOM.equals(modId);
+        boolean cursor = ModIds.VIRTUAL_CURSOR.equals(modId);
+        boolean pojav = ModIds.POJAV_CONTROLS.equals(modId);
         try {
             JSONArray categories = new JSONArray();
             JSONArray nodes = new JSONArray();
+            String defaultCategory = "behavior";
             if (hotbar) {
+                defaultCategory = "slots";
                 categories.put(configCategory(context, "slots", R.string.mod_config_category_slots));
                 categories.put(configCategory(context, "appearance", R.string.mod_config_category_appearance));
-                categories.put(configCategory(context, "behavior", R.string.mod_config_category_behavior));
                 nodes.put(configNode(mod, CFG_HOTBAR_ITEM_ICONS, "slots"));
                 nodes.put(configNode(mod, CFG_HOTBAR_ITEM_COUNTS, "slots"));
                 JSONArray slots = new JSONArray();
@@ -155,23 +160,34 @@ public final class InbuiltModuleProvider {
                 nodes.put(new JSONObject().put("id", "visible_slots").put("type", "toggle_group")
                         .put("category", "slots").put("title", context.getString(R.string.mod_config_visible_slots))
                         .put("options", slots));
-                nodes.put(configNode(mod, CFG_OVERLAY_LOCK, "behavior"));
-                nodes.put(configNode(mod, CFG_OVERLAY_SHOW_EVERYWHERE, "behavior"));
-            } else {
-                categories.put(configCategory(context, "motion", R.string.mod_config_category_motion));
-                categories.put(configCategory(context, "button", R.string.mod_config_category_button));
-                nodes.put(configNode(mod, CFG_GYRO_SENSITIVITY_X, "motion"));
-                nodes.put(configNode(mod, CFG_GYRO_SENSITIVITY_Y, "motion"));
-                nodes.put(configNode(mod, CFG_GYRO_INVERT_X, "motion"));
-                nodes.put(configNode(mod, CFG_GYRO_INVERT_Y, "motion"));
-                nodes.put(configNode(mod, CFG_GYRO_DEADZONE, "motion"));
-                nodes.put(configNode(mod, CFG_OVERLAY_SIZE, "button"));
-                nodes.put(configNode(mod, CFG_OVERLAY_OPACITY, "button"));
-                nodes.put(configNode(mod, CFG_OVERLAY_LOCK, "button"));
-                nodes.put(configNode(mod, CFG_OVERLAY_SHOW_EVERYWHERE, "button"));
+            } else if (!pojav) {
+                if (gyro || cursor || zoom) {
+                    defaultCategory = gyro || cursor ? "motion" : "zoom";
+                    categories.put(configCategory(context, defaultCategory,
+                            zoom ? R.string.inbuilt_mod_zoom : R.string.mod_config_category_motion));
+                } else {
+                    defaultCategory = "appearance";
+                }
+                categories.put(configCategory(context, "appearance", R.string.mod_config_category_appearance));
+            }
+            categories.put(configCategory(context, "behavior", R.string.mod_config_category_behavior));
+            for (UnifiedMod.ConfigEntry config : mod.getConfigEntries()) {
+                if (hotbar && (config.key.startsWith(CFG_HOTBAR_SLOT_PREFIX)
+                        || CFG_HOTBAR_ITEM_ICONS.equals(config.key) || CFG_HOTBAR_ITEM_COUNTS.equals(config.key))) {
+                    continue;
+                }
+                String category = "behavior";
+                if (CFG_OVERLAY_SIZE.equals(config.key) || CFG_OVERLAY_OPACITY.equals(config.key)) {
+                    category = "appearance";
+                } else if (config.key.startsWith("gyro_") || CFG_CURSOR_SENSITIVITY.equals(config.key)) {
+                    category = "motion";
+                } else if (CFG_ZOOM_LEVEL.equals(config.key) || CFG_ZOOM_TRANSITION.equals(config.key)) {
+                    category = "zoom";
+                }
+                nodes.put(configNode(mod, config.key, category));
             }
             return RuntimeConfigSchema.parse(new JSONObject().put("version", 2)
-                    .put("default_category", hotbar ? "slots" : "motion")
+                    .put("default_category", defaultCategory)
                     .put("categories", categories).put("nodes", nodes).toString());
         } catch (JSONException e) {
             throw new IllegalStateException("Unable to build inbuilt config schema", e);
@@ -184,9 +200,16 @@ public final class InbuiltModuleProvider {
 
     private static JSONObject configNode(UnifiedMod mod, String key, String category) throws JSONException {
         UnifiedMod.ConfigEntry config = mod.findConfigEntry(key);
+        String type;
+        switch (config.type) {
+            case TOGGLE: type = "toggle"; break;
+            case KEYBIND: type = "keybind"; break;
+            case BUTTON: type = "button"; break;
+            default: type = "slider_int"; break;
+        }
         JSONObject node = new JSONObject().put("id", key).put("key", key)
                 .put("category", category).put("title", config.displayName)
-                .put("type", config.type == UnifiedMod.ConfigType.TOGGLE ? "toggle" : "slider_int")
+                .put("type", type)
                 .put("default_value", config.defaultValue)
                 .put("min_value", config.minValue).put("max_value", config.maxValue);
         if (!config.dependsOn.isEmpty()) {
@@ -200,11 +223,19 @@ public final class InbuiltModuleProvider {
                                                               InbuiltModManager manager,
                                                               String modId) {
         List<UnifiedMod.ConfigEntry> configs = new ArrayList<>();
-        if (ModIds.POJAV_CONTROLS.equals(modId) || ModIds.MORE_BUTTONS.equals(modId)) return configs;
+        if (ModIds.MORE_BUTTONS.equals(modId)) return configs;
+        if (ModIds.POJAV_CONTROLS.equals(modId)) {
+            configs.add(activationKeybind(context, manager, modId));
+            configs.add(config(CFG_EDIT_CONTROLS,
+                    context.getString(R.string.mod_config_edit_controls),
+                    UnifiedMod.ConfigType.BUTTON, "", "", "", ""));
+            return configs;
+        }
         if (!ModIds.CHICK_PET.equals(modId)) {
             if (!ModIds.HOTBAR_SLOT.equals(modId)) {
                 configs.add(config(CFG_OVERLAY_SIZE,
-                        context.getString(R.string.mod_config_overlay_button_size_dp),
+                        context.getString(ModIds.FPS_DISPLAY.equals(modId) || ModIds.CPS_DISPLAY.equals(modId)
+                                ? R.string.mod_config_display_size_dp : R.string.mod_config_overlay_button_size_dp),
                         UnifiedMod.ConfigType.SLIDER_INT,
                         "56", "20", "100",
                         String.valueOf(manager.getOverlayButtonSize(modId))));
@@ -262,7 +293,7 @@ public final class InbuiltModuleProvider {
             configs.add(config(CFG_AUTO_SPRINT_KEYBIND,
                     context.getString(R.string.mod_config_auto_sprint_keybind),
                     UnifiedMod.ConfigType.KEYBIND,
-                    "", "", "",
+                    String.valueOf(manager.getDefaultInbuiltModKeybind(modId)), "", "",
                     String.valueOf(manager.getAutoSprintKeybind())));
         } else if (ModIds.VIRTUAL_CURSOR.equals(modId)) {
             configs.add(config(CFG_CURSOR_SENSITIVITY,
@@ -284,7 +315,7 @@ public final class InbuiltModuleProvider {
             configs.add(config(CFG_ZOOM_KEYBIND,
                     context.getString(R.string.mod_config_zoom_keybind),
                     UnifiedMod.ConfigType.KEYBIND,
-                    "", "", "",
+                    String.valueOf(manager.getDefaultInbuiltModKeybind(modId)), "", "",
                     String.valueOf(manager.getZoomKeybind())));
         } else if (ModIds.GYRO.equals(modId)) {
             configs.add(config(CFG_GYRO_SENSITIVITY_MULTIPLIER,
@@ -318,7 +349,18 @@ public final class InbuiltModuleProvider {
                     "5", "0", "100",
                     String.valueOf(manager.getGyroDeadzone())));
         }
+        if (!ModIds.CHICK_PET.equals(modId) && !ModIds.AUTO_SPRINT.equals(modId) && !ModIds.ZOOM.equals(modId)) {
+            configs.add(activationKeybind(context, manager, modId));
+        }
         return configs;
+    }
+
+    private static UnifiedMod.ConfigEntry activationKeybind(Context context, InbuiltModManager manager, String modId) {
+        return config(CFG_ACTIVATION_KEYBIND,
+                context.getString(R.string.mod_config_activation_keybind),
+                UnifiedMod.ConfigType.KEYBIND,
+                String.valueOf(manager.getDefaultInbuiltModKeybind(modId)), "", "",
+                String.valueOf(manager.getInbuiltModKeybind(modId)));
     }
 
     private static UnifiedMod.ConfigEntry config(String key, String displayName,
@@ -355,6 +397,13 @@ public final class InbuiltModuleProvider {
                                   String value) {
         if (ModIds.HOTBAR_SLOT.equals(mod.getId()) && setHotbarSlotConfig(manager, config.key, value)) return;
         switch (config.key) {
+            case CFG_ACTIVATION_KEYBIND:
+                manager.setInbuiltModKeybind(mod.getId(), parseInt(value, manager.getInbuiltModKeybind(mod.getId())));
+                break;
+            case CFG_EDIT_CONTROLS:
+                InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
+                if (overlayManager != null) overlayManager.openPojavControlsEditor();
+                break;
             case CFG_OVERLAY_SIZE:
                 manager.setOverlayButtonSize(mod.getId(), parseInt(value, manager.getOverlayButtonSize(mod.getId())));
                 break;

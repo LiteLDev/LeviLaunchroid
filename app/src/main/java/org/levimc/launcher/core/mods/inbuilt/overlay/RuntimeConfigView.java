@@ -37,6 +37,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.slider.RangeSlider;
 
 import org.json.JSONArray;
+import org.levimc.launcher.R;
 import org.levimc.launcher.core.mods.inbuilt.ExternalModBridge;
 import org.levimc.launcher.core.mods.inbuilt.RuntimeConfigSchema;
 import org.levimc.launcher.core.mods.inbuilt.UnifiedMod;
@@ -947,6 +948,10 @@ final class RuntimeConfigView {
                     .setTitle(node.title)
                     .setMessage("Press a key")
                     .setNegativeButton(android.R.string.cancel, null)
+                    .setNeutralButton(R.string.mod_config_clear_keybind, (d, which) -> {
+                        setValue(node.key, String.valueOf(KeyEvent.KEYCODE_UNKNOWN));
+                        button.setText(keyName(KeyEvent.KEYCODE_UNKNOWN));
+                    })
                     .create();
             dialog.setOnKeyListener((d, keyCode, event) -> {
                 if (event.getAction() != KeyEvent.ACTION_DOWN) return false;

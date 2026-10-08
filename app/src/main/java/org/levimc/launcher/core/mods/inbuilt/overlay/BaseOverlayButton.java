@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import org.levimc.launcher.R;
+import org.levimc.launcher.core.minecraft.MinecraftActivity;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 
 public abstract class BaseOverlayButton {
@@ -434,8 +435,8 @@ public abstract class BaseOverlayButton {
             long time = SystemClock.uptimeMillis();
             KeyEvent down = new KeyEvent(time, time, KeyEvent.ACTION_DOWN, keyCode, 0, 0, -1, 0, 0, InputDevice.SOURCE_KEYBOARD);
             KeyEvent up = new KeyEvent(time, time + 10, KeyEvent.ACTION_UP, keyCode, 0, 0, -1, 0, 0, InputDevice.SOURCE_KEYBOARD);
-            activity.dispatchKeyEvent(down);
-            activity.dispatchKeyEvent(up);
+            dispatchGameKey(down);
+            dispatchGameKey(up);
         });
     }
 
@@ -443,7 +444,7 @@ public abstract class BaseOverlayButton {
         handler.post(() -> {
             long time = SystemClock.uptimeMillis();
             KeyEvent down = new KeyEvent(time, time, KeyEvent.ACTION_DOWN, keyCode, 0, 0, -1, 0, 0, InputDevice.SOURCE_KEYBOARD);
-            activity.dispatchKeyEvent(down);
+            dispatchGameKey(down);
         });
     }
 
@@ -451,8 +452,16 @@ public abstract class BaseOverlayButton {
         handler.post(() -> {
             long time = SystemClock.uptimeMillis();
             KeyEvent up = new KeyEvent(time, time, KeyEvent.ACTION_UP, keyCode, 0, 0, -1, 0, 0, InputDevice.SOURCE_KEYBOARD);
-            activity.dispatchKeyEvent(up);
+            dispatchGameKey(up);
         });
+    }
+
+    private void dispatchGameKey(KeyEvent event) {
+        if (activity instanceof MinecraftActivity) {
+            ((MinecraftActivity) activity).dispatchInbuiltKeyEvent(event);
+        } else {
+            activity.dispatchKeyEvent(event);
+        }
     }
 
     protected abstract int getIconResource();
