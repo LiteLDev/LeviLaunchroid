@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -45,14 +46,19 @@ import org.levimc.launcher.core.mods.inbuilt.UnifiedMod;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
 final class RuntimeConfigView {
     private static final WeakHashMap<ViewGroup, RuntimeConfigView> ACTIVE = new WeakHashMap<>();
+    private static final Map<String, String> LAST_SELECTED_CATEGORIES = new HashMap<>();
+    private static final Map<String, Parcelable> CONTENT_SCROLL_STATES = new HashMap<>();
+    private static final Map<String, Parcelable> CATEGORY_SCROLL_STATES = new HashMap<>();
     private static final int ACCENT = 0xFF4AE0A0;
     private static final int TEXT_PRIMARY = 0xFFF1F4F6;
     private static final int TEXT_SECONDARY = 0xFFA8B0B8;
@@ -124,8 +130,43 @@ final class RuntimeConfigView {
         if (current != null) current.stop();
     }
 
+    static void save(ViewGroup host) {
+        if (host == null) return;
+        RuntimeConfigView current = ACTIVE.get(host);
+        if (current != null) current.saveScrollPositions();
+    }
+
+    private String contentScrollKey() {
+        return mod.getStableKey() + "|" + (compact ? "compact" : "full") + "|" + selectedCategory;
+    }
+
+    private String categoryScrollKey() {
+        return mod.getStableKey() + "|" + (compact ? "compact" : "full");
+    }
+
+    private void saveScrollPositions() {
+        if (categoryRecycler != null && categoryRecycler.getLayoutManager() != null
+                && categoryRecycler.getChildCount() > 0) {
+            CATEGORY_SCROLL_STATES.put(categoryScrollKey(),
+                    categoryRecycler.getLayoutManager().onSaveInstanceState());
+        }
+        if (contentRecycler != null && contentRecycler.getLayoutManager() != null
+                && contentRecycler.getChildCount() > 0) {
+            CONTENT_SCROLL_STATES.put(contentScrollKey(),
+                    contentRecycler.getLayoutManager().onSaveInstanceState());
+        }
+    }
+
+    private void restoreContentScrollPosition() {
+        if (contentRecycler == null || contentRecycler.getLayoutManager() == null) return;
+        Parcelable saved = CONTENT_SCROLL_STATES.get(contentScrollKey());
+        if (saved != null) contentRecycler.getLayoutManager().onRestoreInstanceState(saved);
+        else contentRecycler.scrollToPosition(0);
+    }
+
     private void stop() {
         if (stopped) return;
+        saveScrollPositions();
         stopped = true;
         handler.removeCallbacks(pollRunnable);
     }
@@ -148,6 +189,7 @@ final class RuntimeConfigView {
     }
 
     private void build(RuntimeConfigSchema initial) {
+        selectedCategory = LAST_SELECTED_CATEGORIES.getOrDefault(mod.getStableKey(), "");
         host.removeAllViews();
         LinearLayout root = new LinearLayout(context);
         root.setOrientation(compact ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
@@ -188,6 +230,11 @@ final class RuntimeConfigView {
             }
         });
         applySchema(initial);
+        Parcelable savedCategory = CATEGORY_SCROLL_STATES.get(categoryScrollKey());
+        if (savedCategory != null) {
+            categoryRecycler.getLayoutManager().onRestoreInstanceState(savedCategory);
+        }
+        restoreContentScrollPosition();
         if (mod.getSource() == UnifiedMod.Source.EXTERNAL) {
             handler.postDelayed(pollRunnable, 900L);
         }
@@ -209,6 +256,7 @@ final class RuntimeConfigView {
                     ? updated.defaultCategory
                     : (updated.categories.isEmpty() ? "" : updated.categories.get(0).id);
         }
+        LAST_SELECTED_CATEGORIES.put(mod.getStableKey(), selectedCategory);
         categoryAdapter.submit(updated.categories);
         refreshNodes();
     }
@@ -331,10 +379,12 @@ final class RuntimeConfigView {
             holder.label.setBackground(roundRect(selected ? CARD_SELECTED : Color.TRANSPARENT, 10));
             holder.label.setOnClickListener(v -> {
                 if (category.id.equals(selectedCategory)) return;
+                saveScrollPositions();
                 selectedCategory = category.id;
+                LAST_SELECTED_CATEGORIES.put(mod.getStableKey(), selectedCategory);
                 notifyDataSetChanged();
                 refreshNodes();
-                contentRecycler.scrollToPosition(0);
+                restoreContentScrollPosition();
             });
         }
         @Override public int getItemCount() { return items.size(); }

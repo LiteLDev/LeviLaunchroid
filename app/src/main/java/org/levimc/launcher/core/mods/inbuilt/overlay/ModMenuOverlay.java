@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -21,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.SeekBar;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -34,6 +36,7 @@ import org.levimc.launcher.core.mods.inbuilt.UnifiedMod;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -47,6 +50,13 @@ public class ModMenuOverlay {
         ENABLED,
         INBUILT,
         EXTERNAL
+    }
+
+    private enum MenuSection {
+        MODULES,
+        SETTINGS,
+        CONFIG,
+        HUD_EDITOR
     }
 
     private final Activity activity;
@@ -92,6 +102,14 @@ public class ModMenuOverlay {
     private List<UnifiedMod> filteredMods = new ArrayList<>();
     private final Set<String> favoriteKeys = new HashSet<>();
     private ModuleFilter activeFilter = ModuleFilter.ALL;
+    private MenuSection activeSection = MenuSection.MODULES;
+    private String lastConfigModKey;
+    private String lastSearchQuery = "";
+    private Parcelable fullModsScrollState;
+    private Parcelable compactModsScrollState;
+    private int settingsScrollPosition;
+    private final Map<String, Integer> legacyConfigScrollPositions = new HashMap<>();
+    private boolean restoringLastSection;
     
     private ModMenuCallback callback;
     private ModNotificationManager notificationManager;
@@ -202,6 +220,7 @@ public class ModMenuOverlay {
             
             setupViews();
             loadMods();
+            restoreModsScrollPosition();
             
             wmParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
@@ -220,12 +239,13 @@ public class ModMenuOverlay {
             
             windowManager.addView(overlayView, wmParams);
             isShowing = true;
+            restoreLastSection();
             
             overlayView.setAlpha(0f);
             overlayView.animate().alpha(1f).setDuration(220).start();
             
             View menuContainer = overlayView.findViewById(R.id.mod_menu_container);
-            if (menuContainer != null) {
+            if (menuContainer != null && activeSection != MenuSection.HUD_EDITOR) {
                 animateMenuEnter(menuContainer);
             }
         } catch (Exception e) {
@@ -241,6 +261,7 @@ public class ModMenuOverlay {
         overlayView = LayoutInflater.from(activity).inflate(R.layout.overlay_mod_menu, null);
         setupViews();
         loadMods();
+        restoreModsScrollPosition();
         
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
@@ -249,12 +270,13 @@ public class ModMenuOverlay {
         rootView.addView(overlayView, params);
         isShowing = true;
         wmParams = null;
+        restoreLastSection();
         
         overlayView.setAlpha(0f);
         overlayView.animate().alpha(1f).setDuration(220).start();
         
         View menuContainer = overlayView.findViewById(R.id.mod_menu_container);
-        if (menuContainer != null) {
+        if (menuContainer != null && activeSection != MenuSection.HUD_EDITOR) {
             animateMenuEnter(menuContainer);
         }
     }
@@ -367,6 +389,7 @@ public class ModMenuOverlay {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                lastSearchQuery = s.toString();
                 searchHandler.removeCallbacks(searchRunnable);
                 searchHandler.postDelayed(searchRunnable, 60L);
                 clearSearchBtn.setVisibility(s.length() > 0 ? View.VISIBLE : View.GONE);
@@ -379,6 +402,7 @@ public class ModMenuOverlay {
             searchInput.setText("");
             clearSearchBtn.setVisibility(View.GONE);
         });
+        if (!lastSearchQuery.isEmpty()) searchInput.setText(lastSearchQuery);
         setupFilterButtons();
         setupCompactFilter();
         
@@ -508,11 +532,69 @@ public class ModMenuOverlay {
         });
         modsRecycler.setAdapter(adapter);
         applyCompactModeLayout(compactMode);
-        
-        showModulesSection();
     }
-    
+
+    private void restoreLastSection() {
+        restoringLastSection = true;
+        try {
+            switch (activeSection) {
+                case SETTINGS:
+                    showSettingsSection();
+                    break;
+                case CONFIG:
+                    boolean found = false;
+                    for (UnifiedMod mod : allMods) {
+                        if (mod.getStableKey().equals(lastConfigModKey) && mod.hasConfig()) {
+                            showConfigSection(mod);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) showModulesSection();
+                    break;
+                case HUD_EDITOR:
+                    enterHudEditorMode(menuContainer, overlayView.findViewById(R.id.hud_editor_tools));
+                    break;
+                case MODULES:
+                default:
+                    showModulesSection();
+                    break;
+            }
+        } finally {
+            restoringLastSection = false;
+        }
+    }
+
+    private void saveVisibleScrollPosition() {
+        if (restoringLastSection || !isShowing || overlayView == null) return;
+        if (activeSection == MenuSection.MODULES && modulesContainer != null
+                && modulesContainer.getVisibility() == View.VISIBLE && modsLayoutManager != null
+                && modsRecycler != null && modsRecycler.getChildCount() > 0) {
+            Parcelable state = modsLayoutManager.onSaveInstanceState();
+            if (compactMode) compactModsScrollState = state;
+            else fullModsScrollState = state;
+        } else if (activeSection == MenuSection.SETTINGS && settingsContainer instanceof ScrollView) {
+            settingsScrollPosition = ((ScrollView) settingsContainer).getScrollY();
+        } else if (activeSection == MenuSection.CONFIG) {
+            ViewGroup content = overlayView.findViewById(R.id.mod_config_content);
+            RuntimeConfigView.save(content);
+            if (content != null && content.getChildCount() > 0
+                    && content.getChildAt(0) instanceof ScrollView && lastConfigModKey != null) {
+                legacyConfigScrollPositions.put(lastConfigModKey,
+                        ((ScrollView) content.getChildAt(0)).getScrollY());
+            }
+        }
+    }
+
+    private void restoreModsScrollPosition() {
+        if (modsLayoutManager == null || adapter == null || adapter.getItemCount() == 0) return;
+        Parcelable state = compactMode ? compactModsScrollState : fullModsScrollState;
+        if (state != null) modsLayoutManager.onRestoreInstanceState(state);
+    }
+
     private void showModulesSection() {
+        saveVisibleScrollPosition();
+        activeSection = MenuSection.MODULES;
         updateNavigationItem(navModules, compactNavModules, true);
         updateNavigationItem(navSettings, compactNavSettings, false);
         updateNavigationItem(navHudEditor, compactNavHudEditor, false);
@@ -535,6 +617,8 @@ public class ModMenuOverlay {
     }
     
     private void showSettingsSection() {
+        saveVisibleScrollPosition();
+        activeSection = MenuSection.SETTINGS;
         updateNavigationItem(navSettings, compactNavSettings, true);
         updateNavigationItem(navModules, compactNavModules, false);
         updateNavigationItem(navHudEditor, compactNavHudEditor, false);
@@ -555,13 +639,25 @@ public class ModMenuOverlay {
             if (filterBar != null) filterBar.setVisibility(View.GONE);
             if (compactFilterBar != null) compactFilterBar.setVisibility(View.GONE);
         }
+        if (restoringLastSection && settingsContainer instanceof ScrollView) {
+            View current = settingsContainer;
+            int position = settingsScrollPosition;
+            current.post(() -> {
+                if (overlayView != null && settingsContainer == current) {
+                    ((ScrollView) current).scrollTo(0, position);
+                }
+            });
+        }
     }
     
     private void showConfigSection(UnifiedMod mod) {
+        saveVisibleScrollPosition();
         if (mod.openCustomConfig()) {
             hide();
             return;
         }
+        activeSection = MenuSection.CONFIG;
+        lastConfigModKey = mod.getStableKey();
         updateNavigationItem(navModules, compactNavModules, false);
         updateNavigationItem(navSettings, compactNavSettings, false);
         updateNavigationItem(navHudEditor, compactNavHudEditor, false);
@@ -593,6 +689,16 @@ public class ModMenuOverlay {
                         overlayManager.applyConfigurationChanges(mod.getId());
                     }
                 });
+                if (modConfigContent.getChildCount() > 0
+                        && modConfigContent.getChildAt(0) instanceof ScrollView) {
+                    ScrollView scroll = (ScrollView) modConfigContent.getChildAt(0);
+                    int position = legacyConfigScrollPositions.getOrDefault(mod.getStableKey(), 0);
+                    scroll.post(() -> {
+                        if (overlayView != null && scroll.getParent() == modConfigContent) {
+                            scroll.scrollTo(0, position);
+                        }
+                    });
+                }
             }
         }
     }
@@ -666,6 +772,8 @@ public class ModMenuOverlay {
     }
 
     private void enterHudEditorMode(View modMenuContainer, View hudEditorTools) {
+        saveVisibleScrollPosition();
+        activeSection = MenuSection.HUD_EDITOR;
         updateNavigationItem(navModules, compactNavModules, false);
         updateNavigationItem(navSettings, compactNavSettings, false);
         updateNavigationItem(navHudEditor, compactNavHudEditor, true);
@@ -809,6 +917,7 @@ public class ModMenuOverlay {
     }
 
     private void setCompactMode(boolean compact) {
+        saveVisibleScrollPosition();
         compactMode = compact;
         if (modsLayoutManager != null) {
             modsLayoutManager.setSpanCount(compact ? 1 : 4);
@@ -817,6 +926,7 @@ public class ModMenuOverlay {
             adapter.setCompactMode(compact);
             adapter.updateMods(filteredMods, favoriteKeys);
         }
+        restoreModsScrollPosition();
         applyCompactModeLayout(compact);
         updateFilterBarVisibility();
         updateFilterButtons();
@@ -1131,6 +1241,9 @@ public class ModMenuOverlay {
     
     public void hide() {
         if (!isShowing || overlayView == null) return;
+        saveVisibleScrollPosition();
+        searchHandler.removeCallbacks(searchRunnable);
+        RuntimeConfigView.stop(overlayView.findViewById(R.id.mod_config_content));
 
         InbuiltOverlayManager overlayManager = InbuiltOverlayManager.getInstance();
         if (overlayManager != null) {
