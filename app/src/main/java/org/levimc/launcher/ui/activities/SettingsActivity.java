@@ -41,9 +41,11 @@ import org.levimc.launcher.util.LanguageManager;
 import org.levimc.launcher.util.LauncherStorage;
 import org.levimc.launcher.util.PermissionsHandler;
 import org.levimc.launcher.util.PersonalizationManager;
+import org.levimc.launcher.util.LauncherBackgroundController;
 import org.levimc.launcher.util.ThemeManager;
 
 import java.text.DateFormat;
+import java.lang.ref.WeakReference;
 import java.util.Date;
 import java.util.Locale;
 
@@ -118,9 +120,16 @@ public class SettingsActivity extends BaseActivity {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Uri uri = result.getData().getData();
                         if (uri != null) {
-                            personalizationManager.setBackgroundImage(uri, this);
-                            updateBgImageUI();
-                            recreate();
+                            setBackgroundImportState(true);
+                            WeakReference<SettingsActivity> activityRef = new WeakReference<>(this);
+                            LauncherBackgroundController.importBackground(getApplicationContext(), uri, success -> {
+                                SettingsActivity activity = activityRef.get();
+                                if (activity == null || activity.isFinishing() || activity.isDestroyed()) return;
+                                activity.setBackgroundImportState(false);
+                                activity.updateBgImageUI();
+                                if (success) activity.recreate();
+                                else Toast.makeText(activity, R.string.bg_media_import_failed, Toast.LENGTH_LONG).show();
+                            });
                         }
                     }
                 }
@@ -560,10 +569,13 @@ public class SettingsActivity extends BaseActivity {
 
         setupBackgroundImageControls();
         updateBgImageUI();
+        setBackgroundImportState(LauncherBackgroundController.isImporting());
 
         btnSelectImage.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK);
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/*");
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
             bgImagePickerLauncher.launch(intent);
         });
 
@@ -662,6 +674,10 @@ public class SettingsActivity extends BaseActivity {
     private void updateBgImageUI() {
         if (bgImageStatus == null) return;
         boolean hasBackgroundImage = personalizationManager.hasBackgroundImage();
+        SeekBar blurSeek = findViewById(R.id.seek_bg_image_blur);
+        boolean canBlur = personalizationManager.canBlurBackground();
+        if (blurSeek != null) blurSeek.setEnabled(canBlur);
+        if (!canBlur && bgImageBlurValue != null) bgImageBlurValue.setText(R.string.bg_media_blur_unavailable);
         View effectControls = findViewById(R.id.bg_image_effect_controls);
         if (effectControls != null) {
             effectControls.setVisibility(hasBackgroundImage ? View.VISIBLE : View.GONE);
@@ -677,13 +693,30 @@ public class SettingsActivity extends BaseActivity {
             View btnClear = findViewById(R.id.btn_clear_bg_image);
             if (btnClear != null) btnClear.setVisibility(View.VISIBLE);
         } else {
-            bgImageStatus.setText(R.string.bg_image_none);
+            bgImageStatus.setText(R.string.bg_media_none);
             if (bgImagePreview != null) {
                 bgImagePreview.setImageDrawable(null);
                 bgImagePreview.setVisibility(View.GONE);
             }
             View btnClear = findViewById(R.id.btn_clear_bg_image);
             if (btnClear != null) btnClear.setVisibility(View.GONE);
+        }
+    }
+
+    private void setBackgroundImportState(boolean importing) {
+        View select = findViewById(R.id.btn_select_bg_image);
+        View clear = findViewById(R.id.btn_clear_bg_image);
+        if (select != null) select.setEnabled(!importing && !LauncherBackgroundController.isMinecraftBlocked());
+        if (clear != null) clear.setEnabled(!importing);
+        if (importing && bgImageStatus != null) bgImageStatus.setText(R.string.bg_media_importing);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (personalizationManager != null) {
+            updateBgImageUI();
+            setBackgroundImportState(LauncherBackgroundController.isImporting());
         }
     }
 

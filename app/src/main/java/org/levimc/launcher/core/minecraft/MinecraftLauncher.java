@@ -10,6 +10,7 @@ import android.widget.Toast;
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.versions.GameVersion;
 import org.levimc.launcher.util.LauncherStorage;
+import org.levimc.launcher.util.LauncherBackgroundController;
 import android.util.Log;
 
 import java.io.File;
@@ -136,6 +137,7 @@ public class MinecraftLauncher {
                     launchMinecraftActivity(sourceIntent, version, false);
                     notifyLaunchStarted(callback);
                 } catch (Exception e) {
+                    LauncherBackgroundController.launchFailed(activity);
                     Log.e(TAG, "Launch failed: " + e.getMessage(), e);
                     showLaunchErrorOnUi("Launch failed: " + e.getMessage());
                     notifyLaunchFailed(callback, e);
@@ -192,6 +194,7 @@ public class MinecraftLauncher {
         launchIntent.putExtra("VERSION_ISOLATION", version.versionIsolation);
         launchIntent.removeExtra("LAUNCH_WITH_URI");
 
+        LauncherBackgroundController.suspendForMinecraft();
         activity.startActivity(launchIntent);
         activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         trace.mark("MinecraftLoadingActivity startActivity called");

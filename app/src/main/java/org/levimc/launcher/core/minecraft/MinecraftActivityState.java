@@ -2,6 +2,7 @@ package org.levimc.launcher.core.minecraft;
 
 import android.app.Activity;
 import android.content.Context;
+import org.levimc.launcher.util.LauncherBackgroundController;
 
 import java.lang.ref.WeakReference;
 
@@ -37,12 +38,14 @@ public final class MinecraftActivityState {
         running = false;
         resumed = false;
         currentActivityRef = null;
+        LauncherBackgroundController.allowLauncherPlayback();
     }
 
     public static void onDestroyed(Activity activity) {
         running = false;
         resumed = false;
         currentActivityRef = null;
+        LauncherBackgroundController.allowLauncherPlayback();
     }
 
     public static boolean isRunning() {

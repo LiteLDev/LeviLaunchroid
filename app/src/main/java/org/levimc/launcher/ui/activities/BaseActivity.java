@@ -39,6 +39,7 @@ import org.levimc.launcher.core.news.NewsState;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.util.AccountTextUtils;
 import org.levimc.launcher.util.PersonalizationManager;
+import org.levimc.launcher.util.LauncherBackgroundController;
 import org.levimc.launcher.util.ThemeManager;
 
 import java.util.concurrent.ExecutorService;
@@ -52,6 +53,7 @@ import okhttp3.Response;
 public class BaseActivity extends AppCompatActivity {
     private int appliedThemeGeneration = -1;
     private int appliedPersonalizationGeneration = -1;
+    private int appliedBackgroundEffectGeneration = -1;
     private boolean navBarInjected = false;
     private final OkHttpClient navAvatarClient = new OkHttpClient();
     private final ExecutorService navAccountExecutor = Executors.newSingleThreadExecutor();
@@ -84,6 +86,7 @@ public class BaseActivity extends AppCompatActivity {
         themeManager.applyTheme();
         appliedThemeGeneration = ThemeManager.getThemeChangeGeneration();
         appliedPersonalizationGeneration = PersonalizationManager.getChangeGeneration();
+        appliedBackgroundEffectGeneration = PersonalizationManager.getBackgroundEffectGeneration();
         super.onCreate(savedInstanceState);
         navAccountLoginLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -414,12 +417,19 @@ public class BaseActivity extends AppCompatActivity {
         }
         getDelegate().applyDayNight();
         hideSystemUI();
+        int currentEffects = PersonalizationManager.getBackgroundEffectGeneration();
+        if (appliedBackgroundEffectGeneration != currentEffects) {
+            appliedBackgroundEffectGeneration = currentEffects;
+            new PersonalizationManager(this).refreshBackgroundEffects(this);
+        }
+        LauncherBackgroundController.resume(this);
         refreshNavAccountUI();
         refreshNewsBadge();
     }
 
     @Override
     protected void onStop() {
+        LauncherBackgroundController.stopped(this);
         if (newsReceiverRegistered) {
             unregisterReceiver(newsReceiver);
             newsReceiverRegistered = false;
@@ -490,31 +500,91 @@ public class BaseActivity extends AppCompatActivity {
         return intent != null && (intent.getFlags() & Intent.FLAG_ACTIVITY_NO_ANIMATION) != 0;
     }
 
+    private boolean hasLauncherBackground() {
+        return getClass().getName().startsWith("org.levimc.launcher.ui.activities.")
+                && !(this instanceof SplashActivity)
+                && !LauncherBackgroundController.isMinecraftBlocked()
+                && new PersonalizationManager(this).hasBackgroundImage();
+    }
+
+    private boolean isLauncherNavigation(Intent intent) {
+        return intent != null && intent.getComponent() != null
+                && getPackageName().equals(intent.getComponent().getPackageName())
+                && intent.getComponent().getClassName().startsWith("org.levimc.launcher.ui.activities.")
+                && !SplashActivity.class.getName().equals(intent.getComponent().getClassName());
+    }
+
+    private void applyExitTransition(boolean keepBackground) {
+        if (keepBackground) overridePendingTransition(0, 0);
+        else overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
     @Override
     public void finish() {
+        boolean keepBackground = !isTaskRoot() && hasLauncherBackground();
+        if (!isTaskRoot()) LauncherBackgroundController.navigating(this);
         super.finish();
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        applyExitTransition(keepBackground);
     }
 
     @Override
     public void startActivity(Intent intent) {
-        super.startActivity(intent);
+        prepareBackgroundNavigation(intent);
+        try {
+            super.startActivity(intent);
+        } catch (RuntimeException e) {
+            LauncherBackgroundController.navigationFailed(this);
+            throw e;
+        }
         if (!shouldSuppressTransition(intent)) {
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-        }
+        } else overridePendingTransition(0, 0);
     }
 
     @Override
     public void startActivity(Intent intent, @Nullable Bundle options) {
-        super.startActivity(intent, options);
+        prepareBackgroundNavigation(intent);
+        try {
+            super.startActivity(intent, options);
+        } catch (RuntimeException e) {
+            LauncherBackgroundController.navigationFailed(this);
+            throw e;
+        }
         if (!shouldSuppressTransition(intent)) {
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        } else overridePendingTransition(0, 0);
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode, @Nullable Bundle options) {
+        prepareBackgroundNavigation(intent);
+        try {
+            super.startActivityForResult(intent, requestCode, options);
+        } catch (RuntimeException e) {
+            LauncherBackgroundController.navigationFailed(this);
+            throw e;
         }
+        if (shouldSuppressTransition(intent)) overridePendingTransition(0, 0);
     }
 
     @Override
     public void finishAfterTransition() {
+        boolean keepBackground = !isTaskRoot() && hasLauncherBackground();
+        if (!isTaskRoot()) LauncherBackgroundController.navigating(this);
         super.finishAfterTransition();
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        applyExitTransition(keepBackground);
+    }
+
+    @Override
+    public void recreate() {
+        LauncherBackgroundController.navigating(this);
+        super.recreate();
+    }
+
+    private void prepareBackgroundNavigation(Intent intent) {
+        if (isLauncherNavigation(intent)) {
+            LauncherBackgroundController.navigating(this);
+            if (hasLauncherBackground()) intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        }
     }
 }

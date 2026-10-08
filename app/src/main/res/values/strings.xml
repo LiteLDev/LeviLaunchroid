@@ -1148,4 +1148,11 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="mod_config_edit_controls">Edit controls</string>
     <string name="mod_config_display_size_dp">Display size (dp)</string>
     <string name="mod_config_clear_keybind">Clear keybind</string>
+    <string name="bg_media_title">Background</string>
+    <string name="bg_media_desc">Choose a photo or GIF</string>
+    <string name="bg_media_select">Select background</string>
+    <string name="bg_media_none">No background selected</string>
+    <string name="bg_media_importing">Importing background…</string>
+    <string name="bg_media_import_failed">Could not load this background. Choose a supported photo or GIF.</string>
+    <string name="bg_media_blur_unavailable">Android 12+</string>
 </resources>

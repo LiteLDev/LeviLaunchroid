@@ -25,6 +25,7 @@ import org.levimc.launcher.R
 import org.levimc.launcher.ui.activities.BaseActivity
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog
 import org.levimc.launcher.util.PersonalizationManager
+import org.levimc.launcher.util.LauncherBackgroundController
 import java.text.SimpleDateFormat
 import java.util.ArrayDeque
 import java.util.Date
@@ -54,6 +55,7 @@ class MinecraftLoadingActivity : BaseActivity(), MinecraftRuntimePreparer.Progre
     private val visibleLogMessages = ArrayDeque<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        LauncherBackgroundController.suspendForMinecraft()
         super.onCreate(savedInstanceState)
         trace = LaunchTrace.ensure(intent)
         trace.mark("MinecraftLoadingActivity onCreate")
@@ -140,6 +142,7 @@ class MinecraftLoadingActivity : BaseActivity(), MinecraftRuntimePreparer.Progre
     private fun startPreparing() {
         executor.execute {
             try {
+                LauncherBackgroundController.awaitShutdown()
                 val gameIntent = Intent(intent).apply {
                     setClass(this@MinecraftLoadingActivity, MinecraftActivity::class.java)
                 }

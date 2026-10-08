@@ -25,6 +25,7 @@ import org.levimc.launcher.core.mods.inbuilt.nativemod.PojavControlsMod
 import org.levimc.launcher.core.mods.inbuilt.overlay.InbuiltOverlayManager
 import org.levimc.launcher.preloader.PreloaderInput
 import org.levimc.launcher.settings.FeatureSettings
+import org.levimc.launcher.util.LauncherBackgroundController
 import org.levimc.pojavcontrols.PojavControls
 import org.levimc.pojavcontrols.PojavControlsHost
 import java.io.File
@@ -93,6 +94,8 @@ class MinecraftActivity : MainActivity(), PojavControlsHost {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        LauncherBackgroundController.suspendForMinecraft()
+        LauncherBackgroundController.awaitShutdown()
         trace = LaunchTrace.ensure(intent)
         trace.mark("MinecraftActivity onCreate entered")
         window.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(resolveLaunchBackgroundColor()))
