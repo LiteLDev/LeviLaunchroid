@@ -88,6 +88,13 @@ object MinecraftRuntimePreparer {
             org.levimc.launcher.core.mods.inbuilt.nativemod.GyroMod.nativePreResolve()
         } catch (_: Throwable) {}
 
+        try {
+            org.levimc.launcher.core.mods.inbuilt.nativemod.HotbarSlotMod.initialize()
+            org.levimc.launcher.core.mods.inbuilt.overlay.HotbarSlotOverlay.preloadArtwork(context)
+        } catch (error: Throwable) {
+            trace.warning("Hotbar Slot preparation unavailable", error.message ?: error.javaClass.simpleName)
+        }
+
         //nativeSetupRuntime(modManager.currentVersion?.modsDir?.absolutePath.toString())
         val nativeModResult = loadNativeMods(context, launchIntent, modManager, listener, trace)
 

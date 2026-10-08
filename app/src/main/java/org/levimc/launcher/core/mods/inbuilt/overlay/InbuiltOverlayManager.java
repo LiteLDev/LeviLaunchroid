@@ -9,6 +9,7 @@ import org.levimc.launcher.core.mods.inbuilt.manager.MoreButtonsManager;
 import org.levimc.launcher.core.mods.inbuilt.model.MoreButtonConfig;
 import org.levimc.launcher.core.mods.inbuilt.model.ModIds;
 import org.levimc.launcher.core.mods.inbuilt.nativemod.PojavControlsMod;
+import org.levimc.launcher.core.mods.inbuilt.nativemod.HotbarSlotMod;
 import org.levimc.pojavcontrols.PojavControls;
 import org.levimc.pojavcontrols.PojavControlsHost;
 
@@ -30,6 +31,8 @@ public class InbuiltOverlayManager {
     private final Map<String, ExternalButtonOverlay> externalButtonOverlayMap = new HashMap<>();
     private final Map<String, MoreButtonOverlay> moreButtonOverlayMap = new HashMap<>();
     private final Map<Integer, HotbarSlotOverlay> hotbarSlotOverlayMap = new HashMap<>();
+    private final int[] hotbarItemCounts = new int[9];
+    private volatile boolean hotbarTrackingEnabled;
     private boolean moreButtonsEditorOpen;
     private final Map<String, Integer> modPositionMap = new HashMap<>();
     private ChickPetOverlay chickPetOverlay;
@@ -499,6 +502,11 @@ public class InbuiltOverlayManager {
             }
             nextX += button + gap;
         }
+        hotbarTrackingEnabled = !hotbarSlotOverlayMap.isEmpty() &&
+                (manager.isHotbarItemIconsEnabled() || manager.isHotbarItemCountsEnabled());
+        HotbarSlotMod.setOverlayEnabled(!hotbarSlotOverlayMap.isEmpty());
+        HotbarSlotMod.setItemIconsEnabled(hotbarTrackingEnabled && manager.isHotbarItemIconsEnabled());
+        HotbarSlotMod.setEnabled(hotbarTrackingEnabled);
     }
 
     private int getHotbarSlotButtonSizePx(InbuiltModManager manager,
@@ -517,6 +525,10 @@ public class InbuiltOverlayManager {
     }
 
     private void hideHotbarSlots() {
+        HotbarSlotMod.setOverlayEnabled(false);
+        hotbarTrackingEnabled = false;
+        HotbarSlotMod.setEnabled(false);
+        HotbarSlotMod.setItemIconsEnabled(false);
         java.util.List<HotbarSlotOverlay> copy = new java.util.ArrayList<>(hotbarSlotOverlayMap.values());
         for (HotbarSlotOverlay overlay : copy) removeHotbarSlotOverlay(overlay);
         hotbarSlotOverlayMap.clear();
@@ -620,6 +632,10 @@ public class InbuiltOverlayManager {
 
 
     public void hideAllOverlays() {
+        HotbarSlotMod.setOverlayEnabled(false);
+        hotbarTrackingEnabled = false;
+        HotbarSlotMod.setEnabled(false);
+        HotbarSlotMod.setItemIconsEnabled(false);
         PojavControls.setEnabled(activity,
                 activity instanceof PojavControlsHost ? (PojavControlsHost) activity : null,
                 false);
@@ -968,7 +984,18 @@ public class InbuiltOverlayManager {
         boolean isFloatingModMenuButtonHidden = ExternalModBridge.isFloatingModMenuButtonHidden();
         boolean showGameOverlays = isHudScreenOpen && !isShowingMenu && !isPauseOpen;
         boolean inbuiltVisible = hudEditorMode || showGameOverlays;
-        boolean hotbarVisible = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.HOTBAR_SLOT);
+        int hotbarGameplayState = HotbarSlotMod.getGameplayVisibilityState();
+        boolean hotbarGameplayVisible = hotbarGameplayState >= 0
+                ? hotbarGameplayState == 1 : showGameOverlays;
+        boolean hotbarVisible = hudEditorMode || hotbarGameplayVisible ||
+                manager.isOverlayShowEverywhere(ModIds.HOTBAR_SLOT);
+
+        if (hotbarTrackingEnabled && hotbarVisible && !hotbarSlotOverlayMap.isEmpty()) {
+            HotbarSlotMod.copyItemCounts(hotbarItemCounts);
+            for (HotbarSlotOverlay hotbar : hotbarSlotOverlayMap.values()) {
+                hotbar.updateItemCount(hotbarItemCounts[hotbar.getSlot() - 1]);
+            }
+        }
 
         for (BaseOverlayButton overlay : overlays) {
             if (inbuiltVisible || manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey())) {
@@ -986,6 +1013,7 @@ public class InbuiltOverlayManager {
         stateHash = 31L * stateHash + (isShowingMenu ? 1L : 0L);
         stateHash = 31L * stateHash + (isFloatingModMenuButtonHidden ? 1L : 0L);
         stateHash = 31L * stateHash + (hudEditorMode ? 1L : 0L);
+        stateHash = 31L * stateHash + (hotbarVisible ? 1L : 0L);
         stateHash = 31L * stateHash + overlays.size();
         for (BaseOverlayButton overlay : overlays) {
             stateHash = 31L * stateHash + System.identityHashCode(overlay);
@@ -1022,7 +1050,9 @@ public class InbuiltOverlayManager {
 
             for (BaseOverlayButton overlay : overlays) {
                 if (overlay.overlayView != null) {
-                    int visibility = inbuiltVisible || manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey())
+                    boolean visible = overlay instanceof HotbarSlotOverlay ? hotbarVisible :
+                            inbuiltVisible || manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey());
+                    int visibility = visible
                             ? android.view.View.VISIBLE
                             : android.view.View.GONE;
                     if (overlay.overlayView.getVisibility() != visibility) {

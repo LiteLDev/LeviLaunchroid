@@ -1,14 +1,6 @@
 package org.levimc.launcher.core.mods.inbuilt.overlay;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,21 +12,20 @@ import org.levimc.launcher.core.mods.inbuilt.nativemod.HotbarSlotMod;
 import org.levimc.launcher.core.mods.inbuilt.nativemod.MoreButtonsMod;
 
 public final class HotbarSlotOverlay extends BaseOverlayButton {
-    private static final float PRESSED_Y = 8f;
-    private static final float NUMBER_Y = -8f;
-    private static final float ICON_WINDOW_LEFT = 93f;
-    private static final float ICON_WINDOW_TOP = 93f;
-    private static final float ICON_WINDOW_RIGHT = 419f;
-    private static final float ICON_WINDOW_BOTTOM = 396f;
-    private static final float COUNT_RIGHT = 400f;
-    private static final float COUNT_BASELINE = 365f;
-    private static final float COUNT_SHADOW_OFFSET = 5f;
-
     private final int slot;
-    private Bitmap normalBitmap;
-    private Bitmap pressedBitmap;
-    private boolean pressed;
-    private boolean keyDown;
+    private HotbarSlotDrawable drawable;
+    private volatile boolean iconsEnabled;
+    private volatile boolean countsEnabled;
+    private boolean visualUpdatePosted;
+    private final android.os.Handler visualHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private final Runnable refreshVisual = () -> {
+        synchronized (HotbarSlotOverlay.this) {
+            visualUpdatePosted = false;
+        }
+        updateVisual();
+    };
+    private volatile boolean pressed;
+    private volatile boolean keyDown;
     private volatile boolean renderVisible = false;
     private volatile int nativeX;
     private volatile int nativeY;
@@ -42,15 +33,16 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
     private volatile int nativeHeight;
     private volatile int nativeSurfaceWidth;
     private volatile int nativeSurfaceHeight;
-    private volatile boolean hasItem;
-    private volatile boolean lastBitmapItemState;
     private volatile int itemCount;
-    private volatile int lastBitmapItemCount;
 
     public HotbarSlotOverlay(Activity activity, int slot) {
         super(activity);
         this.slot = slot;
-        updateNativeMode();
+        readConfiguration();
+    }
+
+    public static void preloadArtwork(android.content.Context context) {
+        HotbarSlotDrawable.preload(context);
     }
 
     public int getSlot() {
@@ -73,8 +65,16 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
     }
 
     @Override
+    protected long getShowDelayMillis() {
+        View decor = activity.getWindow() != null ? activity.getWindow().getDecorView() : null;
+        long windowDelay = decor != null && decor.getWindowToken() != null ? 0L : 500L;
+        return windowDelay + (slot - 1) * 16L;
+    }
+
+    @Override
     protected void configureOverlayView(View view) {
-        rebuildBitmaps();
+        drawable = new HotbarSlotDrawable(activity, slot);
+        if (view instanceof ImageButton) ((ImageButton) view).setImageDrawable(drawable);
         updateVisual();
         view.setContentDescription(activity.getString(R.string.hotbar_slot_content_description, slot));
     }
@@ -119,26 +119,22 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
     protected void onButtonClick() {
     }
 
-    @Override
-    public void tick() {
-        boolean iconsEnabled = itemIconsEnabled();
-        boolean countsEnabled = itemCountsEnabled();
-        if (!iconsEnabled && !countsEnabled) return;
-        int currentCount = HotbarSlotMod.getItemCount(slot - 1);
-        boolean currentHasItem = currentCount > 0;
-        boolean itemStateChanged = currentHasItem != lastBitmapItemState;
-        boolean itemCountChanged = countsEnabled && currentCount != lastBitmapItemCount;
-        hasItem = currentHasItem;
+    public void updateItemCount(int currentCount) {
+        if (currentCount == itemCount && iconsAvailableForVisual == HotbarSlotMod.areItemIconsAvailable()) return;
         itemCount = currentCount;
-        if (itemStateChanged || itemCountChanged) {
-            lastBitmapItemState = currentHasItem;
-            lastBitmapItemCount = currentCount;
-            activity.runOnUiThread(() -> {
-                rebuildBitmaps();
-                updateVisual();
-            });
-        }
+        iconsAvailableForVisual = HotbarSlotMod.areItemIconsAvailable();
+        postVisualUpdate();
     }
+
+    private void postVisualUpdate() {
+        synchronized (this) {
+            if (visualUpdatePosted) return;
+            visualUpdatePosted = true;
+        }
+        visualHandler.post(refreshVisual);
+    }
+
+    private volatile boolean iconsAvailableForVisual;
 
     public void setRenderVisible(boolean visible) {
         if (renderVisible == visible) return;
@@ -154,48 +150,35 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
 
     @Override
     public void hide() {
+        visualHandler.removeCallbacks(refreshVisual);
+        synchronized (this) {
+            visualUpdatePosted = false;
+        }
         if (keyDown) sendSlotKey(false);
         keyDown = false;
         pressed = false;
         renderVisible = false;
         HotbarSlotMod.clearSlot(slot - 1);
         super.hide();
-        recycleBitmaps();
+        drawable = null;
     }
 
     @Override
     public void applyConfigurationChanges() {
-        boolean trackingEnabled = updateNativeMode();
-        if (!trackingEnabled) {
-            hasItem = false;
-            lastBitmapItemState = false;
-            itemCount = 0;
-            lastBitmapItemCount = 0;
-        }
+        readConfiguration();
+        if (!iconsEnabled && !countsEnabled) itemCount = 0;
         super.applyConfigurationChanges();
-        rebuildBitmaps();
         updateVisual();
         syncNativeState();
     }
 
-    private boolean itemIconsEnabled() {
-        return InbuiltModManager.getInstance(activity).isHotbarItemIconsEnabled();
-    }
-
-    private boolean itemCountsEnabled() {
-        return InbuiltModManager.getInstance(activity).isHotbarItemCountsEnabled();
-    }
-
-    private boolean updateNativeMode() {
-        boolean iconsEnabled = itemIconsEnabled();
-        boolean trackingEnabled = iconsEnabled || itemCountsEnabled();
-        HotbarSlotMod.setEnabled(trackingEnabled);
-        HotbarSlotMod.setItemIconsEnabled(iconsEnabled);
-        return trackingEnabled;
+    private void readConfiguration() {
+        InbuiltModManager manager = InbuiltModManager.getInstance(activity);
+        iconsEnabled = manager.isHotbarItemIconsEnabled();
+        countsEnabled = manager.isHotbarItemCountsEnabled();
     }
 
     private void syncNativeState() {
-        if (!itemIconsEnabled()) return;
         HotbarSlotMod.setSlotState(slot - 1, nativeX, nativeY, nativeWidth, nativeHeight,
                 nativeSurfaceWidth, nativeSurfaceHeight, getButtonOpacity(), renderVisible, pressed);
     }
@@ -208,70 +191,15 @@ public final class HotbarSlotOverlay extends BaseOverlayButton {
     }
 
     private void updateVisual() {
-        if (!(overlayView instanceof ImageButton)) return;
-        ImageButton button = (ImageButton) overlayView;
-        button.setImageBitmap(pressed ? pressedBitmap : normalBitmap);
-        if (button.getDrawable() instanceof BitmapDrawable) {
-            ((BitmapDrawable) button.getDrawable()).setFilterBitmap(false);
+        if (android.os.Looper.myLooper() != android.os.Looper.getMainLooper()) {
+            postVisualUpdate();
+            return;
         }
+        if (!(overlayView instanceof ImageButton) || drawable == null) return;
+        drawable.update(pressed, iconsEnabled && HotbarSlotMod.areItemIconsAvailable() && itemCount > 0,
+                countsEnabled, itemCount);
+        ImageButton button = (ImageButton) overlayView;
         button.setScaleType(ImageButton.ScaleType.FIT_CENTER);
         button.setAlpha(getButtonOpacity());
-    }
-
-    private void rebuildBitmaps() {
-        recycleBitmaps();
-        normalBitmap = createBitmap(false);
-        pressedBitmap = createBitmap(true);
-    }
-
-    private Bitmap createBitmap(boolean down) {
-        Bitmap base = BitmapFactory.decodeResource(activity.getResources(),
-                down ? R.drawable.more_button_base_pressed : R.drawable.more_button_base_normal);
-        if (base == null) return Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888);
-        Bitmap result = base.copy(Bitmap.Config.ARGB_8888, true);
-        if (base != result && !base.isRecycled()) base.recycle();
-
-        Canvas canvas = new Canvas(result);
-        if (itemIconsEnabled() && hasItem) {
-            Paint clear = new Paint();
-            clear.setXfermode(new android.graphics.PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-            canvas.drawRect(ICON_WINDOW_LEFT, ICON_WINDOW_TOP, ICON_WINDOW_RIGHT, ICON_WINDOW_BOTTOM, clear);
-            clear.setXfermode(null);
-        } else {
-            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            paint.setColor(down ? Color.rgb(230, 230, 230) : Color.BLACK);
-            paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            paint.setTextSize(250f);
-            Paint.FontMetrics fm = paint.getFontMetrics();
-            float yOffset = NUMBER_Y + (down ? PRESSED_Y : 0f);
-            float y = 256f - (fm.ascent + fm.descent) / 2f + yOffset;
-            canvas.drawText(Integer.toString(slot), 256f, y, paint);
-        }
-
-        if (itemCountsEnabled() && itemCount > 0) {
-            drawItemCount(canvas, down);
-        }
-        return result;
-    }
-
-    private void drawItemCount(Canvas canvas, boolean down) {
-        String text = Integer.toString(itemCount);
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setTextAlign(Paint.Align.RIGHT);
-        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        paint.setTextSize(text.length() >= 3 ? 72f : (text.length() == 2 ? 88f : 96f));
-        float y = COUNT_BASELINE + (down ? PRESSED_Y : 0f);
-        paint.setColor(Color.BLACK);
-        canvas.drawText(text, COUNT_RIGHT + COUNT_SHADOW_OFFSET, y + COUNT_SHADOW_OFFSET, paint);
-        paint.setColor(Color.WHITE);
-        canvas.drawText(text, COUNT_RIGHT, y, paint);
-    }
-
-    private void recycleBitmaps() {
-        if (normalBitmap != null && !normalBitmap.isRecycled()) normalBitmap.recycle();
-        if (pressedBitmap != null && !pressedBitmap.isRecycled()) pressedBitmap.recycle();
-        normalBitmap = null;
-        pressedBitmap = null;
     }
 }

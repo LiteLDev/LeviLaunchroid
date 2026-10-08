@@ -104,13 +104,17 @@ public abstract class BaseOverlayButton {
         }
     }
 
+    protected long getShowDelayMillis() {
+        return 500L;
+    }
+
     public void show(int startX, int startY) {
         if (isShowing || isHiding) return;
         if (pendingShowRunnable != null) {
             handler.removeCallbacks(pendingShowRunnable);
         }
         pendingShowRunnable = () -> showInternal(startX, startY);
-        handler.postDelayed(pendingShowRunnable, 500);
+        handler.postDelayed(pendingShowRunnable, getShowDelayMillis());
     }
 
     private void showInternal(int startX, int startY) {
@@ -280,6 +284,7 @@ public abstract class BaseOverlayButton {
                 overlayView.setLayoutParams(params);
             }
         }
+        notifyOverlayGeometryChanged();
     }
 
     private boolean handleTouch(View v, MotionEvent event) {
