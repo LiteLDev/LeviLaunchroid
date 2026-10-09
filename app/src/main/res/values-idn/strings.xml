@@ -1152,11 +1152,11 @@ Migrasi harus selesai sebelum LeviLauncher dapat melanjutkan.</string>
     <string name="mod_config_edit_controls">Edit kontrol</string>
     <string name="mod_config_display_size_dp">Ukuran tampilan (dp)</string>
     <string name="mod_config_clear_keybind">Hapus keybind</string>
-    <string name="bg_media_title">Latar</string>
+    <string name="bg_media_title">Latar belakang</string>
     <string name="bg_media_desc">Pilih foto atau GIF</string>
-    <string name="bg_media_select">Pilih latar</string>
-    <string name="bg_media_none">Tidak ada latar yang dipilih</string>
-    <string name="bg_media_importing">Mengimpor latar…</string>
-    <string name="bg_media_import_failed">Tidak dapat memuat latar ini. Pilih foto atau GIF yang didukung.</string>
+    <string name="bg_media_select">Pilih latar belakang</string>
+    <string name="bg_media_none">Tidak ada latar belakang yang dipilih</string>
+    <string name="bg_media_importing">Mengimpor latar belakang…</string>
+    <string name="bg_media_import_failed">Tidak dapat memuat latar belakang ini. Pilih foto atau GIF yang didukung.</string>
     <string name="bg_media_blur_unavailable">Android 12+</string>
 </resources>

@@ -787,7 +787,7 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="mod_menu_keybind">मॉड मेन्यू कीबाइंड</string>
     <string name="mod_menu_keybind_desc">कीबोर्ड शॉर्टकट बदलने के लिए दबाएँ</string>
     <string name="mod_menu_keybind_reset">M पर रीसेट करें</string>
-    <string name="mod_menu_keybind_unbound">अनबाउंड</string>
+    <string name="mod_menu_keybind_unbound">असाइन नहीं</string>
     <string name="mod_menu_default_percent" formatted="false">100%</string>
     <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">सेटिंग्स जल्द ही आ रही हैं</string>
