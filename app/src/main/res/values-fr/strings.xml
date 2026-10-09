@@ -784,6 +784,10 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="mod_menu_appearance">Apparence</string>
     <string name="mod_menu_pause_menu_only">Menu pause uniquement</string>
     <string name="mod_menu_pause_menu_only_desc">Afficher le menu des mods uniquement dans le menu de pause</string>
+    <string name="mod_menu_keybind">Raccourci du menu des mods</string>
+    <string name="mod_menu_keybind_desc">Appuyez pour modifier le raccourci clavier</string>
+    <string name="mod_menu_keybind_reset">Réinitialiser à M</string>
+    <string name="mod_menu_keybind_unbound">Non attribué</string>
     <string name="mod_menu_default_percent" formatted="false">100%</string>
     <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">Paramètres à venir</string>
@@ -1144,4 +1148,15 @@ La migration doit être terminée avant de continuer avec LeviLauncher.</string>
     <string name="batch_transferring">Transfert de %1$d sur %2$d…</string>
     <string name="batch_result">%1$d terminés, %2$d échoués</string>
     <string name="choose_export_folder">Choisir le dossier d’exportation</string>
+    <string name="mod_config_activation_keybind">Raccourci d\'activation</string>
+    <string name="mod_config_edit_controls">Modifier les commandes</string>
+    <string name="mod_config_display_size_dp">Taille d\'affichage (dp)</string>
+    <string name="mod_config_clear_keybind">Effacer le raccourci</string>
+    <string name="bg_media_title">Arrière-plan</string>
+    <string name="bg_media_desc">Choisissez une photo ou un GIF</string>
+    <string name="bg_media_select">Sélectionner un arrière-plan</string>
+    <string name="bg_media_none">Aucun arrière-plan sélectionné</string>
+    <string name="bg_media_importing">Importation de l\'arrière-plan…</string>
+    <string name="bg_media_import_failed">Impossible de charger cet arrière-plan. Choisissez une photo ou un GIF compatible.</string>
+    <string name="bg_media_blur_unavailable">Android 12+</string>
 </resources>

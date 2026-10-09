@@ -95,4 +95,4 @@ MinecraftAuth
 
 # git
 commit_msg.txt
-.patch
+*.patch
