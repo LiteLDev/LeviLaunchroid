@@ -8,7 +8,7 @@
 
 <resources>
     <!-- Common -->
-    <string name="app_name">લેવિલૉન્ચર</string>
+    <string name="app_name">LeviLauncher</string>
     <string name="minecraft">Minecraft</string>
     <string name="launch">લોન્ચ</string>
     <string name="beta_badge">બીટા</string>
@@ -309,7 +309,7 @@ LeviLauncher ચાલુ રાખતાં પહેલાં માઇગ્�
     <!-- Language Setting -->
     <!-- Keep English at the top (default language). -->
     <!-- Sort all other languages alphabetically by their display name. -->
-    <string name="language">ભાષા</string>
+    <string name="language">ભાષા (Language)</string>
     <string name="english">અંગ્રેજી (English)</string>
     <string name="chinese">简体中文 (Chinese)</string>
     <string name="french">Français (French)</string>
