@@ -785,6 +785,10 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="mod_menu_appearance">रूप-रंग</string>
     <string name="mod_menu_pause_menu_only">केवल पॉज़ मेनू</string>
     <string name="mod_menu_pause_menu_only_desc">मॉड मेनू केवल पॉज़ स्क्रीन में दिखाएं</string>
+    <string name="mod_menu_keybind">मॉड मेन्यू कीबाइंड</string>
+    <string name="mod_menu_keybind_desc">कीबोर्ड शॉर्टकट बदलने के लिए दबाएँ</string>
+    <string name="mod_menu_keybind_reset">M पर रीसेट करें</string>
+    <string name="mod_menu_keybind_unbound">असाइन नहीं</string>
     <string name="mod_menu_default_percent" formatted="false">100%</string>
     <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">सेटिंग्स जल्द ही आ रही हैं</string>
@@ -1145,4 +1149,15 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="batch_transferring">%2$d में से %1$d ट्रांसफ़र हो रहा है…</string>
     <string name="batch_result">%1$d पूरे हुए, %2$d विफल</string>
     <string name="choose_export_folder">एक्सपोर्ट फ़ोल्डर चुनें</string>
+    <string name="mod_config_activation_keybind">सक्रियण कीबाइंड</string>
+    <string name="mod_config_edit_controls">कंट्रोल संपादित करें</string>
+    <string name="mod_config_display_size_dp">डिस्प्ले आकार (dp)</string>
+    <string name="mod_config_clear_keybind">कीबाइंड हटाएँ</string>
+    <string name="bg_media_title">बैकग्राउंड</string>
+    <string name="bg_media_desc">फ़ोटो या GIF चुनें</string>
+    <string name="bg_media_select">बैकग्राउंड चुनें</string>
+    <string name="bg_media_none">कोई बैकग्राउंड चयनित नहीं</string>
+    <string name="bg_media_importing">बैकग्राउंड आयात हो रहा है…</string>
+    <string name="bg_media_import_failed">यह बैकग्राउंड लोड नहीं हो सका। कोई समर्थित फ़ोटो या GIF चुनें।</string>
+    <string name="bg_media_blur_unavailable">Android 12+</string>
 </resources>

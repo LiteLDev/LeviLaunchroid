@@ -785,6 +785,10 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="mod_menu_appearance">外観</string>
     <string name="mod_menu_pause_menu_only">ポーズメニューのみ</string>
     <string name="mod_menu_pause_menu_only_desc">ポーズ画面でのみModメニューを表示</string>
+    <string name="mod_menu_keybind">Modメニューのキー割り当て</string>
+    <string name="mod_menu_keybind_desc">押してキーボードショートカットを変更</string>
+    <string name="mod_menu_keybind_reset">M にリセット</string>
+    <string name="mod_menu_keybind_unbound">未割り当て</string>
     <string name="mod_menu_default_percent" formatted="false">100%</string>
     <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">設定は近日追加予定</string>
@@ -1145,4 +1149,15 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="batch_transferring">%2$d 件中 %1$d 件を転送中…</string>
     <string name="batch_result">%1$d 件完了、%2$d 件失敗</string>
     <string name="choose_export_folder">エクスポート先フォルダーを選択</string>
+    <string name="mod_config_activation_keybind">有効化キー</string>
+    <string name="mod_config_edit_controls">コントロールを編集</string>
+    <string name="mod_config_display_size_dp">表示サイズ (dp)</string>
+    <string name="mod_config_clear_keybind">キー割り当てをクリア</string>
+    <string name="bg_media_title">背景</string>
+    <string name="bg_media_desc">写真またはGIFを選択</string>
+    <string name="bg_media_select">背景を選択</string>
+    <string name="bg_media_none">背景が選択されていません</string>
+    <string name="bg_media_importing">背景をインポート中…</string>
+    <string name="bg_media_import_failed">この背景を読み込めませんでした。対応している写真またはGIFを選択してください。</string>
+    <string name="bg_media_blur_unavailable">Android 12+</string>
 </resources>

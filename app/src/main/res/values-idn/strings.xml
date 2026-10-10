@@ -785,6 +785,10 @@ Migrasi harus selesai sebelum LeviLauncher dapat melanjutkan.</string>
     <string name="mod_menu_appearance">Tampilan</string>
     <string name="mod_menu_pause_menu_only">Hanya Menu Jeda</string>
     <string name="mod_menu_pause_menu_only_desc">Tampilkan menu mod hanya di layar jeda</string>
+    <string name="mod_menu_keybind">Keybind Menu Mod</string>
+    <string name="mod_menu_keybind_desc">Tekan untuk mengubah pintasan papan ketik</string>
+    <string name="mod_menu_keybind_reset">Atur ulang ke M</string>
+    <string name="mod_menu_keybind_unbound">Belum ditetapkan</string>
     <string name="mod_menu_default_percent" formatted="false">100%</string>
     <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">Pengaturan segera hadir</string>
@@ -1145,4 +1149,15 @@ Migrasi harus selesai sebelum LeviLauncher dapat melanjutkan.</string>
     <string name="batch_transferring">Mentransfer %1$d dari %2$d…</string>
     <string name="batch_result">%1$d selesai, %2$d gagal</string>
     <string name="choose_export_folder">Pilih folder ekspor</string>
+    <string name="mod_config_activation_keybind">Keybind aktivasi</string>
+    <string name="mod_config_edit_controls">Edit kontrol</string>
+    <string name="mod_config_display_size_dp">Ukuran tampilan (dp)</string>
+    <string name="mod_config_clear_keybind">Hapus keybind</string>
+    <string name="bg_media_title">Latar belakang</string>
+    <string name="bg_media_desc">Pilih foto atau GIF</string>
+    <string name="bg_media_select">Pilih latar belakang</string>
+    <string name="bg_media_none">Tidak ada latar belakang yang dipilih</string>
+    <string name="bg_media_importing">Mengimpor latar belakang…</string>
+    <string name="bg_media_import_failed">Tidak dapat memuat latar belakang ini. Pilih foto atau GIF yang didukung.</string>
+    <string name="bg_media_blur_unavailable">Android 12+</string>
 </resources>

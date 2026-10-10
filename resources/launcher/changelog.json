@@ -1,14 +1,22 @@
 {
   "schemaVersion": 1,
-  "headline": "LeviLauncher Improvements",
-  "summary": "This update improves touch handling and native mod menu integration.",
+  "headline": "LeviLauncher v1.5.26",
+  "summary": "Added customizable mod menu and inbuilt mod keybinds, animated GIF backgrounds, improved mod menu scroll restoration, and fixes for PojavControls and Hotbar Slot icons.",
   "sections": [
     {
       "title": "Features",
       "items": [
         {
-          "text": "Added functions for native mods to open and close the launcher mod menu.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/2df2f1fb6f341fa6f0d11485d3c5f234f52c98b2"
+          "text": "Added a configurable keyboard shortcut for the mod menu, with M as the default key.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/7563eb5cfe3b4e48e562775aef867c4ec48160da"
+        },
+        {
+          "text": "Added animated GIF background support for the launcher.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/f2a45c8b4aaf520aafea084517a9b8e8803b09e0"
+        },
+        {
+          "text": "Added keybind management for inbuilt mods.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/1e4cdbc6c61cf73b99d384fe6c7b1903b93f86b5"
         }
       ]
     },
@@ -16,8 +24,21 @@
       "title": "Improvements",
       "items": [
         {
-          "text": "Improved touch event handling",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/1372b49fdb3ff3ef4742565051a4fd724da6e60b"
+          "text": "The mod menu now restores your previous section and scroll position when reopened, in both compact and full modes.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/22e0520f2f58831f0a99b8276c2536238f4439bd"
+        }
+      ]
+    },
+    {
+      "title": "Fixes",
+      "items": [
+        {
+          "text": "Fixed PojavControls touch input handling.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/f81ef34f40d8b06c2d11632d717850296f4746ca"
+        },
+        {
+          "text": "Fixed Hotbar Slot item icon rendering.",
+          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/08e143c9a4117170926502bd28c6c16314bce730"
         }
       ]
     }
