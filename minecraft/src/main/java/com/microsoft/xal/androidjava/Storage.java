@@ -2,14 +2,15 @@ package com.microsoft.xal.androidjava;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.AtomicFile;
 import android.util.Base64;
-import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -37,35 +38,25 @@ public class Storage {
 
             String activeMsUserId = null;
             File accountsFile = new File(xalRoot, "Xal.Accounts.json");
-            if (accountsFile.exists()) {
-                try (FileInputStream fis = new FileInputStream(accountsFile)) {
-                    byte[] buf = new byte[(int) Math.min(accountsFile.length(), 1024 * 1024)];
-                    int read = fis.read(buf);
-                    String body = new String(buf, 0, Math.max(0, read), StandardCharsets.UTF_8);
-                    JSONArray arr = new JSONArray(body);
+            if (accountsFile.exists() || new File(accountsFile.getPath() + ".bak").exists()) {
+                try (FileInputStream fis = new AtomicFile(accountsFile).openRead();
+                     ByteArrayOutputStream body = new ByteArrayOutputStream()) {
+                    byte[] buffer = new byte[8192];
+                    int count;
+                    while ((count = fis.read(buffer)) != -1) {
+                        body.write(buffer, 0, count);
+                    }
+                    JSONArray arr = new JSONArray(body.toString(StandardCharsets.UTF_8.name()));
                     for (int i = 0; i < arr.length(); i++) {
-                        JSONObject a = arr.optJSONObject(i);
-                        if (a == null) continue;
-                        if (a.optBoolean("active", false)) {
-                            String msUserId = a.optString("msUserId", null);
-                            if (!msUserId.isEmpty()) {
-                                activeMsUserId = msUserId;
-                                break;
-                            }
+                        JSONObject account = arr.optJSONObject(i);
+                        if (account == null || !account.optBoolean("active", false)) continue;
+                        String userId = account.optString("msUserId", "");
+                        if (!userId.isEmpty()) {
+                            activeMsUserId = userId;
+                            break;
                         }
                     }
-                    if (activeMsUserId == null) {
-                        for (int i = 0; i < arr.length(); i++) {
-                            JSONObject a = arr.optJSONObject(i);
-                            if (a == null) continue;
-                            String msUserId = a.optString("msUserId", null);
-                            if (!msUserId.isEmpty()) {
-                                activeMsUserId = msUserId;
-                                break;
-                            }
-                        }
-                    }
-                } catch (Throwable ignored) {}
+                } catch (Exception ignored) {}
             }
 
             if (activeMsUserId != null && !activeMsUserId.isEmpty()) {
@@ -74,13 +65,7 @@ public class Storage {
                        Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP
                 );
                 File userDir = new File(xalRoot, b64);
-                if (!userDir.exists()) {
-                    try {
-                        userDir.mkdirs();
-                    } catch (Exception e) {
-
-                    }
-                }
+                if (!userDir.exists()) userDir.mkdirs();
                 return userDir.getAbsolutePath();
             }
             return xalRoot.getAbsolutePath();

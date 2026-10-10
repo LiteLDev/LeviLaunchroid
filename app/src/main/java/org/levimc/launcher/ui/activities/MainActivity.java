@@ -75,7 +75,6 @@ import java.util.concurrent.Executors;
  import android.view.ViewTreeObserver;
  import androidx.core.content.ContextCompat;
 
-import net.raphimc.minecraftauth.bedrock.BedrockAuthManager;
 import okhttp3.OkHttpClient;
  import okhttp3.Request;
  import okhttp3.Response;
@@ -389,28 +388,13 @@ import okhttp3.OkHttpClient;
                  holder.tv.setOnClickListener(v -> {
                      popup.dismiss();
 
-                     MsftAccountStore.setActive(MainActivity.this, account.id);
-                     boolean withinSevenDays = AccountTextUtils.isRecentlyUpdated(account, 7);
-
-                     if (withinSevenDays) {
-                         runOnUiThread(() -> {
-                             DialogUtils.dismissQuietly(accountLoadingDialog);
-                             String statusName = AccountTextUtils.displayNameOrNotSigned(MainActivity.this, account);
-                             Toast.makeText(MainActivity.this, getString(R.string.ms_login_success, statusName), Toast.LENGTH_SHORT).show();
-                             refreshAccountHeaderUI();
-                         });
-                         return;
-                     }
-
                      accountLoadingDialog = DialogUtils.ensure(MainActivity.this, accountLoadingDialog);
                      DialogUtils.showWithMessage(accountLoadingDialog, getString(R.string.ms_login_auth_xbox_device));
 
                      accountExecutor.execute(() -> {
                          try {
-                             BedrockAuthManager authManager = MsftAuthManager.refreshAndAuth(account);
-                             MsftAuthManager.saveAccountOrThrow(MainActivity.this, authManager);
-                             MsftAccountStore.setActive(MainActivity.this, account.id);
-                             String minecraftUsername = authManager.getMinecraftCertificateChain().getUpToDate().getIdentityDisplayName();
+                             MsftAccountStore.MsftAccount refreshed = MsftAuthManager.refreshAccountAndActivate(MainActivity.this, account.id);
+                             String minecraftUsername = AccountTextUtils.displayNameOrNotSigned(MainActivity.this, refreshed);
 
                              runOnUiThread(() -> {
                                  DialogUtils.dismissQuietly(accountLoadingDialog);

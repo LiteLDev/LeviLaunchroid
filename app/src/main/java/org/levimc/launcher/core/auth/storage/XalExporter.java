@@ -2,6 +2,7 @@ package org.levimc.launcher.core.auth.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.AtomicFile;
 import android.util.Base64;
 import android.util.Log;
 
@@ -11,9 +12,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import org.levimc.launcher.core.auth.MsftAccountStore;
-import org.levimc.launcher.util.JsonIOUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,36 +24,99 @@ import java.util.Locale;
 public class XalExporter {
     private static final String TAG = "XalExporter";
     private static final Gson GSON = new Gson();
+    private static final String TITLE_ID = "1739947436";
 
     public static void exportActiveAccount(Context ctx) {
         try {
-            MsftAccountStore.MsftAccount active = null;
-            for (MsftAccountStore.MsftAccount acc : MsftAccountStore.list(ctx)) {
-                if (acc.active) {
-                    active = acc;
-                    break;
-                }
-            }
-
-            if (active == null || active.serializedAuthManager == null) {
-                clearXalData(ctx);
-                return;
-            }
-
-            JsonObject authJson = JsonParser.parseString(active.serializedAuthManager).getAsJsonObject();
-            export(ctx, authJson, active.msUserId, active.xboxGamertag, active.xuid);
-
+            exportActiveAccountOrThrow(ctx);
         } catch (Exception e) {
             Log.e(TAG, "Failed to export XAL data", e);
         }
     }
 
+    public static void exportActiveAccountOrThrow(Context ctx) {
+        MsftAccountStore.MsftAccount active = MsftAccountStore.getActive(ctx);
+        if (active == null || active.serializedAuthManager == null) {
+            clearXalData(ctx);
+            return;
+        }
+        JsonObject authJson = JsonParser.parseString(active.serializedAuthManager).getAsJsonObject();
+        export(ctx, authJson, active.msUserId, active.xboxGamertag, active.xuid);
+    }
+
+    public static boolean importRefreshToken(Context ctx, MsftAccountStore.MsftAccount account, JsonObject authJson) {
+        if (account.msUserId == null || account.msUserId.isEmpty() || !authJson.has("msaToken")) return false;
+        String b64User = encodeUserId(account.msUserId);
+        File userDir = new File(ctx.getApplicationContext().getFilesDir(), "xal/" + b64User);
+        File cache = new File(userDir, "Xal." + TITLE_ID + ".Production.Msa." + b64User + ".json");
+        if (!cache.exists() || cache.lastModified() < account.lastUpdated) return false;
+        try (InputStreamReader reader = new InputStreamReader(new AtomicFile(cache).openRead(), StandardCharsets.UTF_8)) {
+            JsonObject nativeMsa = JsonParser.parseReader(reader).getAsJsonObject();
+            if (!account.msUserId.equals(stringValue(nativeMsa, "user_id"))) return false;
+            String refreshToken = stringValue(nativeMsa, "refresh_token");
+            JsonObject msa = authJson.getAsJsonObject("msaToken");
+            if (refreshToken.isEmpty() || refreshToken.equals(stringValue(msa, "refreshToken"))) return false;
+            msa.addProperty("refreshToken", refreshToken);
+            msa.addProperty("expireTimeMs", 0L);
+            return true;
+        } catch (Exception e) {
+            Log.w(TAG, "Could not read Minecraft's refreshed credentials", e);
+            return false;
+        }
+    }
+
+    private static String stringValue(JsonObject json, String key) {
+        return json.has(key) && !json.get(key).isJsonNull() ? json.get(key).getAsString() : "";
+    }
+
+    private static String encodeUserId(String userId) {
+        return Base64.encodeToString(userId.getBytes(StandardCharsets.UTF_8),
+                Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP);
+    }
+
     private static void clearXalData(Context ctx) {
         File xalDir = new File(ctx.getApplicationContext().getFilesDir(), "xal");
-        deleteDirectory(xalDir);
-        SharedPreferences.Editor edit = ctx.getSharedPreferences("org.levimc.xal.crypto", Context.MODE_PRIVATE).edit();
-        edit.clear();
-        edit.apply();
+        File[] files = xalDir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.getName().startsWith("Xal.Accounts.json")) continue;
+                if (file.isDirectory()) {
+                    deleteDirectory(file);
+                } else {
+                    file.delete();
+                }
+            }
+        }
+        if (!ctx.getSharedPreferences("org.levimc.xal.crypto", Context.MODE_PRIVATE).edit().clear().commit()) {
+            throw new IllegalStateException("Minecraft credentials could not be cleared.");
+        }
+    }
+
+    public static void removeAccountData(Context ctx, String userId) {
+        if (userId == null || userId.isEmpty()) return;
+        File userDir = new File(ctx.getApplicationContext().getFilesDir(), "xal/" + encodeUserId(userId));
+        deleteDirectory(userDir);
+    }
+
+    private static void writeJson(File destination, JsonObject json) {
+        AtomicFile file = new AtomicFile(destination);
+        FileOutputStream output = null;
+        try {
+            output = file.startWrite();
+            output.write(GSON.toJson(json).getBytes(StandardCharsets.UTF_8));
+            file.finishWrite(output);
+        } catch (Exception error) {
+            if (output != null) file.failWrite(output);
+            throw new IllegalStateException("Minecraft credentials could not be saved.", error);
+        }
+    }
+
+    private static boolean hasValidToken(JsonObject authJson, String key) {
+        if (!authJson.has(key) || !authJson.get(key).isJsonObject()) return false;
+        JsonObject token = authJson.getAsJsonObject(key);
+        return token.has("expireTimeMs")
+                && token.get("expireTimeMs").getAsLong() > System.currentTimeMillis()
+                && !stringValue(token, "token").isEmpty();
     }
 
     private static boolean deleteDirectory(File dir) {
@@ -73,30 +138,35 @@ public class XalExporter {
         File root = new File(ctx.getApplicationContext().getFilesDir(), "xal");
         if (!root.exists()) root.mkdirs();
 
-        String b64User = Base64.encodeToString(msaUserId.getBytes(StandardCharsets.UTF_8),
-                Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP);
+        if (msaUserId == null || msaUserId.isEmpty() || !authJson.has("msaToken")
+                || !hasValidToken(authJson, "xboxLiveXstsToken")) {
+            throw new IllegalStateException("Minecraft credentials are missing or expired.");
+        }
+        JsonObject msaToken = authJson.getAsJsonObject("msaToken");
+        if (msaToken.get("expireTimeMs").getAsLong() <= System.currentTimeMillis()
+                || stringValue(msaToken, "accessToken").isEmpty()) {
+            throw new IllegalStateException("Microsoft credentials are expired. Refresh the account before launching.");
+        }
+        String b64User = encodeUserId(msaUserId);
         File userDir = new File(root, b64User);
         if (!userDir.exists()) userDir.mkdirs();
 
-        String tid = "1739947436";
+        String tid = TITLE_ID;
 
-        // DeviceIdentity.json
         if (authJson.has("deviceId") && !authJson.get("deviceId").isJsonNull()) {
             String deviceId = authJson.get("deviceId").getAsString();
             JsonObject di = new JsonObject();
             di.addProperty("Id", "{" + deviceId + "}");
             di.addProperty("Key", "Serialized to SharedPreferences");
             File diFile = new File(userDir, "Xal.Production.RETAIL.DeviceIdentity.json");
-            JsonIOUtils.write(diFile, GSON.toJson(di));
+            writeJson(diFile, di);
         }
 
-        // Default.json
         JsonObject def = new JsonObject();
         def.addProperty("default", msaUserId);
         File defFile = new File(userDir, "Xal." + tid + ".Production.Default.json");
-        JsonIOUtils.write(defFile, GSON.toJson(def));
+        writeJson(defFile, def);
 
-        // Msa.json
         if (authJson.has("msaToken")) {
             JsonObject msaJson = authJson.getAsJsonObject("msaToken");
             JsonObject rootMsa = new JsonObject();
@@ -115,27 +185,23 @@ public class XalExporter {
             ats.add(at);
             rootMsa.add("access_tokens", ats);
             File msaFile = new File(userDir, "Xal." + tid + ".Production.Msa." + b64User + ".json");
-            JsonIOUtils.write(msaFile, GSON.toJson(rootMsa));
+            writeJson(msaFile, rootMsa);
         }
 
-        // User.json (User + XSTS tokens)
         JsonObject uRoot = new JsonObject();
         uRoot.addProperty("deviceId", "{" + (authJson.has("deviceId") ? authJson.get("deviceId").getAsString() : "") + "}");
         JsonArray tokens = new JsonArray();
 
-        // XSTS tokens
-        if (authJson.has("xboxLiveXstsToken")) tokens.add(buildXstsEnvelope("Xtoken", "http://xboxlive.com", msaUserId, gamertag, xuid, authJson.getAsJsonObject("xboxLiveXstsToken")));
-        if (authJson.has("playFabXstsToken")) tokens.add(buildXstsEnvelope("Xtoken", "https://b980a380.minecraft.playfabapi.com/", msaUserId, gamertag, xuid, authJson.getAsJsonObject("playFabXstsToken")));
-        if (authJson.has("realmsXstsToken")) tokens.add(buildXstsEnvelope("Xtoken", "https://pocket.realms.minecraft.net/", msaUserId, gamertag, xuid, authJson.getAsJsonObject("realmsXstsToken")));
+        if (hasValidToken(authJson, "xboxLiveXstsToken")) tokens.add(buildXstsEnvelope("Xtoken", "http://xboxlive.com", msaUserId, gamertag, xuid, authJson.getAsJsonObject("xboxLiveXstsToken")));
+        if (hasValidToken(authJson, "playFabXstsToken")) tokens.add(buildXstsEnvelope("Xtoken", "https://b980a380.minecraft.playfabapi.com/", msaUserId, gamertag, xuid, authJson.getAsJsonObject("playFabXstsToken")));
+        if (hasValidToken(authJson, "realmsXstsToken")) tokens.add(buildXstsEnvelope("Xtoken", "https://pocket.realms.minecraft.net/", msaUserId, gamertag, xuid, authJson.getAsJsonObject("realmsXstsToken")));
         
-        // User token
-        if (authJson.has("xblUserToken")) tokens.add(buildXstsEnvelope("Utoken", "http://auth.xboxlive.com", msaUserId, gamertag, xuid, authJson.getAsJsonObject("xblUserToken")));
+        if (hasValidToken(authJson, "xblUserToken")) tokens.add(buildXstsEnvelope("Utoken", "http://auth.xboxlive.com", msaUserId, gamertag, xuid, authJson.getAsJsonObject("xblUserToken")));
 
         uRoot.add("tokens", tokens);
         File uFile = new File(userDir, "Xal." + tid + ".Production.RETAIL.User." + b64User + ".json");
-        JsonIOUtils.write(uFile, GSON.toJson(uRoot));
+        writeJson(uFile, uRoot);
 
-        // Write KeyPair to SharedPreferences
         if (authJson.has("deviceKeyPair")) {
             JsonObject kp = authJson.getAsJsonObject("deviceKeyPair");
             if (kp.has("publicKey") && kp.has("privateKey")) {
@@ -154,7 +220,9 @@ public class XalExporter {
                     edit.putString("public", pubB64);
                     edit.putString("private", privB64);
                 }
-                edit.apply();
+                if (!edit.commit()) {
+                    throw new IllegalStateException("Minecraft device credentials could not be saved.");
+                }
             }
         }
     }
@@ -186,7 +254,7 @@ public class XalExporter {
         JsonObject data = new JsonObject();
         data.addProperty("Token", tokenStr);
         data.addProperty("NotAfter", formatDate(expireTimeMs));
-        data.addProperty("IssueInstant", formatDate(expireTimeMs - 8 * 60 * 60 * 1000L)); // Approx 8 hours before expiry
+        data.addProperty("IssueInstant", formatDate(expireTimeMs - 8 * 60 * 60 * 1000L));
         data.addProperty("ClientAttested", false);
         data.add("DisplayClaims", displayClaims);
 
