@@ -4,6 +4,8 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.UriPermission;
+import android.provider.DocumentsContract;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -118,6 +120,68 @@ public class InstanceBackupManager {
 
     public InstanceBackupManager(Context context) {
         this.context = context.getApplicationContext();
+    }
+
+    public boolean needsDownloadsFolderSelection() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) return false;
+        Uri tree = getBackupDownloadsTree();
+        if (tree == null) return true;
+        for (UriPermission permission : context.getContentResolver().getPersistedUriPermissions()) {
+            if (tree.equals(permission.getUri()) && permission.isReadPermission() && permission.isWritePermission()) return false;
+        }
+        return true;
+    }
+
+    public Intent downloadsFolderPicker() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                DocumentsContract.buildDocumentUri("com.android.externalstorage.documents", "primary:Download"));
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
+        return intent;
+    }
+
+    public void setDownloadsFolder(Intent data) throws IOException {
+        Uri tree = data == null ? null : data.getData();
+        if (tree == null || !"com.android.externalstorage.documents".equals(tree.getAuthority())
+                || !"primary:Download".equals(DocumentsContract.getTreeDocumentId(tree))) {
+            throw new IOException(context.getString(org.levimc.launcher.R.string.backup_select_downloads));
+        }
+        int flags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        if ((flags & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION))
+                != (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION)) {
+            throw new IOException(context.getString(org.levimc.launcher.R.string.backup_select_downloads));
+        }
+        context.getContentResolver().takePersistableUriPermission(tree, flags);
+        context.getSharedPreferences("instance_backups", Context.MODE_PRIVATE).edit()
+                .putString("downloads_tree", tree.toString()).apply();
+    }
+
+    private Uri getBackupDownloadsTree() {
+        String value = context.getSharedPreferences("instance_backups", Context.MODE_PRIVATE)
+                .getString("downloads_tree", null);
+        return value == null ? null : Uri.parse(value);
+    }
+
+    private Uri getOrCreateBackupDirectory(Uri tree, Uri parent, String name) throws IOException {
+        Uri children = DocumentsContract.buildChildDocumentsUriUsingTree(tree, DocumentsContract.getDocumentId(parent));
+        String[] projection = {DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                DocumentsContract.Document.COLUMN_DISPLAY_NAME, DocumentsContract.Document.COLUMN_MIME_TYPE};
+        try (Cursor cursor = context.getContentResolver().query(children, projection, null, null, null)) {
+            if (cursor == null) throw new IOException("Cannot read Downloads");
+            while (cursor.moveToNext()) {
+                if (name.equals(cursor.getString(1))) {
+                    if (!DocumentsContract.Document.MIME_TYPE_DIR.equals(cursor.getString(2))) {
+                        throw new IOException("Backup path is not a folder");
+                    }
+                    return DocumentsContract.buildDocumentUriUsingTree(tree, cursor.getString(0));
+                }
+            }
+        }
+        Uri directory = DocumentsContract.createDocument(context.getContentResolver(), parent,
+                DocumentsContract.Document.MIME_TYPE_DIR, name);
+        if (directory == null) throw new IOException("Cannot create backup folder");
+        return directory;
     }
 
     public void backup(GameVersion version, BackupCallback callback) {
@@ -338,16 +402,21 @@ public class InstanceBackupManager {
             return target;
         }
 
-        File backupDir = new File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-                "LeviLauncher/Backups"
-        );
-        if (!backupDir.exists() && !backupDir.mkdirs()) {
-            throw new IOException("Failed to create backup directory: " + backupDir.getAbsolutePath());
+        Uri tree = getBackupDownloadsTree();
+        if (tree == null) throw new IOException(context.getString(org.levimc.launcher.R.string.backup_select_downloads));
+        Uri downloads = DocumentsContract.buildDocumentUriUsingTree(tree, DocumentsContract.getTreeDocumentId(tree));
+        Uri launcherFolder = getOrCreateBackupDirectory(tree, downloads, "LeviLauncher");
+        Uri backupFolder = getOrCreateBackupDirectory(tree, launcherFolder, "Backups");
+        target.uri = DocumentsContract.createDocument(context.getContentResolver(), backupFolder, "application/zip", fileName);
+        if (target.uri == null) throw new IOException("Cannot create backup file");
+        try {
+            target.outputStream = context.getContentResolver().openOutputStream(target.uri);
+            if (target.outputStream == null) throw new IOException("Cannot open backup file");
+        } catch (IOException | RuntimeException error) {
+            DocumentsContract.deleteDocument(context.getContentResolver(), target.uri);
+            throw error;
         }
-        target.file = new File(backupDir, fileName);
-        target.outputStream = new FileOutputStream(target.file);
-        target.displayPath = target.file.getAbsolutePath();
+        target.displayPath = DOWNLOAD_RELATIVE_PATH + "/" + fileName;
         return target;
     }
 
@@ -366,6 +435,11 @@ public class InstanceBackupManager {
                 resolver.update(target.uri, values, null, null);
             } else {
                 resolver.delete(target.uri, null, null);
+            }
+        } else if (!success && target.uri != null) {
+            try {
+                DocumentsContract.deleteDocument(context.getContentResolver(), target.uri);
+            } catch (Exception ignored) {
             }
         } else if (!success && target.file != null && target.file.exists()) {
             target.file.delete();

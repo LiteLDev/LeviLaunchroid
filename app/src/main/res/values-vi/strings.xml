@@ -784,10 +784,6 @@ Quá trình chuyển đổi phải hoàn tất trước khi LeviLauncher có th�
     <string name="mod_menu_appearance">Giao diện</string>
     <string name="mod_menu_pause_menu_only">Chỉ trong menu tạm dừng</string>
     <string name="mod_menu_pause_menu_only_desc">Chỉ hiển thị menu mod ở màn hình tạm dừng</string>
-    <string name="mod_menu_keybind">Phím menu Mod</string>
-    <string name="mod_menu_keybind_desc">Nhấn để thay đổi phím tắt bàn phím</string>
-    <string name="mod_menu_keybind_reset">Đặt lại thành M</string>
-    <string name="mod_menu_keybind_unbound">Chưa gán</string>
     <string name="mod_menu_default_percent" formatted="false">100%</string>
     <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">Các cài đặt sẽ sớm được cập nhật.</string>
@@ -1148,15 +1144,4 @@ Quá trình chuyển đổi phải hoàn tất trước khi LeviLauncher có th�
     <string name="batch_transferring">Đang chuyển %1$d trên %2$d…</string>
     <string name="batch_result">%1$d hoàn tất, %2$d thất bại</string>
     <string name="choose_export_folder">Chọn thư mục xuất</string>
-    <string name="mod_config_activation_keybind">Phím kích hoạt</string>
-    <string name="mod_config_edit_controls">Chỉnh sửa điều khiển</string>
-    <string name="mod_config_display_size_dp">Kích thước hiển thị (dp)</string>
-    <string name="mod_config_clear_keybind">Xóa phím</string>
-    <string name="bg_media_title">Nền</string>
-    <string name="bg_media_desc">Chọn ảnh hoặc GIF</string>
-    <string name="bg_media_select">Chọn nền</string>
-    <string name="bg_media_none">Chưa chọn nền</string>
-    <string name="bg_media_importing">Đang nhập nền…</string>
-    <string name="bg_media_import_failed">Không thể tải nền này. Hãy chọn ảnh hoặc GIF được hỗ trợ.</string>
-    <string name="bg_media_blur_unavailable">Android 12+</string>
 </resources>

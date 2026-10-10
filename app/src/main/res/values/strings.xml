@@ -67,8 +67,6 @@
     <string name="local_custom">Local Custom</string>
 
     <!-- Permissions -->
-    <string name="storage_permission_title">Storage Migration Permission</string>
-    <string name="storage_permission_message">Please grant storage permission so LeviLauncher can copy data from the old games/org.levimc directory. This permission is only needed for the migration step.</string>
     <string name="grant_permission">Grant</string>
     <string name="cancel">Cancel</string>
 
@@ -82,7 +80,6 @@
     <string name="overlay_permission_message">Please grant the overlay permission</string>
     <string name="overlay_permission_denied_message">Please grant overlay permission, otherwise the log window cannot be displayed.</string>
     <string name="overlay_permission_not_granted">Overlay permission not granted</string>
-    <string name="storage_permission_not_granted">Storage permission not granted</string>
 
     <string name="import_apk">Import APK</string>
     <string name="install">Install</string>
@@ -108,7 +105,6 @@
     <string name="settings_tab_personalize">Personalization</string>
     <string name="settings_tab_updates">Updates</string>
     <string name="settings_tab_about">About</string>
-    <string name="settings_tab_migration">Migration</string>
     <string name="settings_theme_desc">Choose the application theme</string>
 
 
@@ -170,51 +166,6 @@
     <string name="repair_preparing">Preparing…</string>
     <string name="repair_processing">Extracting libraries…</string>
     <string name="repair_finalizing">Finalizing repair…</string>
-    <!-- Storage Migration -->
-    <string name="storage_migration_title">Storage Migration Required</string>
-    <string name="storage_migration_message">LeviLauncher must migrate data from games/org.levimc to %1$s before continuing.
-
-This storage change is required for Google Play listing compliance. The old directory will be kept untouched, but it will no longer be used after migration.
-
-Migration may take a while. You can leave the app in the background while it runs; the phone may get warm during heavy file copying. Thank you for your understanding.</string>
-    <string name="storage_migration_start">Migrate</string>
-    <string name="storage_migration_permission_denied">Storage permission is required to read the old directory for migration.</string>
-    <string name="storage_migration_progress_title">Migrating Storage</string>
-    <string name="storage_migration_progress_subtitle">Copying launcher data to Android/media</string>
-    <string name="storage_migration_scanning">Scanning old directory…</string>
-    <string name="storage_migration_progress_detail">%1$d/%2$d files · %3$s</string>
-    <string name="storage_migration_eta_pending">Estimating time remaining…</string>
-    <string name="storage_migration_eta_detail">About %1$s remaining · completes around %2$s</string>
-    <string name="storage_migration_duration_hours_minutes">%1$d h %2$d min</string>
-    <string name="storage_migration_duration_minutes_seconds">%1$d min %2$d sec</string>
-    <string name="storage_migration_duration_seconds">%1$d sec</string>
-    <string name="storage_migration_background_hint">Migration can keep running in the background. Keeping the phone charged is recommended; the phone may heat up during file copying. Thank you for your understanding.</string>
-    <string name="storage_migration_completed_title">Migration Completed</string>
-    <string name="storage_migration_completed_message">Migrated %1$d files (%2$s). %3$d files were already up to date.
-
-The old games/org.levimc directory was not deleted and is no longer used.</string>
-    <string name="storage_migration_partial_title">Migration Incomplete</string>
-    <string name="storage_migration_partial_message">%1$d of %2$d files could not be copied. Migration must complete before LeviLauncher can continue.</string>
-    <string name="storage_migration_failed_title">Migration Failed</string>
-    <string name="storage_migration_failed_message">Migration could not continue: %1$s
-
-Migration must complete before LeviLauncher can continue.</string>
-    <string name="migration_cleanup_title">Clean Historical Directory</string>
-    <string name="migration_cleanup_desc">Only remove the old games/org.levimc directory after you have confirmed every instance launches normally and worlds, resource packs, behavior packs, and settings are not missing. Deleted historical data cannot be restored from this directory.</string>
-    <string name="migration_cleanup_button">Clean Historical Directory</string>
-    <string name="migration_cleanup_confirm_title">Clean Historical Directory?</string>
-    <string name="migration_cleanup_confirm_message">This will permanently delete the old games/org.levimc directory.\n\nBefore continuing, make sure all instances launch normally and worlds, resource packs, behavior packs, and settings are not missing.</string>
-    <string name="migration_cleanup_unavailable_not_completed">Storage migration has not completed yet. Finish migration before cleaning the old directory.</string>
-    <string name="migration_cleanup_unavailable_missing">The old games/org.levimc directory was not found or has already been cleaned.</string>
-    <string name="migration_cleanup_ready">The old directory can be cleaned. Confirm all migrated instances are healthy before continuing.</string>
-    <string name="migration_cleanup_success">Cleaned historical directory: %1$d files removed (%2$s).</string>
-    <string name="migration_cleanup_failed">Failed to clean historical directory: %1$s</string>
-    <string name="shared_storage_layout_title">Shared Content Directory</string>
-    <string name="shared_storage_layout_desc">Use the new _shared directory for Internal and External shared content. Turn this off to use the original internal and external game data directories. This does not move files.</string>
-    <string name="shared_storage_layout_mode_new">New _shared directory</string>
-    <string name="shared_storage_layout_mode_legacy">Original internal/external directories</string>
-    <string name="shared_storage_layout_status">Current mode: %1$s\nInternal: %2$s\nExternal: %3$s</string>
-    <string name="shared_storage_layout_changed">Storage directory selection updated. Restart Minecraft and reopen content management for the change to fully apply.</string>
     <!-- Theme -->
     <string name="theme_title">Theme Mode</string>
     <string name="theme_follow_system">Follow System</string>
@@ -458,11 +409,10 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="add_mod">Add Mod</string>
     <string name="scan_downloads">Scan</string>
     <string name="scan_downloads_scanning">Scanning…</string>
-    <string name="scan_downloads_none_found">No .levipack or .so mods found in Downloads</string>
-    <string name="scan_downloads_failed">Could not scan Downloads</string>
-    <string name="scan_downloads_permission_denied">Storage access is needed to scan Downloads</string>
+    <string name="scan_downloads_none_found">No .levipack or .so mods selected</string>
+    <string name="scan_downloads_failed">Could not read the selected files</string>
     <string name="scan_downloads_results_title">Mods in Downloads</string>
-    <string name="scan_downloads_results_subtitle">Choose a mod to add. Scan checks only the main Downloads folder.</string>
+    <string name="scan_downloads_results_subtitle">Select .levipack or .so files from Downloads, then choose a mod to add.</string>
     <string name="scan_downloads_add">Add</string>
     <string name="scan_downloads_adding">Adding…</string>
     <string name="scan_downloads_added">Added</string>
@@ -1159,4 +1109,6 @@ Migration must complete before LeviLauncher can continue.</string>
     <string name="bg_media_importing">Importing background…</string>
     <string name="bg_media_import_failed">Could not load this background. Choose a supported photo or GIF.</string>
     <string name="bg_media_blur_unavailable">Android 12+</string>
+    <string name="screenshot_saved">Screenshot saved</string>
+    <string name="backup_select_downloads">Select the Downloads folder to save backups in Downloads/LeviLauncher/Backups.</string>
 </resources>

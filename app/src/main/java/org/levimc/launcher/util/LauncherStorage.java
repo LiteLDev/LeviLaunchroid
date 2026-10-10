@@ -1,24 +1,19 @@
 package org.levimc.launcher.util;
 
 import android.content.Context;
-import android.os.Environment;
 
 import org.levimc.launcher.settings.FeatureSettings;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Locale;
 
 public final class LauncherStorage {
-    private static final String PREFS_NAME = "storage_migration";
-    private static final String KEY_COMPLETED = "storage_migration_completed";
     private static final String STORAGE_LAYOUT_PREFS_NAME = "storage_layout";
     private static final String KEY_SHARED_INTERNAL_MODE = "shared_internal_mode";
     private static final String KEY_SHARED_EXTERNAL_MODE = "shared_external_mode";
     static final String SHARED_MODE_LEGACY = "legacy";
     static final String SHARED_MODE_NEW = "new";
-    private static final String LEGACY_ROOT_PATH = "games/org.levimc";
     private static final String NO_MEDIA_FILE = ".nomedia";
     private static final String ANDROID_DIR = "Android";
     private static final String ANDROID_MEDIA_DIR = "media";
@@ -91,22 +86,6 @@ public final class LauncherStorage {
 
     static String buildTargetAppRootDisplayPath(String packageName) {
         return ANDROID_DIR + "/" + ANDROID_MEDIA_DIR + "/" + packageName;
-    }
-
-    public static File getLegacyRoot() {
-        return new File(Environment.getExternalStorageDirectory(), LEGACY_ROOT_PATH);
-    }
-
-    public static boolean isMigrationCompleted(Context context) {
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-                .getBoolean(KEY_COMPLETED, false);
-    }
-
-    public static void markMigrationCompleted(Context context) {
-        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-                .edit()
-                .putBoolean(KEY_COMPLETED, true)
-                .apply();
     }
 
     public static void invalidateCache() {
@@ -403,10 +382,6 @@ public final class LauncherStorage {
         return dir != null && (dir.exists() ? dir.isDirectory() : dir.mkdirs());
     }
 
-    public static boolean hasLegacyMarker() {
-        return new File(getLegacyRoot(), NO_MEDIA_FILE).isFile();
-    }
-
     public static boolean isReservedProfileId(String value) {
         if (value == null) return true;
         String profileId = value.trim().toLowerCase(Locale.US);
@@ -445,14 +420,6 @@ public final class LauncherStorage {
         return sanitized;
     }
 
-    public static boolean legacyRootHasData() {
-        File legacyRoot = getLegacyRoot();
-        if (!legacyRoot.isDirectory()) {
-            return false;
-        }
-        return hasAnyFile(legacyRoot);
-    }
-
     private static boolean hasAnyFile(File root) {
         if (root == null || !root.isDirectory()) {
             return false;
@@ -471,85 +438,4 @@ public final class LauncherStorage {
         return false;
     }
 
-    public static LegacyCleanupResult cleanupLegacyRoot(Context context) {
-        return cleanupLegacyRoot(getLegacyRoot(), getTargetAppRoot(context), isMigrationCompleted(context));
-    }
-
-    static LegacyCleanupResult cleanupLegacyRoot(File legacyRoot, File targetRoot, boolean migrationCompleted) {
-        if (!migrationCompleted) {
-            return LegacyCleanupResult.failed("Migration has not completed.");
-        }
-        if (!legacyRoot.exists()) {
-            return LegacyCleanupResult.success(0, 0L);
-        }
-        if (!legacyRoot.isDirectory()) {
-            return LegacyCleanupResult.failed("Legacy path is not a directory: " + legacyRoot.getAbsolutePath());
-        }
-
-        try {
-            String legacyPath = legacyRoot.getCanonicalPath();
-            String targetPath = targetRoot.getCanonicalPath();
-            if (legacyPath.equals(targetPath) || isPathWithin(legacyPath, targetPath)) {
-                return LegacyCleanupResult.failed("Legacy path overlaps with active storage.");
-            }
-
-            CleanupCounter counter = new CleanupCounter();
-            boolean deleted = deleteLegacyChildFirst(legacyRoot, counter);
-            if (!deleted || legacyRoot.exists()) {
-                return LegacyCleanupResult.failed("Could not delete the legacy directory completely.");
-            }
-            return LegacyCleanupResult.success(counter.files, counter.bytes);
-        } catch (IOException error) {
-            return LegacyCleanupResult.failed(error.getMessage());
-        }
-    }
-
-    private static boolean deleteLegacyChildFirst(File file, CleanupCounter counter) {
-        if (file.isDirectory()) {
-            File[] children = file.listFiles();
-            if (children == null) {
-                return false;
-            }
-            for (File child : children) {
-                if (!deleteLegacyChildFirst(child, counter)) {
-                    return false;
-                }
-            }
-        } else if (file.isFile()) {
-            counter.files++;
-            counter.bytes += Math.max(0L, file.length());
-        }
-        return file.delete();
-    }
-
-    private static boolean isPathWithin(String path, String basePath) {
-        return path.startsWith(basePath + File.separator);
-    }
-
-    private static class CleanupCounter {
-        int files;
-        long bytes;
-    }
-
-    public static class LegacyCleanupResult {
-        public final boolean success;
-        public final int deletedFiles;
-        public final long deletedBytes;
-        public final String errorMessage;
-
-        private LegacyCleanupResult(boolean success, int deletedFiles, long deletedBytes, String errorMessage) {
-            this.success = success;
-            this.deletedFiles = deletedFiles;
-            this.deletedBytes = deletedBytes;
-            this.errorMessage = errorMessage == null ? "" : errorMessage;
-        }
-
-        static LegacyCleanupResult success(int deletedFiles, long deletedBytes) {
-            return new LegacyCleanupResult(true, deletedFiles, deletedBytes, "");
-        }
-
-        static LegacyCleanupResult failed(String errorMessage) {
-            return new LegacyCleanupResult(false, 0, 0L, errorMessage);
-        }
-    }
 }

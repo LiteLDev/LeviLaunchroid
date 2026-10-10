@@ -1,15 +1,12 @@
 package org.levimc.launcher.ui.activities;
 
 import android.app.Activity;
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
@@ -28,9 +25,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,6 +38,7 @@ import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
 import org.levimc.launcher.ui.dialogs.InstallProgressDialog;
 import org.levimc.launcher.util.ApkImportManager;
 import org.levimc.launcher.util.InstanceBackupManager;
+import org.levimc.launcher.util.StorageAccess;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +49,6 @@ public class InstancesActivity extends BaseActivity {
 
     private static final int FILTER_ALL = 0;
     private static final int FILTER_CUSTOM = 1;
-    private static final int REQUEST_BATCH_BACKUP_STORAGE = 4301;
     private static final int CARD_GLASS_ALPHA_LIGHT = 48;
     private static final int CARD_GLASS_ALPHA_DARK = 58;
     private static final int CARD_OUTLINE_ALPHA_LIGHT = 90;
@@ -73,6 +68,7 @@ public class InstancesActivity extends BaseActivity {
 
     private ApkImportManager apkImportManager;
     private InstanceBackupManager backupManager;
+    private ActivityResultLauncher<Intent> backupDownloadsFolderLauncher;
     private InstallProgressDialog restoreProgressDialog;
     private InstallProgressDialog batchBackupProgressDialog;
     private TextView batchBackupButton;
@@ -95,6 +91,18 @@ public class InstancesActivity extends BaseActivity {
 
         apkImportManager = new ApkImportManager(this, null);
         backupManager = new InstanceBackupManager(this);
+        backupDownloadsFolderLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() != RESULT_OK || result.getData() == null) return;
+                    try {
+                        backupManager.setDownloadsFolder(result.getData());
+                        startBatchBackup();
+                    } catch (Exception error) {
+                        Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
         apkImportManager.setOnImportCompleteListener(() -> {
             versionManager.loadAllVersions();
             loadVersions();
@@ -312,12 +320,7 @@ public class InstancesActivity extends BaseActivity {
     }
 
     private void startApkFilePicker() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/*");
-        String[] mimeTypes = {"application/vnd.android.package-archive", "application/octet-stream", "application/zip"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        apkImportResultLauncher.launch(intent);
+        apkImportResultLauncher.launch(StorageAccess.downloadsPicker(false));
     }
 
     private void startBackupImportPicker() {
@@ -582,12 +585,8 @@ public class InstancesActivity extends BaseActivity {
 
     private void startBatchBackupWithPermissionCheck(List<GameVersion> versionsToBackup) {
         pendingBatchBackupVersions = new ArrayList<>(versionsToBackup);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    REQUEST_BATCH_BACKUP_STORAGE);
+        if (backupManager.needsDownloadsFolderSelection()) {
+            backupDownloadsFolderLauncher.launch(backupManager.downloadsFolderPicker());
             return;
         }
         startBatchBackup();
@@ -814,19 +813,6 @@ public class InstancesActivity extends BaseActivity {
         setupBackupImportButton();
         setupBatchBackupButton();
         applyFilters();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_BATCH_BACKUP_STORAGE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startBatchBackup();
-            } else {
-                pendingBatchBackupVersions = new ArrayList<>();
-                Toast.makeText(this, R.string.storage_permission_not_granted, Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     private static class GridSpacingDecoration extends RecyclerView.ItemDecoration {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
+    <external-media-path name="launcher_media" path="." />
     <files-path
         name="screenshots"
         path="../games/com.mojang/Screenshots/"/>

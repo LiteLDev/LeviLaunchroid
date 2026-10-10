@@ -41,6 +41,7 @@ public class ApkImportManager {
     public void handleApkImportResult(Intent data) {
         Uri apkUri = data.getData();
         if (apkUri == null) return;
+        StorageAccess.retainReadPermission(activity, data, apkUri);
         
         String fileName = getFileName(apkUri);
         boolean isApks = fileName != null && fileName.toLowerCase().endsWith(".apks");

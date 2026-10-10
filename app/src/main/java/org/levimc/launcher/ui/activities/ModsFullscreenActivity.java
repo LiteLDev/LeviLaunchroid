@@ -3,7 +3,6 @@ package org.levimc.launcher.ui.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,11 +33,9 @@ import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.views.MainViewModel;
 import org.levimc.launcher.ui.views.MainViewModelFactory;
-import org.levimc.launcher.util.PermissionsHandler;
+import org.levimc.launcher.util.StorageAccess;
 import org.levimc.launcher.util.PersonalizationManager;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class ModsFullscreenActivity extends BaseActivity {
@@ -49,10 +46,9 @@ public class ModsFullscreenActivity extends BaseActivity {
     private TextView totalModsCount;
     private TextView enabledModsCount;
     private ActivityResultLauncher<Intent> pickModLauncher;
-    private ActivityResultLauncher<Intent> permissionResultLauncher;
+    private ActivityResultLauncher<Intent> scanDownloadsLauncher;
     private FileHandler fileHandler;
     private InbuiltModManager inbuiltModManager;
-    private PermissionsHandler permissionsHandler;
     private Button scanModsButton;
     private boolean scanInProgress;
     private int lastModsCount = -1;
@@ -73,20 +69,21 @@ public class ModsFullscreenActivity extends BaseActivity {
         setupRecyclerView();
         fileHandler = new FileHandler(this, viewModel, VersionManager.get(this));
 
-        permissionResultLauncher = registerForActivityResult(
+        scanDownloadsLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (permissionsHandler != null) {
-                        permissionsHandler.onActivityResult(result.getResultCode(), result.getData());
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        scanDownloads(result.getData());
                     }
                 });
-        permissionsHandler = PermissionsHandler.getInstance();
-        permissionsHandler.setActivity(this, permissionResultLauncher);
-        
+
         pickModLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        for (Uri uri : StorageAccess.selectedUris(result.getData())) {
+                            StorageAccess.retainReadPermission(this, result.getData(), uri);
+                        }
                         fileHandler.processIncomingFilesWithConfirmation(
                                 result.getData(), createImportCallback(), true);
                     }
@@ -138,74 +135,46 @@ public class ModsFullscreenActivity extends BaseActivity {
     }
 
     private void startFilePicker() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/*");
-        pickModLauncher.launch(intent);
+        pickModLauncher.launch(StorageAccess.downloadsPicker(true));
     }
 
     private void requestDownloadsScan() {
-        if (scanInProgress || permissionsHandler == null) return;
-        permissionsHandler.requestPermission(PermissionsHandler.PermissionType.STORAGE,
-                new PermissionsHandler.PermissionResultCallback() {
-                    @Override
-                    public void onPermissionGranted(PermissionsHandler.PermissionType type) {
-                        if (type == PermissionsHandler.PermissionType.STORAGE) {
-                            scanDownloads();
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionsHandler.PermissionType type, boolean permanentlyDenied) {
-                        if (type == PermissionsHandler.PermissionType.STORAGE) {
-                            Toast.makeText(ModsFullscreenActivity.this,
-                                    R.string.scan_downloads_permission_denied,
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+        if (scanInProgress) return;
+        scanDownloadsLauncher.launch(StorageAccess.downloadsPicker(true));
     }
 
-    private void scanDownloads() {
+    private void scanDownloads(Intent data) {
         scanInProgress = true;
         updateScanButton();
+        List<Uri> uris = StorageAccess.selectedUris(data);
+        for (Uri uri : uris) StorageAccess.retainReadPermission(this, data, uri);
         new Thread(() -> {
-            List<File> files = new ArrayList<>();
-            String error = null;
-            try {
-                File downloads = Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOWNLOADS);
-                if (downloads.isDirectory()) {
-                    File[] downloadedFiles = downloads.listFiles();
-                    if (downloadedFiles == null) {
-                        throw new IllegalStateException("Downloads is not readable");
-                    }
-                    collectDownloadedMods(downloadedFiles, files);
+            List<StorageAccess.Document> files = new ArrayList<>();
+            boolean failed = false;
+            for (Uri uri : uris) {
+                try {
+                    StorageAccess.Document document = StorageAccess.readDocument(this, uri);
+                    String name = document.name.toLowerCase(java.util.Locale.ROOT);
+                    if (name.endsWith(".levipack") || name.endsWith(".so")) files.add(document);
+                } catch (Exception error) {
+                    failed = true;
                 }
-                files.sort(Comparator.comparingLong(File::lastModified).reversed());
-            } catch (Exception e) {
-                error = e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage();
             }
-
-            String scanError = error;
+            boolean scanFailed = failed;
             runOnUiThread(() -> {
                 scanInProgress = false;
                 if (isFinishing() || isDestroyed()) return;
                 updateScanButton();
-                if (scanError != null) {
+                if (scanFailed) {
                     Toast.makeText(this, R.string.scan_downloads_failed, Toast.LENGTH_LONG).show();
-                    return;
                 }
-                if (files.isEmpty()) {
-                    Toast.makeText(this, R.string.scan_downloads_none_found, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                showScannedMods(files);
+                if (!files.isEmpty()) showScannedMods(files);
+                else if (!scanFailed) Toast.makeText(this, R.string.scan_downloads_none_found, Toast.LENGTH_SHORT).show();
             });
         }).start();
     }
 
-    private void showScannedMods(List<File> files) {
+    private void showScannedMods(List<StorageAccess.Document> files) {
         View content = LayoutInflater.from(this).inflate(R.layout.dialog_scanned_mods, null);
         RecyclerView results = content.findViewById(R.id.scan_results_recycler);
         results.setLayoutManager(new LinearLayoutManager(this));
@@ -231,15 +200,15 @@ public class ModsFullscreenActivity extends BaseActivity {
                 .show();
     }
 
-    private void addScannedMod(File file, ScannedModsAdapter adapter) {
+    private void addScannedMod(StorageAccess.Document file, ScannedModsAdapter adapter) {
         adapter.setImporting(file);
-        fileHandler.processScannedFile(Uri.fromFile(file), new FileHandler.FileOperationCallback() {
+        fileHandler.processScannedFile(file.uri, new FileHandler.FileOperationCallback() {
             @Override
             public void onSuccess(int processedFiles) {
                 if (isFinishing() || isDestroyed()) return;
                 adapter.setAdded(file);
                 Toast.makeText(ModsFullscreenActivity.this,
-                        getString(R.string.scan_downloads_added_message, file.getName()),
+                        getString(R.string.scan_downloads_added_message, file.name),
                         Toast.LENGTH_SHORT).show();
             }
 
@@ -254,15 +223,6 @@ public class ModsFullscreenActivity extends BaseActivity {
             public void onProgressUpdate(int progress) {
             }
         });
-    }
-
-    private void collectDownloadedMods(File[] children, List<File> files) {
-        for (File child : children) {
-            String name = child.getName().toLowerCase(java.util.Locale.ROOT);
-            if (child.isFile() && (name.endsWith(".levipack") || name.endsWith(".so"))) {
-                files.add(child);
-            }
-        }
     }
 
     private void updateScanButton() {
@@ -411,8 +371,6 @@ public class ModsFullscreenActivity extends BaseActivity {
         modsAdapter.setItemTouchHelper(itemTouchHelper);
     }
 
-
-
     private void updateModsUI(List<Mod> mods) {
         if (modsAdapter != null) {
             modsAdapter.updateMods(mods);
@@ -448,9 +406,6 @@ public class ModsFullscreenActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (permissionsHandler != null) {
-            permissionsHandler.setActivity(this, permissionResultLauncher);
-        }
         setupViews();
         if (viewModel != null) {
             viewModel.refreshMods();
@@ -458,12 +413,4 @@ public class ModsFullscreenActivity extends BaseActivity {
         updateModsCount();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (permissionsHandler != null) {
-            permissionsHandler.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
 }

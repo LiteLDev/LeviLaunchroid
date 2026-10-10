@@ -1,6 +1,5 @@
 package com.mojang.minecraftpe;
 
-import android.Manifest;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -79,7 +78,6 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
     private static final int POST_NOTIFICATIONS_PERMISSION_ID = 2;
     public static int RESULT_PICK_IMAGE = 1;
     static final int SAVE_FILE_RESULT_CODE = 4;
-    private static final int STORAGE_PERMISSION_ID = 1;
     private static boolean _isPowerVr;
     private static boolean mHasStoragePermission ;
     private static boolean mHasReadMediaImagesPermission;
@@ -464,8 +462,8 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         headsetConnectionReceiver = new HeadsetConnectionReceiver();
         mNetworkMonitor = new NetworkMonitor(getApplicationContext());
         platform.onAppStart(getWindow().getDecorView());
-        mHasStoragePermission = checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) == 0;
-        mHasReadMediaImagesPermission = Build.VERSION.SDK_INT < 33 || checkPermission("android.permission.READ_MEDIA_IMAGES", Process.myPid(), Process.myUid()) == 0;
+        mHasStoragePermission = hasWriteExternalStoragePermission();
+        mHasReadMediaImagesPermission = true;
         nativeSetHeadphonesConnected(((AudioManager) getSystemService(Context.AUDIO_SERVICE)).isWiredHeadsetOn());
         clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         initialUserLocale = Locale.getDefault();
@@ -506,21 +504,34 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
 
         mWorldRecovery = new WorldRecovery(getApplicationContext(), getApplicationContext().getContentResolver());
 
-        pickMedia =
-                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-                    if (uri != null) {
-                        String[] projection = {MediaStore.Images.Media.DATA};
-                        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-                        if (cursor != null && cursor.moveToFirst()) {
-                            String filePath = cursor.getString(cursor.getColumnIndexOrThrow(projection[0]));
-                            nativeOnPickImageSuccess(mCallback, filePath);
-                            cursor.close();
-                        } else {
-                            nativeOnPickImageCanceled(mCallback);
-                        }
-                    } else {
-                        nativeOnPickImageCanceled(mCallback);
+        pickMedia = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+            final long callback = mCallback;
+            if (uri == null) {
+                nativeOnPickImageCanceled(callback);
+                return;
+            }
+            new Thread(() -> {
+                File selectedImage = null;
+                try {
+                    File directory = new File(getCacheDir(), "skin_picker");
+                    if (!directory.isDirectory() && !directory.mkdirs()) throw new IOException("Cannot create image directory");
+                    String mimeType = getContentResolver().getType(uri);
+                    String suffix = "image/jpeg".equals(mimeType) ? ".jpg" : ".png";
+                    selectedImage = File.createTempFile("selected_skin_", suffix, directory);
+                    try (InputStream input = getContentResolver().openInputStream(uri);
+                         FileOutputStream output = new FileOutputStream(selectedImage)) {
+                        if (input == null) throw new IOException("Cannot read selected image");
+                        byte[] buffer = new byte[65536];
+                        int count;
+                        while ((count = input.read(buffer)) != -1) output.write(buffer, 0, count);
                     }
+                    String path = selectedImage.getAbsolutePath();
+                    runOnUiThread(() -> nativeOnPickImageSuccess(callback, path));
+                } catch (Exception error) {
+                    if (selectedImage != null) selectedImage.delete();
+                    runOnUiThread(() -> nativeOnPickImageCanceled(callback));
+                }
+            }).start();
         });
         this.textInputWidget = createTextWidget();
     }
@@ -677,56 +688,29 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         textToSpeechManager = null;
     }
 
-    public void requestStoragePermission(int i) {
-        mLastPermissionRequestReason = i;
-        suspendGameplayUpdates();
-        requestPermissions(new String[]{"android.permission.WRITE_EXTERNAL_STORAGE"}, 1);
+    public void requestStoragePermission(int reason) {
+        mLastPermissionRequestReason = reason;
+        runOnUiThread(() -> nativeStoragePermissionRequestResult(hasWriteExternalStoragePermission(), reason));
     }
 
 
-    public void requestMediaImagesPermission(int i) {
-        if (Build.VERSION.SDK_INT >= 33) {
-            mLastPermissionRequestReason = i;
-            suspendGameplayUpdates();
-            requestPermissions(new String[]{"android.permission.READ_MEDIA_IMAGES"}, 3);
-            return;
-        }
-        requestStoragePermission(i);
+    public void requestMediaImagesPermission(int reason) {
+        mLastPermissionRequestReason = reason;
+        runOnUiThread(() -> nativeStoragePermissionRequestResult(hasReadMediaImagesPermission(), reason));
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String @NotNull [] permissions, int @NotNull [] grantResults) {
-        Log.i("MinecraftPlatform", "MainActivity::onRequestPermissionsResult");
         resumeGameplayUpdates();
-        if (requestCode == STORAGE_PERMISSION_ID) {
-            mHasStoragePermission = grantResults.length > 0 && grantResults[0] == 0;
-            nativeStoragePermissionRequestResult(mHasStoragePermission, this.mLastPermissionRequestReason);
-            return;
-        }
-        if (requestCode == 2) {
-            if (grantResults.length == 0 || grantResults[0] != 0) {
-                return;
-            }
+        if (requestCode == POST_NOTIFICATIONS_PERMISSION_ID
+                && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             mBrazeManager.requestImmediateDataFlush();
-            return;
         }
-        if (requestCode != 3) {
-            return;
-        }
-        mHasReadMediaImagesPermission = grantResults.length > 0 && grantResults[0] == 0;
-        nativeStoragePermissionRequestResult(mHasReadMediaImagesPermission, this.mLastPermissionRequestReason);
     }
 
     public boolean hasReadMediaImagesPermission() {
-        final boolean z;
-        if (Build.VERSION.SDK_INT >= 33) {
-            z = checkPermission("android.permission.READ_MEDIA_IMAGES", Process.myPid(), Process.myUid()) == 0;
-            mHasReadMediaImagesPermission = z;
-        } else {
-            z = checkPermission("android.permission.WRITE_EXTERNAL_STORAGE", Process.myPid(), Process.myUid()) == 0;
-            mHasStoragePermission = z;
-        }
-        return z;
+        mHasReadMediaImagesPermission = true;
+        return true;
     }
 
     public void resumeGameplayUpdates() {
@@ -739,9 +723,10 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
     }
 
     public boolean hasWriteExternalStoragePermission() {
-        final boolean hasStoragePermission = Build.VERSION.SDK_INT >= 33 || checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) == PackageManager.PERMISSION_GRANTED;
-        mHasStoragePermission = hasStoragePermission;
-        return hasStoragePermission;
+        File directory = getExternalFilesDir(null);
+        mHasStoragePermission = directory != null
+                && (directory.isDirectory() || directory.mkdirs()) && directory.canWrite();
+        return mHasStoragePermission;
     }
 
     public boolean hasHardwareKeyboard() {

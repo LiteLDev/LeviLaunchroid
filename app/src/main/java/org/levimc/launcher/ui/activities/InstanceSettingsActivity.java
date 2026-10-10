@@ -1,9 +1,6 @@
 package org.levimc.launcher.ui.activities;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,8 +16,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -34,11 +29,11 @@ import org.levimc.launcher.util.InstanceBackupManager;
 import org.levimc.launcher.util.InstanceShortcutManager;
 
 public class InstanceSettingsActivity extends BaseActivity {
-    private static final int REQUEST_BACKUP_STORAGE = 4201;
 
     private GameVersion version;
     private VersionManager versionManager;
     private InstanceBackupManager backupManager;
+    private ActivityResultLauncher<Intent> backupDownloadsFolderLauncher;
     private InstallProgressDialog backupProgressDialog;
     private Button backupButton;
 
@@ -79,6 +74,18 @@ public class InstanceSettingsActivity extends BaseActivity {
 
         versionManager = VersionManager.get(this);
         backupManager = new InstanceBackupManager(this);
+        backupDownloadsFolderLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() != RESULT_OK || result.getData() == null) return;
+                    try {
+                        backupManager.setDownloadsFolder(result.getData());
+                        startBackup();
+                    } catch (Exception error) {
+                        Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
 
         version = getIntent().getParcelableExtra("version");
         if (version == null) {
@@ -325,12 +332,8 @@ public class InstanceSettingsActivity extends BaseActivity {
     }
 
     private void startBackupWithPermissionCheck() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    REQUEST_BACKUP_STORAGE);
+        if (backupManager.needsDownloadsFolderSelection()) {
+            backupDownloadsFolderLauncher.launch(backupManager.downloadsFolderPicker());
             return;
         }
         startBackup();
@@ -410,18 +413,6 @@ public class InstanceSettingsActivity extends BaseActivity {
             pendingNameSave = null;
         }
         super.onDestroy();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_BACKUP_STORAGE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startBackup();
-            } else {
-                Toast.makeText(this, R.string.storage_permission_not_granted, Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     private void setupNavBar() {

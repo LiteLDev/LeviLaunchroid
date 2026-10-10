@@ -784,10 +784,6 @@ La migración debe completarse antes de continuar con LeviLauncher.</string>
     <string name="mod_menu_appearance">Apariencia</string>
     <string name="mod_menu_pause_menu_only">Solo en menú de pausa</string>
     <string name="mod_menu_pause_menu_only_desc">Mostrar el menú de mods solo en la pantalla de pausa</string>
-    <string name="mod_menu_keybind">Tecla del menú de mods</string>
-    <string name="mod_menu_keybind_desc">Pulsa para cambiar el atajo de teclado</string>
-    <string name="mod_menu_keybind_reset">Restablecer a M</string>
-    <string name="mod_menu_keybind_unbound">Sin asignar</string>
     <string name="mod_menu_default_percent" formatted="false">100%</string>
     <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">Ajustes próximamente</string>
@@ -1148,15 +1144,4 @@ La migración debe completarse antes de continuar con LeviLauncher.</string>
     <string name="batch_transferring">Transfiriendo %1$d de %2$d…</string>
     <string name="batch_result">%1$d completados, %2$d fallidos</string>
     <string name="choose_export_folder">Elegir carpeta de exportación</string>
-    <string name="mod_config_activation_keybind">Tecla de activación</string>
-    <string name="mod_config_edit_controls">Editar controles</string>
-    <string name="mod_config_display_size_dp">Tamaño de visualización (dp)</string>
-    <string name="mod_config_clear_keybind">Borrar tecla</string>
-    <string name="bg_media_title">Fondo</string>
-    <string name="bg_media_desc">Elige una foto o GIF</string>
-    <string name="bg_media_select">Seleccionar fondo</string>
-    <string name="bg_media_none">Ningún fondo seleccionado</string>
-    <string name="bg_media_importing">Importando fondo…</string>
-    <string name="bg_media_import_failed">No se pudo cargar este fondo. Elige una foto o GIF compatible.</string>
-    <string name="bg_media_blur_unavailable">Android 12+</string>
 </resources>

@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.Gravity;
@@ -38,7 +37,6 @@ import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.dialogs.LogcatOverlayManager;
 import org.levimc.launcher.util.GithubReleaseUpdater;
 import org.levimc.launcher.util.LanguageManager;
-import org.levimc.launcher.util.LauncherStorage;
 import org.levimc.launcher.util.PermissionsHandler;
 import org.levimc.launcher.util.PersonalizationManager;
 import org.levimc.launcher.util.LauncherBackgroundController;
@@ -62,13 +60,11 @@ public class SettingsActivity extends BaseActivity {
     private TextView tabBasic;
     private TextView tabPersonalize;
     private TextView tabUpdates;
-    private TextView tabMigration;
     private TextView tabAbout;
 
     private View sectionBasic;
     private View sectionPersonalize;
     private View sectionUpdates;
-    private View sectionMigration;
     private View sectionAbout;
 
     private static final String KEY_SELECTED_TAB = "selected_tab_index";
@@ -81,10 +77,6 @@ public class SettingsActivity extends BaseActivity {
     private TextView bgImageBlurValue;
     private TextView bgImageBrightnessValue;
     private ImageView bgImagePreview;
-    private TextView migrationCleanupStatus;
-    private Button migrationCleanupButton;
-    private SwitchMaterial switchSharedStorageLayout;
-    private TextView sharedStorageLayoutStatus;
     private TextView preloaderSigsLastUpdateText;
     private Button preloaderSigsUpdateButton;
 
@@ -139,7 +131,6 @@ public class SettingsActivity extends BaseActivity {
         setupBasicSection();
         setupPersonalizeSection();
         setupUpdatesSection();
-        setupMigrationSection();
         setupAboutSection();
 
         TextView[] tabs = getSettingsTabs();
@@ -159,25 +150,22 @@ public class SettingsActivity extends BaseActivity {
         tabBasic = findViewById(R.id.tab_basic);
         tabPersonalize = findViewById(R.id.tab_personalize);
         tabUpdates = findViewById(R.id.tab_updates);
-        tabMigration = findViewById(R.id.tab_migration);
         tabAbout = findViewById(R.id.tab_about);
 
         sectionBasic = findViewById(R.id.section_basic);
         sectionPersonalize = findViewById(R.id.section_personalize);
         sectionUpdates = findViewById(R.id.section_updates);
-        sectionMigration = findViewById(R.id.section_migration);
         sectionAbout = findViewById(R.id.section_about);
 
         tabBasic.setOnClickListener(v -> { selectedTabIndex = 0; selectTab(tabBasic); });
         tabPersonalize.setOnClickListener(v -> { selectedTabIndex = 1; selectTab(tabPersonalize); });
         tabUpdates.setOnClickListener(v -> { selectedTabIndex = 2; selectTab(tabUpdates); });
         tabAbout.setOnClickListener(v -> { selectedTabIndex = 3; selectTab(tabAbout); });
-        tabMigration.setOnClickListener(v -> { selectedTabIndex = 4; selectTab(tabMigration); });
     }
 
     private void selectTab(TextView selectedTab) {
         TextView[] tabs = getSettingsTabs();
-        View[] sections = {sectionBasic, sectionPersonalize, sectionUpdates, sectionAbout, sectionMigration};
+        View[] sections = {sectionBasic, sectionPersonalize, sectionUpdates, sectionAbout};
 
         int accent = personalizationManager.getAccentColor();
 
@@ -212,7 +200,7 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private TextView[] getSettingsTabs() {
-        return new TextView[]{tabBasic, tabPersonalize, tabUpdates, tabAbout, tabMigration};
+        return new TextView[]{tabBasic, tabPersonalize, tabUpdates, tabAbout};
     }
 
     private void setupBasicSection() {
@@ -720,8 +708,6 @@ public class SettingsActivity extends BaseActivity {
         }
     }
 
-
-
     private void setupUpdatesSection() {
         try {
             String localVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -783,100 +769,6 @@ public class SettingsActivity extends BaseActivity {
         preloaderSigsLastUpdateText.setText(getString(R.string.preloader_sigs_last_update, updateText));
     }
 
-    private void setupMigrationSection() {
-        switchSharedStorageLayout = findViewById(R.id.switch_shared_storage_layout);
-        sharedStorageLayoutStatus = findViewById(R.id.shared_storage_layout_status);
-        TextView legacyPath = findViewById(R.id.migration_cleanup_path);
-        migrationCleanupStatus = findViewById(R.id.migration_cleanup_status);
-        migrationCleanupButton = findViewById(R.id.btn_cleanup_legacy_dir);
-
-        if (switchSharedStorageLayout != null) {
-            switchSharedStorageLayout.setChecked(LauncherStorage.isUsingNewSharedStorage(this));
-            switchSharedStorageLayout.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                LauncherStorage.setUseNewSharedStorage(this, isChecked);
-                refreshSharedStorageLayoutUi();
-                Toast.makeText(this, R.string.shared_storage_layout_changed, Toast.LENGTH_LONG).show();
-            });
-        }
-        refreshSharedStorageLayoutUi();
-
-        if (legacyPath != null) {
-            legacyPath.setText(LauncherStorage.getLegacyRoot().getAbsolutePath());
-        }
-        if (migrationCleanupButton != null) {
-            migrationCleanupButton.setOnClickListener(v -> confirmCleanupLegacyDir());
-        }
-        refreshMigrationCleanupUi();
-    }
-
-    private void refreshSharedStorageLayoutUi() {
-        if (sharedStorageLayoutStatus == null) return;
-
-        int modeRes = LauncherStorage.isUsingNewSharedStorage(this)
-                ? R.string.shared_storage_layout_mode_new
-                : R.string.shared_storage_layout_mode_legacy;
-        sharedStorageLayoutStatus.setText(getString(
-                R.string.shared_storage_layout_status,
-                getString(modeRes),
-                LauncherStorage.getSharedInternalGameDataDisplayPath(this),
-                LauncherStorage.getSharedExternalGameDataDisplayPath(this)
-        ));
-    }
-
-    private void refreshMigrationCleanupUi() {
-        if (migrationCleanupStatus == null || migrationCleanupButton == null) return;
-
-        boolean migrationCompleted = LauncherStorage.isMigrationCompleted(this);
-        boolean legacyExists = LauncherStorage.getLegacyRoot().isDirectory();
-        migrationCleanupButton.setEnabled(migrationCompleted && legacyExists);
-
-        if (!migrationCompleted) {
-            migrationCleanupStatus.setText(R.string.migration_cleanup_unavailable_not_completed);
-        } else if (!legacyExists) {
-            migrationCleanupStatus.setText(R.string.migration_cleanup_unavailable_missing);
-        } else {
-            migrationCleanupStatus.setText(R.string.migration_cleanup_ready);
-        }
-    }
-
-    private void confirmCleanupLegacyDir() {
-        new android.app.AlertDialog.Builder(this)
-                .setTitle(R.string.migration_cleanup_confirm_title)
-                .setMessage(R.string.migration_cleanup_confirm_message)
-                .setPositiveButton(R.string.delete, (dialog, which) -> cleanupLegacyDir())
-                .setNegativeButton(R.string.cancel, null)
-                .show();
-    }
-
-    private void cleanupLegacyDir() {
-        if (migrationCleanupButton != null) {
-            migrationCleanupButton.setEnabled(false);
-        }
-        AsyncTask.execute(() -> {
-            LauncherStorage.LegacyCleanupResult result = LauncherStorage.cleanupLegacyRoot(this);
-            runOnUiThread(() -> {
-                refreshMigrationCleanupUi();
-                if (result.success) {
-                    String message = getString(
-                            R.string.migration_cleanup_success,
-                            result.deletedFiles,
-                            formatBytes(result.deletedBytes)
-                    );
-                    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-                    if (migrationCleanupStatus != null) {
-                        migrationCleanupStatus.setText(message);
-                    }
-                } else {
-                    String message = getString(R.string.migration_cleanup_failed, result.errorMessage);
-                    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-                    if (migrationCleanupStatus != null) {
-                        migrationCleanupStatus.setText(message);
-                    }
-                }
-            });
-        });
-    }
-
     private void setupAboutSection() {
         findViewById(R.id.settings_btn_github).setOnClickListener(v ->
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/LiteLDev/LeviLaunchroid"))));
@@ -919,12 +811,4 @@ public class SettingsActivity extends BaseActivity {
         findViewById(R.id.nav_tab_settings).setOnClickListener(v -> {});
     }
 
-    private String formatBytes(long bytes) {
-        if (bytes < 1024) return bytes + " B";
-        double kb = bytes / 1024.0;
-        if (kb < 1024) return String.format(Locale.getDefault(), "%.1f KB", kb);
-        double mb = kb / 1024.0;
-        if (mb < 1024) return String.format(Locale.getDefault(), "%.1f MB", mb);
-        return String.format(Locale.getDefault(), "%.1f GB", mb / 1024.0);
-    }
 }

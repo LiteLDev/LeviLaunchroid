@@ -792,10 +792,6 @@
     <string name="mod_menu_appearance">Внешний вид</string>
     <string name="mod_menu_pause_menu_only">Только меню паузы</string>
     <string name="mod_menu_pause_menu_only_desc">Показывать меню модов только на экране паузы</string>
-    <string name="mod_menu_keybind">Клавиша меню модов</string>
-    <string name="mod_menu_keybind_desc">Нажмите, чтобы изменить сочетание клавиш</string>
-    <string name="mod_menu_keybind_reset">Сбросить на M</string>
-    <string name="mod_menu_keybind_unbound">Не назначено</string>
     <string name="mod_menu_default_percent" formatted="false">100%</string>
     <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">Настройки скоро появятся</string>
@@ -1156,15 +1152,4 @@
     <string name="batch_transferring">Перенос: %1$d из %2$d…</string>
     <string name="batch_result">Завершено: %1$d, ошибок: %2$d</string>
     <string name="choose_export_folder">Выбрать папку экспорта</string>
-    <string name="mod_config_activation_keybind">Клавиша активации</string>
-    <string name="mod_config_edit_controls">Изменить управление</string>
-    <string name="mod_config_display_size_dp">Размер отображения (dp)</string>
-    <string name="mod_config_clear_keybind">Очистить привязку клавиши</string>
-    <string name="bg_media_title">Фон</string>
-    <string name="bg_media_desc">Выберите фото или GIF</string>
-    <string name="bg_media_select">Выбрать фон</string>
-    <string name="bg_media_none">Фон не выбран</string>
-    <string name="bg_media_importing">Импорт фона…</string>
-    <string name="bg_media_import_failed">Не удалось загрузить этот фон. Выберите поддерживаемое фото или GIF.</string>
-    <string name="bg_media_blur_unavailable">Android 12+</string>
 </resources>

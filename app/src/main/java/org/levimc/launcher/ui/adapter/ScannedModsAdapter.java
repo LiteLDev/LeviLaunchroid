@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.levimc.launcher.R;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 
-import java.io.File;
+import org.levimc.launcher.util.StorageAccess;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -23,15 +23,15 @@ import java.util.Set;
 
 public final class ScannedModsAdapter extends RecyclerView.Adapter<ScannedModsAdapter.ViewHolder> {
     public interface OnAddClickListener {
-        void onClick(File file);
+        void onClick(StorageAccess.Document file);
     }
 
-    private final List<File> files;
+    private final List<StorageAccess.Document> files;
     private final Set<String> addedPaths = new HashSet<>();
     private final OnAddClickListener listener;
     private String importingPath;
 
-    public ScannedModsAdapter(List<File> files, OnAddClickListener listener) {
+    public ScannedModsAdapter(List<StorageAccess.Document> files, OnAddClickListener listener) {
         this.files = files;
         this.listener = listener;
     }
@@ -46,18 +46,18 @@ public final class ScannedModsAdapter extends RecyclerView.Adapter<ScannedModsAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        File file = files.get(position);
-        String path = file.getAbsolutePath();
-        String lowerName = file.getName().toLowerCase(Locale.ROOT);
+        StorageAccess.Document file = files.get(position);
+        String path = file.uri.toString();
+        String lowerName = file.name.toLowerCase(Locale.ROOT);
         int type = lowerName.endsWith(".levipack")
                 ? R.string.scan_downloads_levipack
                 : R.string.scan_downloads_native_library;
 
-        holder.name.setText(file.getName());
+        holder.name.setText(file.name);
         holder.details.setText(holder.itemView.getContext().getString(
                 R.string.scan_downloads_file_details,
                 holder.itemView.getContext().getString(type),
-                Formatter.formatShortFileSize(holder.itemView.getContext(), file.length())));
+                Formatter.formatShortFileSize(holder.itemView.getContext(), file.size)));
         holder.add.setOnClickListener(null);
 
         if (addedPaths.contains(path)) {
@@ -81,19 +81,19 @@ public final class ScannedModsAdapter extends RecyclerView.Adapter<ScannedModsAd
         button.setTextColor(textColor);
     }
 
-    public void setImporting(File file) {
-        importingPath = file.getAbsolutePath();
+    public void setImporting(StorageAccess.Document file) {
+        importingPath = file.uri.toString();
         notifyDataSetChanged();
     }
 
-    public void setAdded(File file) {
-        addedPaths.add(file.getAbsolutePath());
+    public void setAdded(StorageAccess.Document file) {
+        addedPaths.add(file.uri.toString());
         importingPath = null;
         notifyDataSetChanged();
     }
 
-    public void setIdle(File file) {
-        if (file.getAbsolutePath().equals(importingPath)) {
+    public void setIdle(StorageAccess.Document file) {
+        if (file.uri.toString().equals(importingPath)) {
             importingPath = null;
             notifyDataSetChanged();
         }

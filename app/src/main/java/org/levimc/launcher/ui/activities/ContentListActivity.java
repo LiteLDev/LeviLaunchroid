@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -82,6 +83,8 @@ public class ContentListActivity extends BaseActivity {
     private org.levimc.launcher.ui.adapter.ScreenshotsAdapter screenshotsAdapter;
     private org.levimc.launcher.ui.adapter.ServersAdapter serversAdapter;
 
+    private ActivityResultLauncher<Intent> screenshotSaveLauncher;
+    private String pendingScreenshotPath;
     private ActivityResultLauncher<Intent> exportLauncher;
     private ActivityResultLauncher<Intent> exportPackLauncher;
     private ActivityResultLauncher<Intent> customFlatWorldLauncher;
@@ -137,6 +140,7 @@ public class ContentListActivity extends BaseActivity {
             currentStorageType = parseStorageType(savedType);
         }
 
+        if (savedInstanceState != null) pendingScreenshotPath = savedInstanceState.getString("pending_screenshot_path");
         setupActivityResultLaunchers();
         setupUI();
         restoreSelectionState(savedInstanceState);
@@ -145,6 +149,16 @@ public class ContentListActivity extends BaseActivity {
     }
 
     private void setupActivityResultLaunchers() {
+        screenshotSaveLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    String path = pendingScreenshotPath;
+                    pendingScreenshotPath = null;
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null && path != null) {
+                        Uri uri = result.getData().getData();
+                        if (uri != null) saveScreenshotImage(new File(path), uri, false);
+                    }
+                });
         exportLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -671,34 +685,63 @@ public class ContentListActivity extends BaseActivity {
     }
 
     private void saveScreenshotToGallery(org.levimc.launcher.core.content.ScreenshotItem screenshot) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            pendingScreenshotPath = screenshot.file.getAbsolutePath();
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/jpeg");
+            intent.putExtra(Intent.EXTRA_TITLE, screenshot.name + ".jpg");
+            screenshotSaveLauncher.launch(intent);
+            return;
+        }
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, screenshot.name + "_" + System.currentTimeMillis() + ".jpg");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.Images.Media.IS_PENDING, 1);
+        try {
+            Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            if (uri == null) throw new java.io.IOException("Cannot save screenshot");
+            saveScreenshotImage(screenshot.file, uri, true);
+        } catch (Exception error) {
+            Toast.makeText(this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void saveScreenshotImage(File source, Uri uri, boolean gallery) {
         showLoading(true);
         new Thread(() -> {
+            boolean saved = false;
+            Bitmap bitmap = null;
             try {
-                Bitmap bitmap = BitmapFactory.decodeFile(screenshot.file.getAbsolutePath());
-                if (bitmap != null) {
-                    ContentValues values = new ContentValues();
-                    values.put(MediaStore.Images.Media.DISPLAY_NAME, screenshot.name + "_" + System.currentTimeMillis() + ".jpg");
-                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                    values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000);
-
-                    Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                    if (uri != null) {
-                        try (OutputStream out = getContentResolver().openOutputStream(uri)) {
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                        }
-                        runOnUiThread(() -> {
-                            showLoading(false);
-                            Toast.makeText(ContentListActivity.this, R.string.saved_to_gallery, Toast.LENGTH_SHORT).show();
-                        });
-                        return;
+                bitmap = BitmapFactory.decodeFile(source.getAbsolutePath());
+                if (bitmap == null) throw new java.io.IOException("Cannot read screenshot");
+                try (OutputStream output = getContentResolver().openOutputStream(uri)) {
+                    if (output == null || !bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output)) {
+                        throw new java.io.IOException("Cannot write screenshot");
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                if (gallery) {
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.IS_PENDING, 0);
+                    getContentResolver().update(uri, values, null, null);
+                }
+                saved = true;
+            } catch (Exception error) {
+                if (gallery) {
+                    try {
+                        getContentResolver().delete(uri, null, null);
+                    } catch (Exception ignored) {
+                    }
+                }
+            } finally {
+                if (bitmap != null) bitmap.recycle();
             }
+            boolean success = saved;
             runOnUiThread(() -> {
+                if (isFinishing() || isDestroyed()) return;
                 showLoading(false);
-                Toast.makeText(ContentListActivity.this, R.string.save_failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, success ? (gallery ? R.string.saved_to_gallery : R.string.screenshot_saved)
+                        : R.string.save_failed, Toast.LENGTH_SHORT).show();
             });
         }).start();
     }
@@ -1118,6 +1161,7 @@ public class ContentListActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putString("pending_screenshot_path", pendingScreenshotPath);
         outState.putBoolean(STATE_SELECTION_MODE, isSelectionMode());
         if (contentType == TYPE_WORLDS && worldsAdapter != null) outState.putStringArrayList(STATE_SELECTED_PATHS, worldsAdapter.getSelectedPaths());
         else if (isPackType() && packsAdapter != null) outState.putStringArrayList(STATE_SELECTED_PATHS, packsAdapter.getSelectedPaths());

@@ -784,10 +784,6 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="mod_menu_appearance">Görünüm</string>
     <string name="mod_menu_pause_menu_only">Yalnızca Duraklatma Menüsü</string>
     <string name="mod_menu_pause_menu_only_desc">Mod menüsünü yalnızca duraklatma ekranında göster</string>
-    <string name="mod_menu_keybind">Mod Menüsü Tuş Ataması</string>
-    <string name="mod_menu_keybind_desc">Klavye kısayolunu değiştirmek için basın</string>
-    <string name="mod_menu_keybind_reset">M olarak sıfırla</string>
-    <string name="mod_menu_keybind_unbound">Atanmamış</string>
     <string name="mod_menu_default_percent" formatted="false">100%</string>
     <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">Ayarlar yakında geliyor</string>
@@ -1148,15 +1144,4 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="batch_transferring">%1$d / %2$d aktarılıyor…</string>
     <string name="batch_result">%1$d tamamlandı, %2$d başarısız</string>
     <string name="choose_export_folder">Dışa aktarma klasörünü seç</string>
-    <string name="mod_config_activation_keybind">Etkinleştirme tuş ataması</string>
-    <string name="mod_config_edit_controls">Kontrolleri düzenle</string>
-    <string name="mod_config_display_size_dp">Görüntü boyutu (dp)</string>
-    <string name="mod_config_clear_keybind">Tuş atamasını temizle</string>
-    <string name="bg_media_title">Arka plan</string>
-    <string name="bg_media_desc">Bir fotoğraf veya GIF seçin</string>
-    <string name="bg_media_select">Arka plan seç</string>
-    <string name="bg_media_none">Arka plan seçilmedi</string>
-    <string name="bg_media_importing">Arka plan içe aktarılıyor…</string>
-    <string name="bg_media_import_failed">Bu arka plan yüklenemedi. Desteklenen bir fotoğraf veya GIF seçin.</string>
-    <string name="bg_media_blur_unavailable">Android 12+</string>
 </resources>

@@ -784,10 +784,6 @@
     <string name="mod_menu_appearance">外观</string>
     <string name="mod_menu_pause_menu_only">仅暂停菜单显示</string>
     <string name="mod_menu_pause_menu_only_desc">只在暂停界面显示模组菜单</string>
-    <string name="mod_menu_keybind">Mod 菜单按键</string>
-    <string name="mod_menu_keybind_desc">按下以更改键盘快捷键</string>
-    <string name="mod_menu_keybind_reset">重置为 M</string>
-    <string name="mod_menu_keybind_unbound">未绑定</string>
     <string name="mod_menu_default_percent" formatted="false">100%</string>
     <string name="mod_menu_percent_value">%1$d%%</string>
     <string name="mod_menu_settings_coming">设置即将推出</string>
@@ -1148,15 +1144,4 @@
     <string name="batch_transferring">正在传输 %1$d/%2$d…</string>
     <string name="batch_result">%1$d 个已完成，%2$d 个失败</string>
     <string name="choose_export_folder">选择导出文件夹</string>
-    <string name="mod_config_activation_keybind">激活按键</string>
-    <string name="mod_config_edit_controls">编辑控制</string>
-    <string name="mod_config_display_size_dp">显示大小 (dp)</string>
-    <string name="mod_config_clear_keybind">清除按键</string>
-    <string name="bg_media_title">背景</string>
-    <string name="bg_media_desc">选择图片或 GIF</string>
-    <string name="bg_media_select">选择背景</string>
-    <string name="bg_media_none">未选择背景</string>
-    <string name="bg_media_importing">正在导入背景…</string>
-    <string name="bg_media_import_failed">无法加载此背景。请选择支持的图片或 GIF。</string>
-    <string name="bg_media_blur_unavailable">Android 12+</string>
 </resources>
