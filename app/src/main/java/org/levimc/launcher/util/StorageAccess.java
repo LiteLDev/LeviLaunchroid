@@ -2,12 +2,9 @@ package org.levimc.launcher.util;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.provider.DocumentsContract;
-import android.provider.OpenableColumns;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -15,18 +12,6 @@ import java.util.Set;
 
 public final class StorageAccess {
     private StorageAccess() {
-    }
-
-    public static final class Document {
-        public final Uri uri;
-        public final String name;
-        public final long size;
-
-        public Document(Uri uri, String name, long size) {
-            this.uri = uri;
-            this.name = name;
-            this.size = Math.max(0L, size);
-        }
     }
 
     public static Intent downloadsPicker(boolean multiple) {
@@ -62,23 +47,6 @@ public final class StorageAccess {
             context.getContentResolver().takePersistableUriPermission(uri, flags);
         } catch (SecurityException ignored) {
         }
-    }
-
-    public static Document readDocument(Context context, Uri uri) throws IOException {
-        String name = uri.getLastPathSegment();
-        long size = 0L;
-        try (Cursor cursor = context.getContentResolver().query(uri,
-                new String[]{OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE}, null, null, null)) {
-            if (cursor == null || !cursor.moveToFirst()) throw new IOException("Cannot read selected file");
-            int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-            if (nameIndex >= 0) name = cursor.getString(nameIndex);
-            if (sizeIndex >= 0 && !cursor.isNull(sizeIndex)) size = cursor.getLong(sizeIndex);
-        } catch (RuntimeException error) {
-            throw new IOException("Cannot read selected file", error);
-        }
-        if (name == null || name.isEmpty()) throw new IOException("Selected file has no name");
-        return new Document(uri, name, size);
     }
 
 }

@@ -67,8 +67,6 @@
     <string name="local_custom">Personalizado Local</string>
 
     <!-- Permissions -->
-    <string name="storage_permission_title">Permiso para migrar almacenamiento</string>
-    <string name="storage_permission_message">Concede permiso de almacenamiento para que LeviLauncher copie los datos desde el antiguo directorio games/org.levimc. Este permiso solo se usa durante la migración.</string>
     <string name="grant_permission">Conceder</string>
     <string name="cancel">Cancelar</string>
 
@@ -82,7 +80,6 @@
     <string name="overlay_permission_message">Por favor concede el permiso de superposición</string>
     <string name="overlay_permission_denied_message">Concede el permiso de superposición, de lo contrario no se podrá mostrar la ventana de registro.</string>
     <string name="overlay_permission_not_granted">Permiso de superposición no concedido</string>
-    <string name="storage_permission_not_granted">Permiso de almacenamiento no concedido</string>
 
     <string name="import_apk">Importar APK</string>
     <string name="install">Instalar</string>
@@ -108,7 +105,6 @@
     <string name="settings_tab_personalize">Personalización</string>
     <string name="settings_tab_updates">Actualizaciones</string>
     <string name="settings_tab_about">Acerca de</string>
-    <string name="settings_tab_migration">Migración</string>
     <string name="settings_theme_desc">Elige el tema de la aplicación</string>
 
 
@@ -170,51 +166,6 @@
     <string name="repair_preparing">Preparando…</string>
     <string name="repair_processing">Extrayendo bibliotecas…</string>
     <string name="repair_finalizing">Finalizando reparación…</string>
-    <!-- Storage Migration -->
-    <string name="storage_migration_title">Migración de almacenamiento requerida</string>
-    <string name="storage_migration_message">LeviLauncher debe migrar los datos de games/org.levimc a %1$s antes de continuar.
-
-Este cambio de almacenamiento es necesario para cumplir los requisitos de publicación en Google Play. El directorio antiguo se conservará intacto, pero ya no se usará después de la migración.
-
-La migración puede tardar. Puedes dejar la app en segundo plano mientras se ejecuta; el teléfono puede calentarse durante la copia intensa de archivos. Gracias por tu comprensión.</string>
-    <string name="storage_migration_start">Migrar</string>
-    <string name="storage_migration_permission_denied">Se necesita permiso de almacenamiento para leer el directorio antiguo durante la migración.</string>
-    <string name="storage_migration_progress_title">Migrando almacenamiento</string>
-    <string name="storage_migration_progress_subtitle">Copiando datos del lanzador a Android/media</string>
-    <string name="storage_migration_scanning">Escaneando directorio antiguo…</string>
-    <string name="storage_migration_progress_detail">%1$d/%2$d archivos · %3$s</string>
-    <string name="storage_migration_eta_pending">Calculando tiempo restante…</string>
-    <string name="storage_migration_eta_detail">Quedan aprox. %1$s · termina sobre las %2$s</string>
-    <string name="storage_migration_duration_hours_minutes">%1$d h %2$d min</string>
-    <string name="storage_migration_duration_minutes_seconds">%1$d min %2$d s</string>
-    <string name="storage_migration_duration_seconds">%1$d s</string>
-    <string name="storage_migration_background_hint">La migración puede seguir en segundo plano. Se recomienda mantener el teléfono cargado; el teléfono puede calentarse durante la copia de archivos. Gracias por tu comprensión.</string>
-    <string name="storage_migration_completed_title">Migración completada</string>
-    <string name="storage_migration_completed_message">Se migraron %1$d archivos (%2$s). %3$d archivos ya estaban actualizados.
-
-El antiguo directorio games/org.levimc no fue eliminado y ya no se usa.</string>
-    <string name="storage_migration_partial_title">Migración incompleta</string>
-    <string name="storage_migration_partial_message">No se pudieron copiar %1$d de %2$d archivos. La migración debe completarse antes de continuar con LeviLauncher.</string>
-    <string name="storage_migration_failed_title">Migración fallida</string>
-    <string name="storage_migration_failed_message">La migración no pudo continuar: %1$s
-
-La migración debe completarse antes de continuar con LeviLauncher.</string>
-    <string name="migration_cleanup_title">Limpiar directorio histórico</string>
-    <string name="migration_cleanup_desc">Elimina el directorio antiguo games/org.levimc solo después de confirmar que todas las instancias se inician correctamente y que no faltan mundos, paquetes de recursos, paquetes de comportamiento ni ajustes. Los datos históricos eliminados no se podrán restaurar desde este directorio.</string>
-    <string name="migration_cleanup_button">Limpiar directorio histórico</string>
-    <string name="migration_cleanup_confirm_title">¿Limpiar directorio histórico?</string>
-    <string name="migration_cleanup_confirm_message">Esto eliminará permanentemente el directorio antiguo games/org.levimc.\n\nAntes de continuar, asegúrate de que todas las instancias se inicien correctamente y que no falten mundos, paquetes de recursos, paquetes de comportamiento ni ajustes.</string>
-    <string name="migration_cleanup_unavailable_not_completed">La migración de almacenamiento aún no se ha completado. Completa la migración antes de limpiar el directorio antiguo.</string>
-    <string name="migration_cleanup_unavailable_missing">No se encontró el directorio antiguo games/org.levimc o ya fue limpiado.</string>
-    <string name="migration_cleanup_ready">El directorio antiguo se puede limpiar. Confirma que todas las instancias migradas funcionen correctamente antes de continuar.</string>
-    <string name="migration_cleanup_success">Directorio histórico limpiado: %1$d archivos eliminados (%2$s).</string>
-    <string name="migration_cleanup_failed">No se pudo limpiar el directorio histórico: %1$s</string>
-    <string name="shared_storage_layout_title">Directorio de contenido compartido</string>
-    <string name="shared_storage_layout_desc">Usa el nuevo directorio _shared para el contenido compartido interno y externo. Desactívalo para usar los directorios originales de datos internos y externos del juego. Esto no mueve archivos.</string>
-    <string name="shared_storage_layout_mode_new">Nuevo directorio _shared</string>
-    <string name="shared_storage_layout_mode_legacy">Directorios internos/externos originales</string>
-    <string name="shared_storage_layout_status">Modo actual: %1$s\nInterno: %2$s\nExterno: %3$s</string>
-    <string name="shared_storage_layout_changed">La selección del directorio de almacenamiento se actualizó. Reinicia Minecraft y vuelve a abrir la gestión de contenido para aplicar completamente el cambio.</string>
     <!-- Theme -->
     <string name="theme_title">Modo de Tema</string>
     <string name="theme_follow_system">Seguir Sistema</string>
@@ -456,20 +407,6 @@ La migración debe completarse antes de continuar con LeviLauncher.</string>
     <string name="total_mods">Total de Mods:</string>
     <string name="enabled_mods">Habilitados:</string>
     <string name="add_mod">Añadir Mod</string>
-    <string name="scan_downloads">Escanear</string>
-    <string name="scan_downloads_scanning">Escaneando…</string>
-    <string name="scan_downloads_none_found">No se encontraron mods .levipack ni .so en Descargas</string>
-    <string name="scan_downloads_failed">No se pudo escanear Descargas</string>
-    <string name="scan_downloads_permission_denied">Se necesita acceso al almacenamiento para escanear Descargas</string>
-    <string name="scan_downloads_results_title">Mods en Descargas</string>
-    <string name="scan_downloads_results_subtitle">Elige un mod para añadir. El escaneo solo revisa la carpeta principal de Descargas.</string>
-    <string name="scan_downloads_add">Añadir</string>
-    <string name="scan_downloads_adding">Añadiendo…</string>
-    <string name="scan_downloads_added">Añadido</string>
-    <string name="scan_downloads_added_message">%1$s añadido</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">Biblioteca nativa</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
     <string name="external_mods">Mods externos</string>
     <string name="external_mods_subtitle">Mods de la comunidad para Minecraft %1$s</string>
     <string name="external_mods_no_version">Selecciona una versión de Minecraft antes de instalar mods</string>

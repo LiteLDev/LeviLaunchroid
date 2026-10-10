@@ -3,9 +3,7 @@ package org.levimc.launcher.ui.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import android.widget.TextView;
@@ -28,7 +26,6 @@ import org.levimc.launcher.core.mods.Mod;
 import org.levimc.launcher.core.mods.inbuilt.manager.InbuiltModManager;
 import org.levimc.launcher.core.versions.VersionManager;
 import org.levimc.launcher.ui.adapter.ModsAdapter;
-import org.levimc.launcher.ui.adapter.ScannedModsAdapter;
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.views.MainViewModel;
@@ -46,11 +43,8 @@ public class ModsFullscreenActivity extends BaseActivity {
     private TextView totalModsCount;
     private TextView enabledModsCount;
     private ActivityResultLauncher<Intent> pickModLauncher;
-    private ActivityResultLauncher<Intent> scanDownloadsLauncher;
     private FileHandler fileHandler;
     private InbuiltModManager inbuiltModManager;
-    private Button scanModsButton;
-    private boolean scanInProgress;
     private int lastModsCount = -1;
 
     @Override
@@ -68,14 +62,6 @@ public class ModsFullscreenActivity extends BaseActivity {
         setupViewModel();
         setupRecyclerView();
         fileHandler = new FileHandler(this, viewModel, VersionManager.get(this));
-
-        scanDownloadsLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        scanDownloads(result.getData());
-                    }
-                });
 
         pickModLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -98,14 +84,6 @@ public class ModsFullscreenActivity extends BaseActivity {
             startFilePicker();
         });
         DynamicAnim.applyPressScale(addModButton);
-
-        scanModsButton = findViewById(R.id.scan_mods_button);
-        scanModsButton.setEnabled(!scanInProgress);
-        scanModsButton.setText(scanInProgress
-                ? R.string.scan_downloads_scanning
-                : R.string.scan_downloads);
-        scanModsButton.setOnClickListener(v -> requestDownloadsScan());
-        DynamicAnim.applyPressScale(scanModsButton);
 
         Button modMenuButton = findViewById(R.id.mod_menu_button);
         boolean isMenuEnabled = inbuiltModManager.isModMenuEnabled();
@@ -136,101 +114,6 @@ public class ModsFullscreenActivity extends BaseActivity {
 
     private void startFilePicker() {
         pickModLauncher.launch(StorageAccess.downloadsPicker(true));
-    }
-
-    private void requestDownloadsScan() {
-        if (scanInProgress) return;
-        scanDownloadsLauncher.launch(StorageAccess.downloadsPicker(true));
-    }
-
-    private void scanDownloads(Intent data) {
-        scanInProgress = true;
-        updateScanButton();
-        List<Uri> uris = StorageAccess.selectedUris(data);
-        for (Uri uri : uris) StorageAccess.retainReadPermission(this, data, uri);
-        new Thread(() -> {
-            List<StorageAccess.Document> files = new ArrayList<>();
-            boolean failed = false;
-            for (Uri uri : uris) {
-                try {
-                    StorageAccess.Document document = StorageAccess.readDocument(this, uri);
-                    String name = document.name.toLowerCase(java.util.Locale.ROOT);
-                    if (name.endsWith(".levipack") || name.endsWith(".so")) files.add(document);
-                } catch (Exception error) {
-                    failed = true;
-                }
-            }
-            boolean scanFailed = failed;
-            runOnUiThread(() -> {
-                scanInProgress = false;
-                if (isFinishing() || isDestroyed()) return;
-                updateScanButton();
-                if (scanFailed) {
-                    Toast.makeText(this, R.string.scan_downloads_failed, Toast.LENGTH_LONG).show();
-                }
-                if (!files.isEmpty()) showScannedMods(files);
-                else if (!scanFailed) Toast.makeText(this, R.string.scan_downloads_none_found, Toast.LENGTH_SHORT).show();
-            });
-        }).start();
-    }
-
-    private void showScannedMods(List<StorageAccess.Document> files) {
-        View content = LayoutInflater.from(this).inflate(R.layout.dialog_scanned_mods, null);
-        RecyclerView results = content.findViewById(R.id.scan_results_recycler);
-        results.setLayoutManager(new LinearLayoutManager(this));
-
-        ScannedModsAdapter[] adapterHolder = new ScannedModsAdapter[1];
-        adapterHolder[0] = new ScannedModsAdapter(files,
-                file -> addScannedMod(file, adapterHolder[0]));
-        results.setAdapter(adapterHolder[0]);
-
-        float density = getResources().getDisplayMetrics().density;
-        ViewGroup.LayoutParams params = results.getLayoutParams();
-        int desiredHeight = (int) (Math.min(files.size(), 4) * 72 * density);
-        int availableHeight = getResources().getDisplayMetrics().heightPixels - (int) (190 * density);
-        params.height = Math.min(desiredHeight, Math.max((int) (72 * density), availableHeight));
-        results.setLayoutParams(params);
-
-        new CustomAlertDialog(this)
-                .setTitleText(getString(R.string.scan_downloads_results_title))
-                .setCustomView(content)
-                .setNegativeButton(getString(R.string.close), null)
-                .setUseBorderedBackground(true)
-                .setBlurBackground(true)
-                .show();
-    }
-
-    private void addScannedMod(StorageAccess.Document file, ScannedModsAdapter adapter) {
-        adapter.setImporting(file);
-        fileHandler.processScannedFile(file.uri, new FileHandler.FileOperationCallback() {
-            @Override
-            public void onSuccess(int processedFiles) {
-                if (isFinishing() || isDestroyed()) return;
-                adapter.setAdded(file);
-                Toast.makeText(ModsFullscreenActivity.this,
-                        getString(R.string.scan_downloads_added_message, file.name),
-                        Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                if (isFinishing() || isDestroyed()) return;
-                adapter.setIdle(file);
-                Toast.makeText(ModsFullscreenActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onProgressUpdate(int progress) {
-            }
-        });
-    }
-
-    private void updateScanButton() {
-        if (scanModsButton == null) return;
-        scanModsButton.setEnabled(!scanInProgress);
-        scanModsButton.setText(scanInProgress
-                ? R.string.scan_downloads_scanning
-                : R.string.scan_downloads);
     }
 
     private FileHandler.FileOperationCallback createImportCallback() {

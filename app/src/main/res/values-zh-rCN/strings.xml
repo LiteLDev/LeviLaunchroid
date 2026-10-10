@@ -67,8 +67,6 @@
     <string name="local_custom">本地自定义</string>
 
     <!-- Permissions -->
-    <string name="storage_permission_title">存储迁移权限</string>
-    <string name="storage_permission_message">请授予存储权限，以便 LeviLauncher 从旧的 games/org.levimc 目录复制数据。此权限仅用于迁移步骤。</string>
     <string name="grant_permission">授予权限</string>
     <string name="cancel">取消</string>
 
@@ -82,7 +80,6 @@
     <string name="overlay_permission_message">请授予悬浮窗权限</string>
     <string name="overlay_permission_denied_message">请授予悬浮窗权限，否则无法显示日志窗口。</string>
     <string name="overlay_permission_not_granted">未授予悬浮窗权限</string>
-    <string name="storage_permission_not_granted">未授予存储权限</string>
 
     <string name="import_apk">导入APK</string>
     <string name="install">安装</string>
@@ -108,7 +105,6 @@
     <string name="settings_tab_personalize">个性化</string>
     <string name="settings_tab_updates">更新</string>
     <string name="settings_tab_about">关于</string>
-    <string name="settings_tab_migration">迁移</string>
     <string name="settings_theme_desc">选择应用主题</string>
 
 
@@ -170,51 +166,6 @@
     <string name="repair_preparing">准备中…</string>
     <string name="repair_processing">正在提取库文件…</string>
     <string name="repair_finalizing">正在完成修复…</string>
-    <!-- Storage Migration -->
-    <string name="storage_migration_title">需要迁移存储目录</string>
-    <string name="storage_migration_message">LeviLauncher 必须先将数据从 games/org.levimc 迁移到 %1$s，才能继续使用。
-
-这次存储迁移是为了满足 Google Play 上架合规要求，不得不这么做。旧目录会保持不变，但迁移后不再作为运行目录使用。
-
-迁移可能需要一段时间，可以把应用挂在后台等待；大量复制文件期间手机可能会发烫，请您理解。</string>
-    <string name="storage_migration_start">迁移</string>
-    <string name="storage_migration_permission_denied">需要存储权限才能读取旧目录并进行迁移。</string>
-    <string name="storage_migration_progress_title">正在迁移存储</string>
-    <string name="storage_migration_progress_subtitle">正在将启动器数据复制到 Android/media</string>
-    <string name="storage_migration_scanning">正在扫描旧目录…</string>
-    <string name="storage_migration_progress_detail">%1$d/%2$d 个文件 · %3$s</string>
-    <string name="storage_migration_eta_pending">正在估算剩余时间…</string>
-    <string name="storage_migration_eta_detail">预计剩余 %1$s · 约 %2$s 完成</string>
-    <string name="storage_migration_duration_hours_minutes">%1$d 小时 %2$d 分钟</string>
-    <string name="storage_migration_duration_minutes_seconds">%1$d 分 %2$d 秒</string>
-    <string name="storage_migration_duration_seconds">%1$d 秒</string>
-    <string name="storage_migration_background_hint">迁移可以在后台继续运行。建议保持电量充足；复制大量文件时手机可能会发热，请您理解。</string>
-    <string name="storage_migration_completed_title">迁移完成</string>
-    <string name="storage_migration_completed_message">已迁移 %1$d 个文件（%2$s）。%3$d 个文件已是最新。
-
-旧的 games/org.levimc 目录未被删除，后续不再使用。</string>
-    <string name="storage_migration_partial_title">迁移未完成</string>
-    <string name="storage_migration_partial_message">%1$d/%2$d 个文件未能复制。必须完成迁移后才能继续使用 LeviLauncher。</string>
-    <string name="storage_migration_failed_title">迁移失败</string>
-    <string name="storage_migration_failed_message">迁移无法继续：%1$s
-
-必须完成迁移后才能继续使用 LeviLauncher。</string>
-    <string name="migration_cleanup_title">清理历史目录</string>
-    <string name="migration_cleanup_desc">仅在确认所有实例都能正常启动，世界、资源包、行为包和设置均未缺失后，再移除旧的 games/org.levimc 目录。删除后无法再从该历史目录恢复数据。</string>
-    <string name="migration_cleanup_button">清理历史目录</string>
-    <string name="migration_cleanup_confirm_title">清理历史目录？</string>
-    <string name="migration_cleanup_confirm_message">这将永久删除旧的 games/org.levimc 目录。\n\n继续前请确保所有实例都能正常启动，世界、资源包、行为包和设置均未缺失。</string>
-    <string name="migration_cleanup_unavailable_not_completed">存储迁移尚未完成。请先完成迁移，再清理旧目录。</string>
-    <string name="migration_cleanup_unavailable_missing">未找到旧的 games/org.levimc 目录，或该目录已被清理。</string>
-    <string name="migration_cleanup_ready">旧目录可以清理。继续前请确认所有迁移后的实例均正常。</string>
-    <string name="migration_cleanup_success">历史目录已清理：已移除 %1$d 个文件（%2$s）。</string>
-    <string name="migration_cleanup_failed">清理历史目录失败：%1$s</string>
-    <string name="shared_storage_layout_title">共享内容目录</string>
-    <string name="shared_storage_layout_desc">将内部和外部共享内容写入新的 _shared 目录。关闭后会继续使用原始内部目录和外部目录。此开关不会移动文件。</string>
-    <string name="shared_storage_layout_mode_new">新的 _shared 目录</string>
-    <string name="shared_storage_layout_mode_legacy">原始内部/外部目录</string>
-    <string name="shared_storage_layout_status">当前模式：%1$s\n内部：%2$s\n外部：%3$s</string>
-    <string name="shared_storage_layout_changed">存储目录选择已更新。请重启 Minecraft 并重新打开内容管理，以确保变更完全生效。</string>
     <!-- Theme -->
     <string name="theme_title">主题模式</string>
     <string name="theme_follow_system">跟随系统</string>
@@ -456,20 +407,6 @@
     <string name="total_mods">模组总数：</string>
     <string name="enabled_mods">已启用：</string>
     <string name="add_mod">添加模组</string>
-    <string name="scan_downloads">扫描</string>
-    <string name="scan_downloads_scanning">正在扫描…</string>
-    <string name="scan_downloads_none_found">下载文件夹中未找到 .levipack 或 .so 模组</string>
-    <string name="scan_downloads_failed">无法扫描下载文件夹</string>
-    <string name="scan_downloads_permission_denied">扫描下载文件夹需要存储访问权限</string>
-    <string name="scan_downloads_results_title">下载文件夹中的模组</string>
-    <string name="scan_downloads_results_subtitle">选择要添加的模组。扫描仅检查主下载文件夹。</string>
-    <string name="scan_downloads_add">添加</string>
-    <string name="scan_downloads_adding">正在添加…</string>
-    <string name="scan_downloads_added">已添加</string>
-    <string name="scan_downloads_added_message">已添加 %1$s</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">原生库</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
     <string name="external_mods">外部模组</string>
     <string name="external_mods_subtitle">适用于 Minecraft %1$s 的社区模组</string>
     <string name="external_mods_no_version">安装模组前请选择 Minecraft 版本</string>

@@ -67,8 +67,6 @@
     <string name="local_custom">स्थानीय कस्टम</string>
 
     <!-- Permissions -->
-    <string name="storage_permission_title">स्टोरेज माइग्रेशन अनुमति</string>
-    <string name="storage_permission_message">कृपया LeviLauncher को पुराने games/org.levimc फ़ोल्डर से डेटा कॉपी करने के लिए स्टोरेज अनुमति दें। यह अनुमति केवल माइग्रेशन चरण के लिए आवश्यक है।</string>
     <string name="grant_permission">अनुमति दें</string>
     <string name="cancel">रद्द करें</string>
 
@@ -82,7 +80,6 @@
     <string name="overlay_permission_message">कृपया ओवरले अनुमति प्रदान करें</string>
     <string name="overlay_permission_denied_message">कृपया ओवरले अनुमति प्रदान करें, अन्यथा लॉग विंडो प्रदर्शित नहीं की जा सकती।</string>
     <string name="overlay_permission_not_granted">ओवरले अनुमति नहीं दी गई</string>
-    <string name="storage_permission_not_granted">स्टोरेज अनुमति नहीं दी गई</string>
 
     <string name="import_apk">APK आयात करें</string>
     <string name="install">इंस्टॉल</string>
@@ -108,7 +105,6 @@
     <string name="settings_tab_personalize">वैयक्तिकरण</string>
     <string name="settings_tab_updates">अपडेट्स</string>
     <string name="settings_tab_about">बारे में</string>
-    <string name="settings_tab_migration">माइग्रेशन</string>
     <string name="settings_theme_desc">एप्लिकेशन थीम चुनें</string>
 
 
@@ -170,51 +166,6 @@
     <string name="repair_preparing">तैयारी हो रही है…</string>
     <string name="repair_processing">लाइब्रेरीज़ निकाली जा रही हैं…</string>
     <string name="repair_finalizing">मरम्मत पूरी की जा रही है…</string>
-    <!-- Storage Migration -->
-    <string name="storage_migration_title">स्टोरेज माइग्रेशन आवश्यक है</string>
-    <string name="storage_migration_message">LeviLauncher को जारी रखने से पहले games/org.levimc से डेटा %1$s में माइग्रेट करना होगा।
-
-यह स्टोरेज बदलाव Google Play पर प्रकाशित करने की आवश्यकताओं को पूरा करने के लिए जरूरी है। पुराना फ़ोल्डर जस का तस रहेगा, लेकिन माइग्रेशन के बाद उसका उपयोग नहीं होगा।
-
-माइग्रेशन में समय लग सकता है। इसके चलते समय ऐप को बैकग्राउंड में छोड़ा जा सकता है; बहुत सारी फ़ाइलें कॉपी करते समय फ़ोन गर्म हो सकता है। कृपया समझें।</string>
-    <string name="storage_migration_start">माइग्रेट करें</string>
-    <string name="storage_migration_permission_denied">माइग्रेशन के लिए पुराने फ़ोल्डर को पढ़ने हेतु स्टोरेज अनुमति आवश्यक है।</string>
-    <string name="storage_migration_progress_title">स्टोरेज माइग्रेट हो रहा है</string>
-    <string name="storage_migration_progress_subtitle">लॉन्चर डेटा Android/media में कॉपी किया जा रहा है</string>
-    <string name="storage_migration_scanning">पुराना फ़ोल्डर स्कैन किया जा रहा है…</string>
-    <string name="storage_migration_progress_detail">%1$d/%2$d फ़ाइलें · %3$s</string>
-    <string name="storage_migration_eta_pending">शेष समय का अनुमान लगाया जा रहा है…</string>
-    <string name="storage_migration_eta_detail">लगभग %1$s शेष · %2$s तक पूरा होगा</string>
-    <string name="storage_migration_duration_hours_minutes">%1$d घं %2$d मि</string>
-    <string name="storage_migration_duration_minutes_seconds">%1$d मि %2$d से</string>
-    <string name="storage_migration_duration_seconds">%1$d से</string>
-    <string name="storage_migration_background_hint">माइग्रेशन बैकग्राउंड में जारी रह सकता है। फ़ोन को चार्ज पर रखना बेहतर है; फ़ाइल कॉपी करते समय फ़ोन गर्म हो सकता है। कृपया समझें।</string>
-    <string name="storage_migration_completed_title">माइग्रेशन पूरा हुआ</string>
-    <string name="storage_migration_completed_message">%1$d फ़ाइलें माइग्रेट हुईं (%2$s)। %3$d फ़ाइलें पहले से अपडेट थीं।
-
-पुराना games/org.levimc फ़ोल्डर हटाया नहीं गया और अब उपयोग नहीं होगा।</string>
-    <string name="storage_migration_partial_title">माइग्रेशन अधूरा है</string>
-    <string name="storage_migration_partial_message">%2$d में से %1$d फ़ाइलें कॉपी नहीं हो सकीं। LeviLauncher जारी रखने से पहले माइग्रेशन पूरा होना चाहिए।</string>
-    <string name="storage_migration_failed_title">माइग्रेशन विफल</string>
-    <string name="storage_migration_failed_message">माइग्रेशन जारी नहीं रह सका: %1$s
-
-LeviLauncher जारी रखने से पहले माइग्रेशन पूरा होना चाहिए।</string>
-    <string name="migration_cleanup_title">पुरानी डायरेक्टरी साफ़ करें</string>
-    <string name="migration_cleanup_desc">पुरानी games/org.levimc डायरेक्टरी को तभी हटाएँ जब आपने पुष्टि कर ली हो कि सभी इंस्टेंस सामान्य रूप से शुरू होते हैं और world, resource pack, behavior pack या settings गायब नहीं हैं। हटाए गए पुराने डेटा को इस डायरेक्टरी से वापस नहीं लाया जा सकेगा।</string>
-    <string name="migration_cleanup_button">पुरानी डायरेक्टरी साफ़ करें</string>
-    <string name="migration_cleanup_confirm_title">पुरानी डायरेक्टरी साफ़ करें?</string>
-    <string name="migration_cleanup_confirm_message">यह पुरानी games/org.levimc डायरेक्टरी को स्थायी रूप से हटा देगा।\n\nजारी रखने से पहले सुनिश्चित करें कि सभी इंस्टेंस सामान्य रूप से शुरू होते हैं और world, resource pack, behavior pack या settings गायब नहीं हैं।</string>
-    <string name="migration_cleanup_unavailable_not_completed">स्टोरेज माइग्रेशन अभी पूरा नहीं हुआ है। पुरानी डायरेक्टरी साफ़ करने से पहले माइग्रेशन पूरा करें।</string>
-    <string name="migration_cleanup_unavailable_missing">पुरानी games/org.levimc डायरेक्टरी नहीं मिली या पहले ही साफ़ की जा चुकी है।</string>
-    <string name="migration_cleanup_ready">पुरानी डायरेक्टरी साफ़ की जा सकती है। जारी रखने से पहले पुष्टि करें कि सभी माइग्रेट किए गए इंस्टेंस ठीक हैं।</string>
-    <string name="migration_cleanup_success">पुरानी डायरेक्टरी साफ़ हुई: %1$d फ़ाइलें हटाई गईं (%2$s)।</string>
-    <string name="migration_cleanup_failed">पुरानी डायरेक्टरी साफ़ करने में विफल: %1$s</string>
-    <string name="shared_storage_layout_title">साझा सामग्री डायरेक्टरी</string>
-    <string name="shared_storage_layout_desc">Internal और External साझा सामग्री के लिए नई _shared डायरेक्टरी का उपयोग करें। मूल internal और external गेम डेटा डायरेक्टरी का उपयोग करने के लिए इसे बंद करें। इससे फ़ाइलें स्थानांतरित नहीं होतीं।</string>
-    <string name="shared_storage_layout_mode_new">नई _shared डायरेक्टरी</string>
-    <string name="shared_storage_layout_mode_legacy">मूल internal/external डायरेक्टरी</string>
-    <string name="shared_storage_layout_status">वर्तमान मोड: %1$s\nInternal: %2$s\nExternal: %3$s</string>
-    <string name="shared_storage_layout_changed">स्टोरेज डायरेक्टरी चयन अपडेट हो गया। बदलाव पूरी तरह लागू करने के लिए Minecraft को पुनः शुरू करें और content management फिर से खोलें।</string>
     <!-- Theme -->
     <string name="theme_title">थीम मोड</string>
     <string name="theme_follow_system">सिस्टम का पालन करें</string>
@@ -456,20 +407,6 @@ LeviLauncher जारी रखने से पहले माइग्रे
     <string name="total_mods">कुल मॉड्स:</string>
     <string name="enabled_mods">सक्षम:</string>
     <string name="add_mod">मॉड जोड़ें</string>
-    <string name="scan_downloads">स्कैन करें</string>
-    <string name="scan_downloads_scanning">स्कैन हो रहा है…</string>
-    <string name="scan_downloads_none_found">Downloads में कोई .levipack या .so मॉड नहीं मिला</string>
-    <string name="scan_downloads_failed">Downloads को स्कैन नहीं किया जा सका</string>
-    <string name="scan_downloads_permission_denied">Downloads को स्कैन करने के लिए स्टोरेज एक्सेस चाहिए</string>
-    <string name="scan_downloads_results_title">Downloads में मॉड</string>
-    <string name="scan_downloads_results_subtitle">जोड़ने के लिए कोई मॉड चुनें। स्कैन केवल मुख्य Downloads फ़ोल्डर की जाँच करता है।</string>
-    <string name="scan_downloads_add">जोड़ें</string>
-    <string name="scan_downloads_adding">जोड़ा जा रहा है…</string>
-    <string name="scan_downloads_added">जोड़ दिया गया</string>
-    <string name="scan_downloads_added_message">%1$s जोड़ दिया गया</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">नेटिव लाइब्रेरी</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
     <string name="external_mods">बाहरी मॉड</string>
     <string name="external_mods_subtitle">Minecraft %1$s के लिए कम्युनिटी मॉड</string>
     <string name="external_mods_no_version">मॉड इंस्टॉल करने से पहले Minecraft का संस्करण चुनें</string>

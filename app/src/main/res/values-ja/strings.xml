@@ -67,8 +67,6 @@
     <string name="local_custom">ローカルカスタム</string>
 
     <!-- Permissions -->
-    <string name="storage_permission_title">ストレージ移行の権限</string>
-    <string name="storage_permission_message">古い games/org.levimc ディレクトリからデータをコピーするため、LeviLauncher にストレージ権限を付与してください。この権限は移行手順でのみ必要です。</string>
     <string name="grant_permission">許可する</string>
     <string name="cancel">キャンセル</string>
 
@@ -82,7 +80,6 @@
     <string name="overlay_permission_message">オーバーレイ権限を付与してください</string>
     <string name="overlay_permission_denied_message">ログウィンドウを表示するためにオーバーレイ権限を付与してください。</string>
     <string name="overlay_permission_not_granted">オーバーレイ権限が付与されていません</string>
-    <string name="storage_permission_not_granted">ストレージ権限が付与されていません</string>
 
     <string name="import_apk">APK をインポート</string>
     <string name="install">インストール</string>
@@ -108,7 +105,6 @@
     <string name="settings_tab_personalize">カスタマイズ</string>
     <string name="settings_tab_updates">アップデート</string>
     <string name="settings_tab_about">アプリについて</string>
-    <string name="settings_tab_migration">移行</string>
     <string name="settings_theme_desc">アプリのテーマを選択</string>
 
 
@@ -170,51 +166,6 @@
     <string name="repair_preparing">準備中…</string>
     <string name="repair_processing">ライブラリを展開中…</string>
     <string name="repair_finalizing">修復を完了しています…</string>
-    <!-- Storage Migration -->
-    <string name="storage_migration_title">ストレージ移行が必要です</string>
-    <string name="storage_migration_message">LeviLauncher を続行する前に、games/org.levimc のデータを %1$s に移行する必要があります。
-
-このストレージ変更は Google Play への公開要件を満たすために必要です。古いディレクトリはそのまま保持されますが、移行後は使用されません。
-
-移行には時間がかかる場合があります。実行中はアプリをバックグラウンドにしておけます。大量のファイルコピー中は端末が熱くなることがあります。ご理解ください。</string>
-    <string name="storage_migration_start">移行</string>
-    <string name="storage_migration_permission_denied">移行のために古いディレクトリを読み取るには、ストレージ権限が必要です。</string>
-    <string name="storage_migration_progress_title">ストレージを移行中</string>
-    <string name="storage_migration_progress_subtitle">ランチャーデータを Android/media にコピーしています</string>
-    <string name="storage_migration_scanning">古いディレクトリをスキャン中…</string>
-    <string name="storage_migration_progress_detail">%1$d/%2$d ファイル · %3$s</string>
-    <string name="storage_migration_eta_pending">残り時間を推定中…</string>
-    <string name="storage_migration_eta_detail">残り約 %1$s · %2$s 頃に完了</string>
-    <string name="storage_migration_duration_hours_minutes">%1$d時間%2$d分</string>
-    <string name="storage_migration_duration_minutes_seconds">%1$d分%2$d秒</string>
-    <string name="storage_migration_duration_seconds">%1$d秒</string>
-    <string name="storage_migration_background_hint">移行はバックグラウンドで続行できます。充電したままにすることをおすすめします。ファイルコピー中は端末が熱くなることがあります。ご理解ください。</string>
-    <string name="storage_migration_completed_title">移行完了</string>
-    <string name="storage_migration_completed_message">%1$d 個のファイル (%2$s) を移行しました。%3$d 個のファイルは既に最新でした。
-
-古い games/org.levimc ディレクトリは削除されておらず、今後は使用されません。</string>
-    <string name="storage_migration_partial_title">移行が完了していません</string>
-    <string name="storage_migration_partial_message">%1$d/%2$d 個のファイルをコピーできませんでした。LeviLauncher を続行するには移行を完了する必要があります。</string>
-    <string name="storage_migration_failed_title">移行失敗</string>
-    <string name="storage_migration_failed_message">移行を続行できませんでした: %1$s
-
-LeviLauncher を続行するには移行を完了する必要があります。</string>
-    <string name="migration_cleanup_title">履歴ディレクトリを削除</string>
-    <string name="migration_cleanup_desc">すべてのインスタンスが正常に起動し、ワールド、リソースパック、ビヘイビアーパック、設定が失われていないことを確認してから、古い games/org.levimc ディレクトリを削除してください。削除した履歴データはこのディレクトリから復元できません。</string>
-    <string name="migration_cleanup_button">履歴ディレクトリを削除</string>
-    <string name="migration_cleanup_confirm_title">履歴ディレクトリを削除しますか？</string>
-    <string name="migration_cleanup_confirm_message">古い games/org.levimc ディレクトリを完全に削除します。\n\n続行する前に、すべてのインスタンスが正常に起動し、ワールド、リソースパック、ビヘイビアーパック、設定が失われていないことを確認してください。</string>
-    <string name="migration_cleanup_unavailable_not_completed">ストレージ移行がまだ完了していません。古いディレクトリを削除する前に移行を完了してください。</string>
-    <string name="migration_cleanup_unavailable_missing">古い games/org.levimc ディレクトリが見つからないか、すでに削除されています。</string>
-    <string name="migration_cleanup_ready">古いディレクトリを削除できます。続行する前に、移行済みのすべてのインスタンスが正常であることを確認してください。</string>
-    <string name="migration_cleanup_success">履歴ディレクトリを削除しました: %1$d 個のファイルを削除 (%2$s)。</string>
-    <string name="migration_cleanup_failed">履歴ディレクトリの削除に失敗しました: %1$s</string>
-    <string name="shared_storage_layout_title">共有コンテンツディレクトリ</string>
-    <string name="shared_storage_layout_desc">Internal と External の共有コンテンツに新しい _shared ディレクトリを使用します。オフにすると、元の internal/external ゲームデータディレクトリを使用します。ファイルは移動されません。</string>
-    <string name="shared_storage_layout_mode_new">新しい _shared ディレクトリ</string>
-    <string name="shared_storage_layout_mode_legacy">元の internal/external ディレクトリ</string>
-    <string name="shared_storage_layout_status">現在のモード: %1$s\nInternal: %2$s\nExternal: %3$s</string>
-    <string name="shared_storage_layout_changed">ストレージディレクトリの選択を更新しました。変更を完全に反映するには Minecraft を再起動し、コンテンツ管理を開き直してください。</string>
     <!-- Theme -->
     <string name="theme_title">テーマモード</string>
     <string name="theme_follow_system">システムに従う</string>
@@ -456,20 +407,6 @@ LeviLauncher を続行するには移行を完了する必要があります。<
     <string name="total_mods">合計モッド数:</string>
     <string name="enabled_mods">有効化:</string>
     <string name="add_mod">モッドを追加</string>
-    <string name="scan_downloads">スキャン</string>
-    <string name="scan_downloads_scanning">スキャン中…</string>
-    <string name="scan_downloads_none_found">ダウンロードに .levipack または .so の Mod が見つかりませんでした</string>
-    <string name="scan_downloads_failed">ダウンロードをスキャンできませんでした</string>
-    <string name="scan_downloads_permission_denied">ダウンロードをスキャンするにはストレージへのアクセスが必要です</string>
-    <string name="scan_downloads_results_title">ダウンロード内の Mod</string>
-    <string name="scan_downloads_results_subtitle">追加する Mod を選択してください。スキャン対象はメインのダウンロードフォルダーのみです。</string>
-    <string name="scan_downloads_add">追加</string>
-    <string name="scan_downloads_adding">追加中…</string>
-    <string name="scan_downloads_added">追加済み</string>
-    <string name="scan_downloads_added_message">%1$s を追加しました</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">ネイティブライブラリ</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
     <string name="external_mods">外部 Mod</string>
     <string name="external_mods_subtitle">Minecraft %1$s 向けコミュニティ Mod</string>
     <string name="external_mods_no_version">Mod をインストールする前に Minecraft のバージョンを選択してください</string>

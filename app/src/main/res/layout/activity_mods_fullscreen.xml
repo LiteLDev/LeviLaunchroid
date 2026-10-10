@@ -91,24 +91,6 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/scan_mods_button"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:minHeight="0dp"
-                android:minWidth="80dp"
-                android:backgroundTint="@color/secondary"
-                android:text="@string/scan_downloads"
-                android:textColor="@color/on_secondary"
-                android:paddingHorizontal="12dp"
-                android:layout_marginStart="10dp"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textAllCaps="false"
-                android:gravity="center"
-                android:layout_gravity="center_vertical"
-                android:fontFamily="@font/misans" />
-
-            <Button
                 android:id="@+id/external_mods_button"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"

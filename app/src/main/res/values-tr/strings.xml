@@ -67,8 +67,6 @@
     <string name="local_custom">Yerel Özel</string>
 
     <!-- Permissions -->
-    <string name="storage_permission_title">Depolama Taşıma İzni</string>
-    <string name="storage_permission_message">Lütfen depolama iznini verin; böylece LeviLauncher eski games/org.levimc dizinindeki verileri kopyalayabilsin. Bu izin yalnızca taşıma adımı için gereklidir.</string>
     <string name="grant_permission">İzin Ver</string>
     <string name="cancel">İptal</string>
 
@@ -82,7 +80,6 @@
     <string name="overlay_permission_message">Lütfen katman iznini verin</string>
     <string name="overlay_permission_denied_message">Lütfen katman iznini verin; aksi hâlde günlük penceresi görüntülenemez.</string>
     <string name="overlay_permission_not_granted">Katman izni verilmedi</string>
-    <string name="storage_permission_not_granted">Depolama izni verilmedi</string>
 
     <string name="import_apk">APK İçe Aktar</string>
     <string name="install">Yükle</string>
@@ -108,7 +105,6 @@
     <string name="settings_tab_personalize">Kişiselleştirme</string>
     <string name="settings_tab_updates">Güncellemeler</string>
     <string name="settings_tab_about">Hakkında</string>
-    <string name="settings_tab_migration">Taşıma</string>
     <string name="settings_theme_desc">Uygulama temasını seçin</string>
 
 
@@ -170,51 +166,6 @@
     <string name="repair_preparing">Hazırlanıyor…</string>
     <string name="repair_processing">Kütüphaneler çıkarılıyor…</string>
     <string name="repair_finalizing">Onarım tamamlanıyor…</string>
-    <!-- Storage Migration -->
-    <string name="storage_migration_title">Depolama Taşıması Gerekli</string>
-    <string name="storage_migration_message">LeviLauncher, devam etmeden önce verileri games/org.levimc konumundan %1$s konumuna taşımalıdır.
-
-Bu depolama değişikliği Google Play listeleme uyumluluğu için zorunludur. Eski dizin dokunulmadan kalacak ancak taşımanın ardından artık kullanılmayacaktır.
-
-Taşıma biraz zaman alabilir. Uygulama arka planda çalışırken ayrılabilirsiniz; yoğun dosya kopyalama sırasında telefon ısınabilir. Anlayışınız için teşekkür ederiz.</string>
-    <string name="storage_migration_start">Taşı</string>
-    <string name="storage_migration_permission_denied">Taşıma için eski dizini okumak amacıyla depolama izni gereklidir.</string>
-    <string name="storage_migration_progress_title">Depolama Taşınıyor</string>
-    <string name="storage_migration_progress_subtitle">Başlatıcı verileri Android/media konumuna kopyalanıyor</string>
-    <string name="storage_migration_scanning">Eski dizin taranıyor…</string>
-    <string name="storage_migration_progress_detail">%1$d/%2$d dosya · %3$s</string>
-    <string name="storage_migration_eta_pending">Kalan süre tahmin ediliyor…</string>
-    <string name="storage_migration_eta_detail">Yaklaşık %1$s kaldı · %2$s civarında tamamlanır</string>
-    <string name="storage_migration_duration_hours_minutes">%1$d sa %2$d dk</string>
-    <string name="storage_migration_duration_minutes_seconds">%1$d dk %2$d sn</string>
-    <string name="storage_migration_duration_seconds">%1$d sn</string>
-    <string name="storage_migration_background_hint">Taşıma arka planda çalışmaya devam edebilir. Dosya kopyalama sırasında telefon ısınabilir; telefonun şarjlı kalması önerilir. Anlayışınız için teşekkür ederiz.</string>
-    <string name="storage_migration_completed_title">Taşıma Tamamlandı</string>
-    <string name="storage_migration_completed_message">%1$d dosya (%2$s) taşındı. %3$d dosya zaten günceldi.
-
-Eski games/org.levimc dizini silinmedi ve artık kullanılmıyor.</string>
-    <string name="storage_migration_partial_title">Taşıma Tamamlanamadı</string>
-    <string name="storage_migration_partial_message">%1$d dosyadan %2$d tanesi kopyalanamadı. LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</string>
-    <string name="storage_migration_failed_title">Taşıma Başarısız</string>
-    <string name="storage_migration_failed_message">Taşıma devam edemedi: %1$s
-
-LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</string>
-    <string name="migration_cleanup_title">Eski Dizini Temizle</string>
-    <string name="migration_cleanup_desc">Eski games/org.levimc dizinini yalnızca tüm örneklerin normal başlatıldığını ve dünyaların, kaynak paketlerin, davranış paketlerinin ve ayarların eksiksiz olduğunu doğruladıktan sonra kaldırın. Silinen veriler bu dizinden geri yüklenemez.</string>
-    <string name="migration_cleanup_button">Eski Dizini Temizle</string>
-    <string name="migration_cleanup_confirm_title">Eski Dizin Temizlensin mi?</string>
-    <string name="migration_cleanup_confirm_message">Bu işlem eski games/org.levimc dizinini kalıcı olarak silecektir.\n\nDevam etmeden önce tüm örneklerin normal başlatıldığından ve dünyaların, kaynak paketlerin, davranış paketlerinin ve ayarların eksiksiz olduğundan emin olun.</string>
-    <string name="migration_cleanup_unavailable_not_completed">Depolama taşıması henüz tamamlanmadı. Eski dizini temizlemeden önce taşımayı bitirin.</string>
-    <string name="migration_cleanup_unavailable_missing">Eski games/org.levimc dizini bulunamadı veya zaten temizlendi.</string>
-    <string name="migration_cleanup_ready">Eski dizin temizlenebilir. Devam etmeden önce taşınan tüm örneklerin sağlıklı olduğunu doğrulayın.</string>
-    <string name="migration_cleanup_success">Eski dizin temizlendi: %1$d dosya kaldırıldı (%2$s).</string>
-    <string name="migration_cleanup_failed">Eski dizin temizlenemedi: %1$s</string>
-    <string name="shared_storage_layout_title">Paylaşılan İçerik Dizini</string>
-    <string name="shared_storage_layout_desc">Dahili ve Harici paylaşılan içerik için yeni _shared dizinini kullan. Orijinal dahili ve harici oyun veri dizinlerini kullanmak için bunu kapatın. Bu işlem dosyaları taşımaz.</string>
-    <string name="shared_storage_layout_mode_new">Yeni _shared dizini</string>
-    <string name="shared_storage_layout_mode_legacy">Orijinal dahili/harici dizinler</string>
-    <string name="shared_storage_layout_status">Mevcut mod: %1$s\nDahili: %2$s\nHarici: %3$s</string>
-    <string name="shared_storage_layout_changed">Depolama dizini seçimi güncellendi. Değişikliğin tam olarak uygulanması için Minecraft\'ı yeniden başlatın ve içerik yönetimini yeniden açın.</string>
     <!-- Theme -->
     <string name="theme_title">Tema Modu</string>
     <string name="theme_follow_system">Sistemi Takip Et</string>
@@ -456,20 +407,6 @@ LeviLauncher\'ın devam edebilmesi için taşımanın tamamlanması gerekiyor.</
     <string name="total_mods">Toplam Mod:</string>
     <string name="enabled_mods">Etkin:</string>
     <string name="add_mod">Mod Ekle</string>
-    <string name="scan_downloads">Tara</string>
-    <string name="scan_downloads_scanning">Taranıyor…</string>
-    <string name="scan_downloads_none_found">İndirilenler’de .levipack veya .so mod bulunamadı</string>
-    <string name="scan_downloads_failed">İndirilenler taranamadı</string>
-    <string name="scan_downloads_permission_denied">İndirilenler’i taramak için depolama erişimi gerekiyor</string>
-    <string name="scan_downloads_results_title">İndirilenler’deki Modlar</string>
-    <string name="scan_downloads_results_subtitle">Eklemek için bir mod seçin. Tarama yalnızca ana İndirilenler klasörünü kontrol eder.</string>
-    <string name="scan_downloads_add">Ekle</string>
-    <string name="scan_downloads_adding">Ekleniyor…</string>
-    <string name="scan_downloads_added">Eklendi</string>
-    <string name="scan_downloads_added_message">%1$s eklendi</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">Yerel kitaplık</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
     <string name="external_mods">Harici Modlar</string>
     <string name="external_mods_subtitle">Minecraft %1$s için topluluk modları</string>
     <string name="external_mods_no_version">Mod yüklemeden önce bir Minecraft sürümü seçin</string>

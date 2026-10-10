@@ -67,8 +67,6 @@
     <string name="local_custom">Доступные версии</string>
 
     <!-- Permissions -->
-    <string name="storage_permission_title">Разрешение для миграции хранилища</string>
-    <string name="storage_permission_message">Предоставьте доступ к хранилищу, чтобы LeviLauncher мог скопировать данные из старой папки games/org.levimc. Это разрешение нужно только для миграции.</string>
     <string name="grant_permission">Выдать</string>
     <string name="cancel">Отмена</string>
 
@@ -82,7 +80,6 @@
     <string name="overlay_permission_message">Необходимо разрешение на отображение поверх других приложений</string>
     <string name="overlay_permission_denied_message">Пожалуйста, предоставьте разрешение на наложение, иначе окно журнала не будет отображаться.</string>
     <string name="overlay_permission_not_granted">Разрешение на отображение поверх других приложений не выдано</string>
-    <string name="storage_permission_not_granted">Разрешение на доступ к хранилищу не выдано</string>
 
     <string name="import_apk">Импортировать APK</string>
     <string name="install">Установить</string>
@@ -108,7 +105,6 @@
     <string name="settings_tab_personalize">Персонализация</string>
     <string name="settings_tab_updates">Обновления</string>
     <string name="settings_tab_about">О приложении</string>
-    <string name="settings_tab_migration">Миграция</string>
     <string name="settings_theme_desc">Выберите тему приложения</string>
 
 
@@ -170,51 +166,6 @@
     <string name="repair_preparing">Подготовка…</string>
     <string name="repair_processing">Извлечение библиотек…</string>
     <string name="repair_finalizing">Завершение восстановления…</string>
-    <!-- Storage Migration -->
-    <string name="storage_migration_title">Требуется миграция хранилища</string>
-    <string name="storage_migration_message">LeviLauncher должен перенести данные из games/org.levimc в %1$s перед продолжением.
-
-Это изменение хранилища необходимо для соответствия требованиям публикации в Google Play. Старая папка останется нетронутой, но после миграции больше не будет использоваться.
-
-Миграция может занять время. Можно оставить приложение в фоне; при интенсивном копировании файлов телефон может нагреваться. Благодарим за понимание.</string>
-    <string name="storage_migration_start">Перенести</string>
-    <string name="storage_migration_permission_denied">Для чтения старой папки во время миграции требуется разрешение на доступ к хранилищу.</string>
-    <string name="storage_migration_progress_title">Миграция хранилища</string>
-    <string name="storage_migration_progress_subtitle">Копирование данных лаунчера в Android/media</string>
-    <string name="storage_migration_scanning">Сканирование старой папки…</string>
-    <string name="storage_migration_progress_detail">%1$d/%2$d файлов · %3$s</string>
-    <string name="storage_migration_eta_pending">Оценка оставшегося времени…</string>
-    <string name="storage_migration_eta_detail">Осталось около %1$s · завершение примерно в %2$s</string>
-    <string name="storage_migration_duration_hours_minutes">%1$d ч %2$d мин</string>
-    <string name="storage_migration_duration_minutes_seconds">%1$d мин %2$d с</string>
-    <string name="storage_migration_duration_seconds">%1$d с</string>
-    <string name="storage_migration_background_hint">Миграция может продолжаться в фоне. Рекомендуется держать телефон заряженным; во время копирования файлов телефон может нагреваться. Благодарим за понимание.</string>
-    <string name="storage_migration_completed_title">Миграция завершена</string>
-    <string name="storage_migration_completed_message">Перенесено файлов: %1$d (%2$s). Уже актуальны: %3$d.
-
-Старая папка games/org.levimc не была удалена и больше не используется.</string>
-    <string name="storage_migration_partial_title">Миграция не завершена</string>
-    <string name="storage_migration_partial_message">Не удалось скопировать %1$d из %2$d файлов. Миграция должна завершиться, прежде чем LeviLauncher сможет продолжить.</string>
-    <string name="storage_migration_failed_title">Ошибка миграции</string>
-    <string name="storage_migration_failed_message">Миграция не может продолжиться: %1$s
-
-Миграция должна завершиться, прежде чем LeviLauncher сможет продолжить.</string>
-    <string name="migration_cleanup_title">Очистить исторический каталог</string>
-    <string name="migration_cleanup_desc">Удаляйте старый каталог games/org.levimc только после того, как убедитесь, что все экземпляры запускаются нормально, а миры, наборы ресурсов, наборы поведения и настройки не пропали. Удалённые исторические данные нельзя будет восстановить из этого каталога.</string>
-    <string name="migration_cleanup_button">Очистить исторический каталог</string>
-    <string name="migration_cleanup_confirm_title">Очистить исторический каталог?</string>
-    <string name="migration_cleanup_confirm_message">Это навсегда удалит старый каталог games/org.levimc.\n\nПеред продолжением убедитесь, что все экземпляры запускаются нормально, а миры, наборы ресурсов, наборы поведения и настройки не пропали.</string>
-    <string name="migration_cleanup_unavailable_not_completed">Миграция хранилища ещё не завершена. Завершите миграцию перед очисткой старого каталога.</string>
-    <string name="migration_cleanup_unavailable_missing">Старый каталог games/org.levimc не найден или уже очищен.</string>
-    <string name="migration_cleanup_ready">Старый каталог можно очистить. Перед продолжением убедитесь, что все перенесённые экземпляры работают корректно.</string>
-    <string name="migration_cleanup_success">Исторический каталог очищен: удалено файлов: %1$d (%2$s).</string>
-    <string name="migration_cleanup_failed">Не удалось очистить исторический каталог: %1$s</string>
-    <string name="shared_storage_layout_title">Каталог общего контента</string>
-    <string name="shared_storage_layout_desc">Использовать новый каталог _shared для общего внутреннего и внешнего контента. Отключите, чтобы использовать исходные внутренний и внешний каталоги данных игры. Файлы при этом не перемещаются.</string>
-    <string name="shared_storage_layout_mode_new">Новый каталог _shared</string>
-    <string name="shared_storage_layout_mode_legacy">Исходные внутренний/внешний каталоги</string>
-    <string name="shared_storage_layout_status">Текущий режим: %1$s\nВнутренний: %2$s\nВнешний: %3$s</string>
-    <string name="shared_storage_layout_changed">Выбор каталога хранилища обновлён. Перезапустите Minecraft и снова откройте управление контентом, чтобы изменение полностью применилось.</string>
     <!-- Theme -->
     <string name="theme_title">Тема</string>
     <string name="theme_follow_system">Как в системе</string>
@@ -458,20 +409,6 @@
     <string name="total_mods">Всего модов: </string>
     <string name="enabled_mods">Включено:</string>
     <string name="add_mod">Добавить мод</string>
-    <string name="scan_downloads">Сканировать</string>
-    <string name="scan_downloads_scanning">Сканирование…</string>
-    <string name="scan_downloads_none_found">В папке «Загрузки» не найдено модов .levipack или .so</string>
-    <string name="scan_downloads_failed">Не удалось просканировать папку «Загрузки»</string>
-    <string name="scan_downloads_permission_denied">Для сканирования папки «Загрузки» нужен доступ к хранилищу</string>
-    <string name="scan_downloads_results_title">Моды в папке «Загрузки»</string>
-    <string name="scan_downloads_results_subtitle">Выберите мод для добавления. Сканирование проверяет только основную папку «Загрузки».</string>
-    <string name="scan_downloads_add">Добавить</string>
-    <string name="scan_downloads_adding">Добавление…</string>
-    <string name="scan_downloads_added">Добавлено</string>
-    <string name="scan_downloads_added_message">%1$s добавлен</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">Нативная библиотека</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
     <string name="external_mods">Внешние моды</string>
     <string name="external_mods_subtitle">Моды сообщества для Minecraft %1$s</string>
     <string name="external_mods_no_version">Выберите версию Minecraft перед установкой модов</string>

@@ -67,8 +67,6 @@
     <string name="local_custom">Chỉnh sửa cục bộ</string>
 
     <!-- Permissions -->
-    <string name="storage_permission_title">Quyền truy cập bộ nhớ</string>
-    <string name="storage_permission_message">Vui lòng cấp quyền truy cập bộ nhớ để LeviLauncher có thể sao chép dữ liệu từ thư mục games/org.levimc cũ. Quyền này chỉ cần thiết cho bước di chuyển dữ liệu.</string>
     <string name="grant_permission">Cấp quyền</string>
     <string name="cancel">Hủy</string>
 
@@ -82,7 +80,6 @@
     <string name="overlay_permission_message">Vui lòng cấp quyền hiển thị lớp phủ.</string>
     <string name="overlay_permission_denied_message">Vui lòng cấp quyền hiển thị lớp phủ, nếu không cửa sổ nhật ký sẽ không thể hiển thị.</string>
     <string name="overlay_permission_not_granted">Quyền hiển thị lớp phủ đã bị từ chối</string>
-    <string name="storage_permission_not_granted">Quyền truy cập bộ nhớ đã bị từ chối</string>
 
     <string name="import_apk">Nhập file APK</string>
     <string name="install">Cài đặt</string>
@@ -108,7 +105,6 @@
     <string name="settings_tab_personalize">Cá nhân hóa</string>
     <string name="settings_tab_updates">Cập nhật</string>
     <string name="settings_tab_about">Về</string>
-    <string name="settings_tab_migration">Di chuyển</string>
     <string name="settings_theme_desc">Chọn chủ đề cho ứng dụng</string>
 
 
@@ -170,51 +166,6 @@
     <string name="repair_preparing">Đang chuẩn bị…</string>
     <string name="repair_processing">Đang trích xuất thư viện…</string>
     <string name="repair_finalizing">Hoàn tất sửa chữa…</string>
-    <!-- Storage Migration -->
-    <string name="storage_migration_title">Cần có quyền chỉnh sửa kho lưu trữ</string>
-    <string name="storage_migration_message">LeviLauncher phải di chuyển dữ liệu từ games/org.levimc sang %1$s trước khi tiếp tục.
-
-Việc thay đổi thư mục lưu trữ này là cần thiết để tuân thủ các quy định về hiển thị danh sách trên Google Play. Thư mục cũ sẽ được giữ nguyên, nhưng sẽ không còn được sử dụng sau khi chuyển đổi.
-
-Quá trình chuyển đổi có thể mất một lúc. Bạn có thể để ứng dụng chạy ngầm trong khi nó thực hiện; điện thoại có thể nóng lên trong quá trình sao chép tập tin lớn. Cảm ơn sự thông cảm của bạn.</string>
-    <string name="storage_migration_start">Di chuyển</string>
-    <string name="storage_migration_permission_denied">Cần có quyền truy cập bộ nhớ để đọc thư mục cũ phục vụ cho quá trình di chuyển.</string>
-    <string name="storage_migration_progress_title">Di chuyển dữ liệu</string>
-    <string name="storage_migration_progress_subtitle">Đang sao chép dữ liệu Launcher vào thư mục Android/media</string>
-    <string name="storage_migration_scanning">Đang quét thư mục cũ…</string>
-    <string name="storage_migration_progress_detail">%1$d/%2$d tệp · %3$s</string>
-    <string name="storage_migration_eta_pending">Ước tính thời gian còn lại…</string>
-    <string name="storage_migration_eta_detail">Về %1$s còn lại · hoàn thành khoảng %2$s</string>
-    <string name="storage_migration_duration_hours_minutes">%1$d giờ %2$d phút</string>
-    <string name="storage_migration_duration_minutes_seconds">%1$d phút %2$d giây</string>
-    <string name="storage_migration_duration_seconds">%1$d giây</string>
-    <string name="storage_migration_background_hint">Quá trình chuyển dữ liệu có thể tiếp tục chạy ngầm. Nên sạc đầy pin điện thoại; điện thoại có thể nóng lên trong quá trình sao chép tập tin. Cảm ơn sự thông cảm của bạn.</string>
-    <string name="storage_migration_completed_title">Quá trình chuyển đổi đã hoàn tất.</string>
-    <string name="storage_migration_completed_message">Đã di chuyển %1$d files (%2$s). %3$d files đã được cập nhật.
-
-Thư mục games/org.levimc cũ không bị xóa và không còn được sử dụng nữa.</string>
-    <string name="storage_migration_partial_title">Di chuyển chưa hoàn tất</string>
-    <string name="storage_migration_partial_message">Không thể sao chép tập tin %1$d trong %2$d. Quá trình di chuyển phải hoàn tất trước khi LeviLauncher có thể tiếp tục.</string>
-    <string name="storage_migration_failed_title">Quá trình di chuyển thất bại</string>
-    <string name="storage_migration_failed_message">Quá trình di chuyển không thể tiếp tục: %1$s
-
-Quá trình chuyển đổi phải hoàn tất trước khi LeviLauncher có thể tiếp tục.</string>
-    <string name="migration_cleanup_title">Dọn thư mục lịch sử</string>
-    <string name="migration_cleanup_desc">Chỉ xóa thư mục games/org.levimc cũ sau khi bạn đã xác nhận mọi phiên bản đều khởi chạy bình thường và không thiếu thế giới, gói tài nguyên, gói hành vi hoặc cài đặt. Dữ liệu lịch sử đã xóa không thể khôi phục từ thư mục này.</string>
-    <string name="migration_cleanup_button">Dọn thư mục lịch sử</string>
-    <string name="migration_cleanup_confirm_title">Dọn thư mục lịch sử?</string>
-    <string name="migration_cleanup_confirm_message">Thao tác này sẽ xóa vĩnh viễn thư mục games/org.levimc cũ.\n\nTrước khi tiếp tục, hãy đảm bảo tất cả phiên bản đều khởi chạy bình thường và không thiếu thế giới, gói tài nguyên, gói hành vi hoặc cài đặt.</string>
-    <string name="migration_cleanup_unavailable_not_completed">Quá trình di chuyển bộ nhớ chưa hoàn tất. Hãy hoàn tất di chuyển trước khi dọn thư mục cũ.</string>
-    <string name="migration_cleanup_unavailable_missing">Không tìm thấy thư mục games/org.levimc cũ hoặc thư mục đã được dọn.</string>
-    <string name="migration_cleanup_ready">Có thể dọn thư mục cũ. Hãy xác nhận tất cả phiên bản đã di chuyển đều hoạt động bình thường trước khi tiếp tục.</string>
-    <string name="migration_cleanup_success">Đã dọn thư mục lịch sử: xóa %1$d tệp (%2$s).</string>
-    <string name="migration_cleanup_failed">Không thể dọn thư mục lịch sử: %1$s</string>
-    <string name="shared_storage_layout_title">Thư mục nội dung dùng chung</string>
-    <string name="shared_storage_layout_desc">Dùng thư mục _shared mới cho nội dung dùng chung Nội bộ và Bên ngoài. Tắt tùy chọn này để dùng các thư mục dữ liệu trò chơi nội bộ và bên ngoài ban đầu. Thao tác này không di chuyển tệp.</string>
-    <string name="shared_storage_layout_mode_new">Thư mục _shared mới</string>
-    <string name="shared_storage_layout_mode_legacy">Thư mục nội bộ/bên ngoài ban đầu</string>
-    <string name="shared_storage_layout_status">Chế độ hiện tại: %1$s\nNội bộ: %2$s\nBên ngoài: %3$s</string>
-    <string name="shared_storage_layout_changed">Lựa chọn thư mục lưu trữ đã được cập nhật. Hãy khởi động lại Minecraft và mở lại quản lý nội dung để thay đổi được áp dụng đầy đủ.</string>
     <!-- Theme -->
     <string name="theme_title">Chế độ chủ đề</string>
     <string name="theme_follow_system">Theo hệ thống</string>
@@ -456,20 +407,6 @@ Quá trình chuyển đổi phải hoàn tất trước khi LeviLauncher có th�
     <string name="total_mods">Tổng các Mods:</string>
     <string name="enabled_mods">Đã bật:</string>
     <string name="add_mod">Thêm Mod</string>
-    <string name="scan_downloads">Quét</string>
-    <string name="scan_downloads_scanning">Đang quét…</string>
-    <string name="scan_downloads_none_found">Không tìm thấy mod .levipack hoặc .so trong Tải xuống</string>
-    <string name="scan_downloads_failed">Không thể quét thư mục Tải xuống</string>
-    <string name="scan_downloads_permission_denied">Cần quyền truy cập bộ nhớ để quét thư mục Tải xuống</string>
-    <string name="scan_downloads_results_title">Mod trong Tải xuống</string>
-    <string name="scan_downloads_results_subtitle">Chọn mod để thêm. Quét chỉ kiểm tra thư mục Tải xuống chính.</string>
-    <string name="scan_downloads_add">Thêm</string>
-    <string name="scan_downloads_adding">Đang thêm…</string>
-    <string name="scan_downloads_added">Đã thêm</string>
-    <string name="scan_downloads_added_message">Đã thêm %1$s</string>
-    <string name="scan_downloads_levipack">LeviPack</string>
-    <string name="scan_downloads_native_library">Thư viện native</string>
-    <string name="scan_downloads_file_details">%1$s • %2$s</string>
     <string name="external_mods">Mod bên ngoài</string>
     <string name="external_mods_subtitle">Mod cộng đồng cho Minecraft %1$s</string>
     <string name="external_mods_no_version">Chọn phiên bản Minecraft trước khi cài mod</string>
