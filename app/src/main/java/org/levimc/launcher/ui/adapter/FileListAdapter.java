@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.content.res.ColorStateList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -84,12 +85,9 @@ public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.ViewHo
                 version.setText("");
             }
             
-            if (btnDownload instanceof com.google.android.material.button.MaterialButton) {
-                com.google.android.material.button.MaterialButton btn = (com.google.android.material.button.MaterialButton) btnDownload;
-                btn.setTextColor(accentColor);
-                btn.setIconTint(android.content.res.ColorStateList.valueOf(accentColor));
-            }
+            ((ImageButton) btnDownload).setImageTintList(ColorStateList.valueOf(accentColor));
 
+            itemView.setOnClickListener(v -> listener.onDownloadClick(file));
             btnDownload.setOnClickListener(v -> listener.onDownloadClick(file));
         }
     }

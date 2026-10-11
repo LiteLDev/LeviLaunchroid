@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
@@ -9,80 +8,87 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@color/background"
         app:elevation="0dp">
 
-        <!-- Scrollable Header Area -->
         <LinearLayout
             android:id="@+id/header_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="12dp"
-            android:background="@drawable/bg_rounded_card"
-            android:layout_margin="8dp"
-            android:elevation="4dp"
-            app:layout_scrollFlags="scroll">
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="8dp"
+            app:layout_scrollFlags="scroll|enterAlways">
 
-            <!-- Top Row: Title and Sort -->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/curseforge_title"
-                    android:textSize="26sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary"
-                    android:fontFamily="@font/misans"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"/>
+                    android:textColor="@color/on_surface"
+                    android:fontFamily="@font/misans" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_sort"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:text="@string/sort"
-                    android:textSize="12sp"
+                    android:layout_height="32dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="8dp"
+                    android:textSize="11sp"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/misans"
                     android:textColor="@color/on_surface"
-                    android:paddingHorizontal="12dp"
+                    app:strokeWidth="1dp"
                     app:strokeColor="@color/divider"
-                    app:icon="@drawable/ic_arrow_down" 
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_arrow_down"
                     app:iconTint="@color/on_surface"
-                    app:iconGravity="textEnd"
-                    app:cornerRadius="18dp"/>
-            </RelativeLayout>
+                    app:iconSize="14dp"
+                    app:iconPadding="5dp"
+                    app:iconGravity="textEnd" />
+            </LinearLayout>
 
-            <!-- Search Box -->
             <EditText
                 android:id="@+id/search_box"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@drawable/bg_search_box"
-                android:paddingHorizontal="16dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_cf_search"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:hint="@string/curseforge_search_hint"
-                android:textColorHint="@color/text_secondary"
+                android:textSize="13sp"
+                android:singleLine="true"
+                android:selectAllOnFocus="false"
                 android:textColor="@color/on_surface"
+                android:textColorHint="@color/text_secondary"
                 android:fontFamily="@font/misans"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:drawableStart="@drawable/ic_search"
-                android:drawableTint="@color/on_surface"
-                android:drawablePadding="12dp"
-                android:layout_marginBottom="16dp"/>
+                android:drawableTint="@color/text_secondary"
+                android:drawablePadding="9dp" />
 
-            <!-- Horizontal Scrollable Categories -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:fillViewport="false"
                 android:scrollbars="none">
 
                 <RadioGroup
@@ -94,7 +100,6 @@
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Content Area -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -104,15 +109,31 @@
             android:id="@+id/mods_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
-            android:clipToPadding="false"/>
+            android:clipToPadding="false"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="12dp"
+            android:scrollbars="none" />
+
+        <TextView
+            android:id="@+id/empty_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="24dp"
+            android:gravity="center"
+            android:fontFamily="@font/misans"
+            android:textSize="13sp"
+            android:textColor="@color/text_secondary"
+            android:text="@string/no_mods_found"
+            android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/loading_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </FrameLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

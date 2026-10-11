@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -22,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.google.android.material.button.MaterialButton;
 
 import org.levimc.launcher.R;
@@ -56,6 +54,7 @@ public class ContentDetailsActivity extends BaseActivity {
     private ImageView icon;
     private TextView title;
     private TextView author;
+    private TextView metadata;
 
     private WebView summary;
     
@@ -82,9 +81,8 @@ public class ContentDetailsActivity extends BaseActivity {
         contentImporter = new ContentImporter(this);
         versionManager = VersionManager.get(this);
         client = CurseForgeClient.getInstance();
-        
-    initViews();
-        initWebView();
+
+        initViews();
         bindData();
         loadDescription();
     }
@@ -108,32 +106,29 @@ public class ContentDetailsActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         if (summary != null) {
+            ViewGroup parent = (ViewGroup) summary.getParent();
+            if (parent != null) parent.removeView(summary);
             summary.destroy();
+            summary = null;
         }
         super.onDestroy();
     }
 
     private void initWebView() {
-        summary.setBackgroundColor(0);
+        summary.setBackgroundColor(android.graphics.Color.TRANSPARENT);
         WebSettings settings = summary.getSettings();
-
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setDatabaseEnabled(true);
+        settings.setJavaScriptEnabled(false);
+        settings.setDomStorageEnabled(false);
+        settings.setDatabaseEnabled(false);
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
-        settings.setTextZoom(100); 
-        settings.setMediaPlaybackRequiresUserGesture(false);
-        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        settings.setBlockNetworkImage(false);
+        settings.setTextZoom(100);
+        settings.setMediaPlaybackRequiresUserGesture(true);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         settings.setLoadsImagesAutomatically(true);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        settings.setUserAgentString("Mozilla/5.0 (Linux; Android 10; Mobile; rv:125.0) Gecko/125.0 Firefox/125.0");
-        
-        summary.setWebChromeClient(new WebChromeClient());
-
-
-        
+        summary.setVerticalScrollBarEnabled(false);
+        summary.setHorizontalScrollBarEnabled(false);
         summary.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -147,12 +142,11 @@ public class ContentDetailsActivity extends BaseActivity {
 
             private boolean handleUrl(Uri uri) {
                 try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
+                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(ContentDetailsActivity.this, getString(R.string.cannot_open_link, uri.toString()), Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    Toast.makeText(ContentDetailsActivity.this,
+                            getString(R.string.cannot_open_link, uri.toString()), Toast.LENGTH_SHORT).show();
+                } catch (Exception ignored) {
                 }
                 return true;
             }
@@ -164,6 +158,7 @@ public class ContentDetailsActivity extends BaseActivity {
         icon = findViewById(R.id.detail_icon);
         title = findViewById(R.id.detail_title);
         author = findViewById(R.id.detail_author);
+        metadata = findViewById(R.id.detail_metadata);
         summary = findViewById(R.id.detail_summary);
         btnInstall = findViewById(R.id.btn_install_header);
         btnBrowser = findViewById(R.id.btn_browser);
@@ -176,64 +171,72 @@ public class ContentDetailsActivity extends BaseActivity {
     }
 
     private void bindData() {
-        title.setText(content.name);
-        
-        if (content.authors != null && !content.authors.isEmpty()) {
+        title.setText(content.name != null ? content.name : "");
+        if (content.authors != null && !content.authors.isEmpty() && content.authors.get(0) != null) {
             author.setText(getString(R.string.mod_author_byline, content.authors.get(0).name));
+            author.setVisibility(View.VISIBLE);
         } else {
-            author.setText("");
+            author.setVisibility(View.GONE);
         }
-        
+
+        StringBuilder info = new StringBuilder();
+        double count = content.downloadCount;
+        if (count >= 1000000) {
+            info.append(String.format(java.util.Locale.getDefault(), "%.1fM", count / 1000000.0));
+        } else if (count >= 1000) {
+            info.append(String.format(java.util.Locale.getDefault(), "%.1fK", count / 1000.0));
+        } else {
+            info.append((long) count);
+        }
+        info.append(" downloads");
+        if (content.categories != null && !content.categories.isEmpty() && content.categories.get(0) != null) {
+            info.append("  ·  ").append(content.categories.get(0).name);
+        }
+        if (content.dateModified != null && content.dateModified.length() >= 10) {
+            info.append("  ·  ").append(content.dateModified, 0, 10);
+        }
+        metadata.setText(info.toString());
+        org.levimc.launcher.util.PersonalizationManager personalization =
+                new org.levimc.launcher.util.PersonalizationManager(this);
+        if (personalization.hasCustomAccent()) {
+            btnInstall.setBackgroundTintList(android.content.res.ColorStateList.valueOf(personalization.getAccentColor()));
+            int onAccent = android.graphics.Color.luminance(personalization.getAccentColor()) > 0.42f
+                    ? android.graphics.Color.BLACK : android.graphics.Color.WHITE;
+            btnInstall.setTextColor(onAccent);
+            btnInstall.setIconTint(android.content.res.ColorStateList.valueOf(onAccent));
+        }
         if (content.logo != null && content.logo.thumbnailUrl != null) {
             Glide.with(this)
                     .load(content.logo.thumbnailUrl)
-                    .transform(new RoundedCorners(16))
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_minecraft_cube)
+                    .error(R.drawable.ic_minecraft_cube)
                     .into(icon);
         }
     }
-    
+
     private void loadDescription() {
         client.getContentDescription(content.id, new CurseForgeClient.CurseForgeCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
-                    if (result != null && !result.isEmpty()) {
-
-                        String htmlData = "<html><head>" +
-                                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes\">" +
-                                "<style>" +
-                                "body { color: " + getHexColor(R.color.on_surface) + "; background-color: transparent; font-family: sans-serif; font-size: 14px; word-wrap: break-word; margin: 0; padding: 0; }" +
-                                "a { color: #4da6ff; text-decoration: none; }" +
-                                "img { max-width: 100% !important; width: auto !important; height: auto !important; display: block; margin: 8px auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); min-height: 50px; transform: translateZ(0); }" + // Force GPU layer and min-height
-                                "iframe { width: 100% !important; max-width: 100% !important; aspect-ratio: 16/9; display: block; margin: 8px auto; border: none; border-radius: 8px; transform: translateZ(0); }" +
-                                "p { margin: 8px 0; }" +
-                                "</style>" +
-                                "<script>" +
-                                "window.onload = function() {" +
-                                "  var imgs = document.getElementsByTagName('img');" +
-                                "  for (var i = 0; i < imgs.length; i++) {" +
-                                "    imgs[i].onerror = function() {" + 
-                                "      this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiMzMzMiIHJ4PSI4IiByeT0iOCIvPjwvc3ZnPg==';" + // Dark grey rounded square
-                                "      this.style.width='50px';" +
-                                "      this.style.height='50px';" +
-                                "      this.style.objectFit='cover';" +
-                                "      this.style.boxShadow='none';" +
-                                "    };" +
-                                "    imgs[i].onload = function() { this.style.opacity='1'; };" +
-                                "  }" +
-                                "};" +
-                                "</script>" +
-                                "</head><body>" +
-                                result +
-                                "</body></html>";
-                        summary.loadDataWithBaseURL("https://www.curseforge.com", htmlData, "text/html", "utf-8", null);
-                    }
-
+                    if (isFinishing() || isDestroyed() || summary == null || result == null || result.isEmpty()) return;
+                    String html = "<html><head><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
+                            + "<style>body{color:" + getHexColor(R.color.on_surface)
+                            + ";font-family:sans-serif;font-size:13px;line-height:1.5;overflow-wrap:anywhere;"
+                            + "background:transparent;margin:0;padding:0}"
+                            + "a{color:" + getHexColor(R.color.primary) + ";text-decoration:none}"
+                            + "img{display:block;max-width:100%;height:auto;margin:8px auto;border-radius:7px}"
+                            + "iframe{max-width:100%;width:100%;border:0;aspect-ratio:16/9}"
+                            + "p{margin:7px 0}pre{white-space:pre-wrap;overflow-wrap:anywhere}"
+                            + "table{max-width:100%;display:block;overflow-x:auto}</style></head><body>"
+                            + result + "</body></html>";
+                    summary.loadDataWithBaseURL("https://www.curseforge.com", html, "text/html", "utf-8", null);
                 });
             }
 
             @Override
-            public void onError(Throwable t) {
+            public void onError(Throwable error) {
             }
         });
     }
@@ -252,7 +255,7 @@ public class ContentDetailsActivity extends BaseActivity {
                 runOnUiThread(() -> {
                     progressBar.setVisibility(View.GONE);
                     btnInstall.setEnabled(true);
-                    if (result != null && result.data != null) {
+                    if (result != null && result.data != null && !result.data.isEmpty()) {
                         showFilesDialog(result.data);
                     } else {
                         Toast.makeText(ContentDetailsActivity.this, R.string.no_files_found, Toast.LENGTH_SHORT).show();
@@ -288,6 +291,13 @@ public class ContentDetailsActivity extends BaseActivity {
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
         adapter.setFiles(files);
+
+        int maxListHeight = Math.round(getResources().getDisplayMetrics().heightPixels * 0.62f);
+        int estimatedHeight = Math.round(getResources().getDisplayMetrics().density * 62f * files.size());
+        ViewGroup.LayoutParams listParams = recycler.getLayoutParams();
+        listParams.height = Math.min(maxListHeight, Math.max(1, estimatedHeight));
+        recycler.setLayoutParams(listParams);
+        recycler.setItemAnimator(null);
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);

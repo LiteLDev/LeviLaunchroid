@@ -4,57 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:minHeight="62dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="12dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/file_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:fontFamily="@font/misans"
         android:textColor="@color/on_surface"
-        android:textSize="16sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         android:ellipsize="middle"
-        android:singleLine="true"
+        android:maxLines="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_download"
+        app:layout_constraintEnd_toStartOf="@id/btn_download"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/file_date"
         tools:text="Furnicraft-v3.0.mcaddon" />
 
     <TextView
         android:id="@+id/file_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/misans"
         android:textColor="@color/text_secondary"
-        android:textSize="12sp"
-        android:layout_marginTop="4dp"
+        android:textSize="11sp"
         app:layout_constraintStart_toStartOf="@id/file_name"
         app:layout_constraintTop_toBottomOf="@id/file_name"
-        tools:text="Oct 24, 2023" />
+        tools:text="2026-10-11" />
 
     <TextView
         android:id="@+id/file_version"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:fontFamily="@font/misans"
         android:textColor="@color/text_secondary"
-        android:textSize="12sp"
-        android:layout_marginStart="8dp"
+        android:textSize="11sp"
+        android:maxLines="1"
+        android:ellipsize="end"
         app:layout_constraintStart_toEndOf="@id/file_date"
+        app:layout_constraintEnd_toStartOf="@id/btn_download"
         app:layout_constraintTop_toTopOf="@id/file_date"
-        tools:text="1.20.40" />
+        tools:text="1.26.52" />
 
-    <com.google.android.material.button.MaterialButton
+    <ImageButton
         android:id="@+id/btn_download"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/curseforge_download"
-        app:icon="@drawable/ic_download"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_download"
+        android:tint="@color/primary"
+        android:contentDescription="@string/curseforge_download"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
