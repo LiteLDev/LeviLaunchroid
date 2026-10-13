@@ -306,9 +306,19 @@ public class ContentManagementActivity extends BaseActivity {
 
     private File getOptionsFile() {
         GameVersion currentVersion = versionManager.getSelectedVersion();
-        
-        File gameDataDir = getGameDataDirForType(currentStorageType);
-        return gameDataDir == null ? null : new File(gameDataDir, "minecraftpe/options.txt");
+        if (currentVersion == null) return null;
+
+        String profileId = currentVersion.getStorageProfileId();
+        boolean versionIsolation = currentVersion.versionIsolation;
+        File internalGameDataDir = LauncherStorage.getStorageGameDataDir(
+                this, profileId, versionIsolation, false);
+        File internalOptionsFile = new File(internalGameDataDir, "minecraftpe/options.txt");
+        if (internalOptionsFile.isFile()) return internalOptionsFile;
+
+        File externalGameDataDir = LauncherStorage.getStorageGameDataDir(
+                this, profileId, versionIsolation, true);
+        File externalOptionsFile = new File(externalGameDataDir, "minecraftpe/options.txt");
+        return externalOptionsFile.isFile() ? externalOptionsFile : internalOptionsFile;
     }
 
     private File getGameDataDirForType(FeatureSettings.StorageType storageType) {
