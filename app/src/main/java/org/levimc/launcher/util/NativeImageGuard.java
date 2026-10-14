@@ -8,7 +8,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class NativeImageGuard {
-    public static final String TOKEN = "img_v4";
+    public static final String TOKEN = "img_v5";
     private static final ConcurrentHashMap<String, FileState> CLEAN_FILES = new ConcurrentHashMap<>();
 
     private NativeImageGuard() {

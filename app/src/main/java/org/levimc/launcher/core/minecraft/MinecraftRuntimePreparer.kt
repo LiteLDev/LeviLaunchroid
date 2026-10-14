@@ -14,6 +14,7 @@ import org.levimc.launcher.preloader.PreloaderInput
 import org.levimc.launcher.preloader.PreloaderSignatureRulesManager
 import org.levimc.launcher.settings.FeatureSettings
 import org.levimc.launcher.util.LauncherStorage
+import org.levimc.launcher.util.NativeBridgeHelper
 import java.io.File
 
 object MinecraftRuntimePreparer {
@@ -81,6 +82,21 @@ object MinecraftRuntimePreparer {
         val modManager = ModManager.getInstance()
         modManager.setCurrentVersion(version)
         trace.mark("ModManager state prepared")
+
+        if (gameManager.shouldLoadMallocRedirect()) {
+            listener.onProgress(38, "Loading native libraries", "libminecraftpe.so")
+            listener.onLog("Linking Minecraft and its native dependencies")
+            val libraryPath = gameManager.resolveLibraryPath("minecraftpe")
+                ?: throw RuntimeException("libminecraftpe.so not found in the Minecraft library cache")
+            trace.mark("Minecraft dependency graph loading started", libraryPath)
+            try {
+                NativeBridgeHelper.loadMinecraftRuntime(libraryPath)
+            } catch (error: UnsatisfiedLinkError) {
+                trace.error("Minecraft dependency graph load failed", error.message ?: "unknown error")
+                throw RuntimeException("Failed to load the Minecraft runtime: ${error.message}", error)
+            }
+            trace.mark("Minecraft dependency graph loaded", "MallocRedirect enabled")
+        }
 
         listener.onProgress(40, "Preparing game loader")
         listener.onLog("Loading game loader")
@@ -233,14 +249,28 @@ object MinecraftRuntimePreparer {
             loadLibrary(gameManager, "HttpClient.Android", 52, true, listener, trace)
         }
 
+        val initializeBundledSdk = gameManager.shouldLoadMallocRedirect()
+        if (initializeBundledSdk) {
+            loadLibrary(gameManager, "PlayFabMultiplayer", 53, true, listener, trace)
+            loadLibrary(gameManager, "maesdk", 54, true, listener, trace)
+        }
+
         if (shouldLoadMaesdk(version)) {
             val excludeLibs = HashSet<String>()
             val excludeReasons = HashMap<String, String>()
             if (shouldLoadHttpClient(version)) {
                 excludeLibs.add("c++_shared")
-                excludeLibs.add("HttpClient.Android")
                 excludeReasons["c++_shared"] = "already loaded before the bundle"
+            }
+            if (shouldLoadHttpClient(version)) {
+                excludeLibs.add("HttpClient.Android")
                 excludeReasons["HttpClient.Android"] = "already loaded before the bundle"
+            }
+            if (initializeBundledSdk) {
+                excludeLibs.add("PlayFabMultiplayer")
+                excludeLibs.add("maesdk")
+                excludeReasons["PlayFabMultiplayer"] = "JNI initialized before Minecraft"
+                excludeReasons["maesdk"] = "JNI initialized before Minecraft"
             }
             if (!shouldLoadPlayFab(version)) {
                 excludeLibs.add("PlayFabMultiplayer")
@@ -265,6 +295,9 @@ object MinecraftRuntimePreparer {
             }
             loadLibrary(gameManager, "fmod", 56, true, listener, trace)
             loadLibrary(gameManager, "MediaDecoders_Android", 62, true, listener, trace)
+            if (gameManager.shouldLoadMallocRedirect()) {
+                loadLibrary(gameManager, "MallocRedirect", 66, true, listener, trace)
+            }
             loadLibrary(gameManager, "minecraftpe", 70, true, listener, trace)
             loadLibrary(gameManager, "gxcore", 74, true, listener, trace)
         }

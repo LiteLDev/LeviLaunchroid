@@ -10,7 +10,9 @@ import androidx.core.content.edit
 import android.widget.Toast
 import android.view.Gravity
 import org.levimc.launcher.R
+import androidx.annotation.Keep
 
+@Keep
 object NativeBridgeHelper {
     @Volatile
     private var gxcoreLoaded = false
@@ -66,6 +68,16 @@ object NativeBridgeHelper {
             true
         } catch (_: Throwable) {
             false
+        }
+    }
+
+    @JvmStatic
+    fun loadMinecraftRuntime(libraryPath: String) {
+        if (!ensureGxCoreLoaded()) {
+            throw UnsatisfiedLinkError("Failed to load gxcore for the Minecraft runtime")
+        }
+        nativeLoadMinecraftRuntime(libraryPath)?.let { error ->
+            throw UnsatisfiedLinkError(error)
         }
     }
 
@@ -151,4 +163,7 @@ object NativeBridgeHelper {
 
     @JvmStatic
     private external fun nativeBootstrapGxCore()
+
+    @JvmStatic
+    private external fun nativeLoadMinecraftRuntime(libraryPath: String): String?
 }

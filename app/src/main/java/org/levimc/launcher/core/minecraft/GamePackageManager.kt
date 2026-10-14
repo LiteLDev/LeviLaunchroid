@@ -32,12 +32,15 @@ class GamePackageManager private constructor(
 
     private val knownPackages = arrayOf(MinecraftLauncher.MC_PACKAGE_NAME)
 
-    private val requiredLibs = arrayOf(
-        "libc++_shared.so",
-        "libfmod.so",
-        "libMediaDecoders_Android.so",
-        "libminecraftpe.so",
-    )
+    private val requiredLibs = buildList {
+        add("libc++_shared.so")
+        add("libfmod.so")
+        add("libMediaDecoders_Android.so")
+        if (shouldLoadMallocRedirect()) {
+            add("libMallocRedirect.so")
+        }
+        add("libminecraftpe.so")
+    }.toTypedArray()
 
     private val optionalLibs = arrayOf(
         "libHttpClient.Android.so",
@@ -225,6 +228,7 @@ class GamePackageManager private constructor(
             append("token=").append(NativeImageGuard.TOKEN).append('\n')
             append("mode=").append(if (version != null && !version.isInstalled) "isolated" else "installed").append('\n')
             append("http=").append(shouldLoadHttpClient()).append('\n')
+            append("malloc=").append(shouldLoadMallocRedirect()).append('\n')
             apkFiles.forEach { file ->
                 append("apk=")
                     .append(file.absolutePath)
@@ -373,6 +377,15 @@ class GamePackageManager private constructor(
         } else {
             requiredLibs
         }
+    }
+
+    fun shouldLoadMallocRedirect(): Boolean {
+        val versionCode = version?.versionCode ?: try {
+            context.packageManager.getPackageInfo(MinecraftLauncher.MC_PACKAGE_NAME, 0).versionName
+        } catch (_: Exception) {
+            null
+        }
+        return versionCode != null && isVersionAtLeast(versionCode, "1.26.70.20")
     }
 
     private fun shouldLoadHttpClient(): Boolean {

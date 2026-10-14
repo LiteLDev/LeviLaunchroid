@@ -3,11 +3,17 @@ package com.mojang.minecraftpe;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
+import androidx.annotation.Keep;
+
+import com.mojang.minecraftpe.hardwareinfo.CPUCluster;
+import com.mojang.minecraftpe.hardwareinfo.CPUTopologyInfo;
+import com.mojang.minecraftpe.hardwareinfo.SystemCPU;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +29,7 @@ import java.util.regex.Pattern;
 
 
 @SuppressLint({"DefaultLocale"})
+@Keep
 public class HardwareInformation {
     private static final CPUInfo cpuInfo = getCPUInfo();
     private final ApplicationInfo appInfo;
@@ -52,7 +59,20 @@ public class HardwareInformation {
     }
 
     public static int getPerformanceCoreCount() {
-        return 1;
+        long highestFrequency = 0;
+        int performanceCores = 0;
+        for (CPUCluster cluster : CPUTopologyInfo.getInstance().getClusterArray()) {
+            for (SystemCPU cpu : cluster.getCPUArray()) {
+                long frequency = cpu.getMaxFrequencyHz();
+                if (frequency > highestFrequency) {
+                    highestFrequency = frequency;
+                    performanceCores = 1;
+                } else if (frequency > 0 && frequency == highestFrequency) {
+                    performanceCores++;
+                }
+            }
+        }
+        return highestFrequency > 0 ? performanceCores : 1;
     }
 
     public static @NotNull String getLocale() {
@@ -82,11 +102,11 @@ public class HardwareInformation {
     }
 
     public static int getNumCores() {
-        return 2;
+        return CPUTopologyInfo.getInstance().getCPUCount();
     }
 
     public static int getNumClusters() {
-        return 1;
+        return CPUTopologyInfo.getInstance().getCPUClusterCount();
     }
 
     @NotNull
@@ -95,25 +115,24 @@ public class HardwareInformation {
         Map<String, String> list = new HashMap<>();
         int processorCount = 0;
         if (new File("/proc/cpuinfo").exists()) {
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(new File("/proc/cpuinfo")));
-                Pattern pattern = Pattern.compile("(\\w*)\\s*:\\s([^\\n]*)");
+            try (BufferedReader br = new BufferedReader(new FileReader("/proc/cpuinfo"))) {
+                Pattern pattern = Pattern.compile("([^:]+)\\s*:\\s*(.*)");
                 while (true) {
                     String line = br.readLine();
                     if (line == null) {
                         break;
                     }
                     Matcher matcher = pattern.matcher(line);
-                    if (matcher.find() && matcher.groupCount() == 2) {
-                        if (!list.containsKey(matcher.group(1))) {
-                            list.put(matcher.group(1), matcher.group(2));
+                    if (matcher.matches()) {
+                        String key = matcher.group(1).trim();
+                        if (!list.containsKey(key)) {
+                            list.put(key, matcher.group(2).trim());
                         }
-                        if (matcher.group(1).contentEquals("processor")) {
+                        if (key.equals("processor")) {
                             processorCount++;
                         }
                     }
                 }
-                br.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -146,19 +165,45 @@ public class HardwareInformation {
         return (packageManager == null || this.appInfo == null) ? "" : packageManager.getInstallerPackageName(this.context.getPackageName());
     }
 
+    public String getVulkanHardwareVersion() {
+        return Integer.toString(getSystemFeatureVersion(PackageManager.FEATURE_VULKAN_HARDWARE_VERSION));
+    }
+
+    public String getVulkanDeqpLevel() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            return "0";
+        }
+        return Integer.toString(getSystemFeatureVersion(PackageManager.FEATURE_VULKAN_DEQP_LEVEL));
+    }
+
+    private int getSystemFeatureVersion(String featureName) {
+        try {
+            FeatureInfo[] features = packageManager.getSystemAvailableFeatures();
+            int version = 0;
+            if (features != null) {
+                for (FeatureInfo feature : features) {
+                    if (feature != null && featureName.equals(feature.name)) {
+                        version = Math.max(version, feature.version);
+                    }
+                }
+            }
+            return version;
+        } catch (RuntimeException ignored) {
+            return 0;
+        }
+    }
+
     public int getSignaturesHashCode() {
         int hashCode = 0;
 
         try {
-            // Retrieve the package info with signatures
             Signature[] signatures = this.packageManager.getPackageInfo(this.context.getPackageName(), PackageManager.GET_SIGNATURES).signatures;
 
-            // Compute the combined hash code of the signatures
             for (Signature signature : signatures) {
                 hashCode ^= signature.hashCode();
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Log the exception
+            e.printStackTrace();
         }
         return hashCode;
     }
