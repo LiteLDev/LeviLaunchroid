@@ -96,3 +96,4 @@ MinecraftAuth
 # git
 commit_msg.txt
 *.patch
+!/app/src/main/cpp/worldtools/vendor/zstd/build/
