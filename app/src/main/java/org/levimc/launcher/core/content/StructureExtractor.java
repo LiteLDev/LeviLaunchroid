@@ -2,47 +2,41 @@ package org.levimc.launcher.core.content;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
-import org.levimc.launcher.core.content.leveldb.LevelDBEntry;
-import org.levimc.launcher.core.content.leveldb.LevelDBManager;
+import org.levimc.launcher.core.content.leveldb.WorldDatabase;
+import org.levimc.launcher.core.content.nbt.NativeNbt;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class StructureExtractor {
-    private static final String TAG = "StructureExtractor";
-
+public final class StructureExtractor {
     public interface ExtractionCallback {
         void onComplete(int extractedCount, String outputPath);
+
         void onError(String error);
     }
 
     public interface StructureListCallback {
         void onComplete(List<StructureInfo> structures);
+
         void onError(String error);
     }
 
-    public static class StructureInfo {
-        private final String id;
-        private final String name;
+    public static final class StructureInfo {
+        private final String id, name;
         private final byte[] data;
 
         public StructureInfo(String id, byte[] data) {
             this.id = id;
+            this.name = id.contains(":") ? id.substring(id.indexOf(':') + 1) : id;
             this.data = data;
-            if (id.contains(":")) {
-                this.name = id.substring(id.indexOf(':') + 1);
-            } else {
-                this.name = id;
-            }
         }
 
         public String getId() {
@@ -58,144 +52,87 @@ public class StructureExtractor {
         }
 
         public int getSize() {
-            return data != null ? data.length : 0;
+            return data == null ? 0 : data.length;
         }
 
         public String getFormattedSize() {
             int size = getSize();
-            if (size < 1024) return size + " B";
-            if (size < 1024 * 1024) return String.format("%.1f KB", size / 1024.0);
-            return String.format("%.1f MB", size / (1024.0 * 1024.0));
+            return size < 1024
+                    ? size + " B"
+                    : size < 1048576
+                            ? String.format(Locale.ROOT, "%.1f KB", size / 1024.0)
+                            : String.format(Locale.ROOT, "%.1f MB", size / 1048576.0);
         }
 
         public String getFileName() {
-            return sanitizeFileName(name) + ".mcstructure";
-        }
-
-        private String sanitizeFileName(String name) {
-            return name.replace("/", "_")
-                       .replace("\\", "_")
-                       .replace(":", "_")
-                       .replace("*", "_")
-                       .replace("?", "_")
-                       .replace("\"", "_")
-                       .replace("<", "_")
-                       .replace(">", "_")
-                       .replace("|", "_");
+            return name.replaceAll("[^a-zA-Z0-9._-]", "_") + ".mcstructure";
         }
     }
 
     private final Context context;
-    private final ExecutorService executor;
-    private List<StructureInfo> cachedStructures;
-    private File cachedWorldDir;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public StructureExtractor(Context context) {
-        this.context = context;
-        this.executor = Executors.newSingleThreadExecutor();
+        this.context = context.getApplicationContext();
     }
 
-    public void loadStructures(File worldDir, StructureListCallback callback) {
-        executor.execute(() -> {
-            LevelDBManager dbManager = null;
-            try {
-                dbManager = new LevelDBManager(worldDir);
-                final LevelDBManager finalDbManager = dbManager;
-
-                CountDownLatch latch = new CountDownLatch(1);
-                AtomicReference<List<LevelDBEntry>> structuresRef = new AtomicReference<>();
-                AtomicReference<String> errorRef = new AtomicReference<>();
-
-                finalDbManager.loadDatabase(new LevelDBManager.LoadCallback() {
-                    @Override
-                    public void onProgress(int current, int total) {}
-
-                    @Override
-                    public void onComplete(List<LevelDBEntry> entries) {
-                        structuresRef.set(finalDbManager.getStructureEntries());
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        errorRef.set(error);
-                        latch.countDown();
+    public void loadStructures(File world, StructureListCallback callback) {
+        executor.execute(
+                () -> {
+                    try (WorldDatabase db = new WorldDatabase(world)) {
+                        List<StructureInfo> result = new ArrayList<>();
+                        byte[] after = null;
+                        long size = 0;
+                        byte[] prefix = "structuretemplate_".getBytes(StandardCharsets.UTF_8);
+                        do {
+                            if (Thread.currentThread().isInterrupted())
+                                throw new java.io.InterruptedIOException();
+                            WorldDatabase.Page page = db.scan(prefix, after, 128, "");
+                            for (byte[] key : page.keys) {
+                                byte[] data = db.get(key);
+                                if (data == null) continue;
+                                size += data.length;
+                                if (size > 64L * 1024 * 1024)
+                                    throw new IOException(
+                                            "Structure selection exceeds 64 MiB; use the world"
+                                                    + " workspace to export individual structures");
+                                NativeNbt.decode(data, 0, NativeNbt.LITTLE_ENDIAN);
+                                result.add(
+                                        new StructureInfo(
+                                                new String(
+                                                        key,
+                                                        prefix.length,
+                                                        key.length - prefix.length,
+                                                        StandardCharsets.UTF_8),
+                                                data));
+                            }
+                            after = page.next;
+                        } while (after != null);
+                        callback.onComplete(result);
+                    } catch (Exception | LinkageError ex) {
+                        callback.onError(ex.getMessage());
                     }
                 });
-
-                boolean completed = latch.await(60, TimeUnit.SECONDS);
-
-                if (!completed) {
-                    callback.onError("Database loading timed out");
-                    finalDbManager.shutdown();
-                    return;
-                }
-
-                if (errorRef.get() != null) {
-                    callback.onError(errorRef.get());
-                    finalDbManager.shutdown();
-                    return;
-                }
-
-                List<LevelDBEntry> structureEntries = structuresRef.get();
-                List<StructureInfo> structures = new ArrayList<>();
-
-                if (structureEntries != null) {
-                    for (LevelDBEntry entry : structureEntries) {
-                        String structureId = entry.getKey().getStructureId();
-                        byte[] value = entry.getValue();
-                        if (structureId != null && !structureId.isEmpty() && value != null && value.length > 0) {
-                            structures.add(new StructureInfo(structureId, value));
-                        }
-                    }
-                }
-
-                cachedStructures = structures;
-                cachedWorldDir = worldDir;
-
-                finalDbManager.shutdown();
-                callback.onComplete(structures);
-
-            } catch (Exception e) {
-                Log.e(TAG, "Failed to load structures", e);
-                callback.onError("Failed to load structures: " + e.getMessage());
-                if (dbManager != null) {
-                    dbManager.shutdown();
-                }
-            }
-        });
     }
 
-    public void exportSingleStructure(StructureInfo structure, Uri outputUri, ExtractionCallback callback) {
-        executor.execute(() -> {
-            try {
-                OutputStream outputStream = context.getContentResolver().openOutputStream(outputUri);
-                if (outputStream == null) {
-                    callback.onError("Cannot create output file");
-                    return;
-                }
-
-                byte[] data = structure.getData();
-                if (data != null && data.length > 0) {
-                    outputStream.write(data);
-                    outputStream.flush();
-                    outputStream.close();
-                    callback.onComplete(1, outputUri.toString());
-                } else {
-                    outputStream.close();
-                    callback.onError("Structure has no data");
-                }
-
-            } catch (Exception e) {
-                Log.e(TAG, "Failed to export structure", e);
-                callback.onError("Export failed: " + e.getMessage());
-            }
-        });
+    public void exportSingleStructure(
+            StructureInfo structure, Uri output, ExtractionCallback callback) {
+        executor.execute(
+                () -> {
+                    try (OutputStream stream =
+                            context.getContentResolver().openOutputStream(output)) {
+                        if (stream == null) throw new IOException("Cannot create output file");
+                        NativeNbt.decode(structure.getData(), 0, NativeNbt.LITTLE_ENDIAN);
+                        stream.write(structure.getData());
+                        stream.flush();
+                        callback.onComplete(1, output.toString());
+                    } catch (Exception | LinkageError ex) {
+                        callback.onError(ex.getMessage());
+                    }
+                });
     }
 
     public void shutdown() {
-        executor.shutdown();
-        cachedStructures = null;
-        cachedWorldDir = null;
+        executor.shutdownNow();
     }
 }

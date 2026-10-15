@@ -1,0 +1,6 @@
+set(Snappy_FOUND TRUE)
+set(SNAPPY_FOUND TRUE)
+set(HAVE_SNAPPY TRUE)
+if(NOT TARGET Snappy::snappy)
+    add_library(Snappy::snappy ALIAS snappy)
+endif()

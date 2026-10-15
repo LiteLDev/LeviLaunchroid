@@ -1,0 +1,25 @@
+Third-party components
+
+GlacieTeam NBT — MPL-2.0
+https://github.com/GlacieTeam/NBT
+Modified BytesDataInput.cpp to support unsigned 16-bit NBT string lengths.
+
+GlacieTeam BinaryStream 2.3.2 — MPL-2.0
+https://github.com/GlacieTeam/BinaryStream
+
+Complete NBT and BinaryStream source is bundled in assets/worldtools/mpl-source.zip.
+Extract the archive from the APK to obtain the source.
+
+Falcon-MC LevelDB — BSD-3-Clause
+https://github.com/Falcon-MC/leveldb
+See LevelDB-BSD.txt and vendor/leveldb/AUTHORS.
+
+Google Snappy 1.2.2 — BSD-3-Clause
+https://github.com/google/snappy
+See Snappy-BSD.txt.
+
+Zstandard 1.5.7 — BSD-3-Clause
+https://github.com/facebook/zstd
+See Zstd-BSD.txt.
+
+Android provides zlib under the zlib license.

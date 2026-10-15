@@ -1,0 +1,5 @@
+Diagnostics:
+  UnusedIncludes: Strict
+  MissingIncludes: Strict
+CompileFlags:
+  Add: ["-ferror-limit=0", "-D__FUNCTION__=\"dummy\"", "-D_CRT_USE_BUILTIN_OFFSETOF"]

@@ -23,30 +23,92 @@ public class NbtTag {
     private byte type;
     private String name;
     private Object value;
+    private byte listType;
 
     public NbtTag(byte type, String name, Object value) {
+        this(
+                type,
+                name,
+                value,
+                type == TAG_LIST && value instanceof List && !((List<?>) value).isEmpty()
+                        ? ((NbtTag) ((List<?>) value).get(0)).getType()
+                        : TAG_END);
+    }
+
+    public NbtTag(byte type, String name, Object value, byte listType) {
+        this.listType = listType;
         this.type = type;
         this.name = name;
         this.value = value;
     }
 
-    public byte getType() { return type; }
-    public String getName() { return name; }
-    public Object getValue() { return value; }
-    
-    public void setName(String name) { this.name = name; }
-    public void setValue(Object value) { this.value = value; }
+    public byte getListType() {
+        return listType;
+    }
 
-    public byte getByte() { return value instanceof Number ? ((Number) value).byteValue() : 0; }
-    public short getShort() { return value instanceof Number ? ((Number) value).shortValue() : 0; }
-    public int getInt() { return value instanceof Number ? ((Number) value).intValue() : 0; }
-    public long getLong() { return value instanceof Number ? ((Number) value).longValue() : 0; }
-    public float getFloat() { return value instanceof Number ? ((Number) value).floatValue() : 0; }
-    public double getDouble() { return value instanceof Number ? ((Number) value).doubleValue() : 0; }
-    public String getString() { return value instanceof String ? (String) value : ""; }
-    public byte[] getByteArray() { return value instanceof byte[] ? (byte[]) value : new byte[0]; }
-    public int[] getIntArray() { return value instanceof int[] ? (int[]) value : new int[0]; }
-    public long[] getLongArray() { return value instanceof long[] ? (long[]) value : new long[0]; }
+    public void setListType(byte type) {
+        listType = type;
+    }
+
+    public byte getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    public byte getByte() {
+        return value instanceof Number ? ((Number) value).byteValue() : 0;
+    }
+
+    public short getShort() {
+        return value instanceof Number ? ((Number) value).shortValue() : 0;
+    }
+
+    public int getInt() {
+        return value instanceof Number ? ((Number) value).intValue() : 0;
+    }
+
+    public long getLong() {
+        return value instanceof Number ? ((Number) value).longValue() : 0;
+    }
+
+    public float getFloat() {
+        return value instanceof Number ? ((Number) value).floatValue() : 0;
+    }
+
+    public double getDouble() {
+        return value instanceof Number ? ((Number) value).doubleValue() : 0;
+    }
+
+    public String getString() {
+        return value instanceof String ? (String) value : "";
+    }
+
+    public byte[] getByteArray() {
+        return value instanceof byte[] ? (byte[]) value : new byte[0];
+    }
+
+    public int[] getIntArray() {
+        return value instanceof int[] ? (int[]) value : new int[0];
+    }
+
+    public long[] getLongArray() {
+        return value instanceof long[] ? (long[]) value : new long[0];
+    }
 
     @SuppressWarnings("unchecked")
     public Map<String, NbtTag> getCompound() {
@@ -95,14 +157,13 @@ public class NbtTag {
     }
 
     public boolean isEditable() {
-        return type != TAG_END && type != TAG_BYTE_ARRAY && 
-               type != TAG_INT_ARRAY && type != TAG_LONG_ARRAY;
+        return type != TAG_END;
     }
 
     @Override
     public String toString() {
-        return String.format("NbtTag{type=%s, name='%s', value=%s}", 
-            getTypeName(type), name, formatValue());
+        return String.format(
+                "NbtTag{type=%s, name='%s', value=%s}", getTypeName(type), name, formatValue());
     }
 
     private String formatValue() {
