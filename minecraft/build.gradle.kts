@@ -65,7 +65,11 @@ dependencies {
 
     implementation(libs.gson)
     implementation(libs.httpclient)
-    implementation(libs.simple.xml)
+    implementation(libs.simple.xml) {
+        exclude(group = "xpp3", module = "xpp3")
+        exclude(group = "stax", module = "stax")
+        exclude(group = "stax", module = "stax-api")
+    }
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.browser)
 

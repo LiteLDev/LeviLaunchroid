@@ -151,6 +151,17 @@ jobs:
           name: LeviLauncher-debug-apk
           path: app/build/outputs/apk/debug/*.apk
 
+      - name: Upload R8 mappings
+        if: env.HAS_GOOGLE_SERVICES == 'true'
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: LeviLauncher-r8-mappings-${{ github.sha }}
+          path: |
+            app/build/outputs/mapping/debug/
+            app/build/outputs/mapping/beta/
+            app/build/outputs/mapping/release/
+          if-no-files-found: error
+
       - name: Upload Unsigned Release APK
         if: env.HAS_GOOGLE_SERVICES == 'true'
         uses: actions/upload-artifact@v4.6.2

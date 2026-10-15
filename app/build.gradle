@@ -73,9 +73,11 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             firebaseCrashlytics {
+                mappingFileUploadEnabled true
                 nativeSymbolUploadEnabled true
             }
             ndk {
@@ -84,9 +86,12 @@ android {
             buildConfigField "boolean", "IS_BETA", "false"
         }
         debug {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             firebaseCrashlytics {
+                mappingFileUploadEnabled true
                 nativeSymbolUploadEnabled true
             }
             ndk {
@@ -96,10 +101,11 @@ android {
         }
         beta {
             initWith release
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             firebaseCrashlytics {
-                mappingFileUploadEnabled false
+                mappingFileUploadEnabled true
                 nativeSymbolUploadEnabled true
             }
             resValue "string", "app_name", "LeviLauncher Beta"
@@ -112,8 +118,14 @@ android {
 
     }
     packagingOptions {
-        jniLibs.useLegacyPackaging = true
-        doNotStrip "**/*.so"
+        jniLibs {
+            useLegacyPackaging = true
+            keepDebugSymbols += [
+                    "**/libpreloader.so",
+                    "**/libgxcore.so",
+                    "**/libinbuiltmods.so"
+            ]
+        }
         resources.excludes += [
                 "DebugProbesKt.bin"
         ]
@@ -161,7 +173,6 @@ dependencies {
     implementation libs.okhttp
     implementation libs.androidx.dynamicanimation
     implementation libs.androidx.browser
-    implementation libs.bedrock.connection
     implementation libs.xcrash
     implementation libs.play.services.games.v2
     testImplementation libs.junit

@@ -1,0 +1,32 @@
+-keep,includedescriptorclasses class com.mojang.** { *; }
+-keep,includedescriptorclasses class com.microsoft.** { *; }
+-keep,includedescriptorclasses class com.xbox.httpclient.** { *; }
+-keep,includedescriptorclasses class org.fmod.** { *; }
+-keep,includedescriptorclasses class com.google.android.gms.games.** { *; }
+-keep,includedescriptorclasses class com.google.android.gms.internal.games_v2.** { *; }
+-keep,includedescriptorclasses class com.google.android.gms.common.** { *; }
+-keep,includedescriptorclasses class com.google.android.gms.tasks.** { *; }
+-keep,includedescriptorclasses class com.google.android.gms.drive.** { *; }
+
+-keep class org.spongycastle.jcajce.provider.** { *; }
+-keep class org.spongycastle.jce.provider.** { *; }
+-keep class org.spongycastle.pqc.jcajce.provider.** { *; }
+-keep class org.apache.commons.logging.Log { *; }
+-keep class org.apache.commons.logging.LogFactory { *; }
+-keep class org.apache.commons.logging.impl.LogFactoryImpl { *; }
+-keep class org.apache.commons.logging.impl.WeakHashtable { *; }
+-keep class org.apache.commons.logging.impl.Jdk14Logger { *; }
+-keep class org.apache.commons.logging.impl.Jdk13LumberjackLogger { *; }
+-keep class org.apache.commons.logging.impl.SimpleLog { *; }
+-keep class org.apache.commons.logging.impl.NoOpLog { *; }
+
+-dontwarn javax.xml.stream.**
+-dontwarn javax.naming.**
+-dontwarn javax.security.auth.kerberos.**
+-dontwarn org.ietf.jgss.**
+-dontwarn org.apache.log4j.**
+-dontwarn javax.servlet.ServletContextEvent
+-dontwarn javax.servlet.ServletContextListener
+-dontwarn org.apache.avalon.framework.logger.Logger
+-dontwarn org.apache.log.Hierarchy
+-dontwarn org.apache.log.Logger
