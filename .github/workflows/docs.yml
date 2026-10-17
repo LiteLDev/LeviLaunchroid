@@ -17,11 +17,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # full history for the per-page "Last updated" dates
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
 
       - name: Install documentation dependencies
         working-directory: docs
@@ -29,12 +34,16 @@ jobs:
 
       - name: Build documentation
         working-directory: docs
-        run: npm run docs:build
+        run: npm run build
+
+      - name: Check internal links
+        working-directory: docs
+        run: npm run linkcheck
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
-          path: docs/.vitepress/dist/
+          path: docs/dist/
 
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -52,4 +61,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
