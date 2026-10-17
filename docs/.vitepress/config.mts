@@ -2,7 +2,7 @@ import { defineConfig, type DefaultTheme } from "vitepress";
 
 const repo = "https://github.com/LiteLDev/LeviLaunchroid";
 const releases = `${repo}/releases`;
-const base = process.env.VITEPRESS_BASE ?? "/";
+const base = process.env.VITEPRESS_BASE ?? "/LeviLaunchroid/";
 
 function buildEnglishSidebar(localePrefix: string): DefaultTheme.SidebarItem[] {
   return [
@@ -174,6 +174,6 @@ export default defineConfig({
     lineNumbers: true,
   },
   sitemap: {
-    hostname: "https://levilaunchroid.levimc.org/",
+    hostname: "https://docs.levimc.org/LeviLaunchroid/",
   },
 });
