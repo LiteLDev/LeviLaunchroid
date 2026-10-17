@@ -170,7 +170,12 @@ export function buildNavigation({ cfg, scan, titles, warn }: NavBuildInput): Nav
       }
     } else {
       // VitePress: explicit nav + sidebar(s)
-      nav[code] = tree.map((it) => ({ ...it, activePrefix: it.link && !it.external ? posix.dirname('/' + it.link).replace(/^\/$/, '') + '/' : undefined }));
+      const prefixOf = (link: string) => posix.dirname('/' + link).replace(/^\/$/, '') + '/';
+      nav[code] = tree.map((it) => ({ ...it, activePrefix: it.link && !it.external ? prefixOf(it.link) : undefined }));
+      // active prefixes per header item (build-time only): its own, or a dropdown's internal links'
+      const navPrefixes = nav[code]!.map((it) =>
+        it.activePrefix ? [it.activePrefix] : [...new Set((it.items ?? []).filter((c) => c.link && !c.external).map((c) => prefixOf(c.link!)))],
+      );
       let sb: SidebarConfig | undefined;
       if (mode && typeof mode === 'object') {
         const rec = mode as Record<string, SidebarConfig> | SidebarConfig;
@@ -200,20 +205,19 @@ export function buildNavigation({ cfg, scan, titles, warn }: NavBuildInput): Nav
         const g = groups.filter((x) => url.startsWith(x.prefix) || ('/' + r.source.rel).startsWith(x.prefix)).sort((a, b) => b.prefix.length - a.prefix.length)[0];
         const flat = g ? flatten(g.items) : [];
         const pos = flat.findIndex((it) => it.key === r.key);
-        // header item: exact match first, then a dropdown listing the page (VitePress), else longest active
-        // prefix (a dropdown's prefixes are those of its internal links)
+        // header item: exact match first, then a dropdown listing the page (VitePress), else the longest active
+        // prefix; on a tie a plain link beats a dropdown, then the earlier item wins
         const items = nav[code]!;
         let navIdx = items.findIndex((it) => it.key === r.key);
         if (navIdx < 0) navIdx = items.findIndex((it) => !!it.items && contains(it, r.key));
         if (navIdx < 0) {
           let best = -1;
           let bestLen = 1;
-          items.forEach((it, i) => {
-            const prefixes = it.activePrefix
-              ? [it.activePrefix]
-              : (it.items ?? []).filter((c) => c.link && !c.external).map((c) => posix.dirname('/' + c.link).replace(/^\/$/, '') + '/');
+          navPrefixes.forEach((prefixes, i) => {
             for (const p of prefixes) {
-              if (p.length > bestLen && url.startsWith(p)) {
+              if (!url.startsWith(p)) continue;
+              const tieWin = p.length === bestLen && best >= 0 && !!items[best]!.items && !items[i]!.items;
+              if (p.length > bestLen || tieWin) {
                 best = i;
                 bestLen = p.length;
               }

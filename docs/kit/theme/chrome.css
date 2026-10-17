@@ -84,10 +84,13 @@
     text-decoration: none;
     white-space: nowrap;
   }
-  .kit-menu-item:hover,
-  .kit-menu-item:focus-visible {
+  .kit-menu-item:hover {
     background: color-mix(in srgb, var(--color-ink) 7%, transparent);
-    outline: none;
+  }
+  /* keyboard focus keeps the pixel focus outline (inset: the panel scrolls, so it would clip an outer ring) */
+  .kit-menu-item:focus-visible {
+    outline: var(--px) solid var(--color-focus);
+    outline-offset: calc(var(--px) * -1);
   }
   .kit-menu-item.is-active {
     font-weight: 600;
@@ -241,10 +244,12 @@
     text-decoration: none;
     line-height: 1.3;
   }
-  .kit-gbar-docs-item:hover,
-  .kit-gbar-docs-item:focus-visible {
+  .kit-gbar-docs-item:hover {
     background: color-mix(in srgb, var(--color-ink) 6%, transparent);
-    outline: none;
+  }
+  .kit-gbar-docs-item:focus-visible {
+    outline: var(--px) solid var(--color-focus);
+    outline-offset: calc(var(--px) * -1);
   }
   .kit-gbar-docs-item[aria-current="page"] {
     background: var(--color-primary-soft);
@@ -703,6 +708,10 @@
     padding: clamp(3.5rem, 7vw, 6.5rem) 1.5rem clamp(4.5rem, 8vw, 7.5rem);
   }
   .kit-hero-copy {
+    max-width: 48rem;
+  }
+  /* the text keeps its 40rem measure; the action row may run wider so 4 buttons stay on one row */
+  .kit-hero-copy > :where(:not(.kit-hero-actions)) {
     max-width: 40rem;
   }
   .kit-hero-eyebrow {

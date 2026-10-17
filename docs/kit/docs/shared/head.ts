@@ -15,14 +15,16 @@ export function absoluteUrl(site: SiteData, path: string): string {
 
 /**
  * Language auto-redirect, inlined in <head>. Runs only when the URL is exactly the site root (base or
- * base + index.html) — never on deep links. Stored choice (localStorage `levimc-locale-<site>`) wins,
- * otherwise the first navigator.languages entry that matches a locale.
+ * base + index.html) — never on deep links — and not when the visitor came from a page of this site (an
+ * in-site link to the root, e.g. "[English](/)" on a translated home, is followed as written). Stored choice
+ * (localStorage `levimc-locale-<site>`) wins, otherwise the first navigator.languages entry that matches a locale.
  */
 export function localeRedirectScript(site: Pick<SiteData, 'base' | 'siteKey' | 'locales' | 'defaultLocale'>): string {
   if (site.locales.length < 2) return '';
   const L = site.locales.map((l) => ({ c: l.code, l: l.lang.toLowerCase(), p: l.prefix }));
   return (
     `(function(){try{var b=${JSON.stringify(site.base)},p=location.pathname;if(p!==b&&p!==b+"index.html")return;` +
+    `try{var r=new URL(document.referrer);if(r.origin===location.origin&&r.pathname.indexOf(b)===0)return}catch(e){}` +
     `var L=${JSON.stringify(L)},k=${JSON.stringify('levimc-locale-' + site.siteKey)},s=null,pick=null,i,j;` +
     `try{s=localStorage.getItem(k)}catch(e){}` +
     `if(s){for(i=0;i<L.length;i++)if(L[i].c===s)pick=L[i]}` +

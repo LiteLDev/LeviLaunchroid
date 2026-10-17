@@ -5,6 +5,7 @@ import { defineDocsConfig, type NavEntry } from './kit/docs/node/config.ts';
 const repo = 'https://github.com/LiteLDev/LeviLaunchroid';
 const releases = `${repo}/releases`;
 // Deploy under another path (e.g. a fork's GitHub Pages) with DOCS_BASE=/<path>/ (VITEPRESS_BASE still works).
+// with-base.mjs applies the same rule to the preview / linkcheck / smoke scripts: keep the two in sync.
 const base = process.env.DOCS_BASE ?? process.env.VITEPRESS_BASE ?? '/LeviLaunchroid/';
 
 function buildEnglishSidebar(localePrefix: string): NavEntry[] {

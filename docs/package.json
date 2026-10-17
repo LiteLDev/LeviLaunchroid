@@ -10,10 +10,10 @@
   "scripts": {
     "dev": "vite",
     "build": "node kit/docs/build.mjs",
-    "preview": "node kit/scripts/serve-pages.mjs dist --base /LeviLaunchroid/ --port 4173",
+    "preview": "node with-base.mjs kit/scripts/serve-pages.mjs dist --base {base} --port 4173",
     "typecheck": "tsc --noEmit",
-    "linkcheck": "node kit/scripts/linkcheck.mjs dist --base /LeviLaunchroid/ --site-origin https://docs.levimc.org",
-    "smoke": "node kit/scripts/smoke.mjs --url http://127.0.0.1:4173/LeviLaunchroid/"
+    "linkcheck": "node with-base.mjs kit/scripts/linkcheck.mjs dist --base {base} --site-origin https://docs.levimc.org",
+    "smoke": "node with-base.mjs kit/scripts/smoke.mjs --url http://127.0.0.1:4173{base}"
   },
   "dependencies": {
     "minisearch": "7.2.0",

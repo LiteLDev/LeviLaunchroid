@@ -54,7 +54,12 @@ export function MobileDrawer({
                                 {c.text}
                               </a>
                             ) : (
-                              <KitLink href={href(c.link)} className="kit-drawer-link" onClick={onClose}>
+                              <KitLink
+                                href={href(c.link)}
+                                className={c.link === path ? 'kit-drawer-link is-active' : 'kit-drawer-link'}
+                                aria-current={c.link === path ? 'page' : undefined}
+                                onClick={onClose}
+                              >
                                 {c.text}
                               </KitLink>
                             )}

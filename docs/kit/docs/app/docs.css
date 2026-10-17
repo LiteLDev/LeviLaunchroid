@@ -95,6 +95,7 @@
   }
   .kit-site-nav > ul > li {
     display: flex;
+    flex: none; /* never squeeze items (and their external-link icons) — see useNavFit in SiteHeader */
   }
   .kit-site-nav-link {
     position: relative;
@@ -133,6 +134,7 @@
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
   .kit-site-nav-ext {
+    flex: none;
     width: 12px;
     height: 12px;
     opacity: 0.6;
@@ -213,6 +215,25 @@
       justify-content: center;
       margin-right: 0.25rem;
     }
+  }
+  /* the nav does not fit next to the actions (data-fit is measured by SiteHeader): icon-only search, then
+     icon-only language button, then the nav moves into the drawer */
+  .kit-site-header:is([data-fit="search"], [data-fit="compact"]) .kit-search-trigger {
+    width: 2.25rem;
+    min-width: 0;
+    margin-right: 0.25rem;
+    padding: 0;
+    justify-content: center;
+  }
+  .kit-site-header:is([data-fit="search"], [data-fit="compact"]) :is(.kit-search-trigger-label, .kit-search-trigger-keys),
+  .kit-site-header[data-fit="compact"] .kit-site-locale .kit-menu-trigger-label {
+    display: none;
+  }
+  .kit-site-header[data-fit="drawer"] .kit-site-nav {
+    display: none;
+  }
+  .kit-site-header[data-fit="drawer"] .kit-nav-toggle {
+    display: inline-grid;
   }
   @media (max-width: 960px) {
     .kit-site-nav {

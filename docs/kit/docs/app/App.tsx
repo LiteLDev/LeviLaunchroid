@@ -32,6 +32,15 @@ function RoutePage({ route, t, onSearch, locale }: { route?: RouteMeta; t: UiStr
   return route.layout === 'home' ? <HomeLayout route={route} page={page} t={t} /> : <DocLayout route={route} page={page} t={t} />;
 }
 
+/** Store the visitor's language choice for the root-only redirect (see localeRedirectScript). */
+function rememberLocale(code: string) {
+  try {
+    localStorage.setItem(`levimc-locale-${site.siteKey}`, code);
+  } catch {
+    /* ignore */
+  }
+}
+
 /** Keep <head> in sync after client-side navigation (SSR writes the initial head). */
 function useHead(route: RouteMeta | undefined, locale: string, t: UiStrings) {
   useEffect(() => {
@@ -142,13 +151,15 @@ export function App() {
     lang: l.lang,
     href: href(route?.alternates[l.code] ?? site.homePaths[l.code] ?? l.prefix),
   }));
-  const onLocaleSelect = (code: string) => {
-    try {
-      localStorage.setItem(`levimc-locale-${site.siteKey}`, code);
-    } catch {
-      /* ignore */
-    }
-  };
+  // Following an in-site link from one locale to another locale's home page (e.g. "[English](/)" on the
+  // zh-CN home) is a language choice too: remember it, or the root-only redirect would undo it on reload.
+  const prevLocale = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (!route) return;
+    const from = prevLocale.current;
+    prevLocale.current = route.locale;
+    if (from && from !== route.locale && route.path === (site.homePaths[route.locale] ?? '')) rememberLocale(route.locale);
+  }, [route]);
   const sidebar = route?.sidebar ? site.sidebars[route.sidebar] : undefined;
   const hasDrawer = !!sidebar || (site.nav[locale]?.length ?? 0) > 0;
 
@@ -166,7 +177,7 @@ export function App() {
           lang={lang}
           t={t}
           localeOptions={localeOptions}
-          onLocaleSelect={onLocaleSelect}
+          onLocaleSelect={rememberLocale}
           onOpenSearch={openSearch}
           onOpenDrawer={() => setDrawerOpen(true)}
           drawerOpen={drawerOpen}
@@ -175,7 +186,7 @@ export function App() {
         <Suspense fallback={<main id="kit-main" className="kit-loading" aria-busy="true" />}>
           <RoutePage route={route} t={t} onSearch={openSearch} locale={locale} />
         </Suspense>
-        <SiteFooter locale={lang} extra={site.footer?.copyright ?? site.footer?.message} />
+        <SiteFooter locale={lang} extra={site.footer?.message} copyright={site.footer?.copyright} />
       </div>
       <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} route={route} locale={locale} sidebar={sidebar} path={route?.path ?? ''} t={t} />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} locale={locale} t={t} />

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, type RefObject } from 'react';
 import type { NavItem, RouteMeta } from '../../shared/types';
 import { href, site } from '../data';
 import { KitLink } from './KitLink';
@@ -8,7 +8,7 @@ import { LocaleSwitcher, type LocaleOption } from '../../../components/LocaleSwi
 import { useDismissableDetails } from '../../../components/menu';
 import type { UiStrings } from '../../../components/i18n';
 
-function NavDropdown({ item, active }: { item: NavItem; active: boolean }) {
+function NavDropdown({ item, active, path }: { item: NavItem; active: boolean; path?: string }) {
   const ref = useRef<HTMLDetailsElement>(null);
   useDismissableDetails(ref);
   return (
@@ -25,7 +25,12 @@ function NavDropdown({ item, active }: { item: NavItem; active: boolean }) {
               <PixelIcon name="external" />
             </a>
           ) : c.link ? (
-            <KitLink key={i} className="kit-menu-item" href={href(c.link)}>
+            <KitLink
+              key={i}
+              className={c.link === path ? 'kit-menu-item is-active' : 'kit-menu-item'}
+              href={href(c.link)}
+              aria-current={c.link === path ? 'page' : undefined}
+            >
               <span>{c.text}</span>
             </KitLink>
           ) : null,
@@ -33,6 +38,42 @@ function NavDropdown({ item, active }: { item: NavItem; active: boolean }) {
       </div>
     </details>
   );
+}
+
+const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+/** Header states tried in order until the nav fits (see docs.css). */
+const NAV_FIT_STEPS = ['search', 'compact', 'drawer'] as const;
+
+/**
+ * Keeps the desktop nav from being cut off: while its items do not fit next to the actions, the header gets
+ * data-fit="search" (icon-only search button), then "compact" (icon-only language button too), then
+ * "drawer" (the nav moves into the drawer, like below 960px). Measured on resize, after web fonts load and
+ * when the labels or the (bold) active item change; without JS the list just scrolls.
+ */
+function useNavFit(ref: RefObject<HTMLElement | null>, locale: string, active: number | undefined) {
+  useIsoLayoutEffect(() => {
+    const header = ref.current;
+    const list = header?.querySelector<HTMLElement>('.kit-site-nav > ul');
+    if (!header || !list) return;
+    const overflows = () => list.scrollWidth > list.clientWidth;
+    const fit = () => {
+      delete header.dataset.fit;
+      // stops as soon as the nav fits (or is hidden by the mobile breakpoint: both widths are then 0)
+      for (const step of NAV_FIT_STEPS) {
+        if (!overflows()) return;
+        header.dataset.fit = step;
+      }
+    };
+    fit();
+    const ro = typeof ResizeObserver === 'undefined' ? undefined : new ResizeObserver(fit);
+    ro?.observe(header);
+    document.fonts?.addEventListener('loadingdone', fit);
+    return () => {
+      ro?.disconnect();
+      document.fonts?.removeEventListener('loadingdone', fit);
+    };
+  }, [ref, locale, active]);
 }
 
 export interface SiteHeaderProps {
@@ -51,8 +92,10 @@ export interface SiteHeaderProps {
 export function SiteHeader({ route, locale, lang, t, localeOptions, onLocaleSelect, onOpenSearch, onOpenDrawer, drawerOpen, hasDrawer }: SiteHeaderProps) {
   const items = site.nav[locale] ?? [];
   const home = href(site.homePaths[locale] ?? '');
+  const headerRef = useRef<HTMLElement>(null);
+  useNavFit(headerRef, locale, route?.nav);
   return (
-    <header className="kit-site-header">
+    <header ref={headerRef} className="kit-site-header">
       <div className="kit-site-header-inner">
         {hasDrawer ? (
           <button
@@ -82,7 +125,7 @@ export function SiteHeader({ route, locale, lang, t, localeOptions, onLocaleSele
               return (
                 <li key={i}>
                   {it.items ? (
-                    <NavDropdown item={it} active={active} />
+                    <NavDropdown item={it} active={active} path={route?.path} />
                   ) : it.external ? (
                     <a className="kit-site-nav-link" href={it.link} target="_blank" rel="noopener">
                       {it.text}

@@ -6,8 +6,10 @@ import { DOCS_PROJECTS, LINKS, SOCIAL, COPYRIGHT_HOLDER } from './projects';
 export interface SiteFooterProps {
   locale?: string;
   strings?: Partial<UiStrings>;
-  /** Site-specific line(s) shown above the legal row (e.g. a project's own copyright message). */
+  /** Site-specific line(s) shown above the legal row (e.g. a project's own footer message). */
   extra?: ReactNode;
+  /** The site's own copyright notice; replaces the default "© <year> LeviMC" in the legal row. */
+  copyright?: ReactNode;
   /** Copyright year (defaults to the build year). */
   year?: number;
   className?: string;
@@ -16,7 +18,7 @@ export interface SiteFooterProps {
 const BUILD_YEAR = new Date().getFullYear();
 
 /** Shared footer: grass horizon on top, "soil" below. Same links on every LeviMC site. */
-export function SiteFooter({ locale, strings, extra, year = BUILD_YEAR, className }: SiteFooterProps) {
+export function SiteFooter({ locale, strings, extra, copyright, year = BUILD_YEAR, className }: SiteFooterProps) {
   const t = uiStrings(locale, strings);
   return (
     <footer className={className ? `kit-footer ${className}` : 'kit-footer'} data-kit-footer="">
@@ -95,9 +97,13 @@ export function SiteFooter({ locale, strings, extra, year = BUILD_YEAR, classNam
           <div className="kit-footer-inner kit-footer-legal-inner">
             {extra ? <div className="kit-footer-extra">{extra}</div> : null}
             <p>
-              <span suppressHydrationWarning>
-                © {year} {COPYRIGHT_HOLDER}
-              </span>
+              {copyright ? (
+                <span>{copyright}</span>
+              ) : (
+                <span suppressHydrationWarning>
+                  © {year} {COPYRIGHT_HOLDER}
+                </span>
+              )}
               <span className="kit-footer-sep" aria-hidden="true">
                 ·
               </span>
