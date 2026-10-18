@@ -31,7 +31,8 @@
     position: relative;
     overflow-wrap: anywhere;
     color: var(--color-ink);
-    scroll-margin-top: calc(var(--spacing-header) + 1.25rem);
+    /* html's scroll-padding-top already reserves the sticky header + 1rem; the two add up */
+    scroll-margin-top: 0.25rem;
     text-wrap: balance;
   }
   .kit-prose h1 {
@@ -135,6 +136,10 @@
   .kit-prose strong {
     font-weight: 650;
     color: var(--color-ink);
+  }
+  /* bold link text keeps the link colour */
+  .kit-prose a strong {
+    color: inherit;
   }
   .kit-prose em {
     font-style: italic;
