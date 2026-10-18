@@ -154,7 +154,7 @@ export function buildNavigation({ cfg, scan, titles, warn }: NavBuildInput): Nav
       });
       if (mode === 'tree') sidebars[`${code}:tree`] = { items: tree };
       tree.forEach((it, i) => {
-        if (mode === 'tabs' && it.items) sidebars[`${code}:tab${i}`] = { title: it.text, items: it.items };
+        if (mode === 'tabs' && it.items) sidebars[`${code}:tab${i}`] = { title: it.text, items: it.items, collapseGroups: !cfg.sidebarExpand };
       });
       const flat = flatten(tree);
       for (const r of scan.routes.filter((x) => x.locale === code)) {
