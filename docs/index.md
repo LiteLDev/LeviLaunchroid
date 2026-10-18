@@ -25,16 +25,22 @@ hero:
 features:
   - title: Official game first
     details: LeviLauncher is built for legitimate Minecraft Bedrock players and requires the official Google Play version of Minecraft.
+    icon: grass
   - title: Version isolation
     details: Keep multiple game versions and their data separated so testing one setup does not disturb another.
+    icon: chest
   - title: Content management
     details: Import, export, back up, and organize worlds, resource packs, and launcher data from one place.
+    icon: map
   - title: Account switching
     details: Manage multiple Xbox accounts in the launcher and switch between them before launching.
+    icon: emerald
   - title: Quick Launch
     details: Use URI actions to open specific Minecraft screens, connect to servers, or load a world faster.
+    icon: compass
   - title: Native mod support
     details: Developers can use Preloader APIs to load native SO modules, receive input callbacks, install hooks, and apply patches.
+    icon: pickaxe
 ---
 
 ::: tip Looking for Chinese documentation?

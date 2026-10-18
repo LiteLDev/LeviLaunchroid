@@ -25,16 +25,22 @@ hero:
 features:
   - title: 官方游戏优先
     details: LeviLauncher 面向合法 Minecraft 基岩版玩家，要求设备上存在来自 Google Play 的官方 Minecraft。
+    icon: grass
   - title: 多版本隔离
     details: 独立管理多个 Minecraft 版本和数据目录，测试、游玩、回退互不干扰。
+    icon: chest
   - title: 内容管理
     details: 在启动器内导入、导出、备份和整理世界、资源包与启动器数据。
+    icon: map
   - title: 账号切换
     details: 在启动器内管理多个 Xbox 账号，并在启动前切换到需要使用的账号。
+    icon: emerald
   - title: 快速启动
     details: 使用 URI 操作直接打开指定游戏页面、连接服务器或加载本地世界。
+    icon: compass
   - title: Native Mod 支持
     details: 开发者可以通过 Preloader API 加载 native SO 模块、接收输入回调、安装 hook 并应用 patch。
+    icon: pickaxe
 ---
 
 ::: tip Need English documentation?

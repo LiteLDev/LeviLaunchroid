@@ -3,15 +3,50 @@
   "private": true,
   "version": "0.0.0",
   "description": "Documentation site for the LeviLaunchroid Android launcher",
-  "scripts": {
-    "docs:dev": "vitepress dev .",
-    "docs:build": "vitepress build .",
-    "docs:preview": "vitepress preview ."
-  },
+  "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "node kit/docs/build.mjs",
+    "preview": "node with-base.mjs kit/scripts/serve-pages.mjs dist --base {base} --port 4173",
+    "typecheck": "tsc --noEmit",
+    "linkcheck": "node with-base.mjs kit/scripts/linkcheck.mjs dist --base {base} --site-origin https://docs.levimc.org",
+    "smoke": "node with-base.mjs kit/scripts/smoke.mjs --url http://127.0.0.1:4173{base}"
+  },
+  "dependencies": {
+    "minisearch": "7.2.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router": "7.18.4"
   },
   "devDependencies": {
-    "vitepress": "^1.6.4"
+    "@shikijs/transformers": "4.5.0",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/hast": "3.0.5",
+    "@types/mdast": "4.0.4",
+    "@types/node": "24.19.2",
+    "@types/picomatch": "4.0.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/unist": "3.0.3",
+    "@vitejs/plugin-react": "6.1.2",
+    "hast-util-to-html": "9.0.5",
+    "hast-util-to-string": "3.0.1",
+    "mdast-util-to-string": "4.0.0",
+    "picomatch": "4.0.7",
+    "rehype-raw": "7.0.0",
+    "remark-frontmatter": "5.0.0",
+    "remark-gfm": "4.0.1",
+    "remark-parse": "11.0.0",
+    "remark-rehype": "11.1.2",
+    "shiki": "4.5.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "unified": "11.0.5",
+    "unist-util-visit": "5.1.0",
+    "vite": "8.3.4",
+    "yaml": "2.9.1"
   }
 }
