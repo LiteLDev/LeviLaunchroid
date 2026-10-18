@@ -9,7 +9,7 @@
 - 来自 Google Play 的正版 Minecraft 基岩版。
 - 足够的可用存储空间，用于启动器、游戏数据、世界、资源包和备份。
 
-LeviLauncher 不是 Minecraft 授权替代品。它依赖官方游戏运行，也不隶属于 Mojang 或 Microsoft。
+LeviLauncher 不是 Minecraft 授权替代品。它依赖官方游戏运行。
 
 ## 安装 LeviLauncher
 
