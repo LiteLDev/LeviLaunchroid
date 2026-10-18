@@ -140,7 +140,6 @@ export default defineDocsConfig({
     },
   },
   social: [{ icon: 'github', link: repo }],
-  footer: { copyright: 'Copyright © 2024-2026 LeviMC' },
   ui: {
     root: { previous: 'Previous page', next: 'Next page', backToTop: 'Back to top', menu: 'Menu' },
     'zh-CN': { previous: '上一页', next: '下一页', backToTop: '返回顶部', menu: '菜单' },

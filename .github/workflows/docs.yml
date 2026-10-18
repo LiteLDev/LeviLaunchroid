@@ -7,10 +7,30 @@ on:
     paths:
       - .github/workflows/docs.yml
       - docs/**
+  # levimc-kit (the LeviMC bar, footer and docs engine) is published by levimc.org and fetched by the package
+  # install: levimc.org triggers this workflow when it publishes a new kit, and the hourly check below catches up.
+  schedule:
+    - cron: '41 * * * *'
   workflow_dispatch:
 
 jobs:
+  # On the schedule: build only when levimc.org publishes a kit the live site does not run yet.
+  kit:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    outputs:
+      stale: ${{ steps.check.outputs.stale }}
+    steps:
+      - id: check
+        run: |
+          want=$(curl -fsSL https://levimc.org/kit/v2/manifest.json | jq -r '"levimc-kit " + .version + "+" + .build')
+          have=$(curl -fsSL https://docs.levimc.org/LeviLaunchroid/ | grep -o 'levimc-kit [^"]*' | head -1)
+          echo "live: $have · published: $want"
+          echo "stale=$([ "$want" != "$have" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
   build:
+    needs: kit
+    if: ${{ !cancelled() && (github.event_name != 'schedule' || needs.kit.outputs.stale == 'true') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -46,7 +66,7 @@ jobs:
           path: docs/dist/
 
   deploy:
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: ${{ !cancelled() && needs.build.result == 'success' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
     needs: build
     runs-on: ubuntu-latest
     concurrency:
