@@ -1,3 +1,5 @@
+-keep,includedescriptorclasses class org.levimc.pojavcontrols.** { *; }
+
 -keep class org.levimc.pojavcontrols.CustomControls {
     !static !transient <fields>;
     <init>();

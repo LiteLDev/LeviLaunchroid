@@ -1,5 +1,7 @@
 -keepattributes Signature,InnerClasses,EnclosingMethod,*Annotation*,SourceFile,LineNumberTable
 
+-keep,includedescriptorclasses class org.levimc.** { *; }
+
 -keepclasseswithmembers,includedescriptorclasses class * {
     native <methods>;
 }
