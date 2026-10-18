@@ -80,7 +80,6 @@ function buildEnglishNav(): NavEntry[] {
     },
     { text: 'Privacy Policy', link: '/privacy-policy' },
     { text: 'Downloads', link: releases },
-    { text: 'GitHub', link: repo },
   ];
 }
 
@@ -99,7 +98,6 @@ function buildChineseNav(): NavEntry[] {
     // The privacy policy is English-only: link straight to it (no zh-CN page exists).
     { text: '隐私政策', link: '/privacy-policy' },
     { text: '下载', link: releases },
-    { text: 'GitHub', link: repo },
   ];
 }
 
