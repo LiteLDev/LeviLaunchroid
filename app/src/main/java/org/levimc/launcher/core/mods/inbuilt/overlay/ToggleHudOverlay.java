@@ -26,8 +26,17 @@ public class ToggleHudOverlay extends BaseOverlayButton {
 
     @Override
     protected void onButtonClick() {
-        isActive = !isActive;
-        sendKey(KeyEvent.KEYCODE_F1);
+        setActive(!isActive, true);
+        InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+        if (manager != null) {
+            manager.setLauncherHudSuppressed(isActive);
+        }
+    }
+
+    public void setActive(boolean active, boolean updateGameHud) {
+        if (isActive == active) return;
+        isActive = active;
+        if (updateGameHud) sendKey(KeyEvent.KEYCODE_F1);
         updateButtonState();
     }
 

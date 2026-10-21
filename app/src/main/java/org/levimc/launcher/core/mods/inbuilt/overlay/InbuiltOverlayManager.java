@@ -60,6 +60,7 @@ public class InbuiltOverlayManager {
     private String selectedDisplayModId;
     private HudEditorSelectionListener hudEditorSelectionListener;
     private boolean hudEditorMode = false;
+    private volatile boolean launcherHudSuppressed = false;
     private int baseY = 150;
     private static final int SPACING = 70;
     private static final int START_X = 50;
@@ -72,6 +73,11 @@ public class InbuiltOverlayManager {
 
     public static InbuiltOverlayManager getInstance() {
         return instance;
+    }
+
+    public void setLauncherHudSuppressed(boolean suppressed) {
+        launcherHudSuppressed = suppressed;
+        refreshRuntimeVisibility();
     }
 
     private ModMenuOverlay getOrCreateModMenuOverlay() {
@@ -233,6 +239,13 @@ public class InbuiltOverlayManager {
                 BaseOverlayButton controller = keybindControllers.get(modId);
                 if (controller != null) controller.hide();
             }
+        }
+        if (ModIds.TOGGLE_HUD.equals(modId)) {
+            BaseOverlayButton controller = getKeybindController(ModIds.TOGGLE_HUD);
+            if (controller instanceof ToggleHudOverlay) {
+                ((ToggleHudOverlay) controller).setActive(enabled, true);
+            }
+            setLauncherHudSuppressed(enabled);
         }
     }
 
@@ -1154,6 +1167,18 @@ public class InbuiltOverlayManager {
         lastVisibilityStateHash = stateHash;
 
         activity.runOnUiThread(() -> {
+            if (launcherHudSuppressed) {
+                if (modMenuOverlay != null && modMenuOverlay.isShowing()) modMenuOverlay.hide();
+                if (modMenuButton != null) modMenuButton.setVisibility(android.view.View.GONE);
+                if (hudOverlay != null) hudOverlay.setVisibility(android.view.View.GONE);
+                for (BaseOverlayButton overlay : overlays) {
+                    if (overlay.overlayView != null) overlay.overlayView.setVisibility(android.view.View.GONE);
+                }
+                if (chickPetOverlay != null) chickPetOverlay.setVisibility(android.view.View.GONE);
+                if (fpsDisplayOverlay != null) fpsDisplayOverlay.setVisibility(android.view.View.GONE);
+                if (cpsDisplayOverlay != null) cpsDisplayOverlay.setVisibility(android.view.View.GONE);
+                return;
+            }
             if (modMenuButton != null) {
                 int visibility = !isFloatingModMenuButtonHidden && !hudEditorMode &&
                         (!isPauseOnly || (isPauseOpen && isShowingMenu))
