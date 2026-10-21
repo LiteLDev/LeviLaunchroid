@@ -136,8 +136,7 @@ jobs:
           CF_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
         run: echo "curseforge.api_key=${CF_API_KEY}" >> local.properties
 
-      - name: Validate Android signing secrets
-        if: github.event_name != 'pull_request'
+      - name: Detect optional Android signing secrets
         env:
           SIGNING_KEY_STORE: ${{ secrets.SIGNING_KEY_STORE }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
@@ -145,16 +144,16 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
           set -euo pipefail
-          missing=()
-          [ -n "${SIGNING_KEY_STORE:-}" ] || missing+=(SIGNING_KEY_STORE)
-          [ -n "${SIGNING_KEY_ALIAS:-}" ] || missing+=(SIGNING_KEY_ALIAS)
-          [ -n "${SIGNING_STORE_PASSWORD:-}" ] || missing+=(SIGNING_STORE_PASSWORD)
-          [ -n "${SIGNING_KEY_PASSWORD:-}" ] || missing+=(SIGNING_KEY_PASSWORD)
-          if [ "${#missing[@]}" -ne 0 ]; then
-            echo "Missing required GitHub Actions secrets: ${missing[*]}" >&2
-            exit 1
+          if [ -n "${SIGNING_KEY_STORE:-}" ] && \
+             [ -n "${SIGNING_KEY_ALIAS:-}" ] && \
+             [ -n "${SIGNING_STORE_PASSWORD:-}" ] && \
+             [ -n "${SIGNING_KEY_PASSWORD:-}" ]; then
+            echo "HAS_SIGNING_SECRETS=true" >> "$GITHUB_ENV"
+            echo "Signing secrets detected; a signed APK will also be produced."
+          else
+            echo "HAS_SIGNING_SECRETS=false" >> "$GITHUB_ENV"
+            echo "Signing secrets are unavailable; unsigned APK output will be used."
           fi
-          echo "HAS_SIGNING_SECRETS=true" >> "$GITHUB_ENV"
 
       - name: Build Debug, Beta and Release APKs
         run: ./gradlew assembleDebug assembleBeta assembleRelease
@@ -180,6 +179,7 @@ jobs:
         with:
           name: LeviLauncher-release-unsigned-apk
           path: app/build/outputs/apk/release/*-unsigned.apk
+          if-no-files-found: error
 
       - name: Upload Beta APK
         uses: actions/upload-artifact@v4.6.2
@@ -191,6 +191,7 @@ jobs:
         if: env.HAS_SIGNING_SECRETS == 'true'
         uses: kevin-david/zipalign-sign-android-release@v2
         id: sign_app
+        continue-on-error: true
         with:
           releaseDirectory: app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY_STORE }}
@@ -202,27 +203,28 @@ jobs:
           BUILD_TOOLS_VERSION: "35.0.0"
 
       - name: Rename APK with tag
-        if: env.HAS_SIGNING_SECRETS == 'true'
+        if: env.HAS_SIGNING_SECRETS == 'true' && steps.sign_app.outcome == 'success'
         run: |
           TAG=${GITHUB_REF_NAME:-${GITHUB_SHA::7}}
           SIGNED_APK="${{ steps.sign_app.outputs.signedReleaseFile }}"
           APK_DST="LeviLauncher-${TAG}-release.apk"
           cp "$SIGNED_APK" "$APK_DST"
+          echo "SIGNED_APK_NAME=$APK_DST" >> "$GITHUB_ENV"
           echo "Signed APK renamed to $APK_DST"
 
       - name: Upload Signed APK Artifact
-        if: env.HAS_SIGNING_SECRETS == 'true'
+        if: env.HAS_SIGNING_SECRETS == 'true' && steps.sign_app.outcome == 'success'
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: LeviLauncher-${{ github.ref_name }}-release.apk
-          path: LeviLauncher-${{ github.ref_name }}-release.apk
+          name: ${{ env.SIGNED_APK_NAME }}
+          path: ${{ env.SIGNED_APK_NAME }}
 
       - name: Generate GitHub release notes
-        if: env.HAS_SIGNING_SECRETS == 'true' && startsWith(github.ref, 'refs/tags/')
+        if: env.HAS_SIGNING_SECRETS == 'true' && steps.sign_app.outcome == 'success' && startsWith(github.ref, 'refs/tags/')
         run: python3 scripts/render_release_notes.py resources/launcher/changelog.json release-notes.md
 
       - name: Release APK to GitHub Releases
-        if: env.HAS_SIGNING_SECRETS == 'true' && startsWith(github.ref, 'refs/tags/')
+        if: env.HAS_SIGNING_SECRETS == 'true' && steps.sign_app.outcome == 'success' && startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: LeviLauncher-${{ github.ref_name }}-release.apk
@@ -231,7 +233,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Notify Discord
-        if: env.HAS_SIGNING_SECRETS == 'true' && startsWith(github.ref, 'refs/tags/')
+        if: env.HAS_SIGNING_SECRETS == 'true' && steps.sign_app.outcome == 'success' && startsWith(github.ref, 'refs/tags/')
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           APK_URL: "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/LeviLauncher-${{ github.ref_name }}-release.apk"
