@@ -1200,11 +1200,12 @@ public class InbuiltOverlayManager {
             for (BaseOverlayButton overlay : overlays) {
                 if (overlay.overlayView != null) {
                     boolean visible;
-                    if (overlay instanceof ExternalButtonOverlay) {
-                        // External mod buttons are part of the external HUD. Keep
-                        // all built-in launcher controls, including Toggle HUD, visible.
-                        visible = !launcherHudSuppressed &&
-                                (inbuiltVisible || manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey()));
+                    if (launcherHudSuppressed && !(overlay instanceof ToggleHudOverlay)) {
+                        // Hide all launcher/external overlay buttons except the
+                        // built-in Hide HUD button, which must remain available
+                        // to restore the HUD. The floating mod-menu button is a
+                        // separate view and remains visible below.
+                        visible = false;
                     } else {
                         visible = overlay instanceof HotbarSlotOverlay ? hotbarVisible :
                                 inbuiltVisible || manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey());
@@ -1219,21 +1220,24 @@ public class InbuiltOverlayManager {
             }
 
             if (chickPetOverlay != null) {
-                int visibility = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.CHICK_PET)
+                int visibility = !launcherHudSuppressed &&
+                        (inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.CHICK_PET))
                         ? android.view.View.VISIBLE
                         : android.view.View.GONE;
                 chickPetOverlay.setVisibility(visibility);
             }
 
             if (fpsDisplayOverlay != null) {
-                int visibility = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.FPS_DISPLAY)
+                int visibility = !launcherHudSuppressed &&
+                        (inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.FPS_DISPLAY))
                         ? android.view.View.VISIBLE
                         : android.view.View.GONE;
                 fpsDisplayOverlay.setVisibility(visibility);
             }
 
             if (cpsDisplayOverlay != null) {
-                int visibility = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.CPS_DISPLAY)
+                int visibility = !launcherHudSuppressed &&
+                        (inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.CPS_DISPLAY))
                         ? android.view.View.VISIBLE
                         : android.view.View.GONE;
                 cpsDisplayOverlay.setVisibility(visibility);
