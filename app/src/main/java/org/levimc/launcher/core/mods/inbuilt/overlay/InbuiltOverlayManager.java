@@ -243,9 +243,17 @@ public class InbuiltOverlayManager {
         if (ModIds.TOGGLE_HUD.equals(modId)) {
             BaseOverlayButton controller = getKeybindController(ModIds.TOGGLE_HUD);
             if (controller instanceof ToggleHudOverlay) {
-                ((ToggleHudOverlay) controller).setActive(enabled, true);
+                ToggleHudOverlay toggleHud = (ToggleHudOverlay) controller;
+                if (!enabled && toggleHud.isActive()) {
+                    // Restore the game HUD only when disabling an active toggle.
+                    toggleHud.setActive(false, true);
+                } else if (enabled) {
+                    // Enabling the module only exposes the button; the button
+                    // itself controls whether the HUD is hidden.
+                    toggleHud.setActive(false, false);
+                }
             }
-            setLauncherHudSuppressed(enabled);
+            setLauncherHudSuppressed(false);
         }
     }
 
@@ -1167,18 +1175,6 @@ public class InbuiltOverlayManager {
         lastVisibilityStateHash = stateHash;
 
         activity.runOnUiThread(() -> {
-            if (launcherHudSuppressed) {
-                if (modMenuOverlay != null && modMenuOverlay.isShowing()) modMenuOverlay.hide();
-                if (modMenuButton != null) modMenuButton.setVisibility(android.view.View.GONE);
-                if (hudOverlay != null) hudOverlay.setVisibility(android.view.View.GONE);
-                for (BaseOverlayButton overlay : overlays) {
-                    if (overlay.overlayView != null) overlay.overlayView.setVisibility(android.view.View.GONE);
-                }
-                if (chickPetOverlay != null) chickPetOverlay.setVisibility(android.view.View.GONE);
-                if (fpsDisplayOverlay != null) fpsDisplayOverlay.setVisibility(android.view.View.GONE);
-                if (cpsDisplayOverlay != null) cpsDisplayOverlay.setVisibility(android.view.View.GONE);
-                return;
-            }
             if (modMenuButton != null) {
                 int visibility = !isFloatingModMenuButtonHidden && !hudEditorMode &&
                         (!isPauseOnly || (isPauseOpen && isShowingMenu))
@@ -1192,7 +1188,8 @@ public class InbuiltOverlayManager {
             }
 
             if (hudOverlay != null) {
-                int visibility = hudOverlay.isHudEditorMode() || showGameOverlays
+                int visibility = !launcherHudSuppressed &&
+                        (hudOverlay.isHudEditorMode() || showGameOverlays)
                         ? android.view.View.VISIBLE
                         : android.view.View.GONE;
                 if (hudOverlay.getVisibility() != visibility) {
@@ -1202,8 +1199,16 @@ public class InbuiltOverlayManager {
 
             for (BaseOverlayButton overlay : overlays) {
                 if (overlay.overlayView != null) {
-                    boolean visible = overlay instanceof HotbarSlotOverlay ? hotbarVisible :
-                            inbuiltVisible || manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey());
+                    boolean visible;
+                    if (overlay instanceof ExternalButtonOverlay) {
+                        // External mod buttons are part of the external HUD. Keep
+                        // all built-in launcher controls, including Toggle HUD, visible.
+                        visible = !launcherHudSuppressed &&
+                                (inbuiltVisible || manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey()));
+                    } else {
+                        visible = overlay instanceof HotbarSlotOverlay ? hotbarVisible :
+                                inbuiltVisible || manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey());
+                    }
                     int visibility = visible
                             ? android.view.View.VISIBLE
                             : android.view.View.GONE;

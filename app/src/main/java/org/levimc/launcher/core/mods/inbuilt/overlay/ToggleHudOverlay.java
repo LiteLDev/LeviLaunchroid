@@ -40,6 +40,10 @@ public class ToggleHudOverlay extends BaseOverlayButton {
         updateButtonState();
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
     private void updateButtonState() {
         if (overlayView instanceof ImageButton) {
             ImageButton btn = (ImageButton) overlayView;
