@@ -8,7 +8,7 @@
 
 <resources>
     <!-- Common -->
-    <string name="app_name">LeviLauncher</string>
+    <string name="app_name">KLauncher</string>
     <string name="minecraft">Minecraft</string>
     <string name="launch">启动</string>
     <string name="beta_badge">Beta</string>
