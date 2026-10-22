@@ -108,15 +108,10 @@ public class MinecraftLauncher {
                             }
                         }
                         if (major < 1 || (major == 1 && minor < 21) || (major == 1 && minor == 21 && patch < 80)) {
-                            activity.runOnUiThread(() -> {
-                                new org.levimc.launcher.ui.dialogs.CustomAlertDialog(activity)
-                                        .setTitleText(activity.getString(org.levimc.launcher.R.string.unsupported_version_title))
-                                        .setMessage(activity.getString(org.levimc.launcher.R.string.unsupported_version_msg))
-                                        .setPositiveButton(activity.getString(org.levimc.launcher.R.string.back), null)
-                                        .show();
-                            });
-                            notifyLaunchFailed(callback, new IllegalStateException("Unsupported version"));
-                            return;
+                            // This is an older-than-tested version, not a guaranteed incompatibility.
+                            // Allow the selected APK to attempt launch; native ABI/library/runtime
+                            // differences may still make some Minecraft versions fail at runtime.
+                            Log.w(TAG, "Attempting launch of older, unverified Minecraft version: " + version.versionCode);
                         }
                     }
                 } catch (Exception e) {
