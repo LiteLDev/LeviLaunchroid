@@ -22,7 +22,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "levilauncher"
+rootProject.name = "KLauncher"
 include ':app'
 include ':minecraft'
 include ':pojav_controls'
