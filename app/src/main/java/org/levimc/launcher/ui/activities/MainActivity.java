@@ -41,7 +41,6 @@ import org.levimc.launcher.settings.FeatureSettings;
 import org.levimc.launcher.ui.animation.DynamicAnim;
 import org.levimc.launcher.ui.dialogs.CustomAlertDialog;
 
-import org.levimc.launcher.ui.dialogs.PlayStoreValidationDialog;
 import org.levimc.launcher.ui.views.MainViewModel;
 import org.levimc.launcher.ui.views.MainViewModelFactory;
 import org.levimc.launcher.util.ApkImportManager;
@@ -52,7 +51,6 @@ import org.levimc.launcher.util.LauncherStorage;
 import org.levimc.launcher.util.StorageAccess;
 import org.levimc.launcher.util.PermissionsHandler;
 import org.levimc.launcher.util.PersonalizationManager;
-import org.levimc.launcher.util.PlayStoreValidator;
 import org.levimc.launcher.util.ResourcepackHandler;
 
 import org.levimc.launcher.util.UIHelper;
@@ -846,14 +844,7 @@ import okhttp3.OkHttpClient;
             }
         }
 
-        if (!PlayStoreValidator.isMinecraftFromPlayStore(this)) {
-            trace.warning("Launch cancelled", "Minecraft is not verified as Play Store install");
-            binding.launchButton.setEnabled(true);
-            PlayStoreValidationDialog.showNotFromPlayStoreDialog(this);
-            return;
-        }
-
-        trace.mark("Launch validation completed", version.directoryName + " " + version.versionCode);
+        trace.mark("Launch preflight completed", version.directoryName + " " + version.versionCode);
         try {
             Intent launchIntent = createMinecraftLaunchIntent();
             launchIntent.putExtra(LaunchTrace.EXTRA_SESSION_ID, trace.getSessionId());
