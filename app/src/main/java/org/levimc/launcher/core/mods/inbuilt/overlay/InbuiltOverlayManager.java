@@ -60,6 +60,7 @@ public class InbuiltOverlayManager {
     private String selectedDisplayModId;
     private HudEditorSelectionListener hudEditorSelectionListener;
     private boolean hudEditorMode = false;
+    private volatile boolean launcherHudSuppressed = false;
     private int baseY = 150;
     private static final int SPACING = 70;
     private static final int START_X = 50;
@@ -72,6 +73,11 @@ public class InbuiltOverlayManager {
 
     public static InbuiltOverlayManager getInstance() {
         return instance;
+    }
+
+    public void setLauncherHudSuppressed(boolean suppressed) {
+        launcherHudSuppressed = suppressed;
+        refreshRuntimeVisibility();
     }
 
     private ModMenuOverlay getOrCreateModMenuOverlay() {
@@ -233,6 +239,21 @@ public class InbuiltOverlayManager {
                 BaseOverlayButton controller = keybindControllers.get(modId);
                 if (controller != null) controller.hide();
             }
+        }
+        if (ModIds.TOGGLE_HUD.equals(modId)) {
+            BaseOverlayButton controller = getKeybindController(ModIds.TOGGLE_HUD);
+            if (controller instanceof ToggleHudOverlay) {
+                ToggleHudOverlay toggleHud = (ToggleHudOverlay) controller;
+                if (!enabled && toggleHud.isActive()) {
+                    // Restore the game HUD only when disabling an active toggle.
+                    toggleHud.setActive(false, true);
+                } else if (enabled) {
+                    // Enabling the module only exposes the button; the button
+                    // itself controls whether the HUD is hidden.
+                    toggleHud.setActive(false, false);
+                }
+            }
+            setLauncherHudSuppressed(false);
         }
     }
 
@@ -1167,7 +1188,8 @@ public class InbuiltOverlayManager {
             }
 
             if (hudOverlay != null) {
-                int visibility = hudOverlay.isHudEditorMode() || showGameOverlays
+                int visibility = !launcherHudSuppressed &&
+                        (hudOverlay.isHudEditorMode() || showGameOverlays)
                         ? android.view.View.VISIBLE
                         : android.view.View.GONE;
                 if (hudOverlay.getVisibility() != visibility) {
@@ -1177,8 +1199,17 @@ public class InbuiltOverlayManager {
 
             for (BaseOverlayButton overlay : overlays) {
                 if (overlay.overlayView != null) {
-                    boolean visible = overlay instanceof HotbarSlotOverlay ? hotbarVisible :
-                            inbuiltVisible || manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey());
+                    boolean visible;
+                    if (launcherHudSuppressed && !(overlay instanceof ToggleHudOverlay)) {
+                        // Hide all launcher/external overlay buttons except the
+                        // built-in Hide HUD button, which must remain available
+                        // to restore the HUD. The floating mod-menu button is a
+                        // separate view and remains visible below.
+                        visible = false;
+                    } else {
+                        visible = overlay instanceof HotbarSlotOverlay ? hotbarVisible :
+                                inbuiltVisible || manager.isOverlayShowEverywhere(overlay.getOverlayConfigKey());
+                    }
                     int visibility = visible
                             ? android.view.View.VISIBLE
                             : android.view.View.GONE;
@@ -1189,21 +1220,24 @@ public class InbuiltOverlayManager {
             }
 
             if (chickPetOverlay != null) {
-                int visibility = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.CHICK_PET)
+                int visibility = !launcherHudSuppressed &&
+                        (inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.CHICK_PET))
                         ? android.view.View.VISIBLE
                         : android.view.View.GONE;
                 chickPetOverlay.setVisibility(visibility);
             }
 
             if (fpsDisplayOverlay != null) {
-                int visibility = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.FPS_DISPLAY)
+                int visibility = !launcherHudSuppressed &&
+                        (inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.FPS_DISPLAY))
                         ? android.view.View.VISIBLE
                         : android.view.View.GONE;
                 fpsDisplayOverlay.setVisibility(visibility);
             }
 
             if (cpsDisplayOverlay != null) {
-                int visibility = inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.CPS_DISPLAY)
+                int visibility = !launcherHudSuppressed &&
+                        (inbuiltVisible || manager.isOverlayShowEverywhere(ModIds.CPS_DISPLAY))
                         ? android.view.View.VISIBLE
                         : android.view.View.GONE;
                 cpsDisplayOverlay.setVisibility(visibility);
