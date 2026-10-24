@@ -244,12 +244,16 @@ object MinecraftRuntimePreparer {
         listener.onProgress(46, "Loading native libraries")
         trace.mark("Minecraft library loading started")
 
+        val initializeBundledSdk = gameManager.shouldLoadMallocRedirect()
         if (shouldLoadHttpClient(version)) {
-            loadLibrary(gameManager, "c++_shared", 48, true, listener, trace)
+            if (initializeBundledSdk) {
+                trace.mark("Native dependency reused", "libc++_shared.so linked with Minecraft")
+            } else {
+                loadLibrary(gameManager, "c++_shared", 48, true, listener, trace)
+            }
             loadLibrary(gameManager, "HttpClient.Android", 52, true, listener, trace)
         }
 
-        val initializeBundledSdk = gameManager.shouldLoadMallocRedirect()
         if (initializeBundledSdk) {
             loadLibrary(gameManager, "PlayFabMultiplayer", 53, true, listener, trace)
             loadLibrary(gameManager, "maesdk", 54, true, listener, trace)
@@ -260,7 +264,11 @@ object MinecraftRuntimePreparer {
             val excludeReasons = HashMap<String, String>()
             if (shouldLoadHttpClient(version)) {
                 excludeLibs.add("c++_shared")
-                excludeReasons["c++_shared"] = "already loaded before the bundle"
+                excludeReasons["c++_shared"] = if (initializeBundledSdk) {
+                    "linked with Minecraft dependency graph"
+                } else {
+                    "already loaded before the bundle"
+                }
             }
             if (shouldLoadHttpClient(version)) {
                 excludeLibs.add("HttpClient.Android")

@@ -258,7 +258,12 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
 
     native long nativeInitializeXboxLive(long xalInitArgs, long xblInitArgs);
 
-    public native boolean nativeKeyHandler(final int keycode, final int action);
+    @androidx.annotation.Keep
+    public boolean nativeKeyHandler(final int keycode, final int action) {
+        return nativeKeyHandler(keycode, action, InputDevice.SOURCE_KEYBOARD);
+    }
+
+    public native boolean nativeKeyHandler(final int keycode, final int action, final int source);
 
     native void nativeOnDestroy();
 
@@ -650,7 +655,7 @@ public class MainActivity extends GameActivity implements View.OnKeyListener, Fi
         if (handleActiveTextInputBackKey(event)) {
             return true;
         }
-        if (nativeKeyHandler(event.getKeyCode(), event.getAction())) {
+        if (nativeKeyHandler(event.getKeyCode(), event.getAction(), event.getSource())) {
             return true;
         }
         return super.dispatchKeyEvent(event);
