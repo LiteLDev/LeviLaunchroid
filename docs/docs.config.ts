@@ -116,6 +116,8 @@ export default defineDocsConfig({
     locales: [
       { code: 'root', label: 'English', lang: 'en-US', prefix: '' },
       { code: 'zh-CN', label: '简体中文', lang: 'zh-CN', prefix: 'zh-CN/' },
+      // Traditional Chinese, generated from the zh-CN pages (levimc-kit convertFrom)
+      { code: 'zh-Hant', label: '繁體中文', lang: 'zh-Hant', prefix: 'zh-Hant/', convertFrom: 'zh-CN' },
     ],
   },
   urlStyle: 'html',
