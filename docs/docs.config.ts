@@ -15,7 +15,7 @@ function buildEnglishSidebar(localePrefix: string): NavEntry[] {
       items: [
         { text: 'Getting Started', link: `${localePrefix}guide/getting-started` },
         { text: 'Features', link: `${localePrefix}guide/features` },
-        { text: 'Compatibility', link: `${localePrefix}guide/compatibility` },
+        { text: 'Compatibility and FAQ', link: `${localePrefix}guide/compatibility` },
       ],
     },
     {
@@ -23,15 +23,15 @@ function buildEnglishSidebar(localePrefix: string): NavEntry[] {
       items: [
         { text: 'Native Mod Quick Start', link: `${localePrefix}guide/developer` },
         { text: 'Build from Source', link: `${localePrefix}guide/build` },
-        { text: 'Mod Entry API', link: `${localePrefix}api/mod` },
+        { text: 'Mod API', link: `${localePrefix}api/mod` },
         { text: 'Mod Menu API', link: `${localePrefix}api/mod-menu` },
         { text: 'Config API', link: `${localePrefix}api/config` },
         { text: 'Input API', link: `${localePrefix}api/input` },
         { text: 'Hook API', link: `${localePrefix}api/hook` },
         { text: 'Signature API', link: `${localePrefix}api/signature` },
         { text: 'Patch API', link: `${localePrefix}api/patch` },
-        { text: 'Memory Hook Macros', link: `${localePrefix}api/memory-hook-macros` },
-        { text: 'Types and Macros', link: `${localePrefix}api/types-and-macros` },
+        { text: 'Memory Hook Example', link: `${localePrefix}api/memory-hook-macros` },
+        { text: 'SDK Headers and Macros', link: `${localePrefix}api/types-and-macros` },
       ],
     },
   ];
@@ -50,17 +50,17 @@ function buildChineseSidebar(localePrefix: string): NavEntry[] {
     {
       text: '开发者',
       items: [
-        { text: 'Native Mod 快速开始', link: `${localePrefix}guide/developer` },
+        { text: '原生模组快速开始', link: `${localePrefix}guide/developer` },
         { text: '从源码构建', link: `${localePrefix}guide/build` },
-        { text: 'Mod 入口 API', link: `${localePrefix}api/mod` },
+        { text: 'Mod API', link: `${localePrefix}api/mod` },
         { text: 'Mod Menu API', link: `${localePrefix}api/mod-menu` },
         { text: 'Config API', link: `${localePrefix}api/config` },
         { text: 'Input API', link: `${localePrefix}api/input` },
         { text: 'Hook API', link: `${localePrefix}api/hook` },
         { text: 'Signature API', link: `${localePrefix}api/signature` },
         { text: 'Patch API', link: `${localePrefix}api/patch` },
-        { text: 'Memory Hook 宏', link: `${localePrefix}api/memory-hook-macros` },
-        { text: 'Types 与宏', link: `${localePrefix}api/types-and-macros` },
+        { text: 'Memory Hook 示例', link: `${localePrefix}api/memory-hook-macros` },
+        { text: 'SDK 头文件与宏', link: `${localePrefix}api/types-and-macros` },
       ],
     },
   ];
@@ -90,7 +90,7 @@ function buildChineseNav(): NavEntry[] {
     {
       text: '开发者',
       items: [
-        { text: 'Native Mod 快速开始', link: '/zh-CN/guide/developer' },
+        { text: '原生模组快速开始', link: '/zh-CN/guide/developer' },
         { text: 'API 参考', link: '/zh-CN/api/mod' },
         { text: '从源码构建', link: '/zh-CN/guide/build' },
       ],
@@ -103,13 +103,15 @@ function buildChineseNav(): NavEntry[] {
 
 export default defineDocsConfig({
   base,
-  title: 'LeviLauncher',
-  description: 'Documentation for the LeviLaunchroid Android Minecraft Bedrock launcher.',
+  title: 'LeviLaunchroid',
+  description: 'Documentation for LeviLaunchroid, the Android launcher for Minecraft Bedrock Edition.',
   project: 'LeviLaunchroid',
-  logo: { src: 'appicon.png', alt: 'LeviLauncher' },
+  logo: { src: 'appicon.png', alt: 'LeviLaunchroid' },
   favicon: 'appicon.png',
   repo,
   contentDir: '.',
+  // Maintainer notes for release content (changelog / news JSON), not a page of the site.
+  exclude: ['RELEASE_CONTENT.md'],
   i18n: {
     mode: 'folder',
     defaultLocale: 'root',

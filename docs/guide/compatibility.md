@@ -2,13 +2,13 @@
 
 ## Supported Devices
 
-LeviLauncher targets Android 9.0 or later on ARM64 devices. Devices with more
+LeviLaunchroid targets Android 9.0 or later on ARM64 devices. Devices with more
 available RAM and storage will have a better experience, especially when
 managing multiple versions or large worlds.
 
 ## Minecraft Requirement
 
-LeviLauncher requires the official Minecraft Bedrock Edition app from Google
+LeviLaunchroid requires the official Minecraft Bedrock Edition app from Google
 Play. It is designed for legitimate players and does not provide a Minecraft
 license.
 
@@ -31,9 +31,9 @@ that worlds, packs, and settings are available.
 Backups are stored under the launcher-managed backup location. For important
 worlds, keep another copy outside app storage.
 
-## Native Modules
+## Native Mods
 
-Native modules run native code in the game process. Install only modules from
+Native mods run native code in the game process. Install only mods from
 sources you trust, and test them with an isolated version first.
 
 ## Common Questions
@@ -41,7 +41,7 @@ sources you trust, and test them with an isolated version first.
 ### Why does the launcher say Minecraft is missing?
 
 Install or update the official Minecraft app from Google Play, then open
-LeviLauncher again.
+LeviLaunchroid again.
 
 ### Why can an imported version fail to launch?
 

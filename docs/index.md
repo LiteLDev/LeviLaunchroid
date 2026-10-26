@@ -2,12 +2,12 @@
 layout: home
 
 hero:
-  name: LeviLauncher
-  text: A lightweight Android launcher for Minecraft Bedrock
-  tagline: Import and launch your official Minecraft installation, manage isolated versions, switch accounts, organize worlds and packs, and extend the game with native modules.
+  name: LeviLaunchroid
+  text: A lightweight Android launcher for Minecraft Bedrock Edition
+  tagline: Import and launch your official Minecraft installation, manage isolated versions, switch accounts, organize worlds and packs, and extend the game with native mods.
   image:
     src: /appicon.png
-    alt: LeviLauncher
+    alt: LeviLaunchroid
   actions:
     - theme: brand
       text: Get started
@@ -24,7 +24,7 @@ hero:
 
 features:
   - title: Official game first
-    details: LeviLauncher is built for legitimate Minecraft Bedrock players and requires the official Google Play version of Minecraft.
+    details: LeviLaunchroid is built for legitimate Minecraft Bedrock Edition players and requires the official Google Play version of Minecraft.
     icon: grass
   - title: Version isolation
     details: Keep multiple game versions and their data separated so testing one setup does not disturb another.
@@ -39,7 +39,7 @@ features:
     details: Use URI actions to open specific Minecraft screens, connect to servers, or load a world faster.
     icon: compass
   - title: Native mod support
-    details: Developers can use Preloader APIs to load native SO modules, receive input callbacks, install hooks, and apply patches.
+    details: Developers can use Preloader APIs to build native mods, receive input callbacks, install hooks, and apply patches.
     icon: pickaxe
 ---
 
@@ -49,7 +49,7 @@ Use the language selector or open [简体中文](/zh-CN/).
 
 ## What this site covers
 
-LeviLauncher is an open-source Android launcher for Minecraft Bedrock Edition. It focuses on practical launcher workflows first: installing the launcher, preparing an official Minecraft copy, managing versions, starting the game, and keeping player content organized.
+LeviLaunchroid is an open-source Android launcher for Minecraft Bedrock Edition. It focuses on practical launcher workflows first: installing the launcher, preparing an official Minecraft copy, managing versions, starting the game, and keeping player content organized.
 
 Developer-facing Preloader APIs are still documented here, but they are part of the Developer section instead of the main entry point.
 
@@ -57,6 +57,6 @@ Developer-facing Preloader APIs are still documented here, but they are part of 
 
 1. [Getting Started](/guide/getting-started)
 2. [Features](/guide/features)
-3. [Compatibility](/guide/compatibility)
+3. [Compatibility and FAQ](/guide/compatibility)
 4. [Native Mod Quick Start](/guide/developer)
 5. [Preloader API Reference](/api/mod)

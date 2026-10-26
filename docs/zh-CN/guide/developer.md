@@ -1,10 +1,10 @@
-# Native Mod 快速开始
+# 原生模组快速开始
 
-本页面描述 LeviLaunchroid native mod 的受支持开发路径。公开 SDK 位于
+本页面描述 LeviLaunchroid 原生模组的受支持开发路径。公开 SDK 位于
 [LiteLDev/preloader-android](https://github.com/LiteLDev/preloader-android)。
 
-独立第三方 mod 建议从
-[LeviLauncher Android mod template](https://github.com/QYCottage/levilauncher-android-mod-template)
+独立第三方模组建议从
+[Android 模组模板](https://github.com/QYCottage/levilauncher-android-mod-template)
 开始。
 
 推荐以 `examples/full-cpp-mod` 作为参考实现。它包含生命周期注册、类型化
@@ -18,7 +18,7 @@
 .\examples\full-cpp-mod\build.ps1 -Clean
 ```
 
-这个示例可以在当前仓库直接构建。独立 mod 工程建议从模板开始，并把 SDK
+这个示例可以在当前仓库直接构建。独立模组工程建议从模板开始，并把 SDK
 作为外部依赖引入。
 
 输出：
@@ -28,7 +28,7 @@ examples\full-cpp-mod\dist\arm64-v8a\full-cpp-mod\
 examples\full-cpp-mod\dist\arm64-v8a\full-cpp-mod.levipack
 ```
 
-可以导入 `.levipack`，也可以把解包后的 mod 目录复制到启动器 native mod 位置。
+可以导入 `.levipack`，也可以把解包后的模组目录复制到启动器的原生模组位置。
 
 ## 包结构
 
@@ -41,7 +41,7 @@ full-cpp-mod/
     └── config.schema.json
 ```
 
-目录名是运行期 mod id。发布后保持稳定，因为它会用于路径、Mod Menu 归属和用户持久化状态。
+目录名是运行期模组 id。发布后保持稳定，因为它会用于路径、Mod Menu 归属和用户持久化状态。
 
 ## manifest.json
 
@@ -61,14 +61,14 @@ full-cpp-mod/
 | 字段 | 说明 |
 | --- | --- |
 | `type` | 必须是 `preload-native`。 |
-| `entry` | mod 目录内 Android `.so` 的相对路径。 |
+| `entry` | 模组目录内 Android `.so` 的相对路径。 |
 | `name` | 启动器显示名。 |
 | `author` | 作者信息。 |
-| `version` | mod 版本。 |
+| `version` | 模组版本。 |
 | `icon` | 可选图标相对路径。 |
 | `minecraft_versions` | 支持精确版本和 `*` 前缀通配；缺失或为空表示全部版本。 |
-| `overwrite_files` | 可选的相对文件列表；重复导入已安装 mod 时，这些已存在文件允许被替换。缺失或为空时不额外覆盖文件。 |
-| `overwrite_folders` | 可选的相对目录列表；重复导入已安装 mod 时，这些目录内已存在的文件允许被替换。缺失或为空时，除 `manifest.json` 和 `entry` 外不覆盖已有文件。 |
+| `overwrite_files` | 可选的相对文件列表；重复导入已安装模组时，这些已存在文件允许被替换。缺失或为空时不额外覆盖文件。 |
+| `overwrite_folders` | 可选的相对目录列表；重复导入已安装模组时，这些目录内已存在的文件允许被替换。缺失或为空时，除 `manifest.json` 和 `entry` 外不覆盖已有文件。 |
 
 ## 生命周期形态
 
@@ -97,7 +97,7 @@ PL_REGISTER_MOD(FullCppMod, FullCppMod::instance())
 
 `load()` 是必需的。其它生命周期函数可选，缺失时默认成功。
 
-在构造函数中保存 loader 提供的 native mod 对象：
+在构造函数中保存 loader 提供的原生模组对象：
 
 ```cpp
 FullCppMod::FullCppMod() : mSelf(*ll::mod::NativeMod::current()) {}
@@ -112,8 +112,8 @@ bool FullCppMod::load() {
 
 ## SDK 依赖
 
-独立 Android native mod 工程使用 `FetchContent` 引入 `preloader-android`，
-并把自己的 mod library 链接到 `preloader` target：
+独立 Android 原生模组工程使用 `FetchContent` 引入 `preloader-android`，
+并把自己的模组库链接到 `preloader` target：
 
 ```cmake
 include(FetchContent)
@@ -145,8 +145,8 @@ target_link_libraries(my_mod PRIVATE preloader)
 
 ## 类型化配置
 
-配置应保存在 mod 自有状态中。生命周期调用期间，`ConfigFile` 默认会使用当前
-native mod 的 `config/config.json` 和 `config/config.schema.json` 路径：
+配置应保存在模组自有状态中。生命周期调用期间，`ConfigFile` 默认会使用当前
+原生模组的 `config/config.json` 和 `config/config.schema.json` 路径：
 
 ```cpp
 struct ExampleConfig {
@@ -166,7 +166,7 @@ bool FullCppMod::load() {
 }
 ```
 
-把 `config.json` 和 `config.schema.json` 随 mod 一起打包。完整示例的构建脚本会在
+把 `config.json` 和 `config.schema.json` 随模组一起打包。完整示例的构建脚本会在
 生成 `.levipack` 前产出这两个文件。
 
 ## Mod Menu
@@ -240,12 +240,12 @@ void submitLogoOverlay() {
 
 ## 检查清单
 
-- native mod 目标 ABI 为 `arm64-v8a`。
+- 原生模组目标 ABI 为 `arm64-v8a`。
 - 链接 `preloader` target，并只使用 `include/pl` 下的公开 SDK 头文件。
 - 使用 `PL_REGISTER_MOD` 注册一个长期存活对象。
 - 从 `ll::mod::NativeMod::current()` 保存 `ll::mod::NativeMod &mSelf`。
 - 注册运行期 UI 前先加载配置。
-- hook 和 patch handle 放在 mod 自有状态中。
+- hook 和 patch handle 放在模组自有状态中。
 - `disable()` 中注销临时 Mod Menu 项。
 - callback 在注销或 unload 前必须保持有效。
 

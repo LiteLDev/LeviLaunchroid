@@ -2,7 +2,7 @@
 
 ## 作用
 
-Config API 为 native mod 提供类型化 JSON 配置。它可以创建默认配置、把已有用户
+Config API 为原生模组提供类型化 JSON 配置。它可以创建默认配置、把已有用户
 值合并进默认结构、规范化 JSON，并生成启动器配置编辑器使用的
 `config.schema.json`。
 
@@ -48,7 +48,7 @@ struct ModConfig {
 
 ## 加载与保存
 
-native mod 生命周期调用期间，`ConfigFile` 默认可以使用当前 mod 的
+原生模组生命周期调用期间，`ConfigFile` 默认可以使用当前模组的
 `config/config.json` 和 `config/config.schema.json` 路径。需要非默认位置时仍可
 传入显式路径。
 

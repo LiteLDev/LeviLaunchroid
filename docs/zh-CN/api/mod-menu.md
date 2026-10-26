@@ -2,7 +2,7 @@
 
 ## 作用
 
-Mod Menu API 用于注册 native mod 拥有的运行期 UI：菜单模块、配置项、浮动按钮
+Mod Menu API 用于注册原生模组拥有的运行期 UI：菜单模块、配置项、浮动按钮
 和 HUD 覆盖层绘制命令。
 
 通常在 `enable()` 中注册；如果这些 UI 只应该在启用状态存在，请在 `disable()`
@@ -131,5 +131,5 @@ void submitOverlay() {
 ## 清理
 
 如果注册的 UI 是临时的，或只应该绑定到启用状态，请在 `disable()` 中调用
-`pl::modmenu::unregisterModule()` 和 `unregisterButton()`。从 native mod 生命周期
+`pl::modmenu::unregisterModule()` 和 `unregisterButton()`。从原生模组生命周期
 中注册的模块和按钮也会关联 `modId` 归属。

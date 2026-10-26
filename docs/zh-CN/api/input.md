@@ -2,7 +2,7 @@
 
 ## 作用
 
-Input API 让 native mod 监听触摸、按键、鼠标事件，并控制 Android 软键盘。
+Input API 让原生模组监听触摸、按键、鼠标事件，并控制 Android 软键盘。
 
 ## 头文件
 
@@ -66,6 +66,6 @@ bool MyMod::enable() {
 
 ## 注意
 
-- 当前没有 unregister API；请每进程只注册一次，或通过 mod 自有 enabled 状态转发。
+- 当前没有 unregister API；请每进程只注册一次，或通过模组自有 enabled 状态转发。
 - callback 保持短小，不要阻塞。
 - 软键盘函数需要游戏 Activity 可用。
