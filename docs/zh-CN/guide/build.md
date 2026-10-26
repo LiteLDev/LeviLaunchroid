@@ -1,6 +1,6 @@
 # 从源码构建
 
-本页面向想构建 LeviLaunchroid 本体的贡献者。原生模组的构建说明位于 [原生模组快速开始](/zh-CN/guide/developer)。
+本页面向想构建 LeviLauncher for Android 本体的贡献者。原生模组的构建说明位于 [原生模组快速开始](/zh-CN/guide/developer)。
 
 ## 前置要求
 

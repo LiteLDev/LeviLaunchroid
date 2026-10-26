@@ -1,6 +1,6 @@
 # Getting Started
 
-This page walks through the launcher path: install LeviLaunchroid, prepare the official Minecraft app, select a version, and start the game.
+This page walks through the launcher path: install LeviLauncher for Android, prepare the official Minecraft app, select a version, and start the game.
 
 ## Requirements
 
@@ -9,9 +9,9 @@ This page walks through the launcher path: install LeviLaunchroid, prepare the o
 - A legitimate Minecraft Bedrock Edition installation from Google Play, version 1.21.80 or later.
 - Enough free storage for the launcher, Minecraft data, worlds, packs, and backups.
 
-LeviLaunchroid is not a replacement for owning Minecraft. It works with the official game.
+LeviLauncher for Android is not a replacement for owning Minecraft. It works with the official game.
 
-## Install LeviLaunchroid
+## Install LeviLauncher for Android
 
 1. Open the [Releases page](https://github.com/LiteLDev/LeviLaunchroid/releases).
 2. Download the latest APK.
@@ -21,13 +21,13 @@ LeviLaunchroid is not a replacement for owning Minecraft. It works with the offi
 
 ## Prepare Minecraft
 
-Install Minecraft Bedrock Edition from Google Play before using the launcher. LeviLaunchroid checks for the official app and uses it as the trusted game source.
+Install Minecraft Bedrock Edition from Google Play before using the launcher. LeviLauncher for Android checks for the official app and uses it as the trusted game source.
 
 If the launcher reports that Minecraft is missing or unsupported, install or update the Google Play version first. Versions older than 1.21.80 are not supported.
 
 ## Choose and Launch a Version
 
-1. Open LeviLaunchroid.
+1. Open LeviLauncher for Android.
 2. Go to the version or instance screen.
 3. Select the Minecraft version you want to run.
 4. Enable version isolation when launching an imported version that should keep its data separate.

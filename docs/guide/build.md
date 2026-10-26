@@ -1,6 +1,6 @@
 # Build from Source
 
-This page is for contributors who want to build LeviLaunchroid itself. Native mod build notes live in [Native Mod Quick Start](/guide/developer).
+This page is for contributors who want to build LeviLauncher for Android itself. Native mod build notes live in [Native Mod Quick Start](/guide/developer).
 
 ## Prerequisites
 

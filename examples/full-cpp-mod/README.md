@@ -1,6 +1,6 @@
 # Full C++ Lifecycle Mod Example
 
-This directory is a complete C++ native mod example for LeviLaunchroid. It shows
+This directory is a complete C++ native mod example for LeviLauncher for Android. It shows
 the recommended C++ lifecycle API, typed config, Mod Menu integration, and
 `.levipack` packaging.
 
@@ -93,7 +93,7 @@ libfull_cpp_mod.so
 manifest.json
 ```
 
-After importing the mod into LeviLaunchroid, verify that:
+After importing the mod into LeviLauncher for Android, verify that:
 
 - The launcher config page reads `config.json` and `config.schema.json`.
 - The in-game Mod Menu shows `Full C++ Config Demo`.

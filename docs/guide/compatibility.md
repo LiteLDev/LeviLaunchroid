@@ -2,13 +2,13 @@
 
 ## Supported Devices
 
-LeviLaunchroid targets Android 9.0 or later on ARM64 devices. Devices with more
+LeviLauncher for Android targets Android 9.0 or later on ARM64 devices. Devices with more
 available RAM and storage will have a better experience, especially when
 managing multiple versions or large worlds.
 
 ## Minecraft Requirement
 
-LeviLaunchroid requires the official Minecraft Bedrock Edition app from Google
+LeviLauncher for Android requires the official Minecraft Bedrock Edition app from Google
 Play. It is designed for legitimate players and does not provide a Minecraft
 license.
 
@@ -41,7 +41,7 @@ sources you trust, and test them with an isolated version first.
 ### Why does the launcher say Minecraft is missing?
 
 Install or update the official Minecraft app from Google Play, then open
-LeviLaunchroid again.
+LeviLauncher for Android again.
 
 ### Why can an imported version fail to launch?
 

@@ -1,6 +1,6 @@
 # Native Mod Quick Start
 
-This page describes the supported developer path for LeviLaunchroid native
+This page describes the supported developer path for LeviLauncher for Android native
 mods. The public SDK is published in
 [LiteLDev/preloader-android](https://github.com/LiteLDev/preloader-android).
 

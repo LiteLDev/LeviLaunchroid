@@ -1,6 +1,6 @@
 # 功能概览
 
-LeviLaunchroid 的核心是日常 Minecraft 基岩版启动器工作流。原生模组 API 是开发者扩展能力，不是普通用户的默认入口。
+LeviLauncher for Android 的核心是日常 Minecraft 基岩版启动器工作流。原生模组 API 是开发者扩展能力，不是普通用户的默认入口。
 
 ## 版本与实例管理
 
@@ -14,7 +14,7 @@ LeviLaunchroid 的核心是日常 Minecraft 基岩版启动器工作流。原生
 
 ## Xbox 账号
 
-LeviLaunchroid 可以在启动器内管理多个 Xbox 账号。启动 Minecraft 前选择需要使用的账号，避免进游戏后才发现身份不对。
+LeviLauncher for Android 可以在启动器内管理多个 Xbox 账号。启动 Minecraft 前选择需要使用的账号，避免进游戏后才发现身份不对。
 
 ## 快速启动
 

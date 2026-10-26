@@ -1,6 +1,6 @@
 # Features
 
-LeviLaunchroid is centered on day-to-day Minecraft Bedrock Edition launcher workflows. Native mod APIs exist, but they are an extension point for developers rather than the default user path.
+LeviLauncher for Android is centered on day-to-day Minecraft Bedrock Edition launcher workflows. Native mod APIs exist, but they are an extension point for developers rather than the default user path.
 
 ## Version and Instance Management
 
@@ -14,7 +14,7 @@ Backups are intended for recovery and migration. Keep important backups outside 
 
 ## Xbox Accounts
 
-LeviLaunchroid can manage multiple Xbox accounts inside the launcher. Select the account you want before launching Minecraft so the game starts with the expected identity.
+LeviLauncher for Android can manage multiple Xbox accounts inside the launcher. Select the account you want before launching Minecraft so the game starts with the expected identity.
 
 ## Quick Launch
 

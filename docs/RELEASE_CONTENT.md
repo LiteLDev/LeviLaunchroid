@@ -1,6 +1,6 @@
 # Changelogs and launcher news
 
-LeviLaunchroid uses two small JSON files as the source of truth. Both files are bundled into the APK, validated in CI, and intentionally stay in English.
+LeviLauncher for Android uses two small JSON files as the source of truth. Both files are bundled into the APK, validated in CI, and intentionally stay in English.
 
 ## Prepare a launcher release
 

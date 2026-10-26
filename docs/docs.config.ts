@@ -1,4 +1,4 @@
-// LeviLaunchroid documentation (https://docs.levimc.org/LeviLaunchroid/), built with the vendored levimc-kit.
+// LeviLauncher for Android documentation (https://docs.levimc.org/LeviLaunchroid/), built with the vendored levimc-kit.
 // Port of the former VitePress config: same URLs (cleanUrls), locales, nav, sidebars and labels.
 import { defineDocsConfig, type NavEntry } from './kit/docs/node/config.ts';
 
@@ -103,10 +103,10 @@ function buildChineseNav(): NavEntry[] {
 
 export default defineDocsConfig({
   base,
-  title: 'LeviLaunchroid',
-  description: 'Documentation for LeviLaunchroid, the Android launcher for Minecraft Bedrock Edition.',
+  title: 'LeviLauncher for Android',
+  description: 'Documentation for LeviLauncher for Android, the Android launcher for Minecraft Bedrock Edition.',
   project: 'LeviLaunchroid',
-  logo: { src: 'appicon.png', alt: 'LeviLaunchroid' },
+  logo: { src: 'appicon.png', alt: 'LeviLauncher for Android' },
   favicon: 'appicon.png',
   repo,
   contentDir: '.',

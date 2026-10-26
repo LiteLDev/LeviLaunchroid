@@ -1,6 +1,6 @@
 # 原生模组快速开始
 
-本页面描述 LeviLaunchroid 原生模组的受支持开发路径。公开 SDK 位于
+本页面描述 LeviLauncher for Android 原生模组的受支持开发路径。公开 SDK 位于
 [LiteLDev/preloader-android](https://github.com/LiteLDev/preloader-android)。
 
 独立第三方模组建议从

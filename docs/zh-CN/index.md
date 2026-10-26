@@ -2,12 +2,12 @@
 layout: home
 
 hero:
-  name: LeviLaunchroid
+  name: LeviLauncher for Android
   text: 面向 Minecraft 基岩版的轻量 Android 启动器
   tagline: 启动官方 Minecraft，管理隔离版本、账号、世界、资源包与备份，并通过原生模组扩展游戏能力。
   image:
     src: /appicon.png
-    alt: LeviLaunchroid
+    alt: LeviLauncher for Android
   actions:
     - theme: brand
       text: 快速开始
@@ -24,7 +24,7 @@ hero:
 
 features:
   - title: 官方游戏优先
-    details: LeviLaunchroid 面向合法 Minecraft 基岩版玩家，要求设备上存在来自 Google Play 的官方 Minecraft。
+    details: LeviLauncher for Android 面向合法 Minecraft 基岩版玩家，要求设备上存在来自 Google Play 的官方 Minecraft。
     icon: grass
   - title: 多版本隔离
     details: 独立管理多个 Minecraft 版本和数据目录，测试、游玩、回退互不干扰。
@@ -49,7 +49,7 @@ Use the language selector or open [English](/).
 
 ## 本站覆盖内容
 
-LeviLaunchroid 是一个开源 Android Minecraft 基岩版启动器。本文档优先讲清楚启动器本身：如何安装、准备官方 Minecraft、管理版本、启动游戏、整理玩家内容，以及如何处理兼容性问题。
+LeviLauncher for Android 是一个开源 Android Minecraft 基岩版启动器。本文档优先讲清楚启动器本身：如何安装、准备官方 Minecraft、管理版本、启动游戏、整理玩家内容，以及如何处理兼容性问题。
 
 Preloader API 仍然保留在本站，但它属于“开发者”分类，不再是文档的主入口。
 

@@ -2,12 +2,12 @@
 
 ## 支持设备
 
-LeviLaunchroid 面向 Android 9.0 或更高版本的 ARM64 设备。可用内存和存储越多，管理
+LeviLauncher for Android 面向 Android 9.0 或更高版本的 ARM64 设备。可用内存和存储越多，管理
 多个版本、大型世界或资源包时体验越好。
 
 ## Minecraft 要求
 
-LeviLaunchroid 需要 Google Play 安装的正版 Minecraft 基岩版。它面向合法
+LeviLauncher for Android 需要 Google Play 安装的正版 Minecraft 基岩版。它面向合法
 玩家，不提供 Minecraft 授权。
 
 如果没有安装 Minecraft、安装来源不受支持，或版本过旧，启动器可能会在启动游戏前停止。
@@ -30,7 +30,7 @@ LeviLaunchroid 需要 Google Play 安装的正版 Minecraft 基岩版。它面�
 
 ### 为什么启动器提示找不到 Minecraft？
 
-请从 Google Play 安装或更新官方 Minecraft，然后重新打开 LeviLaunchroid。
+请从 Google Play 安装或更新官方 Minecraft，然后重新打开 LeviLauncher for Android。
 
 ### 为什么导入版本启动失败？
 
