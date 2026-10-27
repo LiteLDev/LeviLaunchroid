@@ -12,6 +12,7 @@ public final class PojavControls {
 
     private static WeakReference<Activity> attachedActivity = new WeakReference<>(null);
     private static PojavControlOverlay overlay;
+    private static boolean hudVisible = true;
     private static WeakReference<Activity> editorActivity = new WeakReference<>(null);
     private static PojavControlsEditorView editor;
 
@@ -20,6 +21,16 @@ public final class PojavControls {
     public static synchronized void setEnabled(Activity activity, PojavControlsHost host, boolean enabled) {
         if (enabled) attach(activity, host);
         else detach();
+    }
+
+    public static synchronized void setHudVisible(boolean visible) {
+        hudVisible = visible;
+        if (overlay != null) {
+            if (!visible) overlay.releaseAll();
+            if (editor == null || !editor.isAttachedToWindow()) {
+                overlay.setVisibility(visible ? View.VISIBLE : View.GONE);
+            }
+        }
     }
 
     public static synchronized boolean isEnabled() {
@@ -67,6 +78,7 @@ public final class PojavControls {
         ((ViewGroup) content).addView(overlay, new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         overlay.bringToFront();
+        overlay.setVisibility(hudVisible ? View.VISIBLE : View.GONE);
         attachedActivity = new WeakReference<>(activity);
     }
 
@@ -99,7 +111,7 @@ public final class PojavControls {
         editorActivity.clear();
         if (overlay != null) {
             overlay.reloadProfile();
-            overlay.setVisibility(View.VISIBLE);
+            overlay.setVisibility(hudVisible ? View.VISIBLE : View.GONE);
             overlay.bringToFront();
         }
     }

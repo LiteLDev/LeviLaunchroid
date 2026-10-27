@@ -647,6 +647,7 @@
     <string name="inbuilt_mod_camera_desc">Toggle camera view</string>
     <string name="inbuilt_mod_hud">Hide HUD</string>
     <string name="inbuilt_mod_hud_desc">Hide hotbar and UI</string>
+    <string name="mod_config_hide_launcher_hud">Also hide launcher HUD and overlay buttons</string>
     <string name="inbuilt_mod_autosprint">Auto Sprint</string>
     <string name="inbuilt_mod_autosprint_desc">Toggle sprint on/off</string>
     <string name="inbuilt_mod_chick_pet">Chick Pet</string>

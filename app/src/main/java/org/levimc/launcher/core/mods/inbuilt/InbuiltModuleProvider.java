@@ -24,6 +24,7 @@ public final class InbuiltModuleProvider {
     private static final String CFG_OVERLAY_OPACITY = "overlay_opacity";
     private static final String CFG_OVERLAY_LOCK = "overlay_lock";
     private static final String CFG_OVERLAY_SHOW_EVERYWHERE = "overlay_show_everywhere";
+    private static final String CFG_HIDE_LAUNCHER_HUD = "hide_launcher_hud";
     private static final String CFG_ACTIVATION_KEYBIND = "activation_keybind";
     private static final String CFG_EDIT_CONTROLS = "edit_controls";
     private static final String CFG_AUTO_SPRINT_KEYBIND = "auto_sprint_keybind";
@@ -257,6 +258,14 @@ public final class InbuiltModuleProvider {
                     String.valueOf(manager.isOverlayShowEverywhere(modId))));
         }
 
+        if (ModIds.TOGGLE_HUD.equals(modId)) {
+            configs.add(config(CFG_HIDE_LAUNCHER_HUD,
+                    context.getString(R.string.mod_config_hide_launcher_hud),
+                    UnifiedMod.ConfigType.TOGGLE,
+                    "true", "", "",
+                    String.valueOf(manager.isLauncherHudHideEnabled())));
+        }
+
         if (ModIds.HOTBAR_SLOT.equals(modId)) {
             configs.add(config(CFG_HOTBAR_ITEM_ICONS,
                     context.getString(R.string.mod_config_hotbar_item_icons),
@@ -415,6 +424,11 @@ public final class InbuiltModuleProvider {
                 break;
             case CFG_OVERLAY_SHOW_EVERYWHERE:
                 manager.setOverlayShowEverywhere(mod.getId(), parseBoolean(value));
+                break;
+            case CFG_HIDE_LAUNCHER_HUD:
+                manager.setLauncherHudHideEnabled(parseBoolean(value));
+                InbuiltOverlayManager hudManager = InbuiltOverlayManager.getInstance();
+                if (hudManager != null) hudManager.refreshRuntimeVisibility();
                 break;
             case CFG_AUTO_SPRINT_KEYBIND:
                 manager.setAutoSprintKeybind(parseInt(value, manager.getAutoSprintKeybind()));

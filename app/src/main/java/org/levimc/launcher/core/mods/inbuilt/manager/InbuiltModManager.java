@@ -23,6 +23,7 @@ public class InbuiltModManager {
     private static final String KEY_MOD_MENU_COMPACT = "mod_menu_compact";
     private static final String KEY_MOD_MENU_KEYBIND = "mod_menu_keybind";
     private static final String KEY_PAUSE_MENU_ONLY = "pause_menu_only";
+    private static final String KEY_HIDE_LAUNCHER_HUD = "hide_launcher_hud_with_minecraft";
     private static final String KEY_FAVORITE_MOD_KEYS = "favorite_mod_keys";
     private static final String KEY_INBUILT_MOD_ENABLED_PREFIX = "inbuilt_mod_enabled_";
     private static final String KEY_EXTERNAL_MODULE_ENABLED_PREFIX = "external_module_enabled_";
@@ -148,6 +149,14 @@ public class InbuiltModManager {
 
     public void setModMenuEnabled(boolean enabled) {
         prefs.edit().putBoolean(KEY_MOD_MENU_ENABLED, enabled).apply();
+    }
+
+    public boolean isLauncherHudHideEnabled() {
+        return prefs.getBoolean(KEY_HIDE_LAUNCHER_HUD, true);
+    }
+
+    public void setLauncherHudHideEnabled(boolean enabled) {
+        prefs.edit().putBoolean(KEY_HIDE_LAUNCHER_HUD, enabled).apply();
     }
 
     public boolean isNotificationsEnabled() {

@@ -28,7 +28,20 @@ public class ToggleHudOverlay extends BaseOverlayButton {
     protected void onButtonClick() {
         isActive = !isActive;
         sendKey(KeyEvent.KEYCODE_F1);
-        updateButtonState();
+        InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+        if (manager != null) manager.setLauncherHudHidden(isActive);
+        activity.runOnUiThread(this::updateButtonState);
+    }
+
+    @Override
+    public void hide() {
+        if (isActive) {
+            isActive = false;
+            sendKey(KeyEvent.KEYCODE_F1);
+            InbuiltOverlayManager manager = InbuiltOverlayManager.getInstance();
+            if (manager != null) manager.setLauncherHudHidden(false);
+        }
+        super.hide();
     }
 
     private void updateButtonState() {
