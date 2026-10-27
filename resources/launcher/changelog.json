@@ -1,19 +1,27 @@
-
 {
   "schemaVersion": 1,
-  "headline": "LeviLauncher v1.5.27",
-  "summary": "Redesigned the CurseForge interface, fixed Microsoft and Xbox login issues, and simplified storage access and permissions.",
+  "headline": "LeviLauncher v1.6.0",
+  "summary": "Added Minecraft 26.60 support, launcher HUD controls, new world tools, and numerous optimisations.",
   "sections": [
+    {
+      "title": "New Features",
+      "items": [
+        {
+          "text": "Added support for Minecraft 26.60."
+        },
+        {
+          "text": "Added an option to hide the launcher HUD and overlay buttons."
+        },
+        {
+          "text": "Added a world map and advanced NBT editing."
+        }
+      ]
+    },
     {
       "title": "Improvements",
       "items": [
         {
-          "text": "Completely redesigned the CurseForge interface with a cleaner, more compact layout and better usability on smaller screens.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/d6c32c1a0cb750a9c31e913b0abae3ea101d62e1"
-        },
-        {
-          "text": "Refactored storage access and permissions management, removing the old storage migration system.",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/22d074d1b38afd565eb531bc17c645365cdba3b8"
+          "text": "Made numerous performance optimisations."
         }
       ]
     },
@@ -21,8 +29,7 @@
       "title": "Fixes",
       "items": [
         {
-          "text": "Fixed Microsoft and Xbox login issues",
-          "url": "https://github.com/LiteLDev/LeviLaunchroid/commit/e9777f9e996def8a5f8c224e138e1d4691e0849e"
+          "text": "Fixed the options editor not working."
         }
       ]
     }
