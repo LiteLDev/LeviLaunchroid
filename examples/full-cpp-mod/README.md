@@ -108,4 +108,4 @@ After importing the mod into LeviLauncher for Android, verify that:
 - Changing a menu toggle or config entry updates `config/config.json`.
 - Restarting uses the previously persisted config as the menu defaults.
 
-See `docs/guide/developer.md` for the full development guide.
+See the [Native Mod Quick Start](https://docs.levimc.org/LeviLauncher/android/guide/developer) for the full development guide.
