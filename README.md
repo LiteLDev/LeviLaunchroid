@@ -15,7 +15,7 @@
 [![Downloads](https://img.shields.io/github/downloads/LiteLDev/LeviLaunchroid/total.svg)](https://github.com/LiteLDev/LeviLaunchroid/releases)
 [![Android](https://img.shields.io/badge/Android-9.0%2B-green?style=flat-square&logo=android)](https://www.android.com/)
 
-**[Documentation](https://docs.levimc.org/LeviLauncher/android/)**
+**[Documentation](https://docs.levimc.org/LeviLauncher/guide/quick-start?platform=android)** · **[Native mod development](https://docs.levimc.org/LeviLamina/developer_guides/android/)**
 
 </div>
 
@@ -23,7 +23,7 @@
 
 ## Introduction
 
-This repository is the **Android version** of LeviLauncher; the **Windows version** is developed in [LiteLDev/LeviLauncher](https://github.com/LiteLDev/LeviLauncher). Both are documented at [docs.levimc.org/LeviLauncher](https://docs.levimc.org/LeviLauncher/). There is no iOS version, and none is planned.
+This repository is the **Android version** of LeviLauncher; the **Windows version** is developed in [LiteLDev/LeviLauncher](https://github.com/LiteLDev/LeviLauncher). Both share one guide at [docs.levimc.org/LeviLauncher](https://docs.levimc.org/LeviLauncher/) (Windows / Android tabs); native mod development is documented in the [LeviLamina docs](https://docs.levimc.org/LeviLamina/developer_guides/android/). There is no iOS version, and none is planned.
 
 LeviLauncher is a lightweight, open-source Android launcher specifically designed for legitimate players of Minecraft Bedrock Edition (MCBE). It works alongside your Google Play installation of Minecraft, allowing you to manage multiple game versions and extend functionality with native mods.
 
@@ -82,6 +82,7 @@ If you want to build LeviLauncher from source or contribute to development, foll
 - Android Studio (latest version recommended)
 - Java Development Kit (JDK) 21 or higher
 - Android SDK with API level 28 or higher
+- Android NDK and CMake (install them through Android Studio's SDK Manager) when native code is built
 
 ### Setup Instructions
 
@@ -104,6 +105,14 @@ If you want to build LeviLauncher from source or contribute to development, foll
 7. The app will launch automatically on successful build completion
 
 > **Build Tip:** For faster builds during development, use `Build > Make Project` to compile incrementally instead of full rebuilds.
+
+The project root is named `levilauncher` in the Gradle settings, while the repository is `LeviLaunchroid`. To build from the command line:
+
+```bash
+./gradlew assembleDebug
+```
+
+On Windows, run `.\gradlew.bat assembleDebug`. Install the official Minecraft app on the test device before testing launcher flows.
 
 ---
 
@@ -184,7 +193,7 @@ LeviLauncher would not be possible without the contributions and support of many
 
 **Project Repository:** [https://github.com/LiteLDev/LeviLaunchroid](https://github.com/LiteLDev/LeviLaunchroid)
 
-**Documentation:** [https://docs.levimc.org/LeviLauncher/android/](https://docs.levimc.org/LeviLauncher/android/)
+**Documentation:** [docs.levimc.org/LeviLauncher](https://docs.levimc.org/LeviLauncher/guide/quick-start?platform=android) · native mods: [docs.levimc.org/LeviLamina](https://docs.levimc.org/LeviLamina/developer_guides/android/)
 
 **Report Issues:** [GitHub Issues Page](https://github.com/LiteLDev/LeviLaunchroid/issues)
 
