@@ -1,8 +1,8 @@
 <div align="center">
 
-![LeviLauncher for Android Logo](https://avatars.githubusercontent.com/u/78095377?s=200&v=4)
+![LeviLauncher Logo](https://avatars.githubusercontent.com/u/78095377?s=200&v=4)
 
-# LeviLauncher for Android
+# LeviLauncher — Android version
 
 ![Banner](https://camo.githubusercontent.com/bd7bd77cb422a267057d9863095b239b096d4f46dc831a37b45867a9acfad697/68747470733a2f2f63617073756c652d72656e6465722e76657263656c2e6170702f6170693f747970653d576176696e6726636f6c6f723d74696d654772616469656e74266865696768743d33303026616e696d6174696f6e3d66616465496e2673656374696f6e3d68656164657226746578743d4c6576694d4326666f6e7453697a653d313230)
 
@@ -15,7 +15,7 @@
 [![Downloads](https://img.shields.io/github/downloads/LiteLDev/LeviLaunchroid/total.svg)](https://github.com/LiteLDev/LeviLaunchroid/releases)
 [![Android](https://img.shields.io/badge/Android-9.0%2B-green?style=flat-square&logo=android)](https://www.android.com/)
 
-**[Documentation](https://docs.levimc.org/LeviLaunchroid/)**
+**[Documentation](https://docs.levimc.org/LeviLauncher/android/)**
 
 </div>
 
@@ -23,9 +23,11 @@
 
 ## Introduction
 
-LeviLauncher for Android is a lightweight, open-source Android launcher specifically designed for legitimate players of Minecraft Bedrock Edition (MCBE). It works alongside your Google Play installation of Minecraft, allowing you to manage multiple game versions and extend functionality with native mods.
+This repository is the **Android version** of LeviLauncher; the **Windows version** is developed in [LiteLDev/LeviLauncher](https://github.com/LiteLDev/LeviLauncher). Both are documented at [docs.levimc.org/LeviLauncher](https://docs.levimc.org/LeviLauncher/). There is no iOS version, and none is planned.
 
-LeviLauncher for Android enables you to import official Minecraft APKs and run them inside the launcher, without installing each version on the system. The official Minecraft app from Google Play must still be installed on the device. The launcher supports loading native mods to enhance gameplay, provides robust multi-version management with complete isolation between installations, and includes built-in tools for managing resource packs and worlds. Whether you're looking to organize different game versions, test modifications, or optimize your gaming experience, LeviLauncher for Android offers the flexibility you need.
+LeviLauncher is a lightweight, open-source Android launcher specifically designed for legitimate players of Minecraft Bedrock Edition (MCBE). It works alongside your Google Play installation of Minecraft, allowing you to manage multiple game versions and extend functionality with native mods.
+
+LeviLauncher enables you to import official Minecraft APKs and run them inside the launcher, without installing each version on the system. The official Minecraft app from Google Play must still be installed on the device. The launcher supports loading native mods to enhance gameplay, provides robust multi-version management with complete isolation between installations, and includes built-in tools for managing resource packs and worlds. Whether you're looking to organize different game versions, test modifications, or optimize your gaming experience, LeviLauncher offers the flexibility you need.
 
 ### Key Features
 
@@ -39,7 +41,7 @@ LeviLauncher for Android enables you to import official Minecraft APKs and run t
 
 ## System Requirements
 
-Before installing LeviLauncher for Android, ensure your device meets the following minimum specifications:
+Before installing LeviLauncher, ensure your device meets the following minimum specifications:
 
 - **Operating System:** Android 9.0 (API 28) or higher
 - **Device Architecture:** ARM64 (v8a)
@@ -56,7 +58,7 @@ Before installing LeviLauncher for Android, ensure your device meets the followi
 
 ### Prerequisites
 
-Before proceeding with LeviLauncher for Android installation, ensure that you have the official Minecraft Bedrock Edition app (1.21.80 or later) installed on your device from Google Play. This is required for LeviLauncher for Android to function properly.
+Before proceeding with LeviLauncher installation, ensure that you have the official Minecraft Bedrock Edition app (1.21.80 or later) installed on your device from Google Play. This is required for LeviLauncher to function properly.
 
 ### Installation Steps
 
@@ -66,13 +68,13 @@ Before proceeding with LeviLauncher for Android installation, ensure that you ha
 4. Tap Install to install the APK
 5. Open the app from your app drawer (on the device it is shown as "LeviLauncher") and grant the permissions it requests
 
-> **Important:** LeviLauncher for Android requires a legitimate, licensed copy of Minecraft Bedrock Edition. Do not use this launcher with pirated or unauthorized versions of the game. Ensure your Minecraft license is valid and properly linked to your Microsoft account.
+> **Important:** LeviLauncher requires a legitimate, licensed copy of Minecraft Bedrock Edition. Do not use this launcher with pirated or unauthorized versions of the game. Ensure your Minecraft license is valid and properly linked to your Microsoft account.
 
 ---
 
 ## Development Setup
 
-If you want to build LeviLauncher for Android from source or contribute to development, follow these steps to set up your development environment:
+If you want to build LeviLauncher from source or contribute to development, follow these steps to set up your development environment:
 
 ### Prerequisites
 
@@ -107,7 +109,7 @@ If you want to build LeviLauncher for Android from source or contribute to devel
 
 ## Contribution Guidelines
 
-We welcome contributions from the community to improve LeviLauncher for Android. To ensure a high-quality codebase and smooth collaboration, please adhere to the following guidelines:
+We welcome contributions from the community to improve LeviLauncher. To ensure a high-quality codebase and smooth collaboration, please adhere to the following guidelines:
 
 ### Code Quality
 
@@ -137,27 +139,27 @@ Submit PRs with a detailed description of changes, including the problem solved 
 
 Follow our Code of Conduct to maintain a respectful and inclusive environment. Be constructive in feedback, respect others' work, and communicate professionally with all contributors.
 
-**Before Submitting:** Run a full build cycle and test on at least one device to minimize errors. We review all contributions promptly and appreciate your efforts to enhance LeviLauncher for Android.
+**Before Submitting:** Run a full build cycle and test on at least one device to minimize errors. We review all contributions promptly and appreciate your efforts to enhance LeviLauncher.
 
 ---
 
 ## Usage Guidelines
 
-LeviLauncher for Android is designed for legitimate players of Minecraft Bedrock Edition. Please respect the following guidelines and terms of use:
+LeviLauncher is designed for legitimate players of Minecraft Bedrock Edition. Please respect the following guidelines and terms of use:
 
 ### Permitted Uses
 
-- Modify LeviLauncher for Android for personal gameplay and to test new features
-- Create educational content (videos, tutorials, blog posts) showcasing LeviLauncher for Android's capabilities
+- Modify LeviLauncher for personal gameplay and to test new features
+- Create educational content (videos, tutorials, blog posts) showcasing LeviLauncher's capabilities
 - Fork the repository for learning purposes or to create derivative projects, provided you comply with the Apache License 2.0
 - Share your modified versions with others as long as you comply with the Apache License 2.0 terms
 
 ### Prohibited Uses
 
-- Do not claim LeviLauncher for Android as your own without crediting LeviMC and its contributors
-- Do not use LeviLauncher for Android to violate Mojang or Microsoft's user agreements
+- Do not claim LeviLauncher as your own without crediting LeviMC and its contributors
+- Do not use LeviLauncher to violate Mojang or Microsoft's user agreements
 
-> **Disclaimer:** The authors and contributors of LeviLauncher for Android are not responsible for bans, damages, or issues arising from the use of this software. Use it at your own risk and in accordance with Minecraft's terms of service.
+> **Disclaimer:** The authors and contributors of LeviLauncher are not responsible for bans, damages, or issues arising from the use of this software. Use it at your own risk and in accordance with Minecraft's terms of service.
 
 For full legal details, see the [LICENSE](LICENSE) file in the repository.
 
@@ -165,14 +167,14 @@ For full legal details, see the [LICENSE](LICENSE) file in the repository.
 
 ## Credits & Acknowledgements
 
-LeviLauncher for Android would not be possible without the contributions and support of many talented individuals and organizations:
+LeviLauncher would not be possible without the contributions and support of many talented individuals and organizations:
 
 ### Special Thanks To
 
-- **LeviMC** – For maintaining the LeviLauncher for Android project and providing infrastructure support
+- **LeviMC** – For maintaining the LeviLauncher project and providing infrastructure support
 - **Android Community** – For excellent documentation, libraries, and tools that made this launcher possible
 - **Open Source Community** – For all the libraries, frameworks, and tools that power this project
-- **Contributors** – A heartfelt thank you to all [contributors](https://github.com/LiteLDev/LeviLaunchroid/graphs/contributors) who have continuously improved and maintained LeviLauncher for Android through their time and expertise
+- **Contributors** – A heartfelt thank you to all [contributors](https://github.com/LiteLDev/LeviLaunchroid/graphs/contributors) who have continuously improved and maintained LeviLauncher through their time and expertise
 
 ---
 
@@ -182,7 +184,7 @@ LeviLauncher for Android would not be possible without the contributions and sup
 
 **Project Repository:** [https://github.com/LiteLDev/LeviLaunchroid](https://github.com/LiteLDev/LeviLaunchroid)
 
-**Documentation:** [https://docs.levimc.org/LeviLaunchroid/](https://docs.levimc.org/LeviLaunchroid/)
+**Documentation:** [https://docs.levimc.org/LeviLauncher/android/](https://docs.levimc.org/LeviLauncher/android/)
 
 **Report Issues:** [GitHub Issues Page](https://github.com/LiteLDev/LeviLaunchroid/issues)
 
